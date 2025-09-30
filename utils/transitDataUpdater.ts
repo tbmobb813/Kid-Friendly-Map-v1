@@ -162,7 +162,7 @@ export class TransitDataUpdater {
 
   private generateMockAlerts(region: RegionConfig) {
     // Generate mock alert data
-    const alerts = [];
+  const alerts: any[] = [];
     
     if (Math.random() > 0.7) {
       alerts.push({

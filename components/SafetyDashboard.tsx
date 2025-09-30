@@ -39,7 +39,8 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
 }) => {
   const { settings, checkInRequests, safeZones } = useParentalStore();
   const { photoCheckIns } = useNavigationStore();
-  const { currentZoneStatus } = useSafeZoneMonitor();
+  const { getCurrentSafeZoneStatus } = useSafeZoneMonitor();
+  const currentZoneStatus = getCurrentSafeZoneStatus ? getCurrentSafeZoneStatus() : null;
   const [showQuickActions, setShowQuickActions] = useState(true);
 
   // Calculate safety stats
@@ -91,10 +92,10 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
       onPress={onPress}
     >
       <View style={[styles.statIcon, { backgroundColor: `${color}20` }]}>
-        {React.cloneElement(icon as React.ReactElement, { 
+        {React.cloneElement(icon as React.ReactElement, ({ 
           size: 20, 
           color 
-        })}
+        } as any))}
       </View>
       <View style={styles.statContent}>
         <Text style={styles.statValue}>{value}</Text>
@@ -117,10 +118,10 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
     color?: string;
   }) => (
     <Pressable style={[styles.quickActionButton, { backgroundColor: color }]} onPress={onPress}>
-      {React.cloneElement(icon as React.ReactElement, { 
+      {React.cloneElement(icon as React.ReactElement, ({ 
         size: 20, 
         color: '#FFFFFF' 
-      })}
+      } as any))}
       <Text style={styles.quickActionText}>{title}</Text>
     </Pressable>
   );
@@ -144,24 +145,28 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Current Status</Text>
           <SafeZoneIndicator />
-          
-          {currentZoneStatus && (
-            <View style={[
-              styles.statusCard, 
-              { backgroundColor: currentZoneStatus.isInSafeZone ? '#E8F5E8' : '#FFF3E0' }
-            ]}>
-              <View style={[
-                styles.statusIndicator,
-                { backgroundColor: currentZoneStatus.isInSafeZone ? Colors.success : Colors.warning }
-              ]} />
-              <Text style={styles.statusText}>
-                {currentZoneStatus.isInSafeZone 
-                  ? `You're in the ${currentZoneStatus.zoneName} safe zone` 
-                  : 'Outside safe zones - stay alert!'
-                }
-              </Text>
-            </View>
-          )}
+
+              {currentZoneStatus && (() => {
+                const isInSafeZone = currentZoneStatus.inside && currentZoneStatus.inside.length > 0;
+                const zoneName = isInSafeZone ? currentZoneStatus.inside[0].name : undefined;
+                return (
+                  <View style={[
+                    styles.statusCard,
+                    { backgroundColor: isInSafeZone ? '#E8F5E8' : '#FFF3E0' }
+                  ]}>
+                    <View style={[
+                      styles.statusIndicator,
+                      { backgroundColor: isInSafeZone ? Colors.success : Colors.warning }
+                    ]} />
+                    <Text style={styles.statusText}>
+                      {isInSafeZone
+                        ? `You're in the ${zoneName} safe zone`
+                        : 'Outside safe zones - stay alert!'
+                      }
+                    </Text>
+                  </View>
+                );
+              })()}
         </View>
 
         {/* Quick Actions */}

@@ -1,12 +1,18 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ES2017",
-    "types": ["jest"],
-    "lib": ["ES2017", "DOM"],
+    "noImplicitAny": false,
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "types": ["jest", "node", "react", "react-native"],
+    "lib": ["ES2020", "DOM"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
