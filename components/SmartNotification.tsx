@@ -29,7 +29,10 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-  }),
+    // Include web/modern fields required by NotificationBehavior
+    shouldShowBanner: true,
+    shouldShowList: true,
+  } as any),
 });
 
 const SmartNotification: React.FC<SmartNotificationProps> = ({
@@ -72,7 +75,7 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
       return;
     }
     
-    if (__DEV__ && Platform.OS !== 'web') {
+    if (__DEV__) {
       // Expo Go limitations
       Alert.alert(
         'Notification Scheduled',
@@ -99,11 +102,12 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
           title,
           body: message,
           data: { type, id, actionData: notification.actionData },
-          priority: priority === 'high' ? Notifications.AndroidNotificationPriority.HIGH : 
-                   priority === 'low' ? Notifications.AndroidNotificationPriority.LOW : 
-                   Notifications.AndroidNotificationPriority.DEFAULT,
+          // Android priority enum is typed in expo; cast to any to be safe
+          priority: (priority === 'high' ? (Notifications as any).AndroidNotificationPriority.HIGH : 
+                   priority === 'low' ? (Notifications as any).AndroidNotificationPriority.LOW : 
+                   (Notifications as any).AndroidNotificationPriority.DEFAULT) as any,
         },
-        trigger: scheduledFor ? { date: scheduledFor } : null,
+        trigger: scheduledFor ? { type: 'date', date: scheduledFor } as any : null,
       });
       
       showToast('Notification scheduled successfully', 'success');

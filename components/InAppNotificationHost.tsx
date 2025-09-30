@@ -85,9 +85,9 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
         title: title || 'Notification',
         message: body || '',
         type: (data?.type as NotificationData['type']) || 'reminder',
-        actionText: data?.actionText,
-        actionData: data?.actionData,
-        priority: data?.priority || 'normal',
+        actionText: (data?.actionText as string | undefined) ?? undefined,
+        actionData: (data?.actionData as any) ?? undefined,
+        priority: (data?.priority as 'low' | 'normal' | 'high') || 'normal',
       };
 
       setNotifications(prev => [newNotification, ...prev].slice(0, 3));

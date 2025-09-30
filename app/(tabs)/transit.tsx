@@ -140,6 +140,7 @@ export default function TransitScreen() {
       {selectedStation && (
         <LiveArrivalsCard
           stationName={nearbyStations.find(s => s.id === selectedStation)?.name || "Station"}
+          stationId={selectedStation}
           arrivals={mockLiveArrivals[selectedStation] || []}
           lastUpdated={getTimeAgo(lastRefresh)}
           onRefresh={handleRefreshArrivals}

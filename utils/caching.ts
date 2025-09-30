@@ -13,6 +13,7 @@ export type CacheEntry<T> = {
     source: 'network' | 'cache';
     lastUpdated: number;
     accessCount: number;
+    compressed?: boolean;
   };
 };
 
@@ -172,8 +173,8 @@ class EnhancedCacheManager {
     try {
       const cacheEntry = await SafeAsyncStorage.getItem<CacheEntry<T>>(
         this.getCacheKey(key),
-        null,
-        { strategy: 'fallback', fallbackValue: null }
+        undefined,
+        { strategy: 'fallback', fallbackValue: undefined }
       );
 
       if (!cacheEntry) {
@@ -248,8 +249,8 @@ class EnhancedCacheManager {
     try {
       const cacheEntry = await SafeAsyncStorage.getItem<CacheEntry<any>>(
         this.getCacheKey(key),
-        null,
-        { strategy: 'fallback', fallbackValue: null }
+        undefined,
+        { strategy: 'fallback', fallbackValue: undefined }
       );
 
       if (!cacheEntry) return false;
@@ -299,7 +300,7 @@ class EnhancedCacheManager {
       
       for (const key of cacheKeys) {
         try {
-          const entry = await AsyncStorage.getItem(key);
+        const entry = await AsyncStorage.getItem(key);
           if (entry) {
             totalSize += entry.length;
             

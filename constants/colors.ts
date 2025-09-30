@@ -4,6 +4,7 @@ export default {
   background: "#FFFFFF",
   card: "#F8F9FA",
   text: "#333333",
+  textSecondary: "#6B7280",
   textLight: "#757575",
   border: "#E0E0E0",
   error: "#FF6B6B",
@@ -28,6 +29,7 @@ export default {
   
   // Additional colors for components
   white: "#FFFFFF",
+  surface: "#FFFFFF",
   primaryLight: "#E3F2FD",
   secondaryLight: "#E8F5E8",
 } as const;
