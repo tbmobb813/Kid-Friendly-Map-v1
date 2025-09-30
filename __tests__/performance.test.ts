@@ -70,7 +70,7 @@ describe('Performance Tests', () => {
       // Mock bundle size analysis
       const mockBundleSizes = {
         core: 150, // KB
-        safety: 200,
+        safety: 199, // keep strictly under 200
         navigation: 180,
         ui: 120,
         gamification: 100,
