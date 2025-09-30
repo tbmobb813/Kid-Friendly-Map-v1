@@ -1,1 +1,533 @@
-import { validateLocation, validateSafeZone, validateEmergencyContact, validatePhotoCheckIn, validatePIN, sanitizeInput, validateDistance } from '../utils/validation';\nimport { SafeAsyncStorage, withRetry, handleLocationError, handleCameraError } from '../utils/errorHandling';\n\n// Mock AsyncStorage for testing\njest.mock('@react-native-async-storage/async-storage', () => ({\n  getItem: jest.fn(),\n  setItem: jest.fn(),\n  removeItem: jest.fn(),\n}));\n\n// Mock logger\njest.mock('../utils/logger', () => ({\n  log: {\n    debug: jest.fn(),\n    info: jest.fn(),\n    warn: jest.fn(),\n    error: jest.fn(),\n  }\n}));\n\ndescribe('Validation Utils', () => {\n  describe('validateLocation', () => {\n    it('should validate correct location data', () => {\n      const validLocation = {\n        latitude: 40.7128,\n        longitude: -74.0060,\n        accuracy: 10,\n        timestamp: Date.now()\n      };\n      \n      const result = validateLocation(validLocation);\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject invalid latitude', () => {\n      const invalidLocation = {\n        latitude: 91, // Invalid: > 90\n        longitude: -74.0060\n      };\n      \n      const result = validateLocation(invalidLocation);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Latitude must be between -90 and 90 degrees');\n    });\n\n    it('should reject invalid longitude', () => {\n      const invalidLocation = {\n        latitude: 40.7128,\n        longitude: 181 // Invalid: > 180\n      };\n      \n      const result = validateLocation(invalidLocation);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Longitude must be between -180 and 180 degrees');\n    });\n\n    it('should warn about low accuracy', () => {\n      const lowAccuracyLocation = {\n        latitude: 40.7128,\n        longitude: -74.0060,\n        accuracy: 150 // Low accuracy\n      };\n      \n      const result = validateLocation(lowAccuracyLocation);\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('Location accuracy is low (>100m), results may be unreliable');\n    });\n\n    it('should warn about old timestamp', () => {\n      const oldLocation = {\n        latitude: 40.7128,\n        longitude: -74.0060,\n        timestamp: Date.now() - 600000 // 10 minutes ago\n      };\n      \n      const result = validateLocation(oldLocation);\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('Location data is more than 5 minutes old');\n    });\n\n    it('should reject null/undefined location', () => {\n      const result = validateLocation(null);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Location data is required');\n    });\n  });\n\n  describe('validateSafeZone', () => {\n    it('should validate correct safe zone data', () => {\n      const validSafeZone = {\n        id: 'zone1',\n        name: 'Home',\n        center: { latitude: 40.7128, longitude: -74.0060 },\n        radius: 100,\n        isActive: true\n      };\n      \n      const result = validateSafeZone(validSafeZone);\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject safe zone without ID', () => {\n      const invalidSafeZone = {\n        name: 'Home',\n        center: { latitude: 40.7128, longitude: -74.0060 },\n        radius: 100,\n        isActive: true\n      };\n      \n      const result = validateSafeZone(invalidSafeZone);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Safe zone ID is required');\n    });\n\n    it('should reject negative radius', () => {\n      const invalidSafeZone = {\n        id: 'zone1',\n        name: 'Home',\n        center: { latitude: 40.7128, longitude: -74.0060 },\n        radius: -50, // Invalid: negative\n        isActive: true\n      };\n      \n      const result = validateSafeZone(invalidSafeZone);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Safe zone radius must be a positive number');\n    });\n\n    it('should warn about very small radius', () => {\n      const smallRadiusSafeZone = {\n        id: 'zone1',\n        name: 'Home',\n        center: { latitude: 40.7128, longitude: -74.0060 },\n        radius: 5, // Very small\n        isActive: true\n      };\n      \n      const result = validateSafeZone(smallRadiusSafeZone);\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('Safe zone radius is very small (<10m)');\n    });\n  });\n\n  describe('validateEmergencyContact', () => {\n    it('should validate correct emergency contact', () => {\n      const validContact = {\n        id: 'contact1',\n        name: 'Mom',\n        phone: '+1234567890',\n        relationship: 'Parent',\n        isPrimary: true\n      };\n      \n      const result = validateEmergencyContact(validContact);\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject contact without phone', () => {\n      const invalidContact = {\n        id: 'contact1',\n        name: 'Mom',\n        relationship: 'Parent',\n        isPrimary: true\n      };\n      \n      const result = validateEmergencyContact(invalidContact);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Contact phone number is required');\n    });\n\n    it('should reject invalid phone format', () => {\n      const invalidContact = {\n        id: 'contact1',\n        name: 'Mom',\n        phone: '123', // Too short\n        relationship: 'Parent',\n        isPrimary: true\n      };\n      \n      const result = validateEmergencyContact(invalidContact);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Phone number format is invalid');\n    });\n  });\n\n  describe('validatePhotoCheckIn', () => {\n    it('should validate correct photo check-in', () => {\n      const validCheckIn = {\n        placeId: 'place1',\n        placeName: 'School',\n        photoUrl: 'https://example.com/photo.jpg',\n        timestamp: Date.now(),\n        location: { latitude: 40.7128, longitude: -74.0060 },\n        notes: 'Arrived safely'\n      };\n      \n      const result = validatePhotoCheckIn(validCheckIn);\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject check-in without place ID', () => {\n      const invalidCheckIn = {\n        placeName: 'School',\n        photoUrl: 'https://example.com/photo.jpg',\n        timestamp: Date.now()\n      };\n      \n      const result = validatePhotoCheckIn(invalidCheckIn);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('Place ID is required');\n    });\n\n    it('should accept file:// URLs for mobile', () => {\n      const mobileCheckIn = {\n        placeId: 'place1',\n        placeName: 'School',\n        photoUrl: 'file:///path/to/photo.jpg',\n        timestamp: Date.now()\n      };\n      \n      const result = validatePhotoCheckIn(mobileCheckIn);\n      expect(result.isValid).toBe(true);\n    });\n\n    it('should warn about old check-in', () => {\n      const oldCheckIn = {\n        placeId: 'place1',\n        placeName: 'School',\n        photoUrl: 'https://example.com/photo.jpg',\n        timestamp: Date.now() - 86400000 - 1000 // More than 24 hours ago\n      };\n      \n      const result = validatePhotoCheckIn(oldCheckIn);\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('Check-in timestamp is more than 24 hours old');\n    });\n  });\n\n  describe('validatePIN', () => {\n    it('should validate correct PIN', () => {\n      const result = validatePIN('1357');\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject short PIN', () => {\n      const result = validatePIN('12');\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('PIN must be at least 4 digits');\n    });\n\n    it('should reject non-numeric PIN', () => {\n      const result = validatePIN('12ab');\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('PIN must contain only numbers');\n    });\n\n    it('should warn about weak PIN', () => {\n      const result = validatePIN('1111');\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');\n    });\n\n    it('should warn about sequential PIN', () => {\n      const result = validatePIN('1234');\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');\n    });\n  });\n\n  describe('sanitizeInput', () => {\n    it('should sanitize HTML characters', () => {\n      const input = '<script>alert(\"xss\")</script>';\n      const result = sanitizeInput(input);\n      expect(result).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');\n    });\n\n    it('should trim whitespace', () => {\n      const input = '  hello world  ';\n      const result = sanitizeInput(input);\n      expect(result).toBe('hello world');\n    });\n\n    it('should limit length', () => {\n      const input = 'a'.repeat(1500);\n      const result = sanitizeInput(input, 100);\n      expect(result).toHaveLength(100);\n    });\n\n    it('should handle non-string input', () => {\n      const result = sanitizeInput(null as any);\n      expect(result).toBe('');\n    });\n  });\n\n  describe('validateDistance', () => {\n    it('should validate reasonable distance', () => {\n      const result = validateDistance(100);\n      expect(result.isValid).toBe(true);\n      expect(result.errors).toHaveLength(0);\n    });\n\n    it('should reject negative distance', () => {\n      const result = validateDistance(-50);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('location distance cannot be negative');\n    });\n\n    it('should reject unrealistic distance', () => {\n      const result = validateDistance(25000000); // > 20,000 km\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('location distance is unrealistically large');\n    });\n\n    it('should warn about very large distance', () => {\n      const result = validateDistance(1500000); // 1500 km\n      expect(result.isValid).toBe(true);\n      expect(result.warnings).toContain('location distance is very large (>1000km)');\n    });\n\n    it('should reject NaN distance', () => {\n      const result = validateDistance(NaN);\n      expect(result.isValid).toBe(false);\n      expect(result.errors).toContain('location distance must be a valid number');\n    });\n  });\n});\n\ndescribe('Error Handling Utils', () => {\n  describe('withRetry', () => {\n    it('should succeed on first attempt', async () => {\n      const operation = jest.fn().mockResolvedValue('success');\n      const options = { maxAttempts: 3, delayMs: 100 };\n      \n      const result = await withRetry(operation, options);\n      \n      expect(result).toBe('success');\n      expect(operation).toHaveBeenCalledTimes(1);\n    });\n\n    it('should retry on failure and eventually succeed', async () => {\n      const operation = jest.fn()\n        .mockRejectedValueOnce(new Error('fail1'))\n        .mockRejectedValueOnce(new Error('fail2'))\n        .mockResolvedValue('success');\n      \n      const options = { maxAttempts: 3, delayMs: 10 };\n      \n      const result = await withRetry(operation, options);\n      \n      expect(result).toBe('success');\n      expect(operation).toHaveBeenCalledTimes(3);\n    });\n\n    it('should fail after max attempts', async () => {\n      const operation = jest.fn().mockRejectedValue(new Error('persistent failure'));\n      const options = { maxAttempts: 2, delayMs: 10 };\n      \n      await expect(withRetry(operation, options)).rejects.toThrow('persistent failure');\n      expect(operation).toHaveBeenCalledTimes(2);\n    });\n\n    it('should respect shouldRetry function', async () => {\n      const operation = jest.fn().mockRejectedValue(new Error('non-retryable'));\n      const options = {\n        maxAttempts: 3,\n        delayMs: 10,\n        shouldRetry: (error: Error) => !error.message.includes('non-retryable')\n      };\n      \n      await expect(withRetry(operation, options)).rejects.toThrow('non-retryable');\n      expect(operation).toHaveBeenCalledTimes(1);\n    });\n  });\n\n  describe('handleLocationError', () => {\n    it('should handle permission denied error', () => {\n      const error = { code: 1 }; // PERMISSION_DENIED\n      const result = handleLocationError(error);\n      \n      expect(result.userMessage).toBe('Location access is needed for safety features');\n      expect(result.canRetry).toBe(true);\n      expect(result.suggestedAction).toContain('enable location access');\n    });\n\n    it('should handle position unavailable error', () => {\n      const error = { code: 2 }; // POSITION_UNAVAILABLE\n      const result = handleLocationError(error);\n      \n      expect(result.userMessage).toBe(\"Can't find your location right now\");\n      expect(result.canRetry).toBe(true);\n      expect(result.suggestedAction).toContain('better GPS signal');\n    });\n\n    it('should handle timeout error', () => {\n      const error = { code: 3 }; // TIMEOUT\n      const result = handleLocationError(error);\n      \n      expect(result.userMessage).toBe('Location is taking too long to find');\n      expect(result.canRetry).toBe(true);\n    });\n\n    it('should handle unknown error', () => {\n      const error = { message: 'Unknown location error' };\n      const result = handleLocationError(error);\n      \n      expect(result.userMessage).toBe('Having trouble with location services');\n      expect(result.canRetry).toBe(true);\n    });\n  });\n\n  describe('handleCameraError', () => {\n    it('should handle permission error', () => {\n      const error = { message: 'Camera permission denied' };\n      const result = handleCameraError(error);\n      \n      expect(result.userMessage).toBe('Camera permission is needed for photo check-ins');\n      expect(result.requiresPermission).toBe(true);\n      expect(result.canRetry).toBe(true);\n    });\n\n    it('should handle camera unavailable error', () => {\n      const error = { message: 'Camera not available' };\n      const result = handleCameraError(error);\n      \n      expect(result.userMessage).toBe('Camera is not available on this device');\n      expect(result.canRetry).toBe(false);\n      expect(result.requiresPermission).toBe(false);\n    });\n\n    it('should handle cancelled error', () => {\n      const error = { message: 'User cancelled camera' };\n      const result = handleCameraError(error);\n      \n      expect(result.userMessage).toBe('Photo was cancelled');\n      expect(result.canRetry).toBe(true);\n      expect(result.requiresPermission).toBe(false);\n    });\n\n    it('should handle unknown camera error', () => {\n      const error = { message: 'Unknown camera error' };\n      const result = handleCameraError(error);\n      \n      expect(result.userMessage).toBe('Camera error, please try again');\n      expect(result.canRetry).toBe(true);\n    });\n  });\n});\n\n// Integration tests for safety-critical workflows\ndescribe('Safety Integration Tests', () => {\n  describe('Photo Check-in Workflow', () => {\n    it('should validate complete photo check-in flow', () => {\n      // Test location validation\n      const location = { latitude: 40.7128, longitude: -74.0060, accuracy: 15 };\n      const locationResult = validateLocation(location);\n      expect(locationResult.isValid).toBe(true);\n      \n      // Test photo check-in validation\n      const checkIn = {\n        placeId: 'school_123',\n        placeName: 'Lincoln Elementary School',\n        photoUrl: 'file:///path/to/photo.jpg',\n        timestamp: Date.now(),\n        location,\n        notes: 'Arrived safely at school'\n      };\n      \n      const checkInResult = validatePhotoCheckIn(checkIn);\n      expect(checkInResult.isValid).toBe(true);\n      \n      // Test distance validation (assuming 50m from school)\n      const distanceResult = validateDistance(50, 'check-in');\n      expect(distanceResult.isValid).toBe(true);\n    });\n  });\n\n  describe('Safe Zone Setup Workflow', () => {\n    it('should validate complete safe zone setup', () => {\n      // Test location validation for safe zone center\n      const center = { latitude: 40.7589, longitude: -73.9851 }; // Times Square\n      const locationResult = validateLocation(center);\n      expect(locationResult.isValid).toBe(true);\n      \n      // Test safe zone validation\n      const safeZone = {\n        id: 'home_zone',\n        name: 'Home Safe Zone',\n        center,\n        radius: 200,\n        isActive: true\n      };\n      \n      const safeZoneResult = validateSafeZone(safeZone);\n      expect(safeZoneResult.isValid).toBe(true);\n    });\n  });\n\n  describe('Emergency Contact Setup Workflow', () => {\n    it('should validate emergency contact setup', () => {\n      const contact = {\n        id: 'mom_contact',\n        name: 'Sarah Johnson',\n        phone: '+1-555-123-4567',\n        relationship: 'Mother',\n        isPrimary: true\n      };\n      \n      const result = validateEmergencyContact(contact);\n      expect(result.isValid).toBe(true);\n    });\n  });\n\n  describe('PIN Security Workflow', () => {\n    it('should validate PIN setup with security checks', () => {\n      // Test weak PIN rejection\n      const weakPIN = validatePIN('1111');\n      expect(weakPIN.isValid).toBe(true);\n      expect(weakPIN.warnings).toBeDefined();\n      \n      // Test strong PIN acceptance\n      const strongPIN = validatePIN('7392');\n      expect(strongPIN.isValid).toBe(true);\n      expect(strongPIN.warnings).toHaveLength(0);\n    });\n  });\n});
+/// <reference types="jest" />
+
+import { validateLocation, validateSafeZone, validateEmergencyContact, validatePhotoCheckIn, validatePIN, sanitizeInput, validateDistance } from '../utils/validation';
+import { SafeAsyncStorage, withRetry, handleLocationError, handleCameraError } from '../utils/errorHandling';
+
+// Mock AsyncStorage for testing
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+}));
+
+// Mock logger
+jest.mock('../utils/logger', () => ({
+  log: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  }
+}));
+
+describe('Validation Utils', () => {
+  describe('validateLocation', () => {
+    it('should validate correct location data', () => {
+      const validLocation = {
+        latitude: 40.7128,
+        longitude: -74.0060,
+        accuracy: 10,
+        timestamp: Date.now()
+      };
+
+      const result = validateLocation(validLocation);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject invalid latitude', () => {
+      const invalidLocation = {
+        latitude: 91, // Invalid: > 90
+        longitude: -74.0060
+      };
+
+      const result = validateLocation(invalidLocation as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Latitude must be between -90 and 90 degrees');
+    });
+
+    it('should reject invalid longitude', () => {
+      const invalidLocation = {
+        latitude: 40.7128,
+        longitude: 181 // Invalid: > 180
+      };
+
+      const result = validateLocation(invalidLocation as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Longitude must be between -180 and 180 degrees');
+    });
+
+    it('should warn about low accuracy', () => {
+      const lowAccuracyLocation = {
+        latitude: 40.7128,
+        longitude: -74.0060,
+        accuracy: 150 // Low accuracy
+      };
+
+      const result = validateLocation(lowAccuracyLocation as any);
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('Location accuracy is low (>100m), results may be unreliable');
+    });
+
+    it('should warn about old timestamp', () => {
+      const oldLocation = {
+        latitude: 40.7128,
+        longitude: -74.0060,
+        timestamp: Date.now() - 600000 // 10 minutes ago
+      };
+
+      const result = validateLocation(oldLocation as any);
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('Location data is more than 5 minutes old');
+    });
+
+    it('should reject null/undefined location', () => {
+      const result = validateLocation(null as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Location data is required');
+    });
+  });
+
+  describe('validateSafeZone', () => {
+    it('should validate correct safe zone data', () => {
+      const validSafeZone = {
+        id: 'zone1',
+        name: 'Home',
+        center: { latitude: 40.7128, longitude: -74.0060 },
+        radius: 100,
+        isActive: true
+      };
+
+      const result = validateSafeZone(validSafeZone as any);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject safe zone without ID', () => {
+      const invalidSafeZone = {
+        name: 'Home',
+        center: { latitude: 40.7128, longitude: -74.0060 },
+        radius: 100,
+        isActive: true
+      };
+
+      const result = validateSafeZone(invalidSafeZone as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Safe zone ID is required');
+    });
+
+    it('should reject negative radius', () => {
+      const invalidSafeZone = {
+        id: 'zone1',
+        name: 'Home',
+        center: { latitude: 40.7128, longitude: -74.0060 },
+        radius: -50, // Invalid: negative
+        isActive: true
+      };
+
+      const result = validateSafeZone(invalidSafeZone as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Safe zone radius must be a positive number');
+    });
+
+    it('should warn about very small radius', () => {
+      const smallRadiusSafeZone = {
+        id: 'zone1',
+        name: 'Home',
+        center: { latitude: 40.7128, longitude: -74.0060 },
+        radius: 5, // Very small
+        isActive: true
+      };
+
+      const result = validateSafeZone(smallRadiusSafeZone as any);
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('Safe zone radius is very small (<10m)');
+    });
+  });
+
+  describe('validateEmergencyContact', () => {
+    it('should validate correct emergency contact', () => {
+      const validContact = {
+        id: 'contact1',
+        name: 'Mom',
+        phone: '+1234567890',
+        relationship: 'Parent',
+        isPrimary: true
+      };
+
+      const result = validateEmergencyContact(validContact as any);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject contact without phone', () => {
+      const invalidContact = {
+        id: 'contact1',
+        name: 'Mom',
+        relationship: 'Parent',
+        isPrimary: true
+      };
+
+      const result = validateEmergencyContact(invalidContact as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Contact phone number is required');
+    });
+
+    it('should reject invalid phone format', () => {
+      const invalidContact = {
+        id: 'contact1',
+        name: 'Mom',
+        phone: '123', // Too short
+        relationship: 'Parent',
+        isPrimary: true
+      };
+
+      const result = validateEmergencyContact(invalidContact as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Phone number format is invalid');
+    });
+  });
+
+  describe('validatePhotoCheckIn', () => {
+    it('should validate correct photo check-in', () => {
+      const validCheckIn = {
+        placeId: 'place1',
+        placeName: 'School',
+        photoUrl: 'https://example.com/photo.jpg',
+        timestamp: Date.now(),
+        location: { latitude: 40.7128, longitude: -74.0060 },
+        notes: 'Arrived safely'
+      };
+
+      const result = validatePhotoCheckIn(validCheckIn as any);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject check-in without place ID', () => {
+      const invalidCheckIn = {
+        placeName: 'School',
+        photoUrl: 'https://example.com/photo.jpg',
+        timestamp: Date.now()
+      };
+
+      const result = validatePhotoCheckIn(invalidCheckIn as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('Place ID is required');
+    });
+
+    it('should accept file:// URLs for mobile', () => {
+      const mobileCheckIn = {
+        placeId: 'place1',
+        placeName: 'School',
+        photoUrl: 'file:///path/to/photo.jpg',
+        timestamp: Date.now()
+      };
+
+      const result = validatePhotoCheckIn(mobileCheckIn as any);
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should warn about old check-in', () => {
+      const oldCheckIn = {
+        placeId: 'place1',
+        placeName: 'School',
+        photoUrl: 'https://example.com/photo.jpg',
+        timestamp: Date.now() - 86400000 - 1000 // More than 24 hours ago
+      };
+
+      const result = validatePhotoCheckIn(oldCheckIn as any);
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('Check-in timestamp is more than 24 hours old');
+    });
+  });
+
+  describe('validatePIN', () => {
+    it('should validate correct PIN', () => {
+      const result = validatePIN('1357');
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject short PIN', () => {
+      const result = validatePIN('12');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('PIN must be at least 4 digits');
+    });
+
+    it('should reject non-numeric PIN', () => {
+      const result = validatePIN('12ab');
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('PIN must contain only numbers');
+    });
+
+    it('should warn about weak PIN', () => {
+      const result = validatePIN('1111');
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');
+    });
+
+    it('should warn about sequential PIN', () => {
+      const result = validatePIN('1234');
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');
+    });
+  });
+
+  describe('sanitizeInput', () => {
+    it('should sanitize HTML characters', () => {
+      const input = '<script>alert("xss")</script>';
+      const result = sanitizeInput(input as any);
+      expect(result).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
+    });
+
+    it('should trim whitespace', () => {
+      const input = '  hello world  ';
+      const result = sanitizeInput(input as any);
+      expect(result).toBe('hello world');
+    });
+
+    it('should limit length', () => {
+      const input = 'a'.repeat(1500);
+      const result = sanitizeInput(input as any, 100);
+      expect(result).toHaveLength(100);
+    });
+
+    it('should handle non-string input', () => {
+      const result = sanitizeInput(null as any);
+      expect(result).toBe('');
+    });
+  });
+
+  describe('validateDistance', () => {
+    it('should validate reasonable distance', () => {
+      const result = validateDistance(100 as any);
+      expect(result.isValid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should reject negative distance', () => {
+      const result = validateDistance(-50 as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('location distance cannot be negative');
+    });
+
+    it('should reject unrealistic distance', () => {
+      const result = validateDistance(25000000 as any); // > 20,000 km
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('location distance is unrealistically large');
+    });
+
+    it('should warn about very large distance', () => {
+      const result = validateDistance(1500000 as any); // 1500 km
+      expect(result.isValid).toBe(true);
+      expect(result.warnings).toContain('location distance is very large (>1000km)');
+    });
+
+    it('should reject NaN distance', () => {
+      const result = validateDistance(NaN as any);
+      expect(result.isValid).toBe(false);
+      expect(result.errors).toContain('location distance must be a valid number');
+    });
+  });
+});
+
+describe('Error Handling Utils', () => {
+  describe('withRetry', () => {
+    it('should succeed on first attempt', async () => {
+      const operation = jest.fn().mockResolvedValue('success');
+      const options = { maxAttempts: 3, delayMs: 100 };
+
+      const result = await withRetry(operation as any, options as any);
+
+      expect(result).toBe('success');
+      expect(operation).toHaveBeenCalledTimes(1);
+    });
+
+    it('should retry on failure and eventually succeed', async () => {
+      const operation = jest.fn()
+        .mockRejectedValueOnce(new Error('fail1'))
+        .mockRejectedValueOnce(new Error('fail2'))
+        .mockResolvedValue('success');
+
+      const options = { maxAttempts: 3, delayMs: 10 };
+
+      const result = await withRetry(operation as any, options as any);
+
+      expect(result).toBe('success');
+      expect(operation).toHaveBeenCalledTimes(3);
+    });
+
+    it('should fail after max attempts', async () => {
+      const operation = jest.fn().mockRejectedValue(new Error('persistent failure'));
+      const options = { maxAttempts: 2, delayMs: 10 };
+
+      await expect(withRetry(operation as any, options as any)).rejects.toThrow('persistent failure');
+      expect(operation).toHaveBeenCalledTimes(2);
+    });
+
+    it('should respect shouldRetry function', async () => {
+      const operation = jest.fn().mockRejectedValue(new Error('non-retryable'));
+      const options = {
+        maxAttempts: 3,
+        delayMs: 10,
+        shouldRetry: (error: Error) => !error.message.includes('non-retryable')
+      };
+
+      await expect(withRetry(operation as any, options as any)).rejects.toThrow('non-retryable');
+      expect(operation).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('handleLocationError', () => {
+    it('should handle permission denied error', () => {
+      const error = { code: 1 } as any; // PERMISSION_DENIED
+      const result = handleLocationError(error);
+
+      expect(result.userMessage).toBe('Location access is needed for safety features');
+      expect(result.canRetry).toBe(true);
+      expect(result.suggestedAction).toContain('enable location access');
+    });
+
+    it('should handle position unavailable error', () => {
+      const error = { code: 2 } as any; // POSITION_UNAVAILABLE
+      const result = handleLocationError(error);
+
+      expect(result.userMessage).toBe("Can't find your location right now");
+      expect(result.canRetry).toBe(true);
+      expect(result.suggestedAction).toContain('better GPS signal');
+    });
+
+    it('should handle timeout error', () => {
+      const error = { code: 3 } as any; // TIMEOUT
+      const result = handleLocationError(error);
+
+      expect(result.userMessage).toBe('Location is taking too long to find');
+      expect(result.canRetry).toBe(true);
+    });
+
+    it('should handle unknown error', () => {
+      const error = { message: 'Unknown location error' } as any;
+      const result = handleLocationError(error);
+
+      expect(result.userMessage).toBe('Having trouble with location services');
+      expect(result.canRetry).toBe(true);
+    });
+  });
+
+  describe('handleCameraError', () => {
+    it('should handle permission error', () => {
+      const error = { message: 'Camera permission denied' } as any;
+      const result = handleCameraError(error);
+
+      expect(result.userMessage).toBe('Camera permission is needed for photo check-ins');
+      expect(result.requiresPermission).toBe(true);
+      expect(result.canRetry).toBe(true);
+    });
+
+    it('should handle camera unavailable error', () => {
+      const error = { message: 'Camera not available' } as any;
+      const result = handleCameraError(error);
+
+      expect(result.userMessage).toBe('Camera is not available on this device');
+      expect(result.canRetry).toBe(false);
+      expect(result.requiresPermission).toBe(false);
+    });
+
+    it('should handle cancelled error', () => {
+      const error = { message: 'User cancelled camera' } as any;
+      const result = handleCameraError(error);
+
+      expect(result.userMessage).toBe('Photo was cancelled');
+      expect(result.canRetry).toBe(true);
+      expect(result.requiresPermission).toBe(false);
+    });
+
+    it('should handle unknown camera error', () => {
+      const error = { message: 'Unknown camera error' } as any;
+      const result = handleCameraError(error);
+
+      expect(result.userMessage).toBe('Camera error, please try again');
+      expect(result.canRetry).toBe(true);
+    });
+  });
+});
+
+// Integration tests for safety-critical workflows
+describe('Safety Integration Tests', () => {
+  describe('Photo Check-in Workflow', () => {
+    it('should validate complete photo check-in flow', () => {
+      // Test location validation
+      const location = { latitude: 40.7128, longitude: -74.0060, accuracy: 15 } as any;
+      const locationResult = validateLocation(location);
+      expect(locationResult.isValid).toBe(true);
+
+      // Test photo check-in validation
+      const checkIn = {
+        placeId: 'school_123',
+        placeName: 'Lincoln Elementary School',
+        photoUrl: 'file:///path/to/photo.jpg',
+        timestamp: Date.now(),
+        location,
+        notes: 'Arrived safely at school'
+      } as any;
+
+      const checkInResult = validatePhotoCheckIn(checkIn);
+      expect(checkInResult.isValid).toBe(true);
+
+      // Test distance validation (assuming 50m from school)
+      const distanceResult = validateDistance(50 as any, 'check-in' as any);
+      expect(distanceResult.isValid).toBe(true);
+    });
+  });
+
+  describe('Safe Zone Setup Workflow', () => {
+    it('should validate complete safe zone setup', () => {
+      // Test location validation for safe zone center
+      const center = { latitude: 40.7589, longitude: -73.9851 } as any; // Times Square
+      const locationResult = validateLocation(center);
+      expect(locationResult.isValid).toBe(true);
+
+      // Test safe zone validation
+      const safeZone = {
+        id: 'home_zone',
+        name: 'Home Safe Zone',
+        center,
+        radius: 200,
+        isActive: true
+      } as any;
+
+      const safeZoneResult = validateSafeZone(safeZone);
+      expect(safeZoneResult.isValid).toBe(true);
+    });
+  });
+
+  describe('Emergency Contact Setup Workflow', () => {
+    it('should validate emergency contact setup', () => {
+      const contact = {
+        id: 'mom_contact',
+        name: 'Sarah Johnson',
+        phone: '+1-555-123-4567',
+        relationship: 'Mother',
+        isPrimary: true
+      } as any;
+
+      const result = validateEmergencyContact(contact);
+      expect(result.isValid).toBe(true);
+    });
+  });
+
+  describe('PIN Security Workflow', () => {
+    it('should validate PIN setup with security checks', () => {
+      // Test weak PIN rejection
+      const weakPIN = validatePIN('1111' as any);
+      expect(weakPIN.isValid).toBe(true);
+      expect(weakPIN.warnings).toBeDefined();
+
+      // Test strong PIN acceptance
+      const strongPIN = validatePIN('7392' as any);
+      expect(strongPIN.isValid).toBe(true);
+      expect(strongPIN.warnings).toHaveLength(0);
+    });
+  });
+});
