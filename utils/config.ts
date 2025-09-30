@@ -1,5 +1,21 @@
 import { Platform } from 'react-native';
-import Constants from 'expo-constants';
+
+// Use a dynamic require with a safe fallback so Jest (running in Node) doesn't
+// attempt to parse ESM files from node_modules (expo-constants ships an ESM
+// build). This keeps tests fast and stable without needing to reconfigure
+// Jest transforms for all Expo packages.
+let Constants: any;
+try {
+  // Prefer using require so this will work under CommonJS test runner.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  Constants = require('expo-constants');
+} catch (e) {
+  // Fallback shape used by the app; kept small and stable for tests.
+  Constants = {
+    expoConfig: { version: '1.0.0', name: 'Transit Navigator' },
+    statusBarHeight: 20,
+  };
+}
 
 export const Config = {
   // Environment
