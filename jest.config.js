@@ -27,10 +27,12 @@ module.exports = {
   },
     moduleNameMapper: {
       '^@/(.*)$': '<rootDir>/$1',
-      '^react-native$': '<rootDir>/__mocks__/react-native.js'
+      '^react-native$': '<rootDir>/__mocks__/react-native.js',
+      '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js'
     },
     transform: {
       '^.+\\.(ts|tsx)$': 'ts-jest',
     },
+    setupFiles: ['<rootDir>/jest.setup.js'],
     testEnvironment: 'node',
 };
