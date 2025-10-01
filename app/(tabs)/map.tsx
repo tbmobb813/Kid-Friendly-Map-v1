@@ -59,11 +59,11 @@ export default function MapScreen() {
 
   const handleRouteSelect = (route: Route) => {
     selectRoute(route);
-    router.push(`/route/${route.id}`);
+    router.push(`/(tabs)/transit` as any); // Navigate to transit instead of route for now
   };
 
   const handleSearchPress = () => {
-    router.push("/search");
+    router.push("/(tabs)/search" as any);
   };
 
   const handleStationPress = (stationId: string) => {

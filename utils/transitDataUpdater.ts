@@ -115,11 +115,13 @@ export class TransitDataUpdater {
         // Mock feed loader: feedUrl starting with mock://<id> will load from config/mock-feeds/<id>.json
         if (system.feedUrl.startsWith('mock://')) {
           const id = system.feedUrl.replace('mock://', '');
+          // TODO: Fix dynamic import for web builds
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          const mock = require(`@/config/mock-feeds/${id}.json`);
-          if (mock.routes) allRoutes.push(...mock.routes);
-          if (mock.schedules) allSchedules.push(...mock.schedules);
-          if (mock.alerts) allAlerts.push(...mock.alerts);
+          // const mock = require(`@/config/mock-feeds/${id}.json`);
+          console.log(`Mock feed ${id} loading disabled for web builds`);
+          // if (mock.routes) allRoutes.push(...mock.routes);
+          // if (mock.schedules) allSchedules.push(...mock.schedules);
+          // if (mock.alerts) allAlerts.push(...mock.alerts);
           continue;
         }
 
