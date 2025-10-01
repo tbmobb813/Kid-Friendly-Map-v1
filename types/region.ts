@@ -4,6 +4,8 @@ export type TransitSystem = {
   type: "subway" | "train" | "bus" | "tram" | "ferry";
   color: string;
   routes?: string[];
+  feedUrl?: string;        // GTFS-RT feed URL for this system
+  agencyId?: string;       // optional agency identifier
   status?: "operational" | "delayed" | "suspended";
   lastUpdated?: string;
 };
@@ -29,7 +31,7 @@ export type RegionConfig = {
     description: string;
   }[];
   weatherApiKey?: string;
-  transitApiEndpoint?: string;
+  transitApiKey?: string;    // prefer env var access: process.env.MTA_API_KEY
   mapStyle?: "standard" | "satellite" | "hybrid";
   lastUpdated?: string;
 };

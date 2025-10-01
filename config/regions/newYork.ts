@@ -17,7 +17,9 @@ export const newYorkConfig: RegionConfig = {
       name: "MTA Subway",
       type: "subway",
       color: "#0039A6",
-      routes: ["A", "B", "C", "D", "E", "F", "G", "J", "L", "M", "N", "Q", "R", "W", "Z", "1", "2", "3", "4", "5", "6", "7"]
+      routes: ["A", "B", "C", "D", "E", "F", "G", "J", "L", "M", "N", "Q", "R", "W", "Z", "1", "2", "3", "4", "5", "6", "7"],
+      feedUrl: "https://gtfsrt.prod.mta.info/subway",
+      agencyId: "MTA"
     },
     {
       id: "mta-bus",
@@ -65,5 +67,6 @@ export const newYorkConfig: RegionConfig = {
     }
   ],
   transitApiEndpoint: "https://api.mta.info/",
+  transitApiKey: process.env.MTA_API_KEY,
   mapStyle: "standard"
 };
