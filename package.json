@@ -3,7 +3,15 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:logic": "bun test bun-tests/",
+    "test:logic:watch": "bun test --watch bun-tests/",
+    "test:integration": "jest __tests__/",
+    "test:integration:watch": "jest --watch __tests__/",
+    "test:all": "npm run test:logic && npm run test:integration",
+    "test:fast": "bun test bun-tests/",
+    "test:full": "npm run test:all"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -55,11 +63,15 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.28.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
     "@expo/ngrok": "^4.1.0",
     "@react-native-community/cli": "latest",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.0.10",
+    "babel-jest": "^30.2.0",
     "ts-jest": "^29.4.4",
     "typescript": "~5.8.3"
   },
