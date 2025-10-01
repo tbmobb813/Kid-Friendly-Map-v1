@@ -103,20 +103,76 @@ export class TransitDataUpdater {
   }
 
   private async fetchTransitData(region: RegionConfig): Promise<TransitApiResponse> {
-    // In a real app, this would make actual API calls to the transit system
-    // For now, we'll simulate the API response
-    
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+    // If region has transitSystems with feedUrl set, fetch those feeds and normalize.
+    const allRoutes: any[] = [];
+    const allSchedules: any[] = [];
+    const allAlerts: any[] = [];
 
-    // Simulate different API responses based on region
-    const mockResponse: TransitApiResponse = {
-      routes: this.generateMockRoutes(region),
-      schedules: this.generateMockSchedules(region),
-      alerts: this.generateMockAlerts(region),
+    for (const system of region.transitSystems) {
+      try {
+        if (!system.feedUrl) continue;
+
+        // Mock feed loader: feedUrl starting with mock://<id> will load from config/mock-feeds/<id>.json
+        if (system.feedUrl.startsWith('mock://')) {
+          const id = system.feedUrl.replace('mock://', '');
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          const mock = require(`@/config/mock-feeds/${id}.json`);
+          if (mock.routes) allRoutes.push(...mock.routes);
+          if (mock.schedules) allSchedules.push(...mock.schedules);
+          if (mock.alerts) allAlerts.push(...mock.alerts);
+          continue;
+        }
+
+        // If feedUrl looks like a JSON endpoint, fetch and try to normalize
+        if (system.feedUrl.startsWith('http')) {
+          try {
+            // Determine API key precedence: system.apiKey -> env[system.apiKeyEnv] -> region.transitApiKey
+            const resolvedKey = system.apiKey || (system.apiKeyEnv ? process.env[system.apiKeyEnv] : undefined) || region.transitApiKey;
+            const keyHeader = system.apiKeyHeader || 'x-api-key';
+
+            // Use global fetch if available, otherwise fall back to node-fetch when installed
+            const fetchFn = (typeof fetch !== 'undefined') ? fetch : require('node-fetch');
+            const headers: Record<string, string> | undefined = resolvedKey ? { [keyHeader]: resolvedKey } : undefined;
+
+            const res = await fetchFn(system.feedUrl, { headers });
+
+            // If response is JSON, parse and attempt to normalize
+            const contentType = res.headers && res.headers.get ? res.headers.get('content-type') : null;
+            if (contentType && contentType.includes('application/json')) {
+              const json = await res.json();
+              // Expect JSON to follow the simple mock shape { routes, schedules, alerts }
+              if (json.routes) allRoutes.push(...json.routes);
+              if (json.schedules) allSchedules.push(...json.schedules);
+              if (json.alerts) allAlerts.push(...json.alerts);
+              continue;
+            }
+
+            // TODO: If endpoint returns GTFS-RT protobuf, use gtfs-realtime-bindings to decode.
+            // Guarded example (uncomment after installing gtfs-realtime-bindings):
+            // const buffer = await res.arrayBuffer();
+            // const GtfsRealtimeBindings = require('gtfs-realtime-bindings');
+            // const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
+            // parse feed.entity for trip_update and alerts
+          } catch (err) {
+            console.warn(`Failed to fetch/parse feed for ${system.id}:`, err);
+          }
+        }
+      } catch (e) {
+        console.warn(`Error processing feed for system ${system.id}:`, e);
+      }
+    }
+
+    // If we didn't get any real routes, fall back to the existing mock generator for coverage
+    const routes = allRoutes.length ? allRoutes : this.generateMockRoutes(region);
+    const schedules = allSchedules.length ? allSchedules : this.generateMockSchedules(region);
+    const alerts = allAlerts.length ? allAlerts : this.generateMockAlerts(region);
+
+    return {
+      routes,
+      schedules,
+      alerts,
       lastModified: new Date().toISOString()
     };
-
-    return mockResponse;
   }
 
   private processTransitSystems(transitData: TransitApiResponse, region: RegionConfig) {
