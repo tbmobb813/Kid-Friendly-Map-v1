@@ -12,11 +12,69 @@ try {
 } catch (e) {
   // Fallback shape used by the app; kept small and stable for tests.
   Constants = {
-    expoConfig: { version: '1.0.0', name: 'Transit Navigator' },
+    expoConfig: { version: '1.0.0', name: 'Transit Navigator', extra: {} },
     statusBarHeight: 20,
   };
 }
 
+const expoConfig = Constants.expoConfig ?? {};
+const expoExtra = expoConfig.extra ?? {};
+const monitoringExtra = expoExtra.monitoring ?? {};
+const analyticsExtra = expoExtra.analytics ?? {};
+const plausibleExtra = analyticsExtra.plausible ?? {};
+const privacyExtra = analyticsExtra.privacy ?? {};
+
+const monitoringSettings = {
+  enabled: typeof monitoringExtra.enabled === 'boolean' ? monitoringExtra.enabled : !__DEV__,
+  sentryDsn: typeof monitoringExtra.sentryDsn === 'string' ? monitoringExtra.sentryDsn : '',
+  environment:
+    typeof monitoringExtra.environment === 'string'
+      ? monitoringExtra.environment
+      : __DEV__
+        ? 'development'
+        : 'production',
+  tracesSampleRate:
+    typeof monitoringExtra.tracesSampleRate === 'number'
+      ? monitoringExtra.tracesSampleRate
+      : 0.2,
+  autoSessionTracking:
+    typeof monitoringExtra.autoSessionTracking === 'boolean'
+      ? monitoringExtra.autoSessionTracking
+      : true,
+  profileSampleRate:
+    typeof monitoringExtra.profileSampleRate === 'number'
+      ? monitoringExtra.profileSampleRate
+      : 0,
+};
+
+const analyticsSettings = {
+  enabled: typeof analyticsExtra.enabled === 'boolean' ? analyticsExtra.enabled : !__DEV__,
+  batchSize:
+    typeof analyticsExtra.batchSize === 'number'
+      ? analyticsExtra.batchSize
+      : 10,
+  flushInterval:
+    typeof analyticsExtra.flushInterval === 'number'
+      ? analyticsExtra.flushInterval
+      : 30000,
+  plausible: {
+    enabled: typeof plausibleExtra.enabled === 'boolean' ? plausibleExtra.enabled : !__DEV__,
+    endpoint: typeof plausibleExtra.endpoint === 'string' ? plausibleExtra.endpoint : '',
+    siteId: typeof plausibleExtra.siteId === 'string' ? plausibleExtra.siteId : '',
+    sharedKey: typeof plausibleExtra.sharedKey === 'string' ? plausibleExtra.sharedKey : '',
+    defaultUrl:
+      typeof plausibleExtra.defaultUrl === 'string'
+        ? plausibleExtra.defaultUrl
+        : 'https://app.kidfriendlymap.example',
+    source: typeof plausibleExtra.source === 'string' ? plausibleExtra.source : 'kid-map-app',
+  },
+  privacy: {
+    defaultOptIn:
+      typeof privacyExtra.defaultOptIn === 'boolean'
+        ? privacyExtra.defaultOptIn
+        : false,
+  },
+};
 export const Config = {
   // Environment
   isDev: __DEV__,
@@ -38,8 +96,8 @@ export const Config = {
     VOICE_NAVIGATION: true,
     PHOTO_CHECKIN: true,
     OFFLINE_MODE: true,
-    ANALYTICS: !__DEV__,
-    CRASH_REPORTING: !__DEV__,
+    ANALYTICS: analyticsSettings.enabled,
+    CRASH_REPORTING: monitoringSettings.enabled,
     PERFORMANCE_MONITORING: true,
     PUSH_NOTIFICATIONS: true,
   },
@@ -70,9 +128,29 @@ export const Config = {
   
   // Analytics
   ANALYTICS: {
-    ENABLED: !__DEV__,
-    BATCH_SIZE: 10,
-    FLUSH_INTERVAL: 30000, // 30 seconds
+    ENABLED: analyticsSettings.enabled,
+    BATCH_SIZE: analyticsSettings.batchSize,
+    FLUSH_INTERVAL: analyticsSettings.flushInterval, // 30 seconds
+    PLAUSIBLE: {
+      ENABLED: analyticsSettings.plausible.enabled,
+      ENDPOINT: analyticsSettings.plausible.endpoint,
+      SITE_ID: analyticsSettings.plausible.siteId,
+      SHARED_KEY: analyticsSettings.plausible.sharedKey,
+      DEFAULT_URL: analyticsSettings.plausible.defaultUrl,
+      SOURCE: analyticsSettings.plausible.source,
+    },
+    PRIVACY: {
+      DEFAULT_OPT_IN: analyticsSettings.privacy.defaultOptIn,
+    },
+  },
+
+  MONITORING: {
+    ENABLED: monitoringSettings.enabled,
+    SENTRY_DSN: monitoringSettings.sentryDsn,
+    ENVIRONMENT: monitoringSettings.environment,
+    TRACES_SAMPLE_RATE: monitoringSettings.tracesSampleRate,
+    AUTO_SESSION_TRACKING: monitoringSettings.autoSessionTracking,
+    PROFILE_SAMPLE_RATE: monitoringSettings.profileSampleRate,
   },
   
   // Performance
