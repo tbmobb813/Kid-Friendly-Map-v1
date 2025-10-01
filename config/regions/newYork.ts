@@ -18,8 +18,14 @@ export const newYorkConfig: RegionConfig = {
       type: "subway",
       color: "#0039A6",
       routes: ["A", "B", "C", "D", "E", "F", "G", "J", "L", "M", "N", "Q", "R", "W", "Z", "1", "2", "3", "4", "5", "6", "7"],
-      feedUrl: "https://gtfsrt.prod.mta.info/subway",
-      agencyId: "MTA"
+      // MTA GTFS feed for ACE (example public GTFS feed URL provided)
+      feedUrl: "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",
+      // MTA GTFS feed for BDFM
+      feedUrl: "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-bdfm",
+      agencyId: "MTA",
+      // Use the region-level MTA_API_KEY environment variable (set in your shell/CI)
+      apiKeyEnv: 'MTA_API_KEY',
+      apiKeyHeader: 'x-api-key'
     },
     {
       id: "mta-bus",

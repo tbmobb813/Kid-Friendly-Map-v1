@@ -1,0 +1,18 @@
+{
+  "routes": [
+    { "id": "mta-subway-A", "name": "A", "systemId": "mta-subway", "status": "on-time", "nextArrival": 3 },
+    { "id": "mta-subway-1", "name": "1", "systemId": "mta-subway", "status": "delayed", "nextArrival": 7 }
+  ],
+  "schedules": [
+    {
+      "systemId": "mta-subway",
+      "schedules": [
+        { "time": "2025-10-01T12:00:00Z", "route": "A", "destination": "Downtown" }
+      ]
+    }
+  ],
+  "alerts": [
+    { "id": "mock-alert-1", "systemId": "mta-subway", "type": "delay", "message": "Signal problems on Line A", "severity": "low", "affectedRoutes": ["A"] }
+  ],
+  "lastModified": "2025-10-01T00:00:00Z"
+}
