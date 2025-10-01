@@ -2,8 +2,9 @@ import React, { useMemo, useRef, useState, useCallback } from 'react';
 import { View, StyleSheet, Platform, Pressable, Text } from 'react-native';
 import Colors from '@/constants/colors';
 import { Place, Route } from '@/types/navigation';
+import { nycStations, Station } from '@/config/transit/nyc-stations';
 import MapPlaceholder from './MapPlaceholder';
-import { Crosshair } from 'lucide-react-native';
+import { Crosshair, Train } from 'lucide-react-native';
 
 type LatLng = { latitude: number; longitude: number };
 
@@ -13,6 +14,8 @@ type InteractiveMapProps = {
   route?: Route & { geometry?: { coordinates: LatLng[] } };
   onMapReady?: () => void;
   onSelectLocation?: (coords: LatLng) => void;
+  onStationPress?: (stationId: string) => void;
+  showTransitStations?: boolean;
   testId?: string;
 };
 
@@ -64,6 +67,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   route,
   onMapReady,
   onSelectLocation,
+  onStationPress,
+  showTransitStations = true,
   testId,
 }) => {
   const WebViewComponent = useMemo(() => {
@@ -113,6 +118,51 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
       : '';
 
+    // Generate transit station markers
+    const transitStationsJs = showTransitStations
+      ? nycStations
+          .map(
+            (station) => `
+          const station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')} = L.marker([${station.coordinates.latitude}, ${station.coordinates.longitude}], { 
+            icon: transitIcon 
+          }).addTo(map).bindPopup(\`
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              <h3 style="margin: 0 0 8px 0; color: #333;">${station.name}</h3>
+              <div style="margin-bottom: 8px;">
+                <strong>Lines:</strong> ${station.lines.map(line => `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`).join('')}
+              </div>
+              <div style="margin-bottom: 8px;">
+                <strong>Safety Rating:</strong> ${'⭐'.repeat(station.kidFriendly.safetyRating)} (${station.kidFriendly.safetyRating}/5)
+              </div>
+              <div style="margin-bottom: 8px;">
+                <strong>Kid-Friendly Features:</strong><br/>
+                ${station.kidFriendly.hasElevator ? '✅ Elevator' : '❌ No Elevator'}<br/>
+                ${station.kidFriendly.hasBathroom ? '✅ Bathroom' : '❌ No Bathroom'}<br/>
+                ${station.kidFriendly.hasWideGates ? '✅ Wide Gates' : '❌ Standard Gates'}
+              </div>
+              ${station.kidFriendly.nearbyAttractions && station.kidFriendly.nearbyAttractions.length > 0 ? `
+                <div style="margin-bottom: 8px;">
+                  <strong>Nearby Attractions:</strong><br/>
+                  ${station.kidFriendly.nearbyAttractions.map(attr => `• ${attr}`).join('<br/>')}
+                </div>
+              ` : ''}
+              <button onclick="handleStationClick('${station.id}')" style="background: #007AFF; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px;">
+                View Live Arrivals
+              </button>
+            </div>
+          \`);
+          
+          station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')}.on('click', function() {
+            try {
+              const payload = JSON.stringify({ type: 'station', stationId: '${station.id}' });
+              window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
+            } catch (err) { console.log('station click error', err); }
+          });
+        `
+          )
+          .join('\n')
+      : '';
+
     return `
     <!DOCTYPE html>
     <html>
@@ -139,9 +189,21 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           html: '<div style="background: ${Colors.secondary}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
           iconSize: [26,26], iconAnchor: [13,13]
         });
+        const transitIcon = L.divIcon({
+          html: '<div style="background: #FF6B35; width: 16px; height: 16px; border-radius: 4px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="color: white; font-size: 10px; font-weight: bold;">🚇</span></div>',
+          iconSize: [20,20], iconAnchor: [10,10]
+        });
+
+        function handleStationClick(stationId) {
+          try {
+            const payload = JSON.stringify({ type: 'station', stationId: stationId });
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
+          } catch (err) { console.log('handleStationClick error', err); }
+        }
 
         ${originMarkerJs}
         ${destinationMarkerJs}
+        ${transitStationsJs}
         ${polylineJs}
         ${fitBoundsJs}
 
@@ -169,7 +231,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       </script>
     </body>
     </html>`;
-  }, [origin, destination, routeCoords]);
+  }, [origin, destination, routeCoords, showTransitStations]);
 
   const handleMessage = useCallback((event: any) => {
     try {
@@ -189,10 +251,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
         onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
       }
+      if (data?.type === 'station' && typeof data.stationId === 'string') {
+        onStationPress?.(data.stationId);
+      }
     } catch (e) {
       console.log('InteractiveMap handleMessage error', e);
     }
-  }, [onMapReady, onSelectLocation]);
+  }, [onMapReady, onSelectLocation, onStationPress]);
 
   const sendRecenter = useCallback(() => {
     try {
@@ -229,6 +294,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <Text style={styles.recenterLabel}>Recenter</Text>
       </Pressable>
 
+      {showTransitStations && (
+        <View style={styles.transitInfo}>
+          <Train color={Colors.primary} size={16} />
+          <Text style={styles.transitLabel}>Transit stations shown</Text>
+        </View>
+      )}
+
       <MapboxPreloader WebViewComponent={WebViewComponent} />
     </View>
   );
@@ -256,6 +328,24 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   recenterLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
+  transitInfo: {
+    position: 'absolute',
+    left: 16,
+    bottom: 24,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  transitLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
 });
 
 export default InteractiveMap;
