@@ -4,11 +4,68 @@
  */
 
 import { Platform } from 'react-native';
-import * as Device from 'expo-device';
 import Constants from 'expo-constants';
+import React from 'react';
 import { log } from './logger';
-import { offlineManager } from './offlineManager';
-import { backendHealthMonitor } from './api';
+import Config from './config';
+let offlineManager: any;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const offlineModule = require('./offlineManager');
+  offlineManager =
+    offlineModule?.offlineManager ||
+    offlineModule?.default ||
+    offlineModule;
+} catch (error) {
+  offlineManager = null;
+}
+
+if (
+  !offlineManager ||
+  typeof offlineManager.getNetworkState !== 'function' ||
+  typeof offlineManager.getNetworkQuality !== 'function' ||
+  typeof offlineManager.getPendingActionsCount !== 'function'
+) {
+  const fallbackNetworkState = { isConnected: true, isInternetReachable: true, type: 'wifi' };
+  offlineManager = {
+    getNetworkState: () => fallbackNetworkState,
+    getNetworkQuality: () => 'online',
+    getPendingActionsCount: () => 0,
+    isOffline: () => false,
+    queueAction: () => {},
+  };
+}
+
+let backendHealthMonitor: any;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const apiModule = require('./api');
+  backendHealthMonitor =
+    apiModule?.backendHealthMonitor ||
+    apiModule?.default?.backendHealthMonitor ||
+    apiModule;
+} catch (error) {
+  backendHealthMonitor = null;
+}
+
+if (!backendHealthMonitor || typeof backendHealthMonitor.getHealthStatus !== 'function') {
+  backendHealthMonitor = {
+    getHealthStatus: () => 'healthy',
+  };
+}
+
+let Device: any;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  Device = require('expo-device');
+} catch (error) {
+  Device = {
+    brand: 'unknown',
+    modelName: 'unknown',
+    osName: Platform.OS,
+    osVersion: 'unknown',
+  };
+}
 
 // Types
 export interface MonitoringConfig {
@@ -65,12 +122,13 @@ class ApplicationMonitoring {
   private constructor() {
     this.sessionStartTime = Date.now();
     this.config = {
-      enablePerformanceMonitoring: true,
-      enableUserTracking: true,
-      enableCrashReporting: true,
-      sampleRate: 1.0,
+      sentryDsn: Config.MONITORING.SENTRY_DSN,
+      enablePerformanceMonitoring: Config.FEATURES.PERFORMANCE_MONITORING,
+      enableUserTracking: Config.FEATURES.ANALYTICS,
+      enableCrashReporting: Config.FEATURES.CRASH_REPORTING,
+      sampleRate: Config.MONITORING.TRACES_SAMPLE_RATE,
       maxBreadcrumbs: 50,
-      environment: __DEV__ ? 'development' : 'production',
+      environment: Config.MONITORING.ENVIRONMENT as MonitoringConfig['environment'],
     };
   }
 
@@ -113,18 +171,37 @@ class ApplicationMonitoring {
       // Lazy import to avoid crashes if not installed
       const Sentry = require('@sentry/react-native');
 
+      const integrations: any[] = [];
+
+      if (Sentry.ReactNativeTracing) {
+        try {
+          const routingInstrumentation = Sentry.ReactNavigationInstrumentation
+            ? new Sentry.ReactNavigationInstrumentation()
+            : undefined;
+
+          integrations.push(
+            new Sentry.ReactNativeTracing({
+              routingInstrumentation,
+            })
+          );
+        } catch (instrumentationError) {
+          log.warn('Failed to configure Sentry navigation instrumentation', instrumentationError as Error);
+        }
+      }
+
       Sentry.init({
         dsn: this.config.sentryDsn,
         environment: this.config.environment,
-        enableAutoSessionTracking: true,
+        enableAutoSessionTracking: Config.MONITORING.AUTO_SESSION_TRACKING,
         sessionTrackingIntervalMillis: 30000,
         maxBreadcrumbs: this.config.maxBreadcrumbs,
         tracesSampleRate: this.config.sampleRate,
-        
+        profilesSampleRate: Config.MONITORING.PROFILE_SAMPLE_RATE,
+
         // Performance monitoring
         enableNative: true,
         enableNativeFramesTracking: Platform.OS !== 'web',
-        
+
         // Filter out sensitive data
         beforeSend: (event: any) => {
           // Remove sensitive user data
@@ -141,11 +218,7 @@ class ApplicationMonitoring {
           return event;
         },
 
-        integrations: [
-          new Sentry.ReactNativeTracing({
-            routingInstrumentation: new Sentry.ReactNavigationInstrumentation(),
-          }),
-        ],
+        integrations,
       });
 
       // Set device context

@@ -123,6 +123,32 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "monitoring": {
+        "enabled": true,
+        "sentryDsn": "",
+        "environment": "development",
+        "tracesSampleRate": 0.2,
+        "autoSessionTracking": true,
+        "profileSampleRate": 0
+      },
+      "analytics": {
+        "enabled": false,
+        "batchSize": 10,
+        "flushInterval": 30000,
+        "plausible": {
+          "enabled": false,
+          "endpoint": "",
+          "siteId": "",
+          "sharedKey": "",
+          "defaultUrl": "https://app.kidfriendlymap.example",
+          "source": "kid-map-app"
+        },
+        "privacy": {
+          "defaultOptIn": false
+        }
+      }
     }
   }
 }
