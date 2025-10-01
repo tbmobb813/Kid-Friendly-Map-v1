@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import MapPlaceholder from "@/components/MapPlaceholder";
@@ -7,16 +7,20 @@ import InteractiveMap from "@/components/InteractiveMap";
 import RouteCard from "@/components/RouteCard";
 import SafetyPanel from "@/components/SafetyPanel";
 import TravelModeSelector from "@/components/TravelModeSelector";
+import MTALiveArrivals from "@/components/MTALiveArrivals";
 import { useNavigationStore } from "@/stores/navigationStore";
 import { Route } from "@/types/navigation";
-import { Navigation, MapPin, Search } from "lucide-react-native";
+import { Navigation, MapPin, Search, X } from "lucide-react-native";
 import useLocation from "@/hooks/useLocation";
+import { findStationById } from "@/config/transit/nyc-stations";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function MapScreen() {
   const router = useRouter();
   const { location } = useLocation();
+  const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+  const [showStationModal, setShowStationModal] = useState(false);
   
   const { 
     origin,
@@ -62,6 +66,18 @@ export default function MapScreen() {
     router.push("/search");
   };
 
+  const handleStationPress = (stationId: string) => {
+    setSelectedStationId(stationId);
+    setShowStationModal(true);
+  };
+
+  const handleCloseStationModal = () => {
+    setShowStationModal(false);
+    setSelectedStationId(null);
+  };
+
+  const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
+
   return (
     <ScrollView 
       style={styles.container}
@@ -75,14 +91,15 @@ export default function MapScreen() {
             origin={origin}
             destination={destination}
             route={selectedRoute || undefined}
+            onStationPress={handleStationPress}
+            showTransitStations={true}
           />
         ) : (
-          <MapPlaceholder 
-            message={
-              destination 
-                ? `Map showing route to ${destination.name}` 
-                : "Select a destination to see the route"
-            } 
+          <InteractiveMap
+            origin={origin || undefined}
+            destination={destination || undefined}
+            onStationPress={handleStationPress}
+            showTransitStations={true}
           />
         )}
       </View>
@@ -167,6 +184,41 @@ export default function MapScreen() {
           </View>
         )}
       </View>
+
+      {/* Station Info Modal */}
+      <Modal
+        visible={showStationModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={handleCloseStationModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <View style={styles.modalTitleContainer}>
+              <Text style={styles.modalTitle}>
+                {selectedStation?.name || "Station Info"}
+              </Text>
+              <Text style={styles.modalSubtitle}>
+                Live Transit Information
+              </Text>
+            </View>
+            <Pressable 
+              style={styles.closeButton}
+              onPress={handleCloseStationModal}
+            >
+              <X size={24} color={Colors.text} />
+            </Pressable>
+          </View>
+          
+          {selectedStationId && (
+            <MTALiveArrivals 
+              stationId={selectedStationId}
+              stationType="subway"
+              stationName={selectedStation?.name}
+            />
+          )}
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -271,5 +323,34 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  modalTitleContainer: {
+    flex: 1,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: Colors.text,
+  },
+  modalSubtitle: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 2,
+  },
+  closeButton: {
+    padding: 8,
+    borderRadius: 8,
   },
 });
