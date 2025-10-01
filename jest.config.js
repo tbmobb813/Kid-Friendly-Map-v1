@@ -1,7 +1,11 @@
 module.exports = {
-  // No preset here so Jest will use its defaults. For React Native specific
-  // transforms set the preset back to 'react-native' in your local CI.
-  // No setupFilesAfterEnv to avoid importing react-native-specific test helpers
+  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
+  globals: {
+    'ts-jest': {
+      useESM: true
+    }
+  },
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|expo|@expo|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-native-community|expo-router|@expo/vector-icons|react-native-svg|react-native-reanimated|@react-navigation|lucide-react-native)/)',
   ],
@@ -25,14 +29,15 @@ module.exports = {
       statements: 70,
     },
   },
-    moduleNameMapper: {
-      '^@/(.*)$': '<rootDir>/$1',
-      '^react-native$': '<rootDir>/__mocks__/react-native.js',
-      '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js'
-    },
-    transform: {
-      '^.+\\.(ts|tsx)$': 'ts-jest',
-    },
-    setupFiles: ['<rootDir>/jest.setup.js'],
-    testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+    '^react-native$': '<rootDir>/__mocks__/react-native.js',
+    '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js'
+  },
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
+  setupFiles: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'node',
 };
