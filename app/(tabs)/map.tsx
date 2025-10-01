@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
-import MapPlaceholder from "@/components/MapPlaceholder";
 import InteractiveMap from "@/components/InteractiveMap";
 import RouteCard from "@/components/RouteCard";
 import SafetyPanel from "@/components/SafetyPanel";
@@ -13,6 +12,9 @@ import { Route } from "@/types/navigation";
 import { Navigation, MapPin, Search, X } from "lucide-react-native";
 import useLocation from "@/hooks/useLocation";
 import { findStationById } from "@/config/transit/nyc-stations";
+import MapLibreRouteView from "@/components/MapLibreRouteView";
+import { useRouteORS } from "@/hooks/useRouteORS";
+import Config from "@/utils/config";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -78,6 +80,22 @@ export default function MapScreen() {
 
   const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
 
+  const useMapLibre = Platform.OS !== 'web';
+
+  const originCoord = useMemo(
+    () => (origin ? [origin.coordinates.longitude, origin.coordinates.latitude] as [number, number] : undefined),
+    [origin?.coordinates?.longitude, origin?.coordinates?.latitude]
+  );
+
+  const destinationCoord = useMemo(
+    () => (destination ? [destination.coordinates.longitude, destination.coordinates.latitude] as [number, number] : undefined),
+    [destination?.coordinates?.longitude, destination?.coordinates?.latitude]
+  );
+
+  const { geojson: orsRouteGeoJSON } = useRouteORS(originCoord, destinationCoord, {
+    enabled: Boolean(originCoord && destinationCoord && Config.ROUTING.ORS_API_KEY),
+  });
+
   return (
     <ScrollView 
       style={styles.container}
@@ -86,20 +104,21 @@ export default function MapScreen() {
       bounces={true}
     >
       <View style={styles.mapContainer}>
-        {origin && destination ? (
-          <InteractiveMap
-            origin={origin}
-            destination={destination}
-            route={selectedRoute || undefined}
+        {useMapLibre ? (
+          <MapLibreRouteView
+            origin={origin ?? undefined}
+            destination={destination ?? undefined}
+            routeGeoJSON={orsRouteGeoJSON}
             onStationPress={handleStationPress}
-            showTransitStations={true}
+            showTransitStations
           />
         ) : (
           <InteractiveMap
             origin={origin || undefined}
             destination={destination || undefined}
+            route={selectedRoute || undefined}
             onStationPress={handleStationPress}
-            showTransitStations={true}
+            showTransitStations
           />
         )}
       </View>

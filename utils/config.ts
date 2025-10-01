@@ -23,6 +23,83 @@ const monitoringExtra = expoExtra.monitoring ?? {};
 const analyticsExtra = expoExtra.analytics ?? {};
 const plausibleExtra = analyticsExtra.plausible ?? {};
 const privacyExtra = analyticsExtra.privacy ?? {};
+const mapsExtra = expoExtra.maps ?? {};
+const routingExtra = expoExtra.routing ?? {};
+
+const ensureNumber = (value: unknown, fallback: number): number => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string' && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+
+  return fallback;
+};
+
+const ensureCoordinate = (
+  value: unknown,
+  fallback: { latitude: number; longitude: number },
+) => {
+  if (
+    value &&
+    typeof value === 'object' &&
+    'latitude' in value &&
+    'longitude' in value &&
+    typeof (value as any).latitude === 'number' &&
+    typeof (value as any).longitude === 'number'
+  ) {
+    return {
+      latitude: (value as any).latitude,
+      longitude: (value as any).longitude,
+    };
+  }
+
+  return fallback;
+};
+
+const mapDefaults = {
+  styleUrl:
+    typeof mapsExtra.styleUrl === 'string' && mapsExtra.styleUrl.length > 0
+      ? mapsExtra.styleUrl
+      : undefined,
+  defaultCenter: ensureCoordinate(mapsExtra.defaultCenter, {
+    latitude: 40.7128,
+    longitude: -74.006,
+  }),
+  defaultZoom: ensureNumber(mapsExtra.defaultZoom, 15),
+  minZoom: ensureNumber(mapsExtra.minZoom, 10),
+  maxZoom: ensureNumber(mapsExtra.maxZoom, 20),
+  animationDuration: ensureNumber(mapsExtra.animationDuration, 1000),
+  accessToken:
+    typeof mapsExtra.token === 'string' && mapsExtra.token.length > 0
+      ? mapsExtra.token
+      : null,
+};
+
+const routingSettings = {
+  BASE_URL:
+    typeof routingExtra.baseUrl === 'string' && routingExtra.baseUrl.length > 0
+      ? routingExtra.baseUrl
+      : 'https://api.openrouteservice.org',
+  ORS_API_KEY:
+    typeof routingExtra.orsApiKey === 'string'
+      ? routingExtra.orsApiKey
+      : '',
+  DEFAULT_PROFILE:
+    typeof routingExtra.defaultProfile === 'string' && routingExtra.defaultProfile.length > 0
+      ? routingExtra.defaultProfile
+      : 'foot-walking',
+  REQUEST_TIMEOUT: ensureNumber(routingExtra.requestTimeout, 15000),
+  INCLUDE_ETA:
+    typeof routingExtra.includeEta === 'boolean'
+      ? routingExtra.includeEta
+      : true,
+};
 
 const monitoringSettings = {
   enabled: typeof monitoringExtra.enabled === 'boolean' ? monitoringExtra.enabled : !__DEV__,
@@ -100,6 +177,7 @@ export const Config = {
     CRASH_REPORTING: monitoringSettings.enabled,
     PERFORMANCE_MONITORING: true,
     PUSH_NOTIFICATIONS: true,
+    GEOFENCING: Platform.OS !== 'web',
   },
   
   // Cache Configuration
@@ -120,11 +198,17 @@ export const Config = {
   
   // Map Configuration
   MAP: {
-    DEFAULT_ZOOM: 15,
-    MIN_ZOOM: 10,
-    MAX_ZOOM: 20,
-    ANIMATION_DURATION: 1000,
+    DEFAULT_ZOOM: mapDefaults.defaultZoom,
+    MIN_ZOOM: mapDefaults.minZoom,
+    MAX_ZOOM: mapDefaults.maxZoom,
+    ANIMATION_DURATION: mapDefaults.animationDuration,
+    DEFAULT_CENTER: mapDefaults.defaultCenter,
+    STYLE_URL: mapDefaults.styleUrl,
+    FALLBACK_STYLE_URL: 'https://demotiles.maplibre.org/style.json',
+    ACCESS_TOKEN: mapDefaults.accessToken,
   },
+
+  ROUTING: routingSettings,
   
   // Analytics
   ANALYTICS: {

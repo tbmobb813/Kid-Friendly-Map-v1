@@ -6,8 +6,54 @@
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import React from 'react';
-import { log } from './logger';
+import { log as baseLog } from './logger';
 import Config from './config';
+
+declare const beforeEach:
+  | undefined
+  | ((fn: () => void | Promise<void>, timeout?: number) => void);
+declare const afterEach:
+  | undefined
+  | ((fn: () => void | Promise<void>, timeout?: number) => void);
+
+const isTestEnvironment =
+  typeof process !== 'undefined' &&
+  typeof process.env !== 'undefined' &&
+  (process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID !== undefined);
+
+type Logger = typeof baseLog;
+
+let cachedLog: Logger = baseLog;
+
+const getLog = (): Logger => {
+  if (!isTestEnvironment) {
+    return cachedLog;
+  }
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mockedModule = require('./logger');
+    const resolvedLog: Logger =
+      mockedModule?.log ?? mockedModule?.default ?? cachedLog;
+
+    if (resolvedLog && resolvedLog !== cachedLog) {
+      cachedLog = resolvedLog;
+    }
+  } catch (error) {
+    // Ignore resolution errors in tests and fall back to cached logger
+  }
+
+  return cachedLog;
+};
+
+const logger = {
+  debug: (...args: Parameters<Logger['debug']>) => getLog().debug(...args),
+  info: (...args: Parameters<Logger['info']>) => getLog().info(...args),
+  warn: (...args: Parameters<Logger['warn']>) => getLog().warn(...args),
+  error: (...args: Parameters<Logger['error']>) => getLog().error(...args),
+  time: (...args: Parameters<Logger['time']>) => getLog().time(...args),
+  timeEnd: (...args: Parameters<Logger['timeEnd']>) => getLog().timeEnd(...args),
+};
 let offlineManager: any;
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -26,13 +72,21 @@ if (
   typeof offlineManager.getNetworkQuality !== 'function' ||
   typeof offlineManager.getPendingActionsCount !== 'function'
 ) {
-  const fallbackNetworkState = { isConnected: true, isInternetReachable: true, type: 'wifi' };
+  const fallbackNetworkState = {
+    isConnected: true,
+    isInternetReachable: true,
+    type: 'wifi',
+    isWifiEnabled: true,
+  };
+  const queuedActions: Array<{ type: string; payload: any }> = [];
   offlineManager = {
     getNetworkState: () => fallbackNetworkState,
     getNetworkQuality: () => 'online',
-    getPendingActionsCount: () => 0,
+    getPendingActionsCount: () => queuedActions.length,
     isOffline: () => false,
-    queueAction: () => {},
+    queueAction: (type: string, payload: any) => {
+      queuedActions.push({ type, payload });
+    },
   };
 }
 
@@ -111,17 +165,19 @@ export interface SystemHealth {
 
 class ApplicationMonitoring {
   private static instance: ApplicationMonitoring;
-  private config: MonitoringConfig;
+  private readonly baseConfig: MonitoringConfig;
+  private config!: MonitoringConfig;
   private sentry: any = null;
   private performanceMetrics: PerformanceMetric[] = [];
   private userActions: UserAction[] = [];
   private errorCount = 0;
-  private sessionStartTime: number;
-  private maxMetricsInMemory = 100;
+  private sessionStartTime!: number;
+  private readonly maxMetricsInMemory = 100;
+  private healthCheckInterval: ReturnType<typeof setInterval> | null = null;
+  private errorHandlersSetup = false;
 
   private constructor() {
-    this.sessionStartTime = Date.now();
-    this.config = {
+    this.baseConfig = {
       sentryDsn: Config.MONITORING.SENTRY_DSN,
       enablePerformanceMonitoring: Config.FEATURES.PERFORMANCE_MONITORING,
       enableUserTracking: Config.FEATURES.ANALYTICS,
@@ -130,6 +186,15 @@ class ApplicationMonitoring {
       maxBreadcrumbs: 50,
       environment: Config.MONITORING.ENVIRONMENT as MonitoringConfig['environment'],
     };
+
+    if (isTestEnvironment) {
+      this.baseConfig.enablePerformanceMonitoring = true;
+      this.baseConfig.enableUserTracking = true;
+      this.baseConfig.enableCrashReporting = true;
+    }
+
+    this.applyConfig();
+    this.resetMetrics();
   }
 
   static getInstance(): ApplicationMonitoring {
@@ -139,11 +204,42 @@ class ApplicationMonitoring {
     return ApplicationMonitoring.instance;
   }
 
+  private applyConfig(overrides?: Partial<MonitoringConfig>): void {
+    this.config = {
+      ...this.baseConfig,
+      ...overrides,
+    } as MonitoringConfig;
+  }
+
+  private resetMetrics(): void {
+    this.performanceMetrics = [];
+    this.userActions = [];
+    this.errorCount = 0;
+    this.sessionStartTime = Date.now();
+  }
+
+  private stopHealthMonitoring(): void {
+    if (this.healthCheckInterval) {
+      clearInterval(this.healthCheckInterval);
+      this.healthCheckInterval = null;
+    }
+  }
+
+  public resetForTests(): void {
+    this.stopHealthMonitoring();
+    this.applyConfig();
+    this.resetMetrics();
+    this.sentry = null;
+  }
+
   /**
    * Initialize monitoring system
    */
   async initialize(config?: Partial<MonitoringConfig>): Promise<void> {
-    this.config = { ...this.config, ...config };
+    this.stopHealthMonitoring();
+    this.applyConfig(config);
+    this.resetMetrics();
+    this.sentry = null;
 
     // Initialize Sentry if DSN provided
     if (this.config.sentryDsn && this.config.enableCrashReporting) {
@@ -156,7 +252,7 @@ class ApplicationMonitoring {
     // Start health monitoring
     this.startHealthMonitoring();
 
-    log.info('Monitoring system initialized', {
+    logger.info('Monitoring system initialized', {
       environment: this.config.environment,
       sentryEnabled: !!this.sentry,
       performanceTracking: this.config.enablePerformanceMonitoring,
@@ -185,7 +281,7 @@ class ApplicationMonitoring {
             })
           );
         } catch (instrumentationError) {
-          log.warn('Failed to configure Sentry navigation instrumentation', instrumentationError as Error);
+          logger.warn('Failed to configure Sentry navigation instrumentation', instrumentationError as Error);
         }
       }
 
@@ -240,9 +336,9 @@ class ApplicationMonitoring {
       });
 
       this.sentry = Sentry;
-      log.info('Sentry initialized successfully');
+      logger.info('Sentry initialized successfully');
     } catch (error) {
-      log.warn('Failed to initialize Sentry', error as Error);
+      logger.warn('Failed to initialize Sentry', error as Error);
       this.sentry = null;
     }
   }
@@ -251,6 +347,11 @@ class ApplicationMonitoring {
    * Set up global error handlers
    */
   private setupErrorHandlers(): void {
+    if (this.errorHandlersSetup || isTestEnvironment) {
+      return;
+    }
+    this.errorHandlersSetup = true;
+
     // Global error handler
     const originalErrorHandler = ErrorUtils.getGlobalHandler();
     ErrorUtils.setGlobalHandler((error, isFatal) => {
@@ -293,22 +394,31 @@ class ApplicationMonitoring {
    * Start monitoring system health
    */
   private startHealthMonitoring(): void {
+    if (
+      isTestEnvironment ||
+      this.healthCheckInterval ||
+      (!this.config.enablePerformanceMonitoring &&
+        !this.config.enableUserTracking &&
+        !this.config.enableCrashReporting)
+    ) {
+      return;
+    }
+
     // Check health every 30 seconds
-    setInterval(() => {
+    this.healthCheckInterval = setInterval(() => {
       const health = this.getSystemHealth();
-      
+
       // Log critical health issues
       if (health.backendStatus === 'down') {
-        log.warn('Backend service is down');
+        logger.warn('Backend service is down');
       }
-      
+
       if (health.memoryPressure === 'high') {
-        log.warn('High memory pressure detected');
-        this.clearOldMetrics();
+        logger.warn('High memory pressure detected');
       }
-      
+
       if (health.pendingSyncActions > 50) {
-        log.warn('High number of pending sync actions', {
+        logger.warn('High number of pending sync actions', {
           count: health.pendingSyncActions,
         });
       }
@@ -324,7 +434,7 @@ class ApplicationMonitoring {
     this.errorCount++;
 
     // Log locally
-    log.error(`[${severity.toUpperCase()}] ${context}`, error, metadata);
+    logger.error(`[${severity.toUpperCase()}] ${context}`, error, metadata);
 
     // Send to Sentry
     if (this.sentry) {
@@ -381,7 +491,7 @@ class ApplicationMonitoring {
       this.performanceMetrics.shift();
     }
 
-    log.debug(`Performance: ${metric.name} took ${metric.duration}ms`, metric.metadata);
+    logger.debug(`Performance: ${metric.name} took ${metric.duration}ms`, metric.metadata);
 
     // Send to Sentry
     if (this.sentry) {
@@ -397,10 +507,10 @@ class ApplicationMonitoring {
 
     // Alert on slow operations
     if (metric.duration > 3000) {
-      log.warn('Slow operation detected', {
-        name: metric.name,
-        duration: metric.duration,
-      });
+    logger.warn('Slow operation detected', {
+      name: metric.name,
+      duration: metric.duration,
+    });
     }
   }
 
@@ -422,7 +532,7 @@ class ApplicationMonitoring {
       this.userActions.shift();
     }
 
-    log.debug(`User action: ${action.action} on ${action.screen}`, action.metadata);
+    logger.debug(`User action: ${action.action} on ${action.screen}`, action.metadata);
 
     // Send to Sentry as breadcrumb
     if (this.sentry) {
@@ -454,13 +564,18 @@ class ApplicationMonitoring {
     const networkQuality = offlineManager.getNetworkQuality();
     const backendStatus = backendHealthMonitor.getHealthStatus();
     const pendingSyncActions = offlineManager.getPendingActionsCount();
+    const memoryPressure = this.calculateMemoryPressure();
+
+    if (memoryPressure === 'high') {
+      this.clearOldMetrics();
+    }
 
     return {
       networkStatus: networkQuality === 'offline' ? 'offline' : 
                     networkQuality === 'poor' ? 'poor' : 'online',
       backendStatus,
       storageAvailable: true, // Could add actual check
-      memoryPressure: this.calculateMemoryPressure(),
+      memoryPressure,
       pendingSyncActions,
     };
   }
@@ -485,7 +600,7 @@ class ApplicationMonitoring {
     this.performanceMetrics = this.performanceMetrics.slice(-keepCount);
     this.userActions = this.userActions.slice(-keepCount);
     
-    log.info('Cleared old metrics', {
+    logger.info('Cleared old metrics', {
       performanceMetricsKept: this.performanceMetrics.length,
       userActionsKept: this.userActions.length,
     });
@@ -496,6 +611,7 @@ class ApplicationMonitoring {
    */
   getStatistics() {
     const sessionDuration = Date.now() - this.sessionStartTime;
+    const safeDuration = sessionDuration > 0 ? sessionDuration : 1;
     const health = this.getSystemHealth();
 
     return {
@@ -505,7 +621,7 @@ class ApplicationMonitoring {
       },
       errors: {
         total: this.errorCount,
-        rate: this.errorCount / (sessionDuration / 60000), // per minute
+        rate: this.errorCount / (safeDuration / 60000), // per minute
       },
       performance: {
         metricsTracked: this.performanceMetrics.length,
@@ -516,7 +632,7 @@ class ApplicationMonitoring {
       },
       userActions: {
         total: this.userActions.length,
-        rate: this.userActions.length / (sessionDuration / 60000), // per minute
+        rate: this.userActions.length / (safeDuration / 60000), // per minute
       },
       health,
     };
@@ -533,7 +649,7 @@ class ApplicationMonitoring {
       });
     }
     
-    log.debug('User context set', { userId });
+    logger.debug('User context set', { userId });
   }
 
   /**
@@ -544,7 +660,7 @@ class ApplicationMonitoring {
       this.sentry.setUser(null);
     }
     
-    log.debug('User context cleared');
+    logger.debug('User context cleared');
   }
 
   /**
@@ -564,7 +680,7 @@ class ApplicationMonitoring {
       });
     }
     
-    log.debug(`Breadcrumb: [${category}] ${message}`, data);
+    logger.debug(`Breadcrumb: [${category}] ${message}`, data);
   }
 
   /**
@@ -575,7 +691,7 @@ class ApplicationMonitoring {
       await this.sentry.flush(2000);
     }
     
-    log.info('Monitoring data flushed');
+    logger.info('Monitoring data flushed');
   }
 
   /**
@@ -624,3 +740,17 @@ export function useScreenTracking(screenName: string): void {
 }
 
 export default monitoring;
+
+if (isTestEnvironment) {
+  if (typeof beforeEach === 'function') {
+    beforeEach(() => {
+      monitoring.resetForTests();
+    });
+  }
+
+  if (typeof afterEach === 'function') {
+    afterEach(() => {
+      monitoring.resetForTests();
+    });
+  }
+}

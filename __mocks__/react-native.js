@@ -17,6 +17,7 @@ module.exports = {
   Pressable,
   // Provide defaults for other RN exports that may be referenced
   StyleSheet: {
-    create: (styles) => styles
+    create: (styles) => styles,
+    flatten: (style) => style
   }
 };
