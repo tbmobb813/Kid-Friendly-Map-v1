@@ -6,8 +6,16 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react-jsx",
-    "types": ["jest", "node", "react", "react-native"],
-    "lib": ["ES2020", "DOM"],
+    "types": [
+      "jest",
+      "node",
+      "react",
+      "react-native"
+    ],
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
@@ -24,5 +32,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+  ],
+  "extends": "expo/tsconfig.base"
 }
