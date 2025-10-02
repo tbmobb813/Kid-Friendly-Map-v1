@@ -62,7 +62,7 @@ volumes:
   postgis_data:
 ```
 
-2. Start the database:
+1. Start the database:
 
 ```bash
 # Create database directory
@@ -116,7 +116,7 @@ GRANT USAGE ON SCHEMA public TO kidmap_app;
 GRANT CREATE ON SCHEMA public TO kidmap_app;
 ```
 
-2. Create core tables:
+1. Create core tables:
 
 ```sql
 -- database/init/02_create_tables.sql
@@ -201,7 +201,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO kidmap_ap
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO kidmap_app;
 ```
 
-3. Apply the schema:
+Apply the schema:
 
 ```bash
 # If using Docker
@@ -222,7 +222,7 @@ mkdir -p backend/src/{config,controllers,services,types,middleware}
 cd backend
 ```
 
-2. Initialize Node.js backend:
+Initialize Node.js backend:
 
 ```bash
 # Initialize package.json
@@ -239,7 +239,7 @@ npm install turf @types/geojson
 npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint prettier
 ```
 
-3. Create `backend/package.json`:
+Create `backend/package.json`:
 
 ```json
 {
@@ -278,7 +278,7 @@ npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint
 }
 ```
 
-4. Create TypeScript configuration:
+Create TypeScript configuration:
 
 ```json
 // backend/tsconfig.json
@@ -303,7 +303,7 @@ npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint
 }
 ```
 
-5. Create environment configuration:
+Create environment configuration:
 
 ```bash
 # backend/.env
@@ -314,7 +314,7 @@ JWT_SECRET=your_jwt_secret_here
 CORS_ORIGIN=http://localhost:8081,exp://192.168.1.100:8081
 ```
 
-6. Create database configuration:
+Create database configuration:
 
 ```typescript
 // backend/src/config/database.ts
@@ -962,7 +962,7 @@ docker-compose -f docker-compose.spatial.yml up -d
 docker ps
 ```
 
-2. Start your backend API:
+Start your backend API:
 
 ```bash
 # In backend directory
@@ -975,7 +975,7 @@ npm run dev
 # 🚀 Server running on port 3000
 ```
 
-3. Start your Expo app:
+Start your Expo app:
 
 ```bash
 # In your main project directory
@@ -994,7 +994,7 @@ npx expo start --web
 npx ts-node scripts/testSpatialIntegration.ts
 ```
 
-2. Test in your app:
+Test in your app:
 
 ```bash
 # Create a safe zone through your app

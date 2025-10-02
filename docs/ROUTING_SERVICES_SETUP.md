@@ -36,6 +36,7 @@ OTP2_CUSTOM_ENDPOINT=https://your-custom-otp2-instance.com
 5. Copy the token to your `.env` file
 
 **Free tier limits:**
+
 - 2,000 requests per day
 - 40 requests per minute
 - For production, consider upgrading to a paid plan
@@ -43,12 +44,15 @@ OTP2_CUSTOM_ENDPOINT=https://your-custom-otp2-instance.com
 ### 3. Set up OpenTripPlanner 2
 
 #### Option A: Use Public Instance
+
 Some cities provide public OTP2 instances:
+
 - **New York**: `https://otp.mta.info/otp`
 - **Portland**: `https://maps.trimet.org/otp`
 - **Helsinki**: `https://reittiopas.hsl.fi/otp`
 
 #### Option B: Local Development Instance
+
 ```bash
 # Download OTP2
 wget https://repo1.maven.org/maven2/org/opentripplanner/otp/2.4.0/otp-2.4.0-shaded.jar
@@ -72,6 +76,7 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 ### OpenRouteService (ORS)
 
 #### Supported Profiles
+
 - **foot-walking**: Regular walking routes
 - **foot-hiking**: Hiking and trail routes
 - **cycling-regular**: Standard cycling routes
@@ -82,7 +87,8 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 - **driving-car**: Car routing
 - **wheelchair**: Wheelchair accessible routes
 
-#### Features
+#### ORS Features
+
 - **Isochrone Analysis**: Reachability maps
 - **Matrix Calculations**: Distance/time matrices
 - **POI Search**: Points of interest
@@ -93,13 +99,15 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 ### OpenTripPlanner 2 (OTP2)
 
 #### Supported Modes
+
 - **WALK**: Walking
 - **BIKE**: Cycling
 - **TRANSIT**: Public transportation
 - **CAR**: Driving
 - **Combined**: Multimodal trips
 
-#### Features
+#### OTP2 Features
+
 - **Real-time Data**: Live transit updates
 - **Trip Planning**: Multi-modal journey planning
 - **Stop Information**: Transit stop details
@@ -112,6 +120,7 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 ### Safety Optimizations
 
 #### Walking Routes
+
 - Avoid busy highways and main roads
 - Prefer routes through parks and quiet streets
 - Prioritize well-lit areas
@@ -119,12 +128,14 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 - Avoid construction zones
 
 #### Cycling Routes
+
 - Use protected bike lanes when available
 - Avoid high-traffic roads
 - Prefer dedicated cycling paths
 - Include bike-friendly intersections
 
 #### Transit Routes
+
 - Minimize transfers for younger children
 - Prefer direct routes
 - Include accessible stations
@@ -325,21 +336,27 @@ const cacheConfig = {
 ### Common Issues
 
 #### ORS API Key Issues
+
 ```bash
 Error: ORS API error: 403 Forbidden
 ```
+
 **Solution**: Check API key validity and rate limits
 
 #### OTP2 Connection Issues
+
 ```bash
 Error: OTP2 server unavailable
 ```
+
 **Solution**: Verify OTP2_BASE_URL and server status
 
 #### No Routes Found
+
 ```bash
 No routes available between locations
 ```
+
 **Solution**: Check coordinate format and routing distance limits
 
 ### Debug Mode
@@ -368,18 +385,20 @@ console.log('OTP2 Status:', otp2Health);
 
 ### OpenRouteService API
 
-**Documentation**: https://openrouteservice.org/dev/#/api-docs
+**Documentation**: <https://openrouteservice.org/dev/#/api-docs>
 
 **Rate Limits**:
+
 - Free: 2,000 requests/day, 40/minute
 - Standard: 100,000 requests/day, 300/minute
 - Premium: Custom limits
 
 ### OpenTripPlanner 2 API
 
-**Documentation**: http://docs.opentripplanner.org/en/latest/
+**Documentation**: <http://docs.opentripplanner.org/en/latest/>
 
 **Public Instances**:
+
 - Check [OTP Public Instances](https://github.com/opentripplanner/OpenTripPlanner/wiki/Public-OTP-instances)
 
 ## Support
@@ -401,16 +420,19 @@ console.log('OTP2 Status:', otp2Health);
 ## License and Attribution
 
 ### OpenRouteService
+
 - **License**: MIT
 - **Attribution**: Required for public apps
 - **Data**: OpenStreetMap contributors
 
 ### OpenTripPlanner 2
+
 - **License**: LGPL
 - **Attribution**: Recommended
 - **Data**: GTFS providers and OpenStreetMap
 
 ### Usage in App
+
 ```typescript
 // Include attribution in your app
 const attribution = {
