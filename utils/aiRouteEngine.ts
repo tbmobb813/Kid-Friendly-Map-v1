@@ -21,6 +21,7 @@ export interface RoutePreferences {
   avoidStairs: boolean;
   preferElevators: boolean;
   requireSafeZones: boolean;
+  voiceEnabled?: boolean;
   maxTransferCount: number;
   timePreference: 'fastest' | 'safest' | 'easiest' | 'scenic';
 }
@@ -32,6 +33,16 @@ export interface RouteContext {
   isRushHour: boolean;
   isWeekend: boolean;
   isSchoolHours: boolean;
+}
+
+export interface LearningEntry {
+  timestamp: number;
+  routes: { id: string; score: number }[];
+  context: RouteContext;
+  // Optional metadata for past journeys so learning can be correlated
+  completed?: boolean;
+  duration?: number;
+  difficultyLevel?: 'easy' | 'moderate' | 'challenging';
 }
 
 export interface SmartRoute {
@@ -84,8 +95,11 @@ export class AIRouteEngine {
 
   constructor() {
     this.userPreferences = this.loadPreferences();
-    this.journeyHistory = mainStorage.get(StorageKeys.JOURNEY_HISTORY, []);
-    this.safeZones = mainStorage.get(StorageKeys.SAFE_ZONES, []);
+    // Ensure we always get arrays from storage (provide fallback)
+    const jh = mainStorage.get(StorageKeys.JOURNEY_HISTORY, []);
+    this.journeyHistory = Array.isArray(jh) ? jh : [];
+    const sz = mainStorage.get(StorageKeys.SAFE_ZONES, []);
+    this.safeZones = Array.isArray(sz) ? sz : [];
   }
 
   /**
@@ -433,16 +447,20 @@ export class AIRouteEngine {
    * Load user preferences
    */
   private loadPreferences(): RoutePreferences {
-    return mainStorage.get('route_preferences', {
+    const defaults: RoutePreferences = {
       childAge: 8,
       preferredTransitTypes: ['subway', 'bus', 'walking'],
       maxWalkingDistance: 800,
       avoidStairs: false,
       preferElevators: true,
       requireSafeZones: true,
+      voiceEnabled: false,
       maxTransferCount: 2,
       timePreference: 'safest',
-    });
+    };
+
+    const stored = mainStorage.get<RoutePreferences>('route_preferences', defaults);
+    return stored ?? defaults;
   }
 
   /**
@@ -461,7 +479,9 @@ export class AIRouteEngine {
    */
   private updateLearningModel(routes: SmartRoute[]): void {
     // Store route suggestions for learning
-    const learning = mainStorage.get('route_learning', []);
+    const raw = mainStorage.get<LearningEntry[]>('route_learning', [] as LearningEntry[]);
+    const learning: LearningEntry[] = Array.isArray(raw) ? raw : [];
+
     learning.push({
       timestamp: Date.now(),
       routes: routes.map(r => ({ id: r.id, score: r.score })),

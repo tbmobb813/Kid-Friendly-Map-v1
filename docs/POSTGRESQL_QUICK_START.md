@@ -4,7 +4,7 @@
 
 ### ⚡ **5-Minute Setup**
 
-**1. Start Database**
+#### 1. Start Database
 
 ```bash
 # Create docker-compose.spatial.yml in your project root
@@ -33,7 +33,7 @@ EOF
 docker-compose -f docker-compose.spatial.yml up -d
 ```
 
-**2. Add Environment Variables**
+#### 2. Add Environment Variables
 
 ```bash
 # Add to your .env file
@@ -44,7 +44,7 @@ EXPO_PUBLIC_SPATIAL_API_URL=http://localhost:3000/api/spatial
 " >> .env
 ```
 
-**3. Test Connection**
+#### 3. Test Connection
 
 ```bash
 # Verify PostgreSQL + PostGIS is working
