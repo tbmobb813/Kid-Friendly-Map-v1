@@ -2,8 +2,7 @@
 
 This repository contains an Expo React Native application focused on kid-friendly navigation, safety features, and transit info.
 
-Quickstart
----------
+## Quickstart
 
 1. Install dependencies (pick one package manager and standardize):
 
@@ -15,28 +14,27 @@ npm ci
 # bun install
 ```
 
-2. Copy environment variables:
+Copy environment variables:
 
 ```bash
 cp .env.example .env
 # Edit .env with production/dev values
 ```
 
-3. Typecheck and tests:
+Typecheck and tests:
 
 ```bash
 npx tsc --noEmit
 npm test
 ```
 
-4. Run in development (Expo):
+Run in development (Expo):
 
 ```bash
 npx expo start
 ```
 
-Production builds (EAS)
-----------------------
+## Production builds (EAS)
 
 This project uses Expo Application Services (EAS) for production mobile builds.
 
@@ -46,29 +44,27 @@ This project uses Expo Application Services (EAS) for production mobile builds.
 npm install -g eas-cli
 ```
 
-2. Login and configure credentials:
+ Login and configure credentials:
 
 ```bash
 eas login
 # Follow prompts to configure your account
 ```
 
-3. Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions secrets.
+ Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions secrets.
 
-4. Build:
+ Build:
 
 ```bash
 npx eas build --profile production --platform all
 ```
 
-Assets
-------
+## Assets
 
 Place app icons and splash assets under `assets/images/`.
 This repo includes placeholder assets; replace them with production artwork.
 
-Environment / Secrets
----------------------
+## Environment / Secrets
 
 - Keep production values out of version control; use CI secrets.
 - Required keys are listed in `.env.example`.
@@ -102,18 +98,15 @@ EXPO_PUBLIC_ORS_TIMEOUT=15000                       # Request timeout in ms
 - **Route visualization**: Integrates with OpenRouteService for walking/transit directions
 - **Transit stations**: Shows NYC subway/bus stations with safety ratings and live arrivals
 
-Monitoring & Crash Reporting
----------------------------
+## Monitoring & Crash Reporting
 
 A Sentry integration skeleton is available at `utils/sentry.ts`. Add `SENTRY_DSN` to your environment and follow Sentry's docs to create a project.
 
-CI/CD
------
+## CI/CD
 
 There is a GitHub Actions pipeline in `.github/workflows/ci.yml`. It expects Bun for install steps; if you prefer npm/yarn, update CI to match your chosen package manager.
 
-Strategic Planning & Roadmap
-----------------------------
+## Strategic Planning & Roadmap
 
 **New!** Comprehensive strategic documentation suite available:
 
@@ -133,20 +126,17 @@ Strategic Planning & Roadmap
 
 See `docs/CONVERSATION_SUMMARY.md` for complete overview of strategic review.
 
-Project Status
---------------
+## Project Status
 
 - **Technical Status:** Production ready, 70%+ test coverage, CI/CD operational
 - **Feature Status:** All roadmap phases complete (see `FINAL_IMPLEMENTATION_SUMMARY.md`)
 - **Next Phase:** User research validation, compliance documentation, beta launch
 - **Documentation:** See `COMPREHENSIVE_PROJECT_STATUS.md` for detailed status
 
-Contributing
-------------
+## Contributing
 
 See `docs/TESTING_GUIDE.md` and `docs/PERFORMANCE_OPTIMIZATION.md` for developer guidance.
 
-License
--------
+## License
 
 Add a license file (e.g., MIT) if you intend to open-source this project.
