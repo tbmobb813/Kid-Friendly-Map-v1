@@ -106,7 +106,9 @@ export default function RootLayout() {
   );
 }
 
+// Separate component that consumes auth context
 function RootLayoutNav() {
+  // Now we can safely call useAuth() inside AuthProvider
   const { isConfigured, isHydrated } = useRegionStore();
   const { isAuthenticated, isInitialized, isLoading } = useAuth();
 

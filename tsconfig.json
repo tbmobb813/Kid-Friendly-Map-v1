@@ -4,7 +4,7 @@
     "noImplicitAny": false,
     "target": "ES2020",
     "module": "ESNext",
-  "moduleResolution": "bundler",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "types": [
       "jest",
@@ -29,9 +29,7 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "templates/**",
