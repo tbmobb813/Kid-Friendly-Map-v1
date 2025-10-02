@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, useCallback } from 'react';
-import { View, StyleSheet, Platform, Pressable, Text } from 'react-native';
+import { View, StyleSheet, Platform, Pressable, Text, Dimensions } from 'react-native';
 import Colors from '@/constants/colors';
 import { Place, Route } from '@/types/navigation';
 import { nycStations, Station } from '@/config/transit/nyc-stations';
@@ -85,6 +85,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const webViewRef = useRef<any>(null);
   const [isMapReady, setMapReady] = useState<boolean>(false);
+  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(null);
 
   const routeCoords = useMemo<LatLng[] | undefined>(() => {
     if (route?.geometry?.coordinates && route.geometry.coordinates.length > 0) {
@@ -96,9 +97,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     return undefined;
   }, [route?.geometry?.coordinates, origin?.coordinates, destination?.coordinates]);
 
-  const generateLeafletHTML = useCallback(() => {
+  const generateLeafletHTML = useCallback((layout?: { width: number; height: number }) => {
     const centerLat = origin?.coordinates?.latitude ?? 40.7128;
     const centerLng = origin?.coordinates?.longitude ?? -74.0060;
+    const layoutHeight = layout?.height ?? null;
+    const layoutWidth = layout?.width ?? null;
+    const cssHeightValue = layoutHeight !== null ? `${layoutHeight}px` : '100%';
+    const cssWidthValue = layoutWidth !== null ? `${layoutWidth}px` : '100%';
 
     const polylineJs = routeCoords
       ? `const poly = L.polyline(${JSON.stringify(
@@ -167,18 +172,108 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     <!DOCTYPE html>
     <html>
     <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <style>
-        html, body { height: 100%; margin: 0; }
-        #map { height: 100vh; width: 100vw; }
+        * { margin: 0 !important; padding: 0 !important; box-sizing: border-box; }
+        html, body { 
+          width: ${cssWidthValue} !important;
+          min-width: ${cssWidthValue} !important;
+          height: ${cssHeightValue} !important;
+          min-height: ${cssHeightValue} !important;
+          overflow: hidden !important; 
+          background: transparent !important;
+          position: relative !important;
+        }
+        body {
+          display: flex !important;
+        }
+        #map { 
+          position: relative !important; 
+          flex: 1 1 auto !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+        .leaflet-container,
+        .leaflet-pane,
+        .leaflet-map-pane,
+        .leaflet-tile-container {
+          width: 100% !important;
+          height: 100% !important;
+        }
+        .leaflet-control-zoom {
+          margin-top: 50px !important;
+          margin-left: 10px !important;
+          z-index: 1000 !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+        .leaflet-control-zoom a {
+          width: 34px !important;
+          height: 34px !important;
+          line-height: 34px !important;
+          font-size: 22px !important;
+          display: block !important;
+          text-align: center !important;
+          text-decoration: none !important;
+          color: #000 !important;
+          background-color: #fff !important;
+          border: 2px solid rgba(0,0,0,0.2) !important;
+        }
+        .leaflet-control-zoom a:first-child {
+          border-bottom: none !important;
+          border-radius: 4px 4px 0 0 !important;
+        }
+        .leaflet-control-zoom a:last-child {
+          border-radius: 0 0 4px 4px !important;
+        }
       </style>
     </head>
     <body>
       <div id="map"></div>
       <script>
-        const map = L.map('map', { zoomControl: true }).setView([${centerLat}, ${centerLng}], 13);
+        const map = L.map('map', { zoomControl: false }).setView([${centerLat}, ${centerLng}], 13);
+
+        const layoutHeight = ${layoutHeight !== null ? layoutHeight : 'null'};
+        const layoutWidth = ${layoutWidth !== null ? layoutWidth : 'null'};
+        const applyDimensions = () => {
+          try {
+            const targetHeight = layoutHeight !== null ? layoutHeight : (document.documentElement?.clientHeight || window.innerHeight || 0);
+            const targetWidth = layoutWidth !== null ? layoutWidth : (document.documentElement?.clientWidth || window.innerWidth || 0);
+            const pixelRatio = window.devicePixelRatio || 1;
+            const heightPx = targetHeight ? (targetHeight * pixelRatio + 'px') : '100%';
+            const widthPx = targetWidth ? (targetWidth * pixelRatio + 'px') : '100%';
+            const root = document.documentElement;
+            const body = document.body;
+            const mapEl = document.getElementById('map');
+            [root, body, mapEl].forEach(el => {
+              if (!el) return;
+              try {
+                el.style.setProperty('width', widthPx, 'important');
+                el.style.setProperty('height', heightPx, 'important');
+                el.style.setProperty('min-width', widthPx, 'important');
+                el.style.setProperty('min-height', heightPx, 'important');
+                el.style.setProperty('max-width', widthPx, 'important');
+                el.style.setProperty('max-height', heightPx, 'important');
+              } catch (insetErr) {
+                console.log('style set error', insetErr);
+              }
+            });
+          } catch (err) {
+            console.log('dimension apply error', err);
+          }
+        };
+
+        applyDimensions();
+        setTimeout(applyDimensions, 50);
+        setTimeout(applyDimensions, 200);
+        
+        // Add zoom control with custom position
+        L.control.zoom({
+          position: 'topleft'
+        }).addTo(map);
+        
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 
         const originIcon = L.divIcon({
@@ -227,7 +322,108 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           } catch (e) { console.log('message parse error', e); }
         });
 
+        const sendDebug = (label, payload) => {
+          try {
+            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'mapLog', label, payload }));
+          } catch (err) {
+            console.log('mapLog send error', err);
+          }
+        };
+
         setTimeout(() => { try { window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' })); } catch (e) {} }, 500);
+        
+        // Debug logging
+        function logMapSize() {
+          const mapEl = document.getElementById('map');
+          const body = document.body;
+          const html = document.documentElement;
+          const mapSizeVal = map.getSize();
+          const sizeInfo = {
+            html: { width: html.clientWidth, height: html.clientHeight },
+            body: { width: body.clientWidth, height: body.clientHeight },
+            mapEl: { width: mapEl.clientWidth, height: mapEl.clientHeight },
+            mapComputed: {
+              width: window.getComputedStyle(mapEl).width,
+              height: window.getComputedStyle(mapEl).height
+            },
+            mapSize: { width: mapSizeVal.x, height: mapSizeVal.y }
+          };
+          console.log('🔍 Leaflet size info', sizeInfo);
+          sendDebug('sizeInfo', sizeInfo);
+        }
+        
+        // Force map to recalculate size and repaint tiles
+        function forceMapResize() {
+          const centerVal = map.getCenter();
+          const center = { lat: centerVal.lat, lng: centerVal.lng };
+          const zoom = map.getZoom();
+          map.invalidateSize({ animate: false, pan: false });
+          map.setView(center, zoom, { animate: false });
+          console.log('🔄 Map resized and view reset');
+          sendDebug('forceResize', { center, zoom });
+        }
+        
+        // Multiple resize attempts at different intervals
+        setTimeout(() => { 
+          try {
+            logMapSize();
+            forceMapResize();
+            console.log('✅ Map size invalidated (1st attempt)');
+          } catch (e) { 
+            console.log('❌ invalidateSize error (1st):', e); 
+          } 
+        }, 100);
+        
+        setTimeout(() => { 
+          try { 
+            logMapSize();
+            forceMapResize();
+            console.log('✅ Map size invalidated (2nd attempt)');
+          } catch (e) { 
+            console.log('❌ invalidateSize error (2nd):', e); 
+          } 
+        }, 500);
+        
+        setTimeout(() => { 
+          try { 
+            logMapSize();
+            forceMapResize();
+            console.log('✅ Map size invalidated (3rd attempt)');
+          } catch (e) { 
+            console.log('❌ invalidateSize error (3rd):', e); 
+          } 
+        }, 1000);
+        
+        setTimeout(() => { 
+          try { 
+            logMapSize();
+            forceMapResize();
+            console.log('✅ Map size invalidated (4th attempt)');
+          } catch (e) { 
+            console.log('❌ invalidateSize error (4th):', e); 
+          } 
+        }, 2000);
+        
+        // Listen for any resize events
+        window.addEventListener('resize', function() {
+          console.log('📐 Window resize event detected');
+          applyDimensions();
+          forceMapResize();
+          const sizeVal = map.getSize();
+          sendDebug('windowResize', { size: { width: sizeVal.x, height: sizeVal.y } });
+        });
+        
+        // Trigger a manual resize event to ensure map repaints
+        setTimeout(() => {
+          try {
+            window.dispatchEvent(new Event('resize'));
+            console.log('📐 Manual resize event dispatched');
+            sendDebug('manualResizeEvent', {});
+          } catch (e) {
+            console.log('❌ Resize dispatch error:', e);
+            sendDebug('manualResizeError', { message: e?.message ?? String(e) });
+          }
+        }, 1500);
       </script>
     </body>
     </html>`;
@@ -243,6 +439,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         return;
       }
       const data = JSON.parse(raw);
+      if (data?.type === 'mapLog') {
+        console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
+        return;
+      }
       if (data?.type === 'ready') {
         setMapReady(true);
         onMapReady?.();
@@ -268,22 +468,67 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   }, []);
 
   return (
-    <View style={styles.container} testID={testId ?? (Platform.OS === 'web' ? 'interactive-map-web' : 'interactive-map')}>
+    <View 
+      style={styles.container} 
+      testID={testId ?? (Platform.OS === 'web' ? 'interactive-map-web' : 'interactive-map')}
+      onLayout={(event) => {
+        const { width, height } = event.nativeEvent.layout;
+        console.log('🗺️  Map container layout:', { width, height });
+        setContainerLayout({ width, height });
+      }}
+    >
       {Platform.OS === 'web' ? (
         <MapPlaceholder
           message={destination ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}` : 'Select destination for interactive map'}
         />
-      ) : WebViewComponent ? (
+      ) : WebViewComponent && containerLayout ? (
         <WebViewComponent
+          key={`map-${origin?.coordinates?.latitude}-${origin?.coordinates?.longitude}-${containerLayout.width}-${containerLayout.height}`}
           ref={webViewRef}
-          source={{ html: generateLeafletHTML() }}
+          source={{ html: generateLeafletHTML(containerLayout) }}
+          originWhitelist={['*']}
           style={styles.webMap}
+          injectedJavaScript={`
+            setTimeout(() => {
+              try {
+                if (typeof map !== 'undefined' && map.invalidateSize) {
+                  map.invalidateSize(true);
+                  console.log('📍 Map invalidateSize called from injected JS, container: ${containerLayout.width}x${containerLayout.height}');
+                }
+              } catch (e) {
+                console.log('❌ injectedJS error:', e);
+              }
+            }, 500);
+            true;
+          `}
           onMessage={handleMessage}
+          onLoadEnd={() => {
+            console.log('🗺️  WebView loaded, injecting resize command');
+            webViewRef.current?.injectJavaScript(`
+              try {
+                if (typeof map !== 'undefined') {
+                  console.log('📏 Map element size:', document.getElementById('map').getBoundingClientRect());
+                  map.invalidateSize(true);
+                  setTimeout(() => map.invalidateSize(true), 1000);
+                }
+              } catch (e) {
+                console.log('❌ onLoadEnd inject error:', e);
+              }
+              true;
+            `);
+          }}
           javaScriptEnabled
           domStorageEnabled
           startInLoadingState
-          scalesPageToFit
+          scalesPageToFit={false}
+          androidLayerType="hardware"
+          scrollEnabled={false}
+          bounces={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           allowsFullscreenVideo={false}
+          mixedContentMode="always"
+          setSupportMultipleWindows={false}
         />
       ) : (
         <MapPlaceholder message="Map unavailable on this device" />
@@ -307,8 +552,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.mapWater },
-  webMap: { flex: 1 },
+  container: { flex: 1, backgroundColor: 'transparent', position: 'relative' },
+  webMap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'transparent' },
   preloader: { position: 'absolute', width: 1, height: 1, opacity: 0 },
   recenterBtn: {
     position: 'absolute',
@@ -325,7 +570,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    elevation: 5,
+    zIndex: 1000,
   },
   recenterLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
   transitInfo: {
@@ -343,7 +589,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    elevation: 5,
+    zIndex: 1000,
   },
   transitLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
 });

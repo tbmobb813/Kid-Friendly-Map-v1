@@ -6,42 +6,38 @@ import { log } from '@/utils/logger';
 type MapLibreModule = typeof import('@maplibre/maplibre-react-native');
 
 let mapLibreModule: MapLibreModule | null = null;
+let mapLibreLoadAttempted = false;
 
-try {
-  const imported = require('@maplibre/maplibre-react-native');
-  mapLibreModule = imported?.default ?? imported;
-} catch (error) {
-  mapLibreModule = null;
-  log.warn('Failed to load MapLibre module', {
-    error:
-      error instanceof Error
-        ? { name: error.name, message: error.message }
-        : { message: String(error) },
-  });
-}
-
-export const MapLibreGL: MapLibreModule | null = mapLibreModule;
-export const isMapLibreAvailable = Boolean(
-  MapLibreGL &&
-    typeof MapLibreGL === 'object' &&
-    typeof (MapLibreGL as any).MapView === 'function' &&
-    typeof (MapLibreGL as any).ShapeSource === 'function',
-);
-
-if (isMapLibreAvailable) {
-  try {
-    (MapLibreGL as any)?.setAccessToken?.(Config.MAP.ACCESS_TOKEN ?? null);
-  } catch (error) {
-    log.warn('Unable to set MapLibre access token', {
-      error:
-        error instanceof Error
-          ? { name: error.name, message: error.message }
-          : { message: String(error) },
-    });
+// Lazy load MapLibre to avoid Expo Go errors
+function getMapLibreModule(): MapLibreModule | null {
+  if (mapLibreLoadAttempted) {
+    return mapLibreModule;
   }
-} else if (__DEV__) {
-  log.warn('MapLibre native module unavailable; MapLibreMap will render null.');
+  
+  mapLibreLoadAttempted = true;
+  
+  try {
+    const imported = require('@maplibre/maplibre-react-native');
+    mapLibreModule = imported?.default ?? imported;
+  } catch (error) {
+    mapLibreModule = null;
+    if (__DEV__) {
+      log.warn('MapLibre native module not available (expected in Expo Go)', {
+        error:
+          error instanceof Error
+            ? { name: error.name, message: error.message }
+            : { message: String(error) },
+      });
+    }
+  }
+  
+  return mapLibreModule;
 }
+
+export const MapLibreGL: MapLibreModule | null = null; // Will be loaded lazily
+export const isMapLibreAvailable = false; // Will be checked at runtime
+
+// MapLibre will be loaded lazily when component renders
 
 type MapLibreMapProps = {
   /** Optional override for the map style URL. */
@@ -76,15 +72,32 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
   children,
   testID,
 }) => {
-  if (!isMapLibreAvailable || !MapLibreGL) {
+  // Lazy load MapLibre module
+  const MapLibre = getMapLibreModule();
+  
+  if (!MapLibre || typeof MapLibre !== 'object' || !(MapLibre as any).MapView) {
+    if (__DEV__) {
+      log.debug('MapLibre not available, rendering null');
+    }
     return null;
   }
 
-  const MapLibre = MapLibreGL as any;
-
   useEffect(() => {
-    MapLibre?.requestAndroidPermissionsIfNeeded?.();
-  }, []);
+    if (MapLibre && typeof (MapLibre as any).requestAndroidPermissionsIfNeeded === 'function') {
+      (MapLibre as any).requestAndroidPermissionsIfNeeded();
+    }
+    
+    // Set access token if available
+    if (MapLibre && typeof (MapLibre as any).setAccessToken === 'function') {
+      try {
+        (MapLibre as any).setAccessToken(Config.MAP.ACCESS_TOKEN ?? null);
+      } catch (error) {
+        log.warn('Unable to set MapLibre access token', {
+          error: error instanceof Error ? { name: error.name, message: error.message } : { message: String(error) },
+        });
+      }
+    }
+  }, [MapLibre]);
 
   const mapStyleURL = useMemo(() => {
     if (styleURL && typeof styleURL === 'string') {

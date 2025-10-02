@@ -23,7 +23,7 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function MapScreen() {
   const router = useRouter();
-  const { location } = useLocation();
+  const { location, loading: locationLoading } = useLocation();
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [showStationModal, setShowStationModal] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
@@ -48,8 +48,9 @@ export default function MapScreen() {
   } = useNavigationStore();
 
   useEffect(() => {
-    // If no origin is set, use current location
-    if (!origin && location) {
+    // Update origin when location changes, especially when moving from default to real location
+    if (location && (!origin || origin.id === "current-location")) {
+      console.log('📍 Updating origin to current location:', location);
       setOrigin({
         id: "current-location",
         name: "Current Location",
@@ -61,7 +62,7 @@ export default function MapScreen() {
         }
       });
     }
-  }, [location, origin]);
+  }, [location?.latitude, location?.longitude]);
 
   useEffect(() => {
     // Find routes when both origin and destination are set
@@ -155,12 +156,21 @@ export default function MapScreen() {
   });
 
   return (
-    <ScrollView 
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-      bounces={true}
-    >
+    <View style={styles.container}>
+      {/* GPS Status Indicator */}
+      {locationLoading && (
+        <View style={styles.gpsStatusBar}>
+          <ActivityIndicator size="small" color={Colors.primary} />
+          <Text style={styles.gpsStatusText}>Acquiring GPS location...</Text>
+        </View>
+      )}
+      {!locationLoading && location?.latitude !== 40.7128 && (
+        <View style={styles.gpsStatusBar}>
+          <View style={styles.gpsIndicator} />
+          <Text style={styles.gpsStatusText}>GPS location active</Text>
+        </View>
+      )}
+      
       <View style={styles.mapContainer}>
         {useMapLibre ? (
           <MapLibreRouteView
@@ -181,13 +191,19 @@ export default function MapScreen() {
         )}
       </View>
 
-      <SafetyPanel 
-        currentLocation={location} 
-        currentPlace={destination ? {
-          id: destination.id,
-          name: destination.name
-        } : undefined}
-      />
+      <ScrollView 
+        style={styles.scrollableContent}
+        contentContainerStyle={styles.scrollContentContainer}
+        showsVerticalScrollIndicator={false}
+        bounces={true}
+      >
+        <SafetyPanel 
+          currentLocation={location} 
+          currentPlace={destination ? {
+            id: destination.id,
+            name: destination.name
+          } : undefined}
+        />
 
       <View style={styles.contentContainer}>
         <View style={styles.locationBar}>
@@ -390,7 +406,8 @@ export default function MapScreen() {
           )}
         </View>
       </Modal>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -399,21 +416,54 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  scrollContent: {
-    flexGrow: 1,
-    minHeight: screenHeight,
+  gpsStatusBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+  gpsIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.primary,
+  },
+  gpsStatusText: {
+    fontSize: 12,
+    color: Colors.text,
+    fontWeight: '600',
   },
   mapContainer: {
     height: Platform.select({
-      web: Math.min(screenHeight * 0.4, 400),
-      default: Math.min(screenHeight * 0.35, 300),
+      web: Math.min(screenHeight * 0.5, 500),
+      default: screenHeight * 0.40,
     }),
-    minHeight: 250,
+    minHeight: 300,
+    width: '100%',
+    backgroundColor: Colors.border,
+    overflow: 'hidden',
+  },
+  scrollableContent: {
+    flex: 1,
+  },
+  scrollContentContainer: {
+    paddingBottom: 32,
   },
   contentContainer: {
     flex: 1,
     padding: 16,
-    paddingBottom: 32,
   },
   routesContainer: {
     gap: 12,
