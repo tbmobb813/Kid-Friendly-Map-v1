@@ -130,6 +130,7 @@ class OpenRouteService {
   private config: ORSConfig;
   private cache = new Map<string, ORSRouteResponse>();
   private cacheTimeout = 5 * 60 * 1000; // 5 minutes
+  private pendingRequests = new Map<string, Promise<ORSRouteResponse>>();
 
   constructor(config: ORSConfig) {
     this.config = config;
@@ -152,11 +153,28 @@ class OpenRouteService {
         return cached;
       }
 
-      // Make API request
-      const response = await this.makeRouteRequest(request);
-      
-      // Cache response
-      await this.cacheRoute(cacheKey, response);
+      // Check if request is already pending (request deduplication)
+      const pending = this.pendingRequests.get(cacheKey);
+      if (pending) {
+        endTimer({ source: 'pending' });
+        return pending;
+      }
+
+      // Make API request and store as pending
+      const requestPromise = this.makeRouteRequest(request).then(async (response) => {
+        // Cache response
+        await this.cacheRoute(cacheKey, response);
+        // Clear pending
+        this.pendingRequests.delete(cacheKey);
+        return response;
+      }).catch((error) => {
+        // Clear pending on error
+        this.pendingRequests.delete(cacheKey);
+        throw error;
+      });
+
+      this.pendingRequests.set(cacheKey, requestPromise);
+      const response = await requestPromise;
       
       endTimer({ source: 'api' });
       return response;
@@ -240,7 +258,7 @@ class OpenRouteService {
    */
   async getAccessibleRoute(
     coordinates: [number, number][],
-    wheelchairAccessible = false
+    wheelchairAccessible = true
   ): Promise<ORSRouteResponse> {
     const profile: ORSProfile = wheelchairAccessible ? 'wheelchair' : 'foot-walking';
     
@@ -415,9 +433,17 @@ class OpenRouteService {
   }
 
   /**
-   * Make route request to ORS API
+   * Clear in-memory caches to keep tests deterministic
    */
-  private async makeRouteRequest(request: ORSRouteRequest): Promise<ORSRouteResponse> {
+  resetForTests(): void {
+    this.cache.clear();
+    this.pendingRequests.clear();
+  }
+
+  /**
+   * Make route request to ORS API with retry logic
+   */
+  private async makeRouteRequest(request: ORSRouteRequest, retries = 3): Promise<ORSRouteResponse> {
     const url = `${this.config.baseUrl}/v2/directions/${request.profile}`;
     
     const body = {
@@ -433,23 +459,43 @@ class OpenRouteService {
       options: request.options || {},
     };
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json, application/geo+json',
-        'Content-Type': 'application/json',
-        'Authorization': this.config.apiKey,
-      },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(this.config.timeout),
-    });
+    let lastError: Error | null = null;
+    
+    for (let attempt = 0; attempt < retries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, application/geo+json',
+            'Content-Type': 'application/json',
+            'Authorization': this.config.apiKey,
+          },
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(this.config.timeout),
+        });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`ORS API error: ${response.status} ${response.statusText}\n${errorText}`);
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`ORS API error: ${response.status} ${response.statusText}\n${errorText}`);
+        }
+
+        return response.json();
+      } catch (error) {
+        lastError = error as Error;
+        
+        // Don't retry on HTTP errors, only network errors
+        if (error instanceof Error && error.message.includes('ORS API error')) {
+          throw error;
+        }
+        
+        // Log retry attempt
+        if (attempt < retries - 1) {
+          log.warn(`ORS request failed, retrying (${attempt + 1}/${retries})`, error as Error);
+        }
+      }
     }
-
-    return response.json();
+    
+    throw lastError || new Error('ORS request failed after retries');
   }
 
   /**

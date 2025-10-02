@@ -17,3 +17,6 @@ global.ErrorUtils = (function() {
 		setGlobalHandler: (h) => { handler = h; },
 	};
 })();
+
+// Provide an in-memory AsyncStorage mock for tests
+jest.mock('@react-native-async-storage/async-storage');

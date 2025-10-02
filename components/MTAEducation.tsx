@@ -222,12 +222,11 @@ const MTAEducation: React.FC<MTAEducationProps> = ({ onClose }) => {
       {renderExpandableCard(
         "Subway Safety Rules",
         <View>
-          {mtaSubwayLines[0].educationalInfo?.safetyTips.map((tip, index) => (
-            <View key={index} style={styles.safetyTipCard}>
-              <AlertTriangle size={16} color="#FF9800" />
-              <Text style={styles.safetyTipText}>{tip}</Text>
-            </View>
-          ))}
+          {/* Use the safetyNote from the first subway line */}
+          <View style={styles.safetyTipCard}>
+            <AlertTriangle size={16} color="#FF9800" />
+            <Text style={styles.safetyTipText}>{mtaSubwayLines[0].safetyNote}</Text>
+          </View>
         </View>,
         "subway-safety"
       )}

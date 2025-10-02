@@ -13,10 +13,10 @@ import { offlineManager } from "@/utils/offlineManager";
 
 // Enhanced Route type that includes metadata from routing services
 export interface EnhancedRoute extends Route {
-  origin: string;
-  destination: string;
-  mode: TravelMode;
-  accessibility: {
+  origin?: string;
+  destination?: string;
+  mode?: TravelMode;
+  accessibility?: {
     isAccessible: boolean;
     hasElevator: boolean;
     hasRamps: boolean;
