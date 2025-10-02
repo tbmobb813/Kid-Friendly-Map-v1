@@ -85,6 +85,12 @@ export default function useLocation() {
 
         const currentLocation = await Location.getCurrentPositionAsync(locationOptions);
 
+        console.log('✅ Location acquired:', {
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+          accuracy: currentLocation.coords.accuracy,
+        });
+
         setLocation({
           latitude: currentLocation.coords.latitude,
           longitude: currentLocation.coords.longitude,
