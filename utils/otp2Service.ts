@@ -213,6 +213,12 @@ class OpenTripPlanner2 {
   }
 
   /**
+   * Clear in-memory caches to keep tests deterministic
+   */
+  resetForTests(): void {
+    this.cache.clear();
+  }
+  /**
    * Plan a trip using OTP2
    */
   async planTrip(request: OTP2PlanRequest): Promise<OTP2PlanResponse> {
@@ -269,7 +275,7 @@ class OpenTripPlanner2 {
       wheelchair: false,
       maxWalkDistance: childAge < 8 ? 400 : 800, // Shorter walks for younger kids
       maxTransfers: childAge < 10 ? 1 : 2, // Fewer transfers for younger kids
-      walkReluctance: 2.5, // Prefer transit over walking
+      walkReluctance: 3, // Strongly prefer transit over walking for kids
       waitReluctance: 1.2, // Slightly prefer less waiting
       walkSpeed: childAge < 8 ? 0.8 : 1.0, // Slower walking speed for kids
       triangleWalkSafety: 0.7, // Prioritize safety

@@ -48,7 +48,7 @@ export default function SmartNavigationScreen() {
 
       // Extract safe zones from route
       const zones: SafeZone[] = selectedRoute.steps
-        .filter(step => step.type === 'safe_zone')
+        .filter(step => step.type === 'safety-check')
         .map((step, idx) => ({
           id: `safe-${idx}`,
           center: step.location,

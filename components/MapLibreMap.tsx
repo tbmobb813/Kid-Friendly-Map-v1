@@ -39,7 +39,7 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
   testID,
 }) => {
   useEffect(() => {
-    MapLibreGL.requestAndroidPermissionsIfNeeded?.();
+    (MapLibreGL as any).requestAndroidPermissionsIfNeeded?.();
   }, []);
 
   const mapStyleURL = useMemo(() => {

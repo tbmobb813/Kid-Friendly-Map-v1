@@ -3,32 +3,46 @@
  * Tests real API integration and unified routing functionality
  */
 
+import { offlineStorage } from '../utils/api';
 import { orsService } from '../utils/orsService';
 import { otp2Service } from '../utils/otp2Service';
 import { unifiedRoutingService } from '../utils/unifiedRoutingService';
 
 // Mock monitoring to avoid Sentry dependencies in tests
-jest.mock('../utils/monitoring', () => ({
-  monitoring: {
-    trackUserAction: jest.fn(),
-    captureError: jest.fn(),
-    trackPerformance: jest.fn().mockReturnValue({
-      end: jest.fn(),
-    }),
-    getSystemHealthStatus: jest.fn().mockReturnValue({ status: 'healthy' }),
-  },
-}));
+jest.mock('../utils/monitoring', () => {
+  const endTimer = jest.fn();
+  return {
+    monitoring: {
+      trackUserAction: jest.fn(),
+      captureError: jest.fn(),
+      trackPerformance: jest.fn(),
+      startPerformanceTimer: jest.fn(() => endTimer),
+      getSystemHealth: jest.fn().mockReturnValue({
+        networkStatus: 'online',
+        backendStatus: 'healthy',
+        storageAvailable: true,
+        memoryPressure: 'low',
+        pendingSyncActions: 0,
+      }),
+      resetForTests: jest.fn(),
+    },
+  };
+});
 
 // Mock fetch for API calls
 global.fetch = jest.fn();
 
-describe('ORS Service Integration', () => {
-  const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-  
-  beforeEach(() => {
-    mockFetch.mockClear();
-  });
+const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
 
+beforeEach(async () => {
+  jest.clearAllMocks();
+  mockFetch.mockReset();
+  orsService.resetForTests();
+  otp2Service.resetForTests();
+  await offlineStorage.clearCache();
+});
+
+describe('ORS Service Integration', () => {
   const testCoordinates: [number, number][] = [
     [-74.0060, 40.7128], // NYC City Hall
     [-73.9934, 40.7505], // Times Square
@@ -198,25 +212,13 @@ describe('ORS Service Integration', () => {
       const requestBody = JSON.parse(callArgs[1]?.body as string);
       
       expect(callArgs[0]).toContain('wheelchair');
-      expect(requestBody.options).toMatchObject({
-        profile_params: expect.objectContaining({
-          restrictions: expect.objectContaining({
-            surface_type: expect.any(String),
-            track_type: expect.any(String),
-          }),
-        }),
-      });
+      expect(requestBody.options?.avoid_features).toContain('steps');
+      expect(requestBody.options?.profile_params?.weightings?.steepness_difficulty).toBe(5);
     });
   });
 });
 
 describe('OTP2 Service Integration', () => {
-  const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-  
-  beforeEach(() => {
-    mockFetch.mockClear();
-  });
-
   describe('Trip Planning', () => {
     it('should plan transit trip successfully', async () => {
       const mockResponse = {
@@ -268,7 +270,9 @@ describe('OTP2 Service Integration', () => {
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining('/plan'),
         expect.objectContaining({
-          method: 'GET',
+          headers: expect.objectContaining({
+            'Accept': 'application/json',
+          }),
         })
       );
     });
@@ -358,7 +362,11 @@ describe('OTP2 Service Integration', () => {
       expect(result).toEqual(mockResponse);
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining('/index/stops/MTA_123456'),
-        expect.objectContaining({ method: 'GET' })
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            'Accept': 'application/json',
+          }),
+        })
       );
     });
 
@@ -388,12 +396,6 @@ describe('OTP2 Service Integration', () => {
 });
 
 describe('Unified Routing Service Integration', () => {
-  const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-  
-  beforeEach(() => {
-    mockFetch.mockClear();
-  });
-
   const testRequest = {
     from: { lat: 40.7128, lng: -74.0060, name: 'NYC City Hall' },
     to: { lat: 40.7505, lng: -73.9934, name: 'Times Square' },
@@ -581,7 +583,15 @@ describe('Unified Routing Service Integration', () => {
             itineraries: [{
               duration: 1800,
               transfers: 1,
-              legs: [{ mode: 'SUBWAY', duration: 1800 }],
+              walkDistance: 200,
+              legs: [{
+                mode: 'SUBWAY',
+                duration: 1800,
+                distance: 5000,
+                from: { name: 'Origin', lat: 40.7128, lon: -74.0060 },
+                to: { name: 'Destination', lat: 40.7505, lon: -73.9934 },
+                route: { shortName: '6' },
+              }],
             }],
           },
         }),
@@ -605,14 +615,6 @@ describe('Unified Routing Service Integration', () => {
 });
 
 describe('Performance and Caching', () => {
-  const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
-  
-  beforeEach(() => {
-    mockFetch.mockClear();
-    // Clear any existing cache
-    jest.clearAllMocks();
-  });
-
   it('should cache ORS route responses', async () => {
     const mockResponse = {
       routes: [{

@@ -134,7 +134,7 @@ class Analytics {
       try {
         await this.dispatchToPlausible(batch);
       } catch (error) {
-        log.warn?.('Failed to send analytics batch', error);
+        log.warn?.('Failed to send analytics batch', error as any);
         // Re-queue events for next attempt
         this.events.unshift(...batch);
       }

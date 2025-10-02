@@ -35,3 +35,15 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 .vercel
+
+# Compiled JavaScript (keep source .ts/.tsx files only)
+/utils/*.js
+/hooks/*.js
+/stores/*.js
+/components/*.js
+/app/**/*.js
+# But allow config files and intentional JS files
+!babel.config.js
+!jest.config.js
+!metro.config.js
+!*.config.js
