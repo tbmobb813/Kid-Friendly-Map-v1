@@ -1,7 +1,47 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapLibreGL from '@maplibre/maplibre-react-native';
 import Config from '@/utils/config';
+import { log } from '@/utils/logger';
+
+type MapLibreModule = typeof import('@maplibre/maplibre-react-native');
+
+let mapLibreModule: MapLibreModule | null = null;
+
+try {
+  const imported = require('@maplibre/maplibre-react-native');
+  mapLibreModule = imported?.default ?? imported;
+} catch (error) {
+  mapLibreModule = null;
+  log.warn('Failed to load MapLibre module', {
+    error:
+      error instanceof Error
+        ? { name: error.name, message: error.message }
+        : { message: String(error) },
+  });
+}
+
+export const MapLibreGL: MapLibreModule | null = mapLibreModule;
+export const isMapLibreAvailable = Boolean(
+  MapLibreGL &&
+    typeof MapLibreGL === 'object' &&
+    typeof (MapLibreGL as any).MapView === 'function' &&
+    typeof (MapLibreGL as any).ShapeSource === 'function',
+);
+
+if (isMapLibreAvailable) {
+  try {
+    (MapLibreGL as any)?.setAccessToken?.(Config.MAP.ACCESS_TOKEN ?? null);
+  } catch (error) {
+    log.warn('Unable to set MapLibre access token', {
+      error:
+        error instanceof Error
+          ? { name: error.name, message: error.message }
+          : { message: String(error) },
+    });
+  }
+} else if (__DEV__) {
+  log.warn('MapLibre native module unavailable; MapLibreMap will render null.');
+}
 
 type MapLibreMapProps = {
   /** Optional override for the map style URL. */
@@ -17,8 +57,6 @@ type MapLibreMapProps = {
   children?: React.ReactNode;
   testID?: string;
 };
-
-MapLibreGL.setAccessToken(Config.MAP.ACCESS_TOKEN ?? null);
 
 const fallbackStyleUrl = Config.MAP.FALLBACK_STYLE_URL ?? 'https://demotiles.maplibre.org/style.json';
 
@@ -38,8 +76,14 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
   children,
   testID,
 }) => {
+  if (!isMapLibreAvailable || !MapLibreGL) {
+    return null;
+  }
+
+  const MapLibre = MapLibreGL as any;
+
   useEffect(() => {
-    (MapLibreGL as any).requestAndroidPermissionsIfNeeded?.();
+    MapLibre?.requestAndroidPermissionsIfNeeded?.();
   }, []);
 
   const mapStyleURL = useMemo(() => {
@@ -61,7 +105,7 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
       typeof centerCoordinate[0] === 'number' &&
       typeof centerCoordinate[1] === 'number'
     ) {
-      return centerCoordinate;
+      return [centerCoordinate[0], centerCoordinate[1]];
     }
 
     return defaultCenter;
@@ -95,20 +139,20 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
 
   return (
     <View style={styles.container} testID={testID ?? 'maplibre-map'}>
-      <MapLibreGL.MapView
+      <MapLibre.MapView
         style={styles.map}
         {...({ styleURL: mapStyleURL } as any)}
         onDidFinishRenderingMapFully={handleMapReady}
         onPress={onPress ? handlePress : undefined}
       >
-        <MapLibreGL.Camera
+        <MapLibre.Camera
           zoomLevel={resolvedZoom}
           centerCoordinate={resolvedCenter}
           minZoomLevel={Config.MAP.MIN_ZOOM}
           maxZoomLevel={Config.MAP.MAX_ZOOM}
         />
         {children}
-      </MapLibreGL.MapView>
+      </MapLibre.MapView>
     </View>
   );
 };

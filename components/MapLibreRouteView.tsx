@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import type { Feature, FeatureCollection, Geometry, LineString, Position } from 'geojson';
-import MapLibreGL from '@maplibre/maplibre-react-native';
 import Colors from '@/constants/colors';
 import { nycStations } from '@/config/transit/nyc-stations';
 import type { Place } from '@/types/navigation';
-import MapLibreMap from './MapLibreMap';
+import MapLibreMap, { MapLibreGL, isMapLibreAvailable } from './MapLibreMap';
 import Config from '@/utils/config';
 
 export type MapLibreRouteViewProps = {
@@ -159,6 +158,11 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   showTransitStations = true,
   testID,
 }) => {
+  if (!isMapLibreAvailable || !MapLibreGL) {
+    return null;
+  }
+
+  const MapLibre = MapLibreGL as any;
   const originCoord = useMemo(() => asLngLat(origin), [origin?.coordinates.latitude, origin?.coordinates.longitude]);
   const destinationCoord = useMemo(() => asLngLat(destination), [destination?.coordinates.latitude, destination?.coordinates.longitude]);
 
@@ -202,9 +206,9 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
 
   return (
     <MapLibreMap centerCoordinate={centerCoordinate} testID={testID}>
-      {routeShape && (
-        <MapLibreGL.ShapeSource id="route" shape={routeShape}>
-          <MapLibreGL.LineLayer
+      {routeShape && MapLibre && (
+        <MapLibre.ShapeSource id="route" shape={routeShape}>
+          <MapLibre.LineLayer
             id="route-line"
             style={{
               lineColor: Colors.primary,
@@ -212,12 +216,12 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
               lineOpacity: 0.9,
             }}
           />
-        </MapLibreGL.ShapeSource>
+        </MapLibre.ShapeSource>
       )}
 
-      {endpointFeatures.features.length > 0 && (
-        <MapLibreGL.ShapeSource id="endpoints" shape={endpointFeatures}>
-          <MapLibreGL.CircleLayer
+      {endpointFeatures.features.length > 0 && MapLibre && (
+        <MapLibre.ShapeSource id="endpoints" shape={endpointFeatures}>
+          <MapLibre.CircleLayer
             id="endpoint-layer"
             style={{
               circleRadius: 6,
@@ -232,12 +236,12 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
               ],
             }}
           />
-        </MapLibreGL.ShapeSource>
+        </MapLibre.ShapeSource>
       )}
 
-      {stationFeatures && (
-        <MapLibreGL.ShapeSource id="stations" shape={stationFeatures} onPress={handleStationPress}>
-          <MapLibreGL.CircleLayer
+      {stationFeatures && MapLibre && (
+        <MapLibre.ShapeSource id="stations" shape={stationFeatures} onPress={handleStationPress}>
+          <MapLibre.CircleLayer
             id="stations-layer"
             style={{
               circleRadius: 5,
@@ -247,7 +251,7 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
               circleStrokeWidth: 1.5,
             }}
           />
-        </MapLibreGL.ShapeSource>
+        </MapLibre.ShapeSource>
       )}
     </MapLibreMap>
   );

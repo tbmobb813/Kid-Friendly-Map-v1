@@ -45,7 +45,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.kid-friendly-map-transit-navigator",
+  "package": "app.rork.kid_friendly_map_transit_navigator",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -109,13 +109,6 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
-        }
-      ],
-      [
-        "expo-speech",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to use speech recognition",
-          "speechRecognitionPermission": "Allow $(PRODUCT_NAME) to recognize speech"
         }
       ],
       "expo-font",

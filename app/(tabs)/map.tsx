@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal, ActivityIndicator, Alert } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal, ActivityIndicator, UIManager } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import InteractiveMap from "@/components/InteractiveMap";
@@ -15,6 +15,7 @@ import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from "lucid
 import useLocation from "@/hooks/useLocation";
 import { findStationById } from "@/config/transit/nyc-stations";
 import MapLibreRouteView from "@/components/MapLibreRouteView";
+import { isMapLibreAvailable } from "@/components/MapLibreMap";
 import { useRouteORS } from "@/hooks/useRouteORS";
 import Config from "@/utils/config";
 
@@ -110,7 +111,34 @@ export default function MapScreen() {
 
   const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
 
-  const useMapLibre = Platform.OS !== 'web';
+  const mapLibreSupported = useMemo(() => {
+    if (!isMapLibreAvailable) {
+      return false;
+    }
+
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
+    const managerNames = ['MapLibreGLMapView', 'RCTMGLMapView'];
+    return managerNames.some((name) => {
+      try {
+        return Boolean((UIManager as any)?.getViewManagerConfig?.(name));
+      } catch {
+        return false;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!mapLibreSupported) {
+      console.warn(
+        'MapLibre native module not detected. Falling back to InteractiveMap. Run a development build with the MapLibre module installed to enable advanced map features.',
+      );
+    }
+  }, [mapLibreSupported]);
+
+  const useMapLibre = mapLibreSupported;
 
   const originCoord = useMemo(
     () => (origin ? [origin.coordinates.longitude, origin.coordinates.latitude] as [number, number] : undefined),

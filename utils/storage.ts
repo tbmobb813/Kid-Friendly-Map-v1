@@ -13,24 +13,145 @@
 import { MMKV } from 'react-native-mmkv';
 import { log } from './logger';
 
-// Initialize MMKV instance
-export const storage = new MMKV({
+type StorageInstance = Pick<
+  MMKV,
+  'set' | 'getString' | 'getNumber' | 'getBoolean' | 'delete' | 'clearAll' | 'getAllKeys' | 'contains'
+>;
+
+class MemoryStorage implements StorageInstance {
+  private store = new Map<string, { type: 'string' | 'number' | 'boolean'; value: string }>();
+
+  constructor(_label: string) {}
+
+  set(key: string, value: string | number | boolean): void {
+    let type: 'string' | 'number' | 'boolean' = 'string';
+    let storedValue: string;
+
+    if (typeof value === 'number') {
+      type = 'number';
+      storedValue = value.toString();
+    } else if (typeof value === 'boolean') {
+      type = 'boolean';
+      storedValue = value ? '1' : '0';
+    } else {
+      storedValue = value;
+    }
+
+    this.store.set(key, { type, value: storedValue });
+  }
+
+  getString(key: string): string | undefined {
+    const entry = this.store.get(key);
+    if (!entry) return undefined;
+
+    if (entry.type === 'boolean') {
+      return entry.value === '1' ? 'true' : 'false';
+    }
+
+    return entry.value;
+  }
+
+  getNumber(key: string): number | undefined {
+    const entry = this.store.get(key);
+    if (!entry) return undefined;
+
+    if (entry.type === 'number') {
+      const parsed = Number(entry.value);
+      return Number.isFinite(parsed) ? parsed : undefined;
+    }
+
+    const parsed = Number(entry.value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  getBoolean(key: string): boolean | undefined {
+    const entry = this.store.get(key);
+    if (!entry) return undefined;
+
+    if (entry.type === 'boolean') {
+      return entry.value === '1';
+    }
+
+    if (entry.value === 'true' || entry.value === '1') {
+      return true;
+    }
+
+    if (entry.value === 'false' || entry.value === '0') {
+      return false;
+    }
+
+    return undefined;
+  }
+
+  delete(key: string): void {
+    this.store.delete(key);
+  }
+
+  clearAll(): void {
+    this.store.clear();
+  }
+
+  getAllKeys(): string[] {
+    return Array.from(this.store.keys());
+  }
+
+  contains(key: string): boolean {
+    return this.store.has(key);
+  }
+}
+
+type StorageDriver = 'mmkv' | 'memory';
+
+const createStorageInstance = (
+  config: ConstructorParameters<typeof MMKV>[0],
+): { instance: StorageInstance; driver: StorageDriver } => {
+  const label = config?.id ?? 'default';
+
+  try {
+    const instance = new MMKV(config);
+    // Smoke test to ensure native module is available
+    const probeKey = `__probe__${Date.now()}`;
+    instance.set(probeKey, 'ok');
+    instance.delete(probeKey);
+    log.info(`Initialized MMKV storage for ${label}`);
+    return { instance, driver: 'mmkv' };
+  } catch (error) {
+    log.warn(
+      `MMKV native module unavailable for ${label}. Falling back to in-memory storage. Persistent data will reset between sessions.`,
+      {
+        error:
+          error instanceof Error
+            ? { name: error.name, message: error.message }
+            : { message: String(error) },
+      },
+    );
+    return { instance: new MemoryStorage(label), driver: 'memory' };
+  }
+};
+
+const mainStorageInit = createStorageInstance({
   id: 'kid-friendly-map-storage',
-  encryptionKey: 'kid-map-secure-key-2025', // For sensitive data
+  encryptionKey: 'kid-map-secure-key-2025',
 });
 
-// Separate instance for cache data (non-encrypted, can be cleared)
-export const cacheStorage = new MMKV({
+const cacheStorageInit = createStorageInstance({
   id: 'kid-friendly-map-cache',
 });
+
+export const storage: StorageInstance = mainStorageInit.instance;
+export const cacheStorage: StorageInstance = cacheStorageInit.instance;
+export const STORAGE_DRIVER: StorageDriver = mainStorageInit.driver;
+export const CACHE_STORAGE_DRIVER: StorageDriver = cacheStorageInit.driver;
+export const isInMemoryStorage = STORAGE_DRIVER === 'memory';
+export const isInMemoryCache = CACHE_STORAGE_DRIVER === 'memory';
 
 /**
  * Storage Manager with type safety and error handling
  */
 export class StorageManager {
-  private instance: MMKV;
+  private instance: StorageInstance;
 
-  constructor(instance: MMKV = storage) {
+  constructor(instance: StorageInstance = storage) {
     this.instance = instance;
   }
 
