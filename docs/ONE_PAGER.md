@@ -6,7 +6,7 @@
 
 ## 📊 Current State
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │ TECHNICAL FOUNDATION: ✅ EXCELLENT                              │
 ├─────────────────────────────────────────────────────────────────┤
@@ -38,7 +38,7 @@
 
 ## 🎯 90-Day Plan to Beta Launch
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │                      CRITICAL PATH                               │
 ├──────────────────────────────────────────────────────────────────┤
@@ -91,12 +91,14 @@
 ### ✅ PROCEED WITH 90-DAY BETA LAUNCH
 
 **Why:**
+
 - Product is technically excellent (not a rebuild, just validation)
 - Clear market opportunity with strong differentiation
 - Manageable risks (gaps are in docs, not code quality)
 - Realistic timeline with appropriate resources
 
 **What You Get:**
+
 - Validated product-market fit with 100+ real families
 - Legal compliance approved and documented
 - Backend service enabling multi-device sync
@@ -106,7 +108,7 @@
 
 ## 📚 Documentation Created
 
-```
+```text
 docs/
 ├── CONVERSATION_SUMMARY.md        ← You are here (overview)
 ├── EXECUTIVE_SUMMARY.md           ← For leadership (5 min)
@@ -121,11 +123,13 @@ docs/
 ## ⚡ Next 48 Hours
 
 ### Must Do
+
 - [ ] Read `EXECUTIVE_SUMMARY.md` (5 minutes)
 - [ ] Review budget: Approve $20K-40K?
 - [ ] Decision: Proceed with 90-day plan?
 
 ### Should Do This Week
+
 - [ ] Engage privacy lawyer
 - [ ] Begin research recruitment
 - [ ] Create UVP document

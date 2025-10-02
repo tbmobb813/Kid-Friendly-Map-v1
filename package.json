@@ -9,9 +9,14 @@
     "test:logic:watch": "bun test --watch bun-tests/",
     "test:integration": "jest __tests__/",
     "test:integration:watch": "jest --watch __tests__/",
+    "test:routing": "jest __tests__/routing-integration.test.ts",
+    "test:offline": "jest __tests__/offline-validation.test.ts",
+    "test:monitoring": "jest __tests__/monitoring.test.ts",
     "test:all": "npm run test:logic && npm run test:integration",
     "test:fast": "bun test bun-tests/",
-    "test:full": "npm run test:all"
+    "test:full": "npm run test:all",
+    "demo:routing": "expo start --dev-client",
+    "demo:offline": "node demo-offline-monitoring.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",

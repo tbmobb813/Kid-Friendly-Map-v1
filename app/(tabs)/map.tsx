@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Modal, ActivityIndicator, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import InteractiveMap from "@/components/InteractiveMap";
 import RouteCard from "@/components/RouteCard";
+import EnhancedRouteCard from "@/components/EnhancedRouteCard";
+import RoutingPreferences from "@/components/RoutingPreferences";
 import SafetyPanel from "@/components/SafetyPanel";
 import TravelModeSelector from "@/components/TravelModeSelector";
 import MTALiveArrivals from "@/components/MTALiveArrivals";
-import { useNavigationStore } from "@/stores/navigationStore";
+import { useNavigationStore } from "@/stores/enhancedNavigationStore";
 import { Route } from "@/types/navigation";
-import { Navigation, MapPin, Search, X } from "lucide-react-native";
+import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from "lucide-react-native";
 import useLocation from "@/hooks/useLocation";
 import { findStationById } from "@/config/transit/nyc-stations";
 import MapLibreRouteView from "@/components/MapLibreRouteView";
@@ -23,16 +25,24 @@ export default function MapScreen() {
   const { location } = useLocation();
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [showStationModal, setShowStationModal] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
   
   const { 
     origin,
     destination,
     availableRoutes,
+    unifiedRoutes,
     selectedRoute,
+    selectedUnifiedRoute,
     selectedTravelMode,
+    isLoadingRoutes,
+    routingError,
+    useAdvancedRouting,
+    routingPreferences,
     setOrigin,
     findRoutes,
     selectRoute,
+    selectUnifiedRoute,
     setTravelMode
   } = useNavigationStore();
 
@@ -61,11 +71,31 @@ export default function MapScreen() {
 
   const handleRouteSelect = (route: Route) => {
     selectRoute(route);
-    router.push(`/(tabs)/transit` as any); // Navigate to transit instead of route for now
+    
+    // Also select corresponding unified route if available
+    const matchingUnifiedRoute = unifiedRoutes.find(ur => ur.id === route.id);
+    if (matchingUnifiedRoute) {
+      selectUnifiedRoute(matchingUnifiedRoute);
+    }
+    
+    router.push(`/(tabs)/transit` as any);
+  };
+
+  const handleAdvancedRouteSelect = (unifiedRoute: any) => {
+    selectUnifiedRoute(unifiedRoute);
+    router.push(`/(tabs)/transit` as any);
   };
 
   const handleSearchPress = () => {
     router.push("/(tabs)/search" as any);
+  };
+
+  const handlePreferencesPress = () => {
+    setShowPreferences(true);
+  };
+
+  const handleRetryRouting = () => {
+    findRoutes();
   };
 
   const handleStationPress = (stationId: string) => {
@@ -172,21 +202,109 @@ export default function MapScreen() {
 
         {destination ? (
           <>
-            <TravelModeSelector 
-              selectedMode={selectedTravelMode}
-              onModeChange={setTravelMode}
-            />
-            <Text style={styles.sectionTitle}>Available Routes</Text>
-            <View style={styles.routesContainer}>
-              {availableRoutes.map(route => (
-                <RouteCard
-                  key={route.id}
-                  route={route}
-                  onPress={handleRouteSelect}
-                  isSelected={selectedRoute?.id === route.id}
+            <View style={styles.controlsRow}>
+              <View style={styles.travelModeContainer}>
+                <TravelModeSelector 
+                  selectedMode={selectedTravelMode}
+                  onModeChange={setTravelMode}
                 />
-              ))}
+              </View>
+              <Pressable style={styles.preferencesButton} onPress={handlePreferencesPress}>
+                <Settings size={20} color={Colors.primary} />
+              </Pressable>
             </View>
+            
+            {/* Loading State */}
+            {isLoadingRoutes && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+                <Text style={styles.loadingText}>Finding best routes...</Text>
+                {routingPreferences.childAge && (
+                  <Text style={styles.loadingSubtext}>
+                    Optimizing for age {routingPreferences.childAge}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            {/* Error State */}
+            {routingError && !isLoadingRoutes && (
+              <View style={styles.errorContainer}>
+                <AlertCircle size={24} color={Colors.error} />
+                <Text style={styles.errorText}>{routingError}</Text>
+                <Pressable style={styles.retryButton} onPress={handleRetryRouting}>
+                  <Text style={styles.retryButtonText}>Retry</Text>
+                </Pressable>
+              </View>
+            )}
+
+            {/* Routes Section */}
+            {!isLoadingRoutes && !routingError && (
+              <>
+                <View style={styles.routesHeader}>
+                  <Text style={styles.sectionTitle}>
+                    Available Routes ({useAdvancedRouting ? unifiedRoutes.length : availableRoutes.length})
+                  </Text>
+                  {useAdvancedRouting && (
+                    <View style={styles.advancedBadge}>
+                      <Zap size={12} color={Colors.success} />
+                      <Text style={styles.advancedBadgeText}>Enhanced</Text>
+                    </View>
+                  )}
+                </View>
+                
+                <View style={styles.routesContainer}>
+                  {useAdvancedRouting ? (
+                    // Enhanced route cards with scores and additional info
+                    unifiedRoutes.map((unifiedRoute, index) => {
+                      const legacyRoute = availableRoutes.find(r => r.id === unifiedRoute.id);
+                      return legacyRoute ? (
+                        <EnhancedRouteCard
+                          key={unifiedRoute.id}
+                          route={legacyRoute}
+                          unifiedRoute={unifiedRoute}
+                          onPress={handleRouteSelect}
+                          isSelected={selectedUnifiedRoute?.id === unifiedRoute.id}
+                          showDetailedScores={index === 0} // Show detailed scores for top route
+                        />
+                      ) : null;
+                    })
+                  ) : (
+                    // Legacy route cards
+                    availableRoutes.map(route => (
+                      <RouteCard
+                        key={route.id}
+                        route={route}
+                        onPress={handleRouteSelect}
+                        isSelected={selectedRoute?.id === route.id}
+                      />
+                    ))
+                  )}
+                </View>
+
+                {/* Route insights for enhanced routing */}
+                {useAdvancedRouting && unifiedRoutes.length > 0 && (
+                  <View style={styles.insightsContainer}>
+                    <Text style={styles.insightsTitle}>Route Insights</Text>
+                    {routingPreferences.childAge && (
+                      <Text style={styles.insightText}>
+                        🛡️ Routes optimized for {routingPreferences.childAge}-year-old safety
+                      </Text>
+                    )}
+                    {routingPreferences.wheelchair && (
+                      <Text style={styles.insightText}>
+                        ♿ Showing only wheelchair accessible routes
+                      </Text>
+                    )}
+                    {unifiedRoutes.some(r => r.alerts && r.alerts.length > 0) && (
+                      <Text style={styles.insightText}>
+                        ⚠️ Service alerts detected on some routes
+                      </Text>
+                    )}
+                  </View>
+                )}
+              </>
+            )}
           </>
         ) : (
           <View style={styles.emptyStateContainer}>
@@ -203,6 +321,12 @@ export default function MapScreen() {
           </View>
         )}
       </View>
+
+      {/* Routing Preferences Modal */}
+      <RoutingPreferences
+        visible={showPreferences}
+        onClose={() => setShowPreferences(false)}
+      />
 
       {/* Station Info Modal */}
       <Modal
@@ -371,5 +495,107 @@ const styles = StyleSheet.create({
   closeButton: {
     padding: 8,
     borderRadius: 8,
+  },
+  controlsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  travelModeContainer: {
+    flex: 1,
+    marginRight: 12,
+  },
+  preferencesButton: {
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: Colors.primary + '15',
+  },
+  loadingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 32,
+    backgroundColor: Colors.card,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: Colors.text,
+    marginTop: 12,
+    fontWeight: "600",
+  },
+  loadingSubtext: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 4,
+  },
+  errorContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: Colors.error + '10',
+    borderRadius: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.error + '30',
+  },
+  errorText: {
+    fontSize: 16,
+    color: Colors.error,
+    textAlign: "center",
+    marginVertical: 8,
+  },
+  retryButton: {
+    backgroundColor: Colors.error,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginTop: 8,
+  },
+  retryButtonText: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  routesHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  advancedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.success + '15',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    gap: 4,
+  },
+  advancedBadgeText: {
+    fontSize: 12,
+    color: Colors.success,
+    fontWeight: "600",
+  },
+  insightsContainer: {
+    backgroundColor: Colors.primary + '10',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.primary,
+  },
+  insightsTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: Colors.primary,
+    marginBottom: 8,
+  },
+  insightText: {
+    fontSize: 14,
+    color: Colors.text,
+    marginBottom: 4,
+    lineHeight: 20,
   },
 });

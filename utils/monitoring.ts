@@ -547,7 +547,7 @@ class ApplicationMonitoring {
   /**
    * Start performance timer
    */
-  startPerformanceTimer(name: string): () => void {
+  startPerformanceTimer(name: string): (metadata?: Record<string, any>) => void {
     const startTime = Date.now();
     
     return (metadata?: Record<string, any>) => {

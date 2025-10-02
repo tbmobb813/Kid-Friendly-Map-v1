@@ -36,37 +36,43 @@
 
 ### 🟡 HIGH PRIORITY (Next 30-60 Days)
 
-4. **Voice Guidance MVP** (Weeks 3-5)
-   - Expo Speech API integration
-   - TTS navigation prompts
-   - User testing with children
+**Voice Guidance MVP** (Weeks 3-5)
 
-5. **Offline Validation** (Weeks 2-3)
-   - Airplane mode testing
-   - Documentation of expected behaviors
-   - Automated test coverage
+- Expo Speech API integration
+- TTS navigation prompts
+- User testing with children
 
-6. **Backend Service** (Weeks 5-12)
-   - Fastify + PostgreSQL + PostGIS
-   - Authentication endpoints
-   - Real-time sync with Socket.io
+**Offline Validation** (Weeks 2-3)
+
+- Airplane mode testing
+- Documentation of expected behaviors
+- Automated test coverage
+
+**Backend Service** (Weeks 5-12)
+
+- Fastify + PostgreSQL + PostGIS
+- Authentication endpoints
+- Real-time sync with Socket.io
 
 ### 🟢 MEDIUM PRIORITY (60-120 Days)
 
-7. **Progressive Independence System** (Weeks 8-12)
-   - Define competency levels
-   - Parent approval workflows
-   - In-app progression UI
+**Progressive Independence System** (Weeks 8-12)
 
-8. **Educational Content Expansion** (Weeks 6-9)
-   - Navigation lesson tiers
-   - Geography micro-lessons
-   - Safety scenario modules
+- Define competency levels
+- Parent approval workflows
+- In-app progression UI
 
-9. **B2B2C Partnership Pilot** (Ongoing)
-   - Outreach to schools/programs
-   - Pilot program design
-   - Case study collection
+**Educational Content Expansion** (Weeks 6-9)
+
+- Navigation lesson tiers
+- Geography micro-lessons
+- Safety scenario modules
+
+**B2B2C Partnership Pilot** (Ongoing)
+
+- Outreach to schools/programs
+- Pilot program design
+- Case study collection
 
 ---
 
@@ -74,25 +80,25 @@
 
 ### ✅ Week 1 Actions
 
-**Research Infrastructure**
+#### Research Infrastructure
 
 - [ ] Create `docs/research/` directory structure
 - [ ] Set up interview templates
 - [ ] Recruit participant pool (parents, children, educators)
 
-**Compliance Framework**
+#### Compliance Framework
 
 - [ ] Create `docs/privacy/` directory
 - [ ] Draft COPPA checklist outline
 - [ ] Research privacy lawyer options
 
-**Strategic Docs**
+#### Strategic Docs**
 
 - [ ] Write `docs/strategy/UVP.md`
 - [ ] Document competitive differentiators
 - [ ] Create user personas
 
-**Technical Prep**
+#### Technical Prep**
 
 - [ ] Research Expo Speech API
 - [ ] Plan offline test scenarios
@@ -100,27 +106,27 @@
 
 ### ✅ Week 2-4 Actions
 
-**Research Execution**
+#### Research Execution**
 
 - [ ] Conduct 15-20 parent interviews
 - [ ] Run 20+ child usability sessions
 - [ ] Complete educator consultations
 - [ ] Synthesize findings into priorities
 
-**Compliance**
+#### Compliance**
 
 - [ ] Complete COPPA checklist
 - [ ] Create data flow diagrams
 - [ ] Schedule legal consultation
 - [ ] Draft retention policies
 
-**Voice Guidance**
+#### Voice Guidance**
 
 - [ ] Prototype TTS implementation
 - [ ] Create settings toggle
 - [ ] User test with children
 
-**Offline Testing**
+#### Offline Testing**
 
 - [ ] Write `docs/OFFLINE_READINESS.md`
 - [ ] Implement airplane mode tests
@@ -128,7 +134,7 @@
 
 ### ✅ Week 5-8 Actions
 
-**Backend Development**
+#### Backend Development**
 
 - [ ] Bootstrap Fastify project
 - [ ] Set up PostgreSQL + PostGIS
@@ -136,14 +142,14 @@
 - [ ] Create safe zone API
 - [ ] Add Socket.io layer
 
-**Educational Content**
+#### Educational Content**
 
 - [ ] Design navigation lessons
 - [ ] Write geography modules
 - [ ] Create safety scenarios
 - [ ] Integrate with gamification
 
-**Partnerships**
+#### Partnerships**
 
 - [ ] Contact 10-15 schools/programs
 - [ ] Draft partnership proposal
@@ -151,21 +157,21 @@
 
 ### ✅ Week 9-12 Actions
 
-**Backend Completion**
+#### Backend Completion**
 
 - [ ] Finish all core endpoints
 - [ ] Deploy to Railway staging
 - [ ] Integration testing
 - [ ] Documentation
 
-**Progressive Independence**
+#### Progressive Independence**
 
 - [ ] Implement level system
 - [ ] Build progression UI
 - [ ] Parent approval workflows
 - [ ] User testing
 
-**Beta Preparation**
+#### Beta Preparation**
 
 - [ ] Recruit 100+ beta families
 - [ ] Create onboarding materials
@@ -209,15 +215,15 @@
 
 ### Short-Term (Next 4 Weeks)
 
-4. **Backend Provider:** Railway vs. AWS for initial deployment
-5. **Analytics:** Opt-in telemetry approach and tooling
-6. **Community Features:** Go/no-go decision after user research
+1. **Backend Provider:** Railway vs. AWS for initial deployment
+2. **Analytics:** Opt-in telemetry approach and tooling
+3. **Community Features:** Go/no-go decision after user research
 
 ### Medium-Term (8-12 Weeks)
 
-7. **Monetization:** Freemium, subscription, or B2B2C focus
-8. **Hardware:** Pursue wearable partnerships or software-only
-9. **Geographic Expansion:** Next city priorities
+1. **Monetization:** Freemium, subscription, or B2B2C focus
+2. **Hardware:** Pursue wearable partnerships or software-only
+3. **Geographic Expansion:** Next city priorities
 
 ---
 
