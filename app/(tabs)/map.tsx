@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Mo
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import InteractiveMap from "@/components/InteractiveMap";
+import ExpoMapView from "@/components/ExpoMapView";
 import RouteCard from "@/components/RouteCard";
 import EnhancedRouteCard from "@/components/EnhancedRouteCard";
 import RoutingPreferences from "@/components/RoutingPreferences";
@@ -131,15 +132,35 @@ export default function MapScreen() {
     });
   }, []);
 
+  // Check if expo-maps is available (only in development builds)
+  const expoMapsSupported = useMemo(() => {
+    // Expo Maps requires a development build - not available in Expo Go
+    // Use a safe check that doesn't try to load the module
+    try {
+      // Check if expo-modules-core has the native module registered
+      const ExpoModulesCore = require('expo-modules-core');
+      const hasExpoMaps = ExpoModulesCore.NativeModulesProxy?.ExpoMaps != null;
+      // Only support on Android for now since our implementation is Android-specific
+      return hasExpoMaps && Platform.OS === 'android';
+    } catch {
+      return false;
+    }
+  }, []);
+
   useEffect(() => {
-    if (!mapLibreSupported) {
+    if (!mapLibreSupported && !expoMapsSupported) {
       console.warn(
-        'MapLibre native module not detected. Falling back to InteractiveMap. Run a development build with the MapLibre module installed to enable advanced map features.',
+        'Advanced mapping modules not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre or Expo Maps.',
       );
     }
-  }, [mapLibreSupported]);
+  }, [mapLibreSupported, expoMapsSupported]);
 
-  const useMapLibre = mapLibreSupported;
+  // Priority: MapLibre > Expo Maps > Interactive Map (OpenStreetMap)
+  const mapImplementation = useMemo(() => {
+    if (mapLibreSupported) return 'maplibre';
+    if (expoMapsSupported) return 'expo-maps';
+    return 'interactive';
+  }, [mapLibreSupported, expoMapsSupported]);
 
   const originCoord = useMemo(
     () => (origin ? [origin.coordinates.longitude, origin.coordinates.latitude] as [number, number] : undefined),
@@ -162,23 +183,44 @@ export default function MapScreen() {
         <View style={styles.gpsStatusBar}>
           <ActivityIndicator size="small" color={Colors.primary} />
           <Text style={styles.gpsStatusText}>Acquiring GPS location...</Text>
+          <View style={styles.mapImplementationBadge}>
+            <Text style={styles.mapImplementationText}>
+              {mapImplementation === 'maplibre' ? 'MapLibre' : 
+               mapImplementation === 'expo-maps' ? 'Google Maps' : 'OpenStreetMap'}
+            </Text>
+          </View>
         </View>
       )}
       {!locationLoading && location?.latitude !== 40.7128 && (
         <View style={styles.gpsStatusBar}>
           <View style={styles.gpsIndicator} />
           <Text style={styles.gpsStatusText}>GPS location active</Text>
+          <View style={styles.mapImplementationBadge}>
+            <Text style={styles.mapImplementationText}>
+              {mapImplementation === 'maplibre' ? 'MapLibre' : 
+               mapImplementation === 'expo-maps' ? 'Google Maps' : 'OpenStreetMap'}
+            </Text>
+          </View>
         </View>
       )}
       
       <View style={styles.mapContainer}>
-        {useMapLibre ? (
+        {mapImplementation === 'maplibre' ? (
           <MapLibreRouteView
             origin={origin ?? undefined}
             destination={destination ?? undefined}
             routeGeoJSON={orsRouteGeoJSON}
             onStationPress={handleStationPress}
             showTransitStations
+          />
+        ) : mapImplementation === 'expo-maps' ? (
+          <ExpoMapView
+            origin={origin || undefined}
+            destination={destination || undefined}
+            route={selectedRoute || undefined}
+            onStationPress={handleStationPress}
+            showTransitStations
+            onMapReady={() => console.log('Expo Maps ready')}
           />
         ) : (
           <InteractiveMap
@@ -444,13 +486,25 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.text,
     fontWeight: '600',
+    flex: 1,
+  },
+  mapImplementationBadge: {
+    backgroundColor: Colors.primary + '15',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  mapImplementationText: {
+    fontSize: 10,
+    color: Colors.primary,
+    fontWeight: '600',
   },
   mapContainer: {
     height: Platform.select({
-      web: Math.min(screenHeight * 0.5, 500),
-      default: screenHeight * 0.40,
+      web: Math.min(screenHeight * 0.55, 540),
+      default: screenHeight * 0.45,
     }),
-    minHeight: 300,
+    minHeight: 360,
     width: '100%',
     backgroundColor: Colors.border,
     overflow: 'hidden',
