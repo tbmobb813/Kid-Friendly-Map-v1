@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState, useCallback } from 'react';
 import { View, StyleSheet, Platform, Pressable, Text, Dimensions } from 'react-native';
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import Colors from '@/constants/colors';
 import { Place, Route } from '@/types/navigation';
 import { nycStations, Station } from '@/config/transit/nyc-stations';
@@ -17,6 +18,7 @@ type InteractiveMapProps = {
   onStationPress?: (stationId: string) => void;
   showTransitStations?: boolean;
   testId?: string;
+  onTouchStateChange?: (active: boolean) => void;
 };
 
 const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null }> = ({ testId, WebViewComponent }) => {
@@ -70,6 +72,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onStationPress,
   showTransitStations = true,
   testId,
+  onTouchStateChange,
 }) => {
   const WebViewComponent = useMemo(() => {
     if (Platform.OS === 'web') return null;
@@ -165,7 +168,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           .join('\n')
       : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -266,8 +269,22 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           try {
             const data = JSON.parse(event.data || '{}');
             if (data.type === 'recenter') { recenter(); }
+            if (data.type === 'invalidate') { try { map.invalidateSize(true); } catch (e) {} }
           } catch (e) { console.log('message parse error', e); }
         });
+
+        // Relay touch state to RN so parent scroll can be disabled during interactions
+        try {
+          const mapEl = document.getElementById('map');
+          if (mapEl) {
+            const sendTouch = (state) => {
+              try { window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'touch', state })); } catch {}
+            };
+            mapEl.addEventListener('touchstart', () => sendTouch('start'), { passive: true });
+            mapEl.addEventListener('touchend', () => sendTouch('end'), { passive: true });
+            mapEl.addEventListener('touchcancel', () => sendTouch('end'), { passive: true });
+          }
+        } catch (e) { console.log('touch relay error', e); }
 
         // Ready + ensure proper sizing
         setTimeout(() => {
@@ -292,6 +309,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       const data = JSON.parse(raw);
       if (data?.type === 'mapLog') {
         console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
+        return;
+      }
+      if (data?.type === 'touch') {
+        onTouchStateChange?.(data.state === 'start');
         return;
       }
       if (data?.type === 'ready') {
@@ -333,7 +354,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           message={destination ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}` : 'Select destination for interactive map'}
         />
       ) : WebViewComponent && containerLayout ? (
-        <WebViewComponent
+        <NativeViewGestureHandler disallowInterruption>
+          <WebViewComponent
           key={`map-${origin?.coordinates?.latitude}-${origin?.coordinates?.longitude}-${containerLayout.width}-${containerLayout.height}`}
           ref={webViewRef}
           source={{ html: generateLeafletHTML(containerLayout) }}
@@ -367,12 +389,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
               }
               true;
             `);
+            setTimeout(() => {
+              try { webViewRef.current?.postMessage(JSON.stringify({ type: 'invalidate' })); } catch {}
+            }, 250);
           }}
           javaScriptEnabled
           domStorageEnabled
           startInLoadingState
           scalesPageToFit={false}
-          androidLayerType="hardware"
+          androidLayerType="software"
           scrollEnabled={false}
           bounces={false}
           showsHorizontalScrollIndicator={false}
@@ -381,6 +406,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           mixedContentMode="always"
           setSupportMultipleWindows={false}
         />
+        </NativeViewGestureHandler>
       ) : (
         <MapPlaceholder message="Map unavailable on this device" />
       )}
@@ -391,7 +417,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       </Pressable>
 
       {showTransitStations && (
-        <View style={styles.transitInfo}>
+        <View style={styles.transitInfo} pointerEvents="none">
           <Train color={Colors.primary} size={16} />
           <Text style={styles.transitLabel}>Transit stations shown</Text>
         </View>
