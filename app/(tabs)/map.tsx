@@ -28,6 +28,7 @@ export default function MapScreen() {
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
   const [showStationModal, setShowStationModal] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   
   const { 
     origin,
@@ -229,6 +230,7 @@ export default function MapScreen() {
             route={selectedRoute || undefined}
             onStationPress={handleStationPress}
             showTransitStations
+            onTouchStateChange={(active) => setScrollEnabled(!active)}
           />
         )}
       </View>
@@ -238,6 +240,7 @@ export default function MapScreen() {
         contentContainerStyle={styles.scrollContentContainer}
         showsVerticalScrollIndicator={false}
         bounces={true}
+        scrollEnabled={scrollEnabled}
       >
         <SafetyPanel 
           currentLocation={location} 
