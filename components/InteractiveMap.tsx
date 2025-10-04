@@ -1,11 +1,15 @@
+// path: app/components/InteractiveMap.tsx
 import React, { useMemo, useRef, useState, useCallback } from 'react';
-import { View, StyleSheet, Platform, Pressable, Text, Dimensions } from 'react-native';
-import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import { Animated, Easing } from 'react-native';
+import { View, StyleSheet, Platform, Pressable, Text } from 'react-native';
 import Colors from '@/constants/colors';
 import { Place, Route } from '@/types/navigation';
-import { nycStations, Station } from '@/config/transit/nyc-stations';
+import { nycStations } from '@/config/transit/nyc-stations';
 import MapPlaceholder from './MapPlaceholder';
 import { Crosshair, Train } from 'lucide-react-native';
+import ExpoMapView from './ExpoMapView';
+import MapLibreRouteView from './MapLibreRouteView';
+import { isMapLibreAvailable } from './MapLibreMap';
 
 type LatLng = { latitude: number; longitude: number };
 
@@ -19,12 +23,22 @@ type InteractiveMapProps = {
   showTransitStations?: boolean;
   testId?: string;
   onTouchStateChange?: (active: boolean) => void;
+  /** Prefer native MapLibre engine when available; falls back to WebView+Leaflet. */
+  preferNative?: boolean;
+  /** Cluster radius in meters (native MapLibre only). */
+  clusterRadiusMeters?: number;
+  /** Mascot speech bubble hint text (optional, for parent wiring) */
+  mascotHint?: string;
+  /** Setter for mascot speech bubble hint (optional, for parent wiring) */
+  setMascotHint?: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null }> = ({ testId, WebViewComponent }) => {
-  if (Platform.OS === 'web' || !WebViewComponent) {
-    return null;
-  }
+const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null }> = ({
+  testId,
+  WebViewComponent,
+}) => {
+  if (Platform.OS === 'web' || !WebViewComponent) return null;
+
   const preloadHtml = `
     <!DOCTYPE html>
     <html>
@@ -42,13 +56,12 @@ const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null 
           if (!token) {
             window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'mapbox-preloaded' }));
           }
-        } catch (e) {
-          console.log('mapbox preload error', e);
-        }
+        } catch (e) { /* noop */ }
       </script>
     </body>
     </html>
   `;
+
   return (
     <WebViewComponent
       testID={testId ?? 'mapbox-preloader'}
@@ -57,10 +70,65 @@ const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null 
       javaScriptEnabled
       domStorageEnabled
       onMessage={(e: any) => {
-        try { console.log('Mapbox preloader message', e?.nativeEvent?.data ?? ''); } catch {}
+        try {
+          console.log('Mapbox preloader message', e?.nativeEvent?.data ?? '');
+        } catch { /* noop */ }
       }}
     />
   );
+};
+
+// small helpers
+const toRad = (d: number) => (d * Math.PI) / 180;
+const haversineMeters = (a: LatLng, b: LatLng) => {
+  const R = 6371000;
+  const dLat = toRad(b.latitude - a.latitude);
+  const dLon = toRad(b.longitude - a.longitude);
+  const la1 = toRad(a.latitude);
+  const la2 = toRad(b.latitude);
+  const h =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(la1) * Math.cos(la2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return 2 * R * Math.asin(Math.sqrt(h));
+};
+
+type StationLike = { id: string; name: string; coordinates: LatLng };
+
+type StationCluster = {
+  id: string;
+  center: LatLng;
+  stationIds: string[];
+  count: number;
+};
+
+const clusterStations = (stations: StationLike[], radiusMeters: number): StationCluster[] => {
+  if (!stations.length) return [];
+  const visited = new Set<string>();
+  const clusters: StationCluster[] = [];
+
+  for (const s of stations) {
+    if (visited.has(s.id)) continue;
+    const bucket: StationLike[] = [s];
+    visited.add(s.id);
+
+    for (const t of stations) {
+      if (visited.has(t.id)) continue;
+      if (haversineMeters(s.coordinates, t.coordinates) <= radiusMeters) {
+        bucket.push(t);
+        visited.add(t.id);
+      }
+    }
+
+    const lat = bucket.reduce((acc, x) => acc + x.coordinates.latitude, 0) / bucket.length;
+    const lng = bucket.reduce((acc, x) => acc + x.coordinates.longitude, 0) / bucket.length;
+    clusters.push({
+      id: `cluster_${bucket.map((x) => x.id).join('_')}`.slice(0, 120),
+      center: { latitude: lat, longitude: lng },
+      stationIds: bucket.map((x) => x.id),
+      count: bucket.length,
+    });
+  }
+  return clusters;
 };
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({
@@ -73,265 +141,112 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   showTransitStations = true,
   testId,
   onTouchStateChange,
+  preferNative = true,
+  clusterRadiusMeters = 250,
+  mascotHint,
+  setMascotHint,
 }) => {
+  // Animated values for breathing and marker
+  const breathingAnim = useRef(new Animated.Value(1)).current;
+  const markerAnim = useRef(new Animated.Value(1)).current;
+
+  // Mascot speech bubble state for hints (controlled or local)
+  const [localMascotHint, setLocalMascotHint] = useState('Hi! Tap a route or ask for help!');
+  const mascotHintValue = typeof mascotHint === 'string' ? mascotHint : localMascotHint;
+  const setMascotHintValue = setMascotHint ?? setLocalMascotHint;
+  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(null);
+  const [recenterNonce, setRecenterNonce] = useState(0);
+
+  const useNative = useMemo(() => {
+    if (!preferNative) return false;
+    if (Platform.OS === 'web') return false;
+    const available = !!isMapLibreAvailable;
+    if (!available) console.warn('MapLibre native engine not available, falling back to WebView');
+    return available;
+  }, [preferNative]);
+
+  const routeCoords: [number, number][] = useMemo(() => {
+    const pts = route?.geometry?.coordinates ?? [];
+    return pts
+      .filter((p) => typeof p?.latitude === 'number' && typeof p?.longitude === 'number')
+      .map((p) => [p.latitude, p.longitude]);
+  }, [route]);
+
+  const allBounds = useMemo(() => {
+    const coords: LatLng[] = [];
+    if (origin?.coordinates) coords.push(origin.coordinates);
+    if (destination?.coordinates) coords.push(destination.coordinates);
+    for (const [lat, lng] of routeCoords) coords.push({ latitude: lat, longitude: lng });
+    if (coords.length === 0) return null;
+
+    const minLat = Math.min(...coords.map((c) => c.latitude));
+    const maxLat = Math.max(...coords.map((c) => c.latitude));
+    const minLng = Math.min(...coords.map((c) => c.longitude));
+    const maxLng = Math.max(...coords.map((c) => c.longitude));
+    const center = { latitude: (minLat + maxLat) / 2, longitude: (minLng + maxLng) / 2 };
+    return { minLat, maxLat, minLng, maxLng, center, count: coords.length };
+  }, [origin, destination, routeCoords]);
+
+  // ---------- WebView fallback bits ----------
+  const [mapReady, setMapReady] = useState(false);
+  const webViewRef = useRef<any>(null);
   const WebViewComponent = useMemo(() => {
     if (Platform.OS === 'web') return null;
     try {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const mod = require('react-native-webview');
       return mod?.WebView ?? null;
-    } catch (e) {
-      console.log('WebView module not available', e);
+    } catch {
       return null;
     }
   }, []);
 
-  const webViewRef = useRef<any>(null);
-  const [isMapReady, setMapReady] = useState<boolean>(false);
-  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(null);
+  const handleMessage = useCallback(
+    (event: any) => {
+      try {
+        const raw: string = event?.nativeEvent?.data ?? '';
+        if (!raw) return;
 
-  const routeCoords = useMemo<LatLng[] | undefined>(() => {
-    if (route?.geometry?.coordinates && route.geometry.coordinates.length > 0) {
-      return route.geometry.coordinates;
-    }
-    if (origin?.coordinates && destination?.coordinates) {
-      return [origin.coordinates, destination.coordinates];
-    }
-    return undefined;
-  }, [route?.geometry?.coordinates, origin?.coordinates, destination?.coordinates]);
-
-  const generateLeafletHTML = useCallback((layout?: { width: number; height: number }) => {
-    const centerLat = origin?.coordinates?.latitude ?? 40.7128;
-    const centerLng = origin?.coordinates?.longitude ?? -74.0060;
-    const widthPx = layout?.width ? `${layout.width}px` : '100%';
-    const heightPx = layout?.height ? `${layout.height}px` : '100%';
-
-    const polylineJs = routeCoords
-      ? `const poly = L.polyline(${JSON.stringify(
-          routeCoords.map((c) => [c.latitude, c.longitude])
-        )}, { color: '${Colors.primary}', weight: 4, opacity: 0.9 }).addTo(map);`
-      : '';
-
-    const fitBoundsJs = routeCoords
-      ? `try { map.fitBounds(poly.getBounds().pad(0.15)); } catch (e) { console.log('fitBounds error', e); }`
-      : '';
-
-    const originMarkerJs = origin
-      ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${origin.coordinates.longitude}], { icon: originIcon }).addTo(map).bindPopup(${JSON.stringify(origin.name)});`
-      : '';
-
-    const destinationMarkerJs = destination
-      ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
-      : '';
-
-    const transitStationsJs = showTransitStations
-      ? nycStations
-          .map(
-            (station) => `
-          const station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')} = L.marker([${station.coordinates.latitude}, ${station.coordinates.longitude}], { 
-            icon: transitIcon 
-          }).addTo(map).bindPopup(\`
-            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-              <h3 style="margin: 0 0 8px 0; color: #333;">${station.name}</h3>
-              <div style="margin-bottom: 8px;">
-                <strong>Lines:</strong> ${station.lines.map(line => `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`).join('')}
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong>Safety Rating:</strong> ${'⭐'.repeat(station.kidFriendly.safetyRating)} (${station.kidFriendly.safetyRating}/5)
-              </div>
-              <div style="margin-bottom: 8px;">
-                <strong>Kid-Friendly Features:</strong><br/>
-                ${station.kidFriendly.hasElevator ? '✅ Elevator' : '❌ No Elevator'}<br/>
-                ${station.kidFriendly.hasBathroom ? '✅ Bathroom' : '❌ No Bathroom'}<br/>
-                ${station.kidFriendly.hasWideGates ? '✅ Wide Gates' : '❌ Standard Gates'}
-              </div>
-              ${station.kidFriendly.nearbyAttractions && station.kidFriendly.nearbyAttractions.length > 0 ? `
-                <div style="margin-bottom: 8px;">
-                  <strong>Nearby Attractions:</strong><br/>
-                  ${station.kidFriendly.nearbyAttractions.map(attr => `• ${attr}`).join('<br/>')}
-                </div>
-              ` : ''}
-              <button onclick="handleStationClick('${station.id}')" style="background: #007AFF; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px;">
-                View Live Arrivals
-              </button>
-            </div>
-          \`);
-          
-          station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')}.on('click', function() {
-            try {
-              const payload = JSON.stringify({ type: 'station', stationId: '${station.id}' });
-              window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
-            } catch (err) { console.log('station click error', err); }
-          });
-        `
-          )
-          .join('\n')
-      : '';
-
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-      <style>
-        * { margin: 0 !important; padding: 0 !important; box-sizing: border-box; }
-        html, body, #map {
-          width: ${widthPx} !important;
-          height: ${heightPx} !important;
-          min-width: ${widthPx} !important;
-          min-height: ${heightPx} !important;
-          max-width: ${widthPx} !important;
-          max-height: ${heightPx} !important;
-          overflow: hidden !important;
-          background: transparent !important;
-        }
-        body { position: relative !important; display: flex !important; }
-        #map { position: absolute !important; top: 0; left: 0; right: 0; bottom: 0; }
-        .leaflet-container,
-        .leaflet-pane,
-        .leaflet-map-pane,
-        .leaflet-tile-container {
-          width: 100% !important;
-          height: 100% !important;
-        }
-        .leaflet-control-zoom {
-          margin-top: 50px !important;
-          margin-left: 10px !important;
-          z-index: 1000 !important;
-          display: flex !important;
-          flex-direction: column !important;
-        }
-        .leaflet-control-zoom a {
-          width: 34px !important;
-          height: 34px !important;
-          line-height: 34px !important;
-          font-size: 22px !important;
-          display: block !important;
-          text-align: center !important;
-          text-decoration: none !important;
-          color: #000 !important;
-          background-color: #fff !important;
-          border: 2px solid rgba(0,0,0,0.2) !important;
-        }
-        .leaflet-control-zoom a:first-child { border-bottom: none !important; border-radius: 4px 4px 0 0 !important; }
-        .leaflet-control-zoom a:last-child { border-radius: 0 0 4px 4px !important; }
-      </style>
-    </head>
-    <body>
-      <div id="map"></div>
-      <script>
-        const map = L.map('map', { zoomControl: false, preferCanvas: true }).setView([${centerLat}, ${centerLng}], 13);
-
-        // Add zoom control with custom position
-        L.control.zoom({ position: 'topleft' }).addTo(map);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
-
-        const originIcon = L.divIcon({
-          html: '<div style="background: ${Colors.primary}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
-          iconSize: [26,26], iconAnchor: [13,13]
-        });
-        const destinationIcon = L.divIcon({
-          html: '<div style="background: ${Colors.secondary}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
-          iconSize: [26,26], iconAnchor: [13,13]
-        });
-        const transitIcon = L.divIcon({
-          html: '<div style="background: #FF6B35; width: 16px; height: 16px; border-radius: 4px; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="color: white; font-size: 10px; font-weight: bold;">🚇</span></div>',
-          iconSize: [20,20], iconAnchor: [10,10]
-        });
-
-        function handleStationClick(stationId) {
-          try {
-            const payload = JSON.stringify({ type: 'station', stationId: stationId });
-            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
-          } catch (err) { console.log('handleStationClick error', err); }
+        if (raw === 'mapReady') {
+          setMapReady(true);
+          onMapReady?.();
+          return;
         }
 
-        ${originMarkerJs}
-        ${destinationMarkerJs}
-        ${transitStationsJs}
-        ${polylineJs}
-        ${fitBoundsJs}
-
-        map.on('click', function(e) {
-          try {
-            const payload = JSON.stringify({ type: 'tap', lat: e.latlng.lat, lng: e.latlng.lng });
-            window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
-          } catch (err) { console.log('postMessage error', err); }
-        });
-
-        function recenter() {
-          try { ${routeCoords ? 'map.fitBounds(poly.getBounds().pad(0.15));' : `map.setView([${centerLat}, ${centerLng}], 13);`} } catch (e) { console.log('recenter error', e); }
+        let data: any = raw;
+        if (typeof raw === 'string') {
+          try { data = JSON.parse(raw); } catch { /* ignore */ }
         }
 
-        document.addEventListener('message', function(event) {
-          try {
-            const data = JSON.parse(event.data || '{}');
-            if (data.type === 'recenter') { recenter(); }
-            if (data.type === 'invalidate') { try { map.invalidateSize(true); } catch (e) {} }
-          } catch (e) { console.log('message parse error', e); }
-        });
+        if (data?.type === 'mapLog') {
+          console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
+          return;
+        }
+        if (data?.type === 'touch') {
+          onTouchStateChange?.(data.state === 'start');
+          return;
+        }
+        if (data?.type === 'ready') {
+          setMapReady(true);
+          onMapReady?.();
+          return;
+        }
+        if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
+          onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
+          return;
+        }
+        if (data?.type === 'station' && typeof data.stationId === 'string') {
+          onStationPress?.(data.stationId);
+          return;
+        }
+      } catch (e) {
+        console.log('InteractiveMap handleMessage error', e);
+      }
+    },
+    [onMapReady, onSelectLocation, onStationPress, onTouchStateChange]
+  );
 
-        // Relay touch state to RN so parent scroll can be disabled during interactions
-        try {
-          const mapEl = document.getElementById('map');
-          if (mapEl) {
-            const sendTouch = (state) => {
-              try { window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'touch', state })); } catch {}
-            };
-            mapEl.addEventListener('touchstart', () => sendTouch('start'), { passive: true });
-            mapEl.addEventListener('touchend', () => sendTouch('end'), { passive: true });
-            mapEl.addEventListener('touchcancel', () => sendTouch('end'), { passive: true });
-          }
-        } catch (e) { console.log('touch relay error', e); }
-
-        // Ready + ensure proper sizing
-        setTimeout(() => {
-          try { map.invalidateSize(true); } catch {}
-          try { window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' })); } catch {}
-        }, 200);
-        setTimeout(() => { try { map.invalidateSize(true); } catch {} }, 800);
-      </script>
-    </body>
-    </html>`;
-  }, [origin, destination, routeCoords, showTransitStations]);
-
-  const handleMessage = useCallback((event: any) => {
-    try {
-      const raw: string = event?.nativeEvent?.data ?? '';
-      if (!raw) return;
-      if (raw === 'mapReady') {
-        setMapReady(true);
-        onMapReady?.();
-        return;
-      }
-      const data = JSON.parse(raw);
-      if (data?.type === 'mapLog') {
-        console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
-        return;
-      }
-      if (data?.type === 'touch') {
-        onTouchStateChange?.(data.state === 'start');
-        return;
-      }
-      if (data?.type === 'ready') {
-        setMapReady(true);
-        onMapReady?.();
-        return;
-      }
-      if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
-        onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
-      }
-      if (data?.type === 'station' && typeof data.stationId === 'string') {
-        onStationPress?.(data.stationId);
-      }
-    } catch (e) {
-      console.log('InteractiveMap handleMessage error', e);
-    }
-  }, [onMapReady, onSelectLocation, onStationPress]);
-
-  const sendRecenter = useCallback(() => {
+  const sendRecenterWeb = useCallback(() => {
     try {
       webViewRef.current?.postMessage(JSON.stringify({ type: 'recenter' }));
     } catch (e) {
@@ -339,54 +254,235 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     }
   }, []);
 
+  const injectedResizeJS = `
+    try {
+      if (typeof map !== 'undefined' && map.invalidateSize) {
+        map.invalidateSize(true);
+      }
+    } catch (e) {}
+    true;
+  `;
+
+  const generateLeafletHTML = useMemo(() => {
+    const originMarkerJs = origin
+      ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${origin.coordinates.longitude}]).addTo(map).bindPopup(${JSON.stringify(
+          origin.name
+        )});`
+      : '';
+
+    const destinationMarkerJs = destination
+      ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}]).addTo(map).bindPopup(${JSON.stringify(
+          destination.name
+        )});`
+      : '';
+
+    const boundsInitJs = `
+      const bounds = L.latLngBounds([]);
+      const addToBounds = (lat, lng) => { try { bounds.extend([lat, lng]); } catch {} };
+    `;
+
+    const routeJs =
+      routeCoords.length > 0
+        ? `
+      const routeLatLngs = ${JSON.stringify(routeCoords)};
+      const routeLine = L.polyline(routeLatLngs, { weight: 4 }).addTo(map);
+      routeLatLngs.forEach(([lat, lng]) => addToBounds(lat, lng));
+    `
+        : '';
+
+    const addOriginToBounds = origin ? `addToBounds(${origin.coordinates.latitude}, ${origin.coordinates.longitude});` : '';
+    const addDestToBounds = destination ? `addToBounds(${destination.coordinates.latitude}, ${destination.coordinates.longitude});` : '';
+
+    const transitStationsJs = showTransitStations
+      ? nycStations
+          .map((station) => {
+            const varName = `station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')}`;
+            return `
+              const ${varName} = L.marker([${station.coordinates.latitude}, ${station.coordinates.longitude}]).addTo(map).bindPopup(${JSON.stringify(
+              station.name
+            )});
+              ${varName}.on('click', function() {
+                try {
+                  const payload = JSON.stringify({ type: 'station', stationId: '${station.id}' });
+                  window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
+                } catch (err) { /* noop */ }
+              });
+            `;
+          })
+          .join('\n')
+      : '';
+
+    const w = containerLayout?.width ?? 0;
+    const h = containerLayout?.height ?? 0;
+
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    html, body, #map { margin:0; padding:0; height:100%; width:100%; background:transparent; }
+    #map { touch-action: pan-x pan-y; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    (function(){
+      var map = L.map('map', { zoomControl: true, tap: true, attributionControl: false });
+      var tile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 20, minZoom: 2 }).addTo(map);
+
+      function post(msg){
+        try { window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify(msg)); } catch(e) {}
+      }
+
+      ${boundsInitJs}
+
+      ${originMarkerJs}
+      ${destinationMarkerJs}
+      ${routeJs}
+      ${addOriginToBounds}
+      ${addDestToBounds}
+
+      ${transitStationsJs}
+
+      try {
+        if (bounds.isValid()) { map.fitBounds(bounds, { padding: [24,24] }); }
+        else { map.setView([40.7128, -74.0060], 11); }
+      } catch {}
+
+      map.on('click', function(e){ post({ type: 'tap', lat: e.latlng.lat, lng: e.latlng.lng }); });
+      map.on('touchstart', function(){ post({ type: 'touch', state: 'start' }); });
+      map.on('touchend', function(){ post({ type: 'touch', state: 'end' }); });
+
+      function handleMessage(ev){
+        var data = ev?.data;
+        if (typeof data === 'string') { try { data = JSON.parse(data); } catch {} }
+        if (!data || typeof data !== 'object') return;
+
+        if (data.type === 'recenter') {
+          try { if (bounds.isValid()) map.fitBounds(bounds, { padding: [24,24] }); else map.invalidateSize(true); } catch {}
+        }
+        if (data.type === 'invalidate') { try { map.invalidateSize(true); } catch {} }
+      }
+      document.addEventListener('message', handleMessage);
+      window.addEventListener('message', handleMessage);
+
+      setTimeout(function(){ try { map.invalidateSize(true); } catch {} }, 0);
+      setTimeout(function(){ try { map.invalidateSize(true); } catch {} }, 500);
+
+      post({ type: 'ready', size: { w: ${w}, h: ${h} } });
+    })();
+  </script>
+</body>
+</html>
+    `;
+  }, [origin, destination, routeCoords, showTransitStations, containerLayout]);
+
+  // ---------- Native-only station data + clustering ----------
+  const stations: StationLike[] = useMemo(
+    () =>
+      showTransitStations
+        ? nycStations.map((s) => ({
+            id: s.id,
+            name: s.name,
+            coordinates: { latitude: s.coordinates.latitude, longitude: s.coordinates.longitude },
+          }))
+        : [],
+    [showTransitStations]
+  );
+
+  const stationClusters: StationCluster[] = useMemo(
+    () => (useNative && stations.length ? clusterStations(stations, clusterRadiusMeters) : []),
+    [useNative, stations, clusterRadiusMeters]
+  );
+
+  // ---------- recenter dispatch ----------
+  const sendRecenterNative = useCallback(() => {
+    setRecenterNonce((n) => n + 1); // why: prop-change handshake with native map
+  }, []);
+  const sendRecenter = useCallback(() => {
+    if (useNative) sendRecenterNative();
+    else sendRecenterWeb();
+  }, [useNative, sendRecenterNative, sendRecenterWeb]);
+
   return (
-    <View 
-      style={styles.container} 
+    <Animated.View
+      style={[styles.container, { transform: [{ scale: breathingAnim }] }]}
       testID={testId ?? (Platform.OS === 'web' ? 'interactive-map-web' : 'interactive-map')}
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout;
-        console.log('🗺️  Map container layout:', { width, height });
         setContainerLayout({ width, height });
       }}
     >
+      {/* Mascot bubble bottom left */}
+      <View style={styles.mascotBubble} pointerEvents="box-none">
+        <View style={styles.mascotCircle}>
+          <Text style={styles.mascotEmoji} accessibilityLabel="Mascot">🦉</Text>
+        </View>
+        <View style={styles.mascotSpeech}>
+      <Text style={styles.mascotText}>{mascotHintValue}</Text>
+        </View>
+      </View>
       {Platform.OS === 'web' ? (
         <MapPlaceholder
-          message={destination ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}` : 'Select destination for interactive map'}
+          message={
+            destination
+              ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}`
+              : 'Select destination for interactive map'
+          }
         />
+      ) : useNative ? (
+        <>
+          <ExpoMapView
+            testId={testId ?? 'interactive-map-native'}
+            origin={origin}
+            destination={destination}
+            route={route}
+            showTransitStations={showTransitStations}
+            onMapReady={onMapReady}
+            onStationPress={onStationPress}
+          />
+          {/* Animated marker: pulsating dot at origin */}
+          {origin?.coordinates && (
+            <Animated.View
+              style={[styles.animatedMarker, {
+                transform: [{ scale: markerAnim }],
+                left: '50%',
+                top: '50%',
+              }]}
+            />
+          )}
+          {route && (
+            <MapLibreRouteView
+              origin={origin}
+              destination={destination}
+              routeGeoJSON={route.geometry as any}
+              showTransitStations={showTransitStations}
+              onStationPress={onStationPress}
+              testID={testId ? `${testId}-route` : undefined}
+            />
+          )}
+        </>
       ) : WebViewComponent && containerLayout ? (
-        <NativeViewGestureHandler disallowInterruption>
-          <WebViewComponent
-          key={`map-${origin?.coordinates?.latitude}-${origin?.coordinates?.longitude}-${containerLayout.width}-${containerLayout.height}`}
+        <WebViewComponent
+          key={`map-${origin?.coordinates?.latitude}-${origin?.coordinates?.longitude}-${containerLayout?.width ?? 0}-${containerLayout?.height ?? 0}`}
           ref={webViewRef}
-          source={{ html: generateLeafletHTML(containerLayout) }}
+          source={{ html: generateLeafletHTML }}
           originWhitelist={['*']}
           style={styles.webMap}
-          injectedJavaScript={`
-            setTimeout(() => {
+          injectedJavaScript={injectedResizeJS}
+          onMessage={handleMessage}
+          onLoadEnd={() => {
+            webViewRef.current?.injectJavaScript(`
               try {
                 if (typeof map !== 'undefined' && map.invalidateSize) {
                   map.invalidateSize(true);
-                  console.log('📍 Map invalidateSize called from injected JS, container: ${containerLayout.width}x${containerLayout.height}');
+                  setTimeout(() => map.invalidateSize(true), 400);
                 }
-              } catch (e) {
-                console.log('❌ injectedJS error:', e);
-              }
-            }, 500);
-            true;
-          `}
-          onMessage={handleMessage}
-          onLoadEnd={() => {
-            console.log('🗺️  WebView loaded, injecting resize command');
-            webViewRef.current?.injectJavaScript(`
-              try {
-                if (typeof map !== 'undefined') {
-                  console.log('📏 Map element size:', document.getElementById('map').getBoundingClientRect());
-                  map.invalidateSize(true);
-                  setTimeout(() => map.invalidateSize(true), 1000);
-                }
-              } catch (e) {
-                console.log('❌ onLoadEnd inject error:', e);
-              }
+              } catch (e) {}
               true;
             `);
             setTimeout(() => {
@@ -406,14 +502,28 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           mixedContentMode="always"
           setSupportMultipleWindows={false}
         />
-        </NativeViewGestureHandler>
       ) : (
         <MapPlaceholder message="Map unavailable on this device" />
       )}
 
-      <Pressable accessibilityRole="button" testID="recenter-button" style={styles.recenterBtn} onPress={sendRecenter}>
-        <Crosshair color={Colors.text} size={18} />
-        <Text style={styles.recenterLabel}>Recenter</Text>
+      {/* Floating Action Buttons (FABs) */}
+      {/* Help FAB top right */}
+      <Pressable
+        accessibilityRole="button"
+        testID="help-fab"
+        style={[styles.fab, styles.fabTopRight]}
+        onPress={() => alert('Help is on the way!')}
+      >
+        <Text style={styles.fabIcon}>?</Text>
+      </Pressable>
+      {/* Recenter FAB bottom right */}
+      <Pressable
+        accessibilityRole="button"
+        testID="recenter-fab"
+        style={[styles.fab, styles.fabBottomRight]}
+        onPress={sendRecenter}
+      >
+        <Crosshair color={Colors.primary} size={32} />
       </Pressable>
 
       {showTransitStations && (
@@ -423,14 +533,144 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </View>
       )}
 
-      <MapboxPreloader WebViewComponent={WebViewComponent} />
-    </View>
+      {!useNative && <MapboxPreloader WebViewComponent={WebViewComponent} />}
+  </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  mascotBubble: {
+    position: 'absolute',
+    left: 16,
+    bottom: 24,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    zIndex: 2100,
+  },
+  mascotCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 6,
+    marginRight: 8,
+  },
+  mascotEmoji: {
+    fontSize: 32,
+  },
+  mascotSpeech: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
+    maxWidth: 160,
+  },
+  mascotText: {
+    fontSize: 14,
+    color: Colors.text,
+    fontWeight: '600',
+  },
+  fabTopRight: {
+    position: 'absolute',
+    top: 32,
+    right: 24,
+    zIndex: 2000,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: Colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 8,
+  },
+  fabBottomRight: {
+    position: 'absolute',
+    bottom: 32,
+    right: 24,
+    zIndex: 2000,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: Colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 8,
+  },
+  animatedMarker: {
+    position: 'absolute',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#4F8EF7',
+    opacity: 0.7,
+    borderWidth: 4,
+    borderColor: '#fff',
+    zIndex: 1000,
+    marginLeft: -16,
+    marginTop: -16,
+  },
+  fabContainer: {
+    position: 'absolute',
+    bottom: 32,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    pointerEvents: 'box-none',
+    zIndex: 2000,
+  },
+  fab: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: Colors.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 8,
+    marginHorizontal: 16,
+  },
+  fabRight: {
+    alignSelf: 'flex-end',
+  },
+  fabLeft: {
+    alignSelf: 'flex-start',
+  },
+  fabIcon: {
+    fontSize: 32,
+    color: Colors.primary,
+    fontWeight: 'bold',
+  },
   container: { flex: 1, backgroundColor: 'transparent', position: 'relative' },
-  webMap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'transparent' },
+  webMap: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'transparent',
+    minHeight: 250,
+  },
   preloader: { position: 'absolute', width: 1, height: 1, opacity: 0 },
   recenterBtn: {
     position: 'absolute',
@@ -442,7 +682,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 6,
@@ -450,7 +689,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 1000,
   },
-  recenterLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
+  recenterLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12, marginLeft: 6 },
   transitInfo: {
     position: 'absolute',
     left: 16,
@@ -461,7 +700,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 6,
@@ -469,7 +707,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 1000,
   },
-  transitLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12 },
+  transitLabel: { color: Colors.text, fontWeight: '600' as const, fontSize: 12, marginLeft: 6 },
 });
 
 export default InteractiveMap;

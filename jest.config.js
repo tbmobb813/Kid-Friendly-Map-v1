@@ -1,10 +1,8 @@
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
+  preset: 'ts-jest',
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   globals: {
-    'ts-jest': {
-      useESM: true
-    }
+    'ts-jest': {}
   },
   testPathIgnorePatterns: [
     '/node_modules/',
@@ -37,6 +35,8 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/$1',
     '^react-native$': '<rootDir>/__mocks__/react-native.js',
     '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js',
+  '^lucide-react-native$': '<rootDir>/__mocks__/lucide-react-native.js',
+  '^react-native-svg$': '<rootDir>/__mocks__/react-native-svg.js',
     // Prefer TypeScript source when both .ts and .js exist
     '^utils/(.*)$': '<rootDir>/utils/$1.ts',
   },
@@ -46,5 +46,5 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   setupFiles: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
 };
