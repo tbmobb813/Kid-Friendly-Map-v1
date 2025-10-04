@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+  "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
@@ -64,6 +64,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "expo-dev-client",
       [
         "expo-router",
         {
@@ -112,7 +113,6 @@
         }
       ],
       "expo-font",
-      "expo-maps",
       "expo-web-browser"
     ],
     "experiments": {
