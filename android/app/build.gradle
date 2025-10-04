@@ -1,9 +1,6 @@
-plugins {
-    id "com.android.application"
-    id "org.jetbrains.kotlin.android"
-    // React Native Gradle plugin resolved via published artifact declared in root plugins block
-    id "com.facebook.react"
-}
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 

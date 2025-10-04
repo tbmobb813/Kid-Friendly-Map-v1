@@ -135,83 +135,88 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   origin,
   destination,
   route,
-  onMapReady,
-  onSelectLocation,
-  onStationPress,
-  showTransitStations = true,
-  testId,
-  onTouchStateChange,
-  preferNative = true,
-  clusterRadiusMeters = 250,
-  mascotHint,
-  setMascotHint,
-}) => {
-  // Animated values for breathing and marker
-  const breathingAnim = useRef(new Animated.Value(1)).current;
-  const markerAnim = useRef(new Animated.Value(1)).current;
-
-  // Mascot speech bubble state for hints (controlled or local)
-  const [localMascotHint, setLocalMascotHint] = useState('Hi! Tap a route or ask for help!');
-  const mascotHintValue = typeof mascotHint === 'string' ? mascotHint : localMascotHint;
-  const setMascotHintValue = setMascotHint ?? setLocalMascotHint;
-  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(null);
-  const [recenterNonce, setRecenterNonce] = useState(0);
-
-  const useNative = useMemo(() => {
-    if (!preferNative) return false;
-    if (Platform.OS === 'web') return false;
-    const available = !!isMapLibreAvailable;
-    if (!available) console.warn('MapLibre native engine not available, falling back to WebView');
-    return available;
-  }, [preferNative]);
-
-  const routeCoords: [number, number][] = useMemo(() => {
-    const pts = route?.geometry?.coordinates ?? [];
-    return pts
-      .filter((p) => typeof p?.latitude === 'number' && typeof p?.longitude === 'number')
-      .map((p) => [p.latitude, p.longitude]);
-  }, [route]);
-
-  const allBounds = useMemo(() => {
-    const coords: LatLng[] = [];
-    if (origin?.coordinates) coords.push(origin.coordinates);
-    if (destination?.coordinates) coords.push(destination.coordinates);
-    for (const [lat, lng] of routeCoords) coords.push({ latitude: lat, longitude: lng });
-    if (coords.length === 0) return null;
-
-    const minLat = Math.min(...coords.map((c) => c.latitude));
-    const maxLat = Math.max(...coords.map((c) => c.latitude));
-    const minLng = Math.min(...coords.map((c) => c.longitude));
-    const maxLng = Math.max(...coords.map((c) => c.longitude));
-    const center = { latitude: (minLat + maxLat) / 2, longitude: (minLng + maxLng) / 2 };
-    return { minLat, maxLat, minLng, maxLng, center, count: coords.length };
-  }, [origin, destination, routeCoords]);
-
-  // ---------- WebView fallback bits ----------
-  const [mapReady, setMapReady] = useState(false);
-  const webViewRef = useRef<any>(null);
-  const WebViewComponent = useMemo(() => {
-    if (Platform.OS === 'web') return null;
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const mod = require('react-native-webview');
-      return mod?.WebView ?? null;
-    } catch {
-      return null;
-    }
-  }, []);
-
-  const handleMessage = useCallback(
-    (event: any) => {
-      try {
-        const raw: string = event?.nativeEvent?.data ?? '';
-        if (!raw) return;
-
-        if (raw === 'mapReady') {
-          setMapReady(true);
-          onMapReady?.();
-          return;
-        }
+  return (
+    <Animated.View
+      style={[styles.container, { transform: [{ scale: breathingAnim }] }]}
+      testID={testId ?? (Platform.OS === 'web' ? 'interactive-map-web' : 'interactive-map')}
+      onLayout={(event) => {
+        const { width, height } = event.nativeEvent.layout;
+        setContainerLayout({ width, height });
+      }}>
+      <>
+        {/* Mascot bubble bottom left, FAB bottom right */}
+        <View style={styles.mascotBubble} pointerEvents="box-none">
+          <View style={styles.mascotCircle}>
+            <Text style={styles.mascotEmoji} accessibilityLabel="Mascot">🦉</Text>
+          </View>
+          <View style={styles.mascotSpeech}>
+            <Text style={styles.mascotText}>{mascotHintValue}</Text>
+          </View>
+        </View>
+        <View style={styles.fabBottomRight} pointerEvents="box-none">
+          <Text style={styles.fabIcon}>◎</Text>
+        </View>
+        {/* Map content below mascot/FAB */}
+        {Platform.OS === 'web' ? (
+          <MapPlaceholder
+            message={
+              destination
+                ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}`
+                : 'Select destination for interactive map'
+            }
+          />
+        ) : useNative ? (
+          <>
+            <ExpoMapView
+              testId={testId ?? 'interactive-map-native'}
+              origin={origin}
+              destination={destination}
+              route={route}
+              showTransitStations={showTransitStations}
+              onMapReady={onMapReady}
+              onStationPress={onStationPress}
+            />
+            {/* Animated marker: pulsating dot at origin */}
+            {origin?.coordinates && (
+              <Animated.View
+                style={[styles.animatedMarker, {
+                  transform: [{ scale: markerAnim }],
+                  left: '50%',
+                  top: '50%',
+                }]}
+              />
+            )}
+            {route && (
+              <MapLibreRouteView
+                origin={origin}
+                destination={destination}
+                routeGeoJSON={route.geometry as any}
+                showTransitStations={showTransitStations}
+                onStationPress={onStationPress}
+                testID={testId ? `${testId}-route` : undefined}
+              />
+            )}
+          </>
+        ) : WebViewComponent && containerLayout ? (
+          <WebViewComponent
+            key={`map-${origin?.coordinates?.latitude}-${origin?.coordinates?.longitude}-${containerLayout?.width ?? 0}-${containerLayout?.height ?? 0}`}
+            ref={webViewRef}
+            source={{ html: generateLeafletHTML }}
+            originWhitelist={['*']}
+            style={styles.webMap}
+            injectedJavaScript={injectedResizeJS}
+            onMessage={handleMessage}
+            onLoadEnd={() => {
+              webViewRef.current?.injectJavaScript(`
+                try {
+                  window.postMessage('mapReady', '*');
+                } catch {}
+              `);
+            }}
+          />
+        ) : null}
+      </>
+  {/* End of Animated.View */}
 
         let data: any = raw;
         if (typeof raw === 'string') {

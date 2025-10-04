@@ -1,10 +1,4 @@
 pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    mavenCentral()
-    google()
-  }
-  // Include React Native Gradle plugin from source (not yet published to plugin portal as binary)
   def reactNativeGradlePlugin = new File(
     providers.exec {
       workingDir(rootDir)
@@ -12,43 +6,34 @@ pluginManagement {
     }.standardOutput.asText.get().trim()
   ).getParentFile().absolutePath
   includeBuild(reactNativeGradlePlugin)
-  // Expo plugin projects are still included from source to ensure latest scripts without waiting for
-  // published artifacts. React Native Gradle plugin is now resolved from its published binary (no includeBuild)
-  def expoModulesAutolinkingPkg = new File(
+  
+  def expoPluginsPath = new File(
     providers.exec {
       workingDir(rootDir)
       commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
-    }.standardOutput.asText.get().trim()
-  )
-  def expoPluginsPath = new File(expoModulesAutolinkingPkg.getParentFile(), "android/expo-gradle-plugin").absolutePath
+    }.standardOutput.asText.get().trim(),
+    "../android/expo-gradle-plugin"
+  ).absolutePath
   includeBuild(expoPluginsPath)
-
-  try {
-    def expoModulesCorePkg = new File(
-      providers.exec {
-        workingDir(rootDir)
-        commandLine("node", "--print", "require.resolve('expo-modules-core/package.json', { paths: [require.resolve('expo/package.json')] })")
-      }.standardOutput.asText.get().trim()
-    )
-    def expoModulesCorePlugin = new File(expoModulesCorePkg.getParentFile(), "expo-module-gradle-plugin").absolutePath
-    includeBuild(expoModulesCorePlugin)
-  } catch (Throwable ignored) {}
-
-  try {
-    def expoDevLauncherPkg = new File(
-      providers.exec {
-        workingDir(rootDir)
-        commandLine("node", "--print", "require.resolve('expo-dev-launcher/package.json', { paths: [require.resolve('expo/package.json')] })")
-      }.standardOutput.asText.get().trim()
-    )
-    def expoDevLauncherPlugin = new File(expoDevLauncherPkg.getParentFile(), "expo-dev-launcher-gradle-plugin").absolutePath
-    includeBuild(expoDevLauncherPlugin)
-  } catch (Throwable ignored) {}
 }
+
+plugins {
+  id("com.facebook.react.settings")
+  id("expo-autolinking-settings")
+}
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+  if (System.getenv('EXPO_USE_COMMUNITY_AUTOLINKING') == '1') {
+    ex.autolinkLibrariesFromCommand()
+  } else {
+    ex.autolinkLibrariesFromCommand(expoAutolinking.rnConfigCommand)
+  }
+}
+expoAutolinking.useExpoModules()
 
 rootProject.name = 'Kid-Friendly Map & Transit Navigator'
 
+expoAutolinking.useExpoVersionCatalog()
+
 include ':app'
-
-// React Native gradle plugin resolved via published artifact; no source include needed.
-
+includeBuild(expoAutolinking.reactNativeGradlePlugin)
