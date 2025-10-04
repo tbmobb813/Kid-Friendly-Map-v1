@@ -1,20 +1,24 @@
+plugins {
+  // Provide the React Native Gradle plugin version for all subprojects; actual application happens in :app module
+  id("com.facebook.react") version "0.81.4" apply false
+}
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript {
-  ext {
-    kotlinVersion = "2.0.21"
-    agpVersion = "8.5.2"
-    // Use fully installed NDK r28 (includes C++20 <format>) since r27.1 install is incomplete (missing source.properties)
-    ndkVersion = "28.2.13676358"
-  }
-  repositories {
-    google()
-    mavenCentral()
-  }
-  dependencies {
-    classpath("com.android.tools.build:gradle:$agpVersion")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-  }
+plugins {
+  id "com.android.application" version "8.5.2" apply false
+  id "org.jetbrains.kotlin.android" version "2.0.21" apply false
+  // React Native plugin applied only in :app via included build source
+}
+
+ext {
+  // Version catalog style extras for subprojects
+  kotlinVersion = "2.0.21"
+  agpVersion = "8.5.2" // informational only; applied via Gradle version in wrapper
+  ndkVersion = "28.2.13676358"
+  compileSdkVersion = 34
+  targetSdkVersion = 34
+  minSdkVersion = 24
+  buildToolsVersion = "34.0.0"
 }
 
 allprojects {
@@ -25,5 +29,6 @@ allprojects {
   }
 }
 
-apply plugin: "expo-root-project"
-apply plugin: "com.facebook.react.rootproject"
+// Root-level plugin applications intentionally omitted; the app module applies 'com.facebook.react'.
+// After upgrading React Native via 'npx expo install react-native' and regenerating with
+// 'expo prebuild --clean', revisit if Expo adds a root plugin requirement.
