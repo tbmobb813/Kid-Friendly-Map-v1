@@ -4,6 +4,8 @@ import { Platform, Alert } from 'react-native';
 import { useParentalStore } from '@/stores/parentalStore';
 import { SafeZone } from '@/types/parental';
 import { showNotification, requestNotificationPermission } from '@/utils/notifications';
+import { startGeofencing } from '@/geofence';
+import Config from '@/utils/config';
 
 type SafeZoneEvent = {
   safeZone: SafeZone;
@@ -49,6 +51,7 @@ export const useSafeZoneMonitor = () => {
   const [safeZoneStates, setSafeZoneStates] = useState<Record<string, boolean>>({});
   const locationSubscription = useRef<Location.LocationSubscription | null>(null);
   const lastNotificationTime = useRef<Record<string, number>>({});
+  const geofencingStarted = useRef(false);
 
   // Initialize safe zone states
   useEffect(() => {
@@ -215,6 +218,32 @@ export const useSafeZoneMonitor = () => {
       setCurrentLocation(initialLocation);
       await checkSafeZones(initialLocation);
 
+      if (
+        Platform.OS !== 'web' &&
+        Config.FEATURES.GEOFENCING &&
+        safeZones.some((zone) => zone.isActive) &&
+        !geofencingStarted.current
+      ) {
+        try {
+          const regions = safeZones
+            .filter((zone) => zone.isActive)
+            .map((zone) => ({
+              identifier: zone.id,
+              latitude: zone.latitude,
+              longitude: zone.longitude,
+              radius: zone.radius,
+            }));
+
+          if (regions.length > 0) {
+            await startGeofencing(regions);
+            geofencingStarted.current = true;
+            console.log('Geofencing initialized for safe zones');
+          }
+        } catch (geofenceError) {
+          console.error('Failed to start geofencing:', geofenceError);
+        }
+      }
+
       // Start location subscription
       if (Platform.OS !== 'web') {
         locationSubscription.current = await Location.watchPositionAsync(
@@ -273,6 +302,7 @@ export const useSafeZoneMonitor = () => {
       locationSubscription.current = null;
     }
     setIsMonitoring(false);
+    geofencingStarted.current = false;
     console.log('Safe zone monitoring stopped');
   };
 

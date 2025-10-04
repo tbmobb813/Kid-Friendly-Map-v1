@@ -5,6 +5,7 @@ export type TransitSystem = {
   color: string;
   routes?: string[];
   feedUrl?: string;        // GTFS-RT feed URL for this system
+  feedUrls?: string[];     // Multiple GTFS-RT feed URLs for systems with multiple feeds
   agencyId?: string;       // optional agency identifier
   // Optional API key configuration for this system. Prefer env var names for security.
   apiKey?: string;         // rarely used; prefer using apiKeyEnv so keys aren't committed
@@ -12,6 +13,13 @@ export type TransitSystem = {
   apiKeyHeader?: string;   // header name to send the key under, default 'x-api-key'
   status?: "operational" | "delayed" | "suspended";
   lastUpdated?: string;
+  // Kid-friendly features
+  kidFriendlyName?: string; // Simple name kids can understand
+  educationalInfo?: {
+    funFacts: string[];      // Interesting facts about this transit system
+    safetyTips: string[];    // Safety tips specific to this system
+    howItWorks: string[];    // Simple explanations of how the system operates
+  };
 };
 
 export type RegionConfig = {
@@ -33,6 +41,7 @@ export type RegionConfig = {
     name: string;
     category: string;
     description: string;
+    transitInfo?: string;    // How to get there using public transit
   }[];
   weatherApiKey?: string;
   transitApiEndpoint?: string;

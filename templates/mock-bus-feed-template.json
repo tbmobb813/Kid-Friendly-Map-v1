@@ -1,0 +1,286 @@
+{
+  "comment": "Mock Bus Feed Template - Replace all values with your city's bus data",
+  "lastUpdated": "2024-01-01T12:00:00Z",
+  "systemInfo": {
+    "name": "REPLACE_BUS_SYSTEM_NAME",
+    "timezone": "REPLACE_TIMEZONE", 
+    "language": "REPLACE_LANGUAGE_CODE"
+  },
+  "stops": [
+    {
+      "id": "REPLACE_STOP_ID_1",
+      "name": "REPLACE_STOP_NAME_1",
+      "coordinates": {
+        "lat": 0.0000,
+        "lng": 0.0000
+      },
+      "routes": ["REPLACE_ROUTE_1", "REPLACE_ROUTE_2"],
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "shelter": true,
+        "seating": true,
+        "lighting": true,
+        "realTimeDisplay": true
+      },
+      "facilities": [
+        "REPLACE_FACILITY_1",
+        "REPLACE_FACILITY_2" 
+      ],
+      "nearbyLandmarks": [
+        "REPLACE_LANDMARK_1",
+        "REPLACE_LANDMARK_2"
+      ],
+      "kidFriendlyInfo": {
+        "nickname": "REPLACE_STOP_NICKNAME_1",
+        "whatToSee": [
+          "REPLACE_WHAT_TO_SEE_1",
+          "REPLACE_WHAT_TO_SEE_2"
+        ],
+        "safetyTip": "REPLACE_SAFETY_TIP_1"
+      }
+    },
+    {
+      "id": "REPLACE_STOP_ID_2",
+      "name": "REPLACE_STOP_NAME_2",
+      "coordinates": {
+        "lat": 0.0000,
+        "lng": 0.0000
+      },
+      "routes": ["REPLACE_ROUTE_2", "REPLACE_ROUTE_3"],
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "shelter": false,
+        "seating": false,
+        "lighting": true,
+        "realTimeDisplay": false
+      },
+      "facilities": [],
+      "nearbyLandmarks": [
+        "REPLACE_LANDMARK_3"
+      ],
+      "kidFriendlyInfo": {
+        "nickname": "REPLACE_STOP_NICKNAME_2",
+        "whatToSee": [
+          "REPLACE_WHAT_TO_SEE_3"
+        ],
+        "safetyTip": "REPLACE_SAFETY_TIP_2"
+      }
+    },
+    {
+      "id": "REPLACE_STOP_ID_3",
+      "name": "REPLACE_STOP_NAME_3",
+      "coordinates": {
+        "lat": 0.0000,
+        "lng": 0.0000
+      },
+      "routes": ["REPLACE_ROUTE_1"],
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "shelter": true,
+        "seating": true,
+        "lighting": true,
+        "realTimeDisplay": true
+      },
+      "facilities": [
+        "REPLACE_FACILITY_3",
+        "REPLACE_FACILITY_4"
+      ],
+      "nearbyLandmarks": [
+        "REPLACE_LANDMARK_4",
+        "REPLACE_LANDMARK_5"
+      ],
+      "kidFriendlyInfo": {
+        "nickname": "REPLACE_STOP_NICKNAME_3",
+        "whatToSee": [
+          "REPLACE_WHAT_TO_SEE_4",
+          "REPLACE_WHAT_TO_SEE_5"
+        ],
+        "safetyTip": "REPLACE_SAFETY_TIP_3"
+      }
+    }
+  ],
+  "arrivals": [
+    {
+      "stopId": "REPLACE_STOP_ID_1",
+      "route": "REPLACE_ROUTE_1",
+      "direction": "REPLACE_DIRECTION_1",
+      "destination": "REPLACE_DESTINATION_1",
+      "arrivalTime": "2024-01-01T12:03:00Z",
+      "minutesAway": 3,
+      "status": "on-time",
+      "vehicleId": "REPLACE_VEHICLE_ID_1",
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "lowFloor": true,
+        "kneeling": true
+      },
+      "kidNote": "REPLACE_KID_NOTE_1"
+    },
+    {
+      "stopId": "REPLACE_STOP_ID_1",
+      "route": "REPLACE_ROUTE_1",
+      "direction": "REPLACE_DIRECTION_1", 
+      "destination": "REPLACE_DESTINATION_1",
+      "arrivalTime": "2024-01-01T12:18:00Z",
+      "minutesAway": 18,
+      "status": "on-time",
+      "vehicleId": "REPLACE_VEHICLE_ID_2",
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "lowFloor": true,
+        "kneeling": true
+      },
+      "kidNote": "REPLACE_KID_NOTE_2"
+    },
+    {
+      "stopId": "REPLACE_STOP_ID_1",
+      "route": "REPLACE_ROUTE_2",
+      "direction": "REPLACE_DIRECTION_2",
+      "destination": "REPLACE_DESTINATION_2",
+      "arrivalTime": "2024-01-01T12:07:00Z",
+      "minutesAway": 7,
+      "status": "delayed",
+      "delayReason": "REPLACE_DELAY_REASON",
+      "vehicleId": "REPLACE_VEHICLE_ID_3",
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "lowFloor": true,
+        "kneeling": false
+      },
+      "kidNote": "REPLACE_KID_NOTE_3"
+    },
+    {
+      "stopId": "REPLACE_STOP_ID_2",
+      "route": "REPLACE_ROUTE_2",
+      "direction": "REPLACE_DIRECTION_3",
+      "destination": "REPLACE_DESTINATION_3",
+      "arrivalTime": "2024-01-01T12:05:00Z",
+      "minutesAway": 5,
+      "status": "approaching",
+      "vehicleId": "REPLACE_VEHICLE_ID_4",
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "lowFloor": true,
+        "kneeling": true
+      },
+      "kidNote": "REPLACE_KID_NOTE_4"
+    },
+    {
+      "stopId": "REPLACE_STOP_ID_3",
+      "route": "REPLACE_ROUTE_1",
+      "direction": "REPLACE_DIRECTION_4",
+      "destination": "REPLACE_DESTINATION_4",
+      "arrivalTime": "2024-01-01T12:12:00Z",
+      "minutesAway": 12,
+      "status": "on-time",
+      "vehicleId": "REPLACE_VEHICLE_ID_5",
+      "accessibility": {
+        "wheelchairAccessible": false,
+        "lowFloor": false,
+        "kneeling": false
+      },
+      "kidNote": "REPLACE_KID_NOTE_5"
+    }
+  ],
+  "serviceAlerts": [
+    {
+      "id": "REPLACE_ALERT_ID_1",
+      "title": "REPLACE_ALERT_TITLE_1",
+      "description": "REPLACE_ALERT_DESCRIPTION_1",
+      "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_1",
+      "severity": "low",
+      "affectedRoutes": ["REPLACE_ROUTE_1"],
+      "affectedStops": ["REPLACE_STOP_ID_1", "REPLACE_STOP_ID_3"],
+      "startTime": "2024-01-01T09:00:00Z",
+      "endTime": "2024-01-01T17:00:00Z",
+      "type": "information"
+    },
+    {
+      "id": "REPLACE_ALERT_ID_2",
+      "title": "REPLACE_ALERT_TITLE_2", 
+      "description": "REPLACE_ALERT_DESCRIPTION_2",
+      "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_2",
+      "severity": "medium",
+      "affectedRoutes": ["REPLACE_ROUTE_2"],
+      "affectedStops": [],
+      "startTime": "2024-01-01T11:30:00Z",
+      "endTime": null,
+      "type": "delay"
+    },
+    {
+      "id": "REPLACE_ALERT_ID_3",
+      "title": "REPLACE_ALERT_TITLE_3",
+      "description": "REPLACE_ALERT_DESCRIPTION_3", 
+      "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_3",
+      "severity": "high",
+      "affectedRoutes": ["REPLACE_ROUTE_3"],
+      "affectedStops": ["REPLACE_STOP_ID_2"],
+      "startTime": "2024-01-01T10:00:00Z",
+      "endTime": "2024-01-01T14:00:00Z",
+      "type": "service-change"
+    }
+  ],
+  "routeStatus": [
+    {
+      "id": "REPLACE_ROUTE_1",
+      "status": "normal",
+      "message": "REPLACE_STATUS_MESSAGE_1"
+    },
+    {
+      "id": "REPLACE_ROUTE_2",
+      "status": "delays",
+      "message": "REPLACE_STATUS_MESSAGE_2"
+    },
+    {
+      "id": "REPLACE_ROUTE_3",
+      "status": "service-change",
+      "message": "REPLACE_STATUS_MESSAGE_3"
+    }
+  ],
+  "replacementInstructions": {
+    "stopIds": "Use your city's bus stop identifier system (e.g., 'main-st-1st-av', 'city-hall', 'central-station')",
+    "stopNames": "Use actual bus stop names and intersections",
+    "coordinates": "Replace 0.0000 with real latitude and longitude coordinates for each stop",
+    "routes": "Use your bus system's route identifiers (e.g., '1', 'A', 'RedLine', 'X1')",
+    "directions": "Use your system's direction naming (e.g., 'northbound', 'inbound', 'to-downtown')",
+    "destinations": "Use actual terminal stops or major destinations",
+    "vehicleIds": "Use your system's bus numbering scheme (e.g., 'Bus 1234', 'Vehicle A567')",
+    "facilities": "List actual stop facilities (e.g., 'Bench', 'Trash Can', 'Schedule Display', 'WiFi')",
+    "landmarks": "Include recognizable nearby buildings, parks, or businesses",
+    "kidNotes": "Write kid-friendly descriptions of destinations or things to see along the route",
+    "delays": "Use realistic delay reasons for your city (e.g., 'Traffic', 'Road Construction', 'Weather')",
+    "timing": "Adjust arrival frequencies based on your bus system's actual schedule"
+  },
+  "exampleCities": {
+    "london": {
+      "stopId": "oxford-street-bond-street",
+      "stopName": "Oxford Street / Bond Street",
+      "routes": ["73", "390", "C2"],
+      "direction": "towards-stoke-newington",
+      "destination": "Stoke Newington",
+      "vehicleId": "LTZ 1234",
+      "landmark": "Bond Street Underground Station",
+      "kidNote": "This bus goes past lots of shops and the famous Oxford Street!"
+    },
+    "sanfrancisco": {
+      "stopId": "geary-fillmore",
+      "stopName": "Geary Blvd & Fillmore St",
+      "routes": ["38", "38R"],
+      "direction": "inbound",
+      "destination": "Transbay Terminal",
+      "vehicleId": "Muni 8001",
+      "landmark": "Fillmore Auditorium",
+      "kidNote": "This bus goes all the way downtown to the big bus terminal!"
+    },
+    "tokyo": {
+      "stopId": "shibuya-hachiko",
+      "stopName": "Shibuya Hachiko Exit",
+      "routes": ["都01", "渋88"],
+      "direction": "tokyo-station-bound",
+      "destination": "Tokyo Station",
+      "vehicleId": "都営 A123",
+      "landmark": "Hachiko Dog Statue",
+      "kidNote": "You can see the famous dog statue and the busy crossing from here!"
+    }
+  }
+}

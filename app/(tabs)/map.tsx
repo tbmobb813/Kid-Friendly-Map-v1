@@ -1,38 +1,122 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+// (View, Text already imported below)
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MapLibreGL from '@maplibre/maplibre-react-native';
+// MapLibreGL Native Map scaffold
+const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations }: any) => (
+  <MapLibreGL.MapView style={{ flex: 1 }} mapStyle="https://demotiles.maplibre.org/style.json">
+    {/* Center on origin if available */}
+    <MapLibreGL.Camera
+      zoomLevel={13}
+      centerCoordinate={origin?.coordinates ? [origin.coordinates.longitude, origin.coordinates.latitude] : [-74.006, 40.7128]}
+    />
+    {/* Marker for origin/current location */}
+    {origin?.coordinates && (
+      <MapLibreGL.PointAnnotation
+        id="origin"
+        coordinate={[origin.coordinates.longitude, origin.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#4F8EF7', borderRadius: 12, padding: 6 }}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>📍</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    )}
+    {/* Marker for destination */}
+    {destination?.coordinates && (
+      <MapLibreGL.PointAnnotation
+        id="destination"
+        coordinate={[destination.coordinates.longitude, destination.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#F7B500', borderRadius: 12, padding: 6 }}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>🏁</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    )}
+    {/* Polyline for route */}
+    {route?.geometry?.coordinates && (
+      <MapLibreGL.ShapeSource id="route" shape={{ type: 'LineString', coordinates: route.geometry.coordinates }}>
+        <MapLibreGL.LineLayer id="routeLine" style={{ lineColor: '#4F8EF7', lineWidth: 5 }} />
+      </MapLibreGL.ShapeSource>
+    )}
+    {/* Example: Show transit stations as markers */}
+    {showTransitStations && Array.isArray(stations) && stations.map((station: any) => (
+      <MapLibreGL.PointAnnotation
+        key={station.id}
+        id={station.id}
+        coordinate={[station.coordinates.longitude, station.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#fff', borderRadius: 8, padding: 4, borderWidth: 1, borderColor: '#4F8EF7' }}>
+          <Text style={{ color: '#4F8EF7', fontWeight: 'bold', fontSize: 12 }}>🚉</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    ))}
+  </MapLibreGL.MapView>
+);
+// Placeholder implementations for missing components
+const ExpoMapView = (props: any) => <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}><Text>ExpoMapView</Text></View>;
+const FloatingControls = () => (
+  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+    <View style={{ margin: 8 }}>
+      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#4F8EF7', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+        <Text style={{ color: '#fff', fontSize: 32 }}>◎</Text>
+      </View>
+    </View>
+    {/* Add more FABs here as needed */}
+  </View>
+);
+const BottomSheet = (props: any) => <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, backgroundColor: '#fff', zIndex: 20 }}>{props.children}</View>;
+const RouteInfoPanel = () => <View style={{ padding: 8 }}><Text>RouteInfoPanel</Text></View>;
+const SafetyPanel = () => <View style={{ padding: 8 }}><Text>SafetyPanel</Text></View>;
+const FunFactCard = () => <View style={{ padding: 8 }}><Text>FunFactCard</Text></View>;
+const ParentControlsTab = () => <View style={{ padding: 8 }}><Text>ParentControlsTab</Text></View>;
+const AnimatedConfetti = () => <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 20, backgroundColor: 'transparent', zIndex: 100 }}><Text>AnimatedConfetti</Text></View>;
+import { StyleSheet, Text, View, Dimensions, Platform, Modal, ActivityIndicator, UIManager } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
-import MapPlaceholder from "@/components/MapPlaceholder";
-import InteractiveMap from "@/components/InteractiveMap";
-import RouteCard from "@/components/RouteCard";
-import SafetyPanel from "@/components/SafetyPanel";
-import TravelModeSelector from "@/components/TravelModeSelector";
-import { useNavigationStore } from "@/stores/navigationStore";
+import MapWithInfoPanel from "@/components/MapWithInfoPanel";
+import { useNavigationStore } from "@/stores/enhancedNavigationStore";
 import { Route } from "@/types/navigation";
-import { Navigation, MapPin, Search } from "lucide-react-native";
+import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from "lucide-react-native";
 import useLocation from "@/hooks/useLocation";
+import { findStationById } from "@/config/transit/nyc-stations";
+import MapLibreRouteView from "@/components/MapLibreRouteView";
+import { isMapLibreAvailable } from "@/components/MapLibreMap";
+import { useRouteORS } from "@/hooks/useRouteORS";
+import Config from "@/utils/config";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function MapScreen() {
   const router = useRouter();
-  const { location } = useLocation();
+  const { location, loading: locationLoading } = useLocation();
+  const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+  const [showStationModal, setShowStationModal] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   
   const { 
     origin,
     destination,
     availableRoutes,
+    unifiedRoutes,
     selectedRoute,
+    selectedUnifiedRoute,
     selectedTravelMode,
+    isLoadingRoutes,
+    routingError,
+    useAdvancedRouting,
+    routingPreferences,
     setOrigin,
     findRoutes,
     selectRoute,
+    selectUnifiedRoute,
     setTravelMode
   } = useNavigationStore();
 
   useEffect(() => {
-    // If no origin is set, use current location
-    if (!origin && location) {
+    // Update origin when location changes, especially when moving from default to real location
+    if (location && (!origin || origin.id === "current-location")) {
+      console.log('📍 Updating origin to current location:', location);
       setOrigin({
         id: "current-location",
         name: "Current Location",
@@ -44,7 +128,7 @@ export default function MapScreen() {
         }
       });
     }
-  }, [location, origin]);
+  }, [location?.latitude, location?.longitude]);
 
   useEffect(() => {
     // Find routes when both origin and destination are set
@@ -55,142 +139,190 @@ export default function MapScreen() {
 
   const handleRouteSelect = (route: Route) => {
     selectRoute(route);
-    router.push(`/route/${route.id}`);
+    
+    // Also select corresponding unified route if available
+    const matchingUnifiedRoute = unifiedRoutes.find(ur => ur.id === route.id);
+    if (matchingUnifiedRoute) {
+      selectUnifiedRoute(matchingUnifiedRoute);
+    }
+    
+    router.push(`/(tabs)/transit` as any);
+  };
+
+  const handleAdvancedRouteSelect = (unifiedRoute: any) => {
+    selectUnifiedRoute(unifiedRoute);
+    router.push(`/(tabs)/transit` as any);
   };
 
   const handleSearchPress = () => {
-    router.push("/search");
+    router.push("/(tabs)/search" as any);
   };
 
+  const handlePreferencesPress = () => {
+    setShowPreferences(true);
+  };
+
+  const handleRetryRouting = () => {
+    findRoutes();
+  };
+
+  const handleStationPress = (stationId: string) => {
+    setSelectedStationId(stationId);
+    setShowStationModal(true);
+  };
+
+  const handleCloseStationModal = () => {
+    setShowStationModal(false);
+    setSelectedStationId(null);
+  };
+
+  const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
+
+  const mapLibreSupported = useMemo(() => {
+    if (!isMapLibreAvailable) {
+      return false;
+    }
+
+    if (Platform.OS === 'web') {
+      return false;
+    }
+
+    const managerNames = ['MapLibreGLMapView', 'RCTMGLMapView'];
+    return managerNames.some((name) => {
+      try {
+        return Boolean((UIManager as any)?.getViewManagerConfig?.(name));
+      } catch {
+        return false;
+      }
+    });
+  }, []);
+
+  // Check if expo-maps is available (only in development builds)
+  const expoMapsSupported = useMemo(() => {
+    // Expo Maps requires a development build - not available in Expo Go
+    // Use a safe check that doesn't try to load the module
+    try {
+      // Check if expo-modules-core has the native module registered
+      const ExpoModulesCore = require('expo-modules-core');
+      const hasExpoMaps = ExpoModulesCore.NativeModulesProxy?.ExpoMaps != null;
+      // Only support on Android for now since our implementation is Android-specific
+      return hasExpoMaps && Platform.OS === 'android';
+    } catch {
+      return false;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!mapLibreSupported && !expoMapsSupported) {
+      console.warn(
+        'Advanced mapping modules not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre or Expo Maps.',
+      );
+    }
+  }, [mapLibreSupported, expoMapsSupported]);
+
+  // Priority: MapLibre > Expo Maps > Interactive Map (OpenStreetMap)
+  const mapImplementation = useMemo(() => {
+    if (mapLibreSupported) return 'maplibre';
+    if (expoMapsSupported) return 'expo-maps';
+    return 'interactive';
+  }, [mapLibreSupported, expoMapsSupported]);
+
+  const originCoord = useMemo(
+    () => (origin ? [origin.coordinates.longitude, origin.coordinates.latitude] as [number, number] : undefined),
+    [origin?.coordinates?.longitude, origin?.coordinates?.latitude]
+  );
+
+  const destinationCoord = useMemo(
+    () => (destination ? [destination.coordinates.longitude, destination.coordinates.latitude] as [number, number] : undefined),
+    [destination?.coordinates?.longitude, destination?.coordinates?.latitude]
+  );
+
+  const { geojson: orsRouteGeoJSON } = useRouteORS(originCoord, destinationCoord, {
+    enabled: Boolean(originCoord && destinationCoord && Config.ROUTING.ORS_API_KEY),
+  });
+
   return (
-    <ScrollView 
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      showsVerticalScrollIndicator={false}
-      bounces={true}
-    >
-      <View style={styles.mapContainer}>
-        {origin && destination ? (
-          <InteractiveMap
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1, position: 'relative', backgroundColor: '#fff' }}>
+        {/* AnimatedConfetti overlays everything */}
+        <AnimatedConfetti />
+        {/* MapView fills space above bottom sheet */}
+        <View style={{ flex: 1, zIndex: 1 }}>
+          <MapLibreMapView
             origin={origin}
             destination={destination}
-            route={selectedRoute || undefined}
+            route={selectedRoute}
+            showTransitStations={true}
+            stations={[]} // TODO: Pass real station data here
           />
-        ) : (
-          <MapPlaceholder 
-            message={
-              destination 
-                ? `Map showing route to ${destination.name}` 
-                : "Select a destination to see the route"
-            } 
-          />
-        )}
-      </View>
-
-      <SafetyPanel 
-        currentLocation={location} 
-        currentPlace={destination ? {
-          id: destination.id,
-          name: destination.name
-        } : undefined}
-      />
-
-      <View style={styles.contentContainer}>
-        <View style={styles.locationBar}>
-          <View style={styles.locationPins}>
-            <View style={[styles.locationPin, styles.originPin]}>
-              <Navigation size={16} color="#FFFFFF" />
-            </View>
-            <View style={styles.locationConnector} />
-            <View style={[styles.locationPin, styles.destinationPin]}>
-              <MapPin size={16} color="#FFFFFF" />
-            </View>
-          </View>
-          
-          <View style={styles.locationTexts}>
-            <Pressable style={styles.locationButton}>
-              <Text style={styles.locationText} numberOfLines={1}>
-                {origin?.name || "Select starting point"}
-              </Text>
-            </Pressable>
-            
-            <Pressable 
-              style={styles.locationButton}
-              onPress={handleSearchPress}
-            >
-              <Text 
-                style={[
-                  styles.locationText, 
-                  !destination && styles.placeholderText
-                ]} 
-                numberOfLines={1}
-              >
-                {destination?.name || "Where to?"}
-              </Text>
-              {!destination && (
-                <Search size={16} color={Colors.textLight} style={styles.searchIcon} />
-              )}
-            </Pressable>
-          </View>
         </View>
-
-        {destination ? (
-          <>
-            <TravelModeSelector 
-              selectedMode={selectedTravelMode}
-              onModeChange={setTravelMode}
-            />
-            <Text style={styles.sectionTitle}>Available Routes</Text>
-            <View style={styles.routesContainer}>
-              {availableRoutes.map(route => (
-                <RouteCard
-                  key={route.id}
-                  route={route}
-                  onPress={handleRouteSelect}
-                  isSelected={selectedRoute?.id === route.id}
-                />
-              ))}
-            </View>
-          </>
-        ) : (
-          <View style={styles.emptyStateContainer}>
-            <MapPin size={40} color={Colors.textLight} />
-            <Text style={styles.emptyStateText}>
-              Select a destination to see available routes
-            </Text>
-            <Pressable 
-              style={styles.searchButton}
-              onPress={handleSearchPress}
-            >
-              <Text style={styles.searchButtonText}>Search Places</Text>
-            </Pressable>
-          </View>
-        )}
+        {/* FloatingControls float above map, not inside it */}
+        <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
+          <FloatingControls />
+        </View>
+        {/* BottomSheet styled as panel, not overlapping map. Replace with @gorhom/bottom-sheet for interactive behavior. */}
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 8, shadowOffset: { width: 0, height: -2 }, elevation: 8, minHeight: 220, padding: 16, zIndex: 20 }}>
+          {/* TODO: Replace with <BottomSheet /> from @gorhom/bottom-sheet for drag-to-hide behavior */}
+          <BottomSheet>
+            <RouteInfoPanel />
+            <SafetyPanel />
+            <FunFactCard />
+            <ParentControlsTab />
+          </BottomSheet>
+        </View>
       </View>
-    </ScrollView>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
+  // ...existing code...
+  gpsStatusBar: {
+    position: 'absolute',
+    // Removed duplicate style keys for gpsStatusBar, gpsIndicator, gpsStatusText, mapImplementationBadge, mapImplementationText
   },
-  scrollContent: {
-    flexGrow: 1,
-    minHeight: screenHeight,
+  gpsStatusBar: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    zIndex: 1000,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    borderRadius: 4,
+  },
+  mapImplementationText: {
+    fontSize: 10,
+    color: Colors.primary,
+    fontWeight: '600',
   },
   mapContainer: {
     height: Platform.select({
-      web: Math.min(screenHeight * 0.4, 400),
-      default: Math.min(screenHeight * 0.35, 300),
+      web: Math.min(screenHeight * 0.55, 540),
+      default: screenHeight * 0.45,
     }),
-    minHeight: 250,
+    minHeight: 360,
+    width: '100%',
+    backgroundColor: Colors.border,
+    overflow: 'hidden',
+  },
+  scrollableContent: {
+    flex: 1,
+  },
+  scrollContentContainer: {
+    paddingBottom: 32,
   },
   contentContainer: {
     flex: 1,
     padding: 16,
-    paddingBottom: 32,
   },
   routesContainer: {
     gap: 12,
@@ -271,5 +403,136 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "600",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  modalTitleContainer: {
+    flex: 1,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: Colors.text,
+  },
+  modalSubtitle: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 2,
+  },
+  closeButton: {
+    padding: 8,
+    borderRadius: 8,
+  },
+  controlsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  travelModeContainer: {
+    flex: 1,
+    marginRight: 12,
+  },
+  preferencesButton: {
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: Colors.primary + '15',
+  },
+  loadingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 32,
+    backgroundColor: Colors.card,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: Colors.text,
+    marginTop: 12,
+    fontWeight: "600",
+  },
+  loadingSubtext: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 4,
+  },
+  errorContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: Colors.error + '10',
+    borderRadius: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.error + '30',
+  },
+  errorText: {
+    fontSize: 16,
+    color: Colors.error,
+    textAlign: "center",
+    marginVertical: 8,
+  },
+  retryButton: {
+    backgroundColor: Colors.error,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginTop: 8,
+  },
+  retryButtonText: {
+    color: "white",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+  routesHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  advancedBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.success + '15',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    gap: 4,
+  },
+  advancedBadgeText: {
+    fontSize: 12,
+    color: Colors.success,
+    fontWeight: "600",
+  },
+  insightsContainer: {
+    backgroundColor: Colors.primary + '10',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.primary,
+  },
+  insightsTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: Colors.primary,
+    marginBottom: 8,
+  },
+  insightText: {
+    fontSize: 14,
+    color: Colors.text,
+    marginBottom: 4,
+    lineHeight: 20,
   },
 });

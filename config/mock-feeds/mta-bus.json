@@ -1,0 +1,119 @@
+{
+  "routes": [
+    { "id": "mta-bus-M15", "name": "M15", "systemId": "mta-bus", "status": "on-time", "nextArrival": 4, "direction": "Uptown", "destination": "East Harlem" },
+    { "id": "mta-bus-M42", "name": "M42", "systemId": "mta-bus", "status": "on-time", "nextArrival": 2, "direction": "Crosstown", "destination": "UN/1st Av" },
+    { "id": "mta-bus-B46", "name": "B46", "systemId": "mta-bus", "status": "delayed", "nextArrival": 8, "direction": "Southbound", "destination": "Kings Plaza", "delayReason": "Heavy traffic" },
+    { "id": "mta-bus-Q58", "name": "Q58", "systemId": "mta-bus", "status": "on-time", "nextArrival": 6, "direction": "Eastbound", "destination": "Flushing" }
+  ],
+  "schedules": [
+    {
+      "systemId": "mta-bus",
+      "stopId": "14th-st-1st-av",
+      "stopName": "14th St/1st Av",
+      "schedules": [
+        { "time": "2025-10-01T12:04:00Z", "route": "M15", "destination": "East Harlem", "headsign": "M15 SBS UPTOWN", "kidNote": "Select bus - pay before boarding!" },
+        { "time": "2025-10-01T12:09:00Z", "route": "M15", "destination": "South Ferry", "headsign": "M15 SBS DOWNTOWN", "kidNote": "Express bus to downtown" },
+        { "time": "2025-10-01T12:14:00Z", "route": "M15", "destination": "East Harlem", "headsign": "M15 SBS UPTOWN", "kidNote": "Next uptown bus" }
+      ]
+    },
+    {
+      "systemId": "mta-bus",
+      "stopId": "42nd-st-times-sq",
+      "stopName": "W 42nd St/7th Av",
+      "schedules": [
+        { "time": "2025-10-01T12:02:00Z", "route": "M42", "destination": "UN/1st Av", "headsign": "M42 CROSSTOWN EAST", "kidNote": "Bus across 42nd Street" },
+        { "time": "2025-10-01T12:07:00Z", "route": "M42", "destination": "Port Authority", "headsign": "M42 CROSSTOWN WEST", "kidNote": "Bus to Port Authority" },
+        { "time": "2025-10-01T12:12:00Z", "route": "M42", "destination": "UN/1st Av", "headsign": "M42 CROSSTOWN EAST", "kidNote": "Next eastbound bus" }
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "id": "bus-detour-1",
+      "systemId": "mta-bus",
+      "type": "detour", 
+      "message": "M15 buses detoured via 3rd Av due to street fair on 1st Av between 14th-23rd Sts",
+      "severity": "medium",
+      "affectedRoutes": ["M15"],
+      "kidFriendlyMessage": "M15 buses are taking a different route because of a fun street fair!",
+      "startTime": "2025-10-01T10:00:00Z",
+      "endTime": "2025-10-01T18:00:00Z"
+    },
+    {
+      "id": "bus-slow-1",
+      "systemId": "mta-bus", 
+      "type": "delay",
+      "message": "Expect delays on all crosstown routes due to heavy midday traffic",
+      "severity": "low",
+      "affectedRoutes": ["M42", "M34", "M23", "M14"],
+      "kidFriendlyMessage": "Buses going across the city might be a little slow because of lots of cars",
+      "expectedDuration": "15-20 minutes"
+    },
+    {
+      "id": "bus-accessibility",
+      "systemId": "mta-bus",
+      "type": "information",
+      "message": "All MTA buses are wheelchair accessible with lifts and priority seating",
+      "severity": "info", 
+      "affectedRoutes": ["ALL"],
+      "kidFriendlyMessage": "Every bus can help people in wheelchairs get on and off safely",
+      "isAccessibilityAlert": true
+    }
+  ],
+  "stops": [
+    {
+      "id": "14th-st-1st-av",
+      "name": "14th St/1st Av",
+      "borough": "Manhattan",
+      "routes": ["M15"],
+      "coordinates": { "lat": 40.7323, "lng": -73.9860 },
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "hasShelter": true,
+        "hasSeating": true,
+        "selectBusService": true
+      },
+      "kidFriendlyInfo": {
+        "nearbyAttractions": ["Stuyvesant Square Park", "Local shops"],
+        "tip": "This is a Select Bus stop - remember to pay at the machine before the bus comes!",
+        "funFact": "You can transfer to the L train at 14th St-Union Sq nearby"
+      },
+      "features": ["Real-time arrival displays", "SBS fare machines", "Wheelchair accessible"]
+    },
+    {
+      "id": "42nd-st-times-sq", 
+      "name": "W 42nd St/7th Av",
+      "borough": "Manhattan",
+      "routes": ["M42"],
+      "coordinates": { "lat": 40.7549, "lng": -73.9872 },
+      "accessibility": {
+        "wheelchairAccessible": true,
+        "hasShelter": false,
+        "hasSeating": false,
+        "selectBusService": false
+      },
+      "kidFriendlyInfo": {
+        "nearbyAttractions": ["Times Square", "Broadway theaters", "Red Steps"],
+        "tip": "This stop is very busy - stay close to your adult and watch for other buses",
+        "funFact": "You're in the middle of Times Square - look at all the bright signs!"
+      },
+      "features": ["High passenger volume", "Multiple bus routes", "Tourist area"]
+    }
+  ],
+  "busFeatures": {
+    "wheelchair_lifts": "All buses have hydraulic lifts for wheelchair users",
+    "bike_racks": "Front-mounted bike racks on most buses (2-3 bikes)",
+    "air_conditioning": "Climate controlled for passenger comfort",
+    "low_floor": "Low floor design for easy boarding",
+    "digital_displays": "LED destination signs and interior stop announcements",
+    "security": "Onboard security cameras and emergency communication"
+  },
+  "realTimeData": {
+    "lastUpdated": "2025-10-01T12:00:00Z", 
+    "systemStatus": "normal",
+    "overallDelays": "minimal", 
+    "activeDetours": 1,
+    "kidFriendlyStatus": "Buses are running well today! Some are slow because of traffic 🚌"
+  },
+  "lastModified": "2025-10-01T12:00:00Z"
+}

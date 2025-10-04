@@ -82,7 +82,7 @@ export default function AuthScreen() {
 
       if (result.success) {
         // Navigation will be handled by the auth state change
-        router.replace('/(tabs)');
+        router.replace('/(tabs)' as any);
       } else {
         Alert.alert(
           isLogin ? 'Login Failed' : 'Registration Failed',

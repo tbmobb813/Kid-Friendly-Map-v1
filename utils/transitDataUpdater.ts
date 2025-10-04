@@ -115,11 +115,13 @@ export class TransitDataUpdater {
         // Mock feed loader: feedUrl starting with mock://<id> will load from config/mock-feeds/<id>.json
         if (system.feedUrl.startsWith('mock://')) {
           const id = system.feedUrl.replace('mock://', '');
+          // TODO: Fix dynamic import for web builds
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          const mock = require(`@/config/mock-feeds/${id}.json`);
-          if (mock.routes) allRoutes.push(...mock.routes);
-          if (mock.schedules) allSchedules.push(...mock.schedules);
-          if (mock.alerts) allAlerts.push(...mock.alerts);
+          // const mock = require(`@/config/mock-feeds/${id}.json`);
+          console.log(`Mock feed ${id} loading disabled for web builds`);
+          // if (mock.routes) allRoutes.push(...mock.routes);
+          // if (mock.schedules) allSchedules.push(...mock.schedules);
+          // if (mock.alerts) allAlerts.push(...mock.alerts);
           continue;
         }
 
@@ -130,11 +132,13 @@ export class TransitDataUpdater {
             const resolvedKey = system.apiKey || (system.apiKeyEnv ? process.env[system.apiKeyEnv] : undefined) || region.transitApiKey;
             const keyHeader = system.apiKeyHeader || 'x-api-key';
 
-            // Use global fetch if available, otherwise fall back to node-fetch when installed
-            const fetchFn = (typeof fetch !== 'undefined') ? fetch : require('node-fetch');
+            // Use global fetch (available in React Native and modern browsers)
+            if (typeof fetch === 'undefined') {
+              throw new Error('fetch is not available in this environment');
+            }
             const headers: Record<string, string> | undefined = resolvedKey ? { [keyHeader]: resolvedKey } : undefined;
 
-            const res = await fetchFn(system.feedUrl, { headers });
+            const res = await fetch(system.feedUrl, { headers });
 
             // If response is JSON, parse and attempt to normalize
             const contentType = res.headers && res.headers.get ? res.headers.get('content-type') : null;

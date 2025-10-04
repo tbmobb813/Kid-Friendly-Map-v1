@@ -59,7 +59,7 @@ class AuthManager {
   private static instance: AuthManager;
   private currentUser: AuthUser | null = null;
   private tokens: AuthTokens | null = null;
-  private refreshTimer: NodeJS.Timeout | null = null;
+  private refreshTimer: ReturnType<typeof setTimeout> | null = null;
   private listeners: ((state: AuthState) => void)[] = [];
 
   private constructor() {

@@ -1,0 +1,29 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+  ext {
+    kotlinVersion = "2.0.21"
+    agpVersion = "8.5.2"
+    // Use fully installed NDK r28 (includes C++20 <format>) since r27.1 install is incomplete (missing source.properties)
+    ndkVersion = "28.2.13676358"
+  }
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath("com.android.tools.build:gradle:$agpVersion")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://www.jitpack.io' }
+  }
+}
+
+apply plugin: "expo-root-project"
+apply plugin: "com.facebook.react.rootproject"

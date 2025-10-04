@@ -60,6 +60,19 @@ export type Route = {
   totalDuration: number;
   departureTime: string;
   arrivalTime: string;
+  // Optional legacy compatibility fields used by enhanced routing
+  origin?: string;
+  destination?: string;
+  mode?: TravelMode;
+  // Optional metadata injected by enhanced routing services
+  metadata?: {
+    safetyScore?: number;
+    kidFriendlyScore?: number;
+    accessibilityScore?: number;
+    source?: string;
+    geometry?: any;
+    alerts?: string[];
+  };
 };
 
 export type AccessibilitySettings = {
