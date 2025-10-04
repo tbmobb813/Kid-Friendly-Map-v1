@@ -133,11 +133,6 @@ const config: ExpoConfig = {
     maps: mapExtras,
     routing: routingExtras,
   },
-  plugins: [
-    [
-      "expo-maps",
-    ]
-  ]
 };
 
 export default config;
