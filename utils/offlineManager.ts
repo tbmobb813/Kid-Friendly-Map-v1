@@ -294,7 +294,14 @@ class OfflineManager {
 
   addNetworkListener(callback: (state: NetworkState) => void): () => void {
     this.listeners.push(callback);
-    
+    // Call the listener immediately with current state so callers get current value
+    try {
+      // call on next tick to mimic typical event-emitter behavior
+      setTimeout(() => callback({ ...this.networkState }), 0);
+    } catch (e) {
+      // ignore any sync errors from listeners
+    }
+
     // Return unsubscribe function
     return () => {
       const index = this.listeners.indexOf(callback);
