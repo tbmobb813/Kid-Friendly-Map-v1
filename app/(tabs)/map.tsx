@@ -1,4 +1,75 @@
 import React, { useEffect, useMemo, useState } from "react";
+// (View, Text already imported below)
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MapLibreGL from '@maplibre/maplibre-react-native';
+// MapLibreGL Native Map scaffold
+const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations }: any) => (
+  <MapLibreGL.MapView style={{ flex: 1 }} mapStyle="https://demotiles.maplibre.org/style.json">
+    {/* Center on origin if available */}
+    <MapLibreGL.Camera
+      zoomLevel={13}
+      centerCoordinate={origin?.coordinates ? [origin.coordinates.longitude, origin.coordinates.latitude] : [-74.006, 40.7128]}
+    />
+    {/* Marker for origin/current location */}
+    {origin?.coordinates && (
+      <MapLibreGL.PointAnnotation
+        id="origin"
+        coordinate={[origin.coordinates.longitude, origin.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#4F8EF7', borderRadius: 12, padding: 6 }}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>📍</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    )}
+    {/* Marker for destination */}
+    {destination?.coordinates && (
+      <MapLibreGL.PointAnnotation
+        id="destination"
+        coordinate={[destination.coordinates.longitude, destination.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#F7B500', borderRadius: 12, padding: 6 }}>
+          <Text style={{ color: '#fff', fontWeight: 'bold' }}>🏁</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    )}
+    {/* Polyline for route */}
+    {route?.geometry?.coordinates && (
+      <MapLibreGL.ShapeSource id="route" shape={{ type: 'LineString', coordinates: route.geometry.coordinates }}>
+        <MapLibreGL.LineLayer id="routeLine" style={{ lineColor: '#4F8EF7', lineWidth: 5 }} />
+      </MapLibreGL.ShapeSource>
+    )}
+    {/* Example: Show transit stations as markers */}
+    {showTransitStations && Array.isArray(stations) && stations.map((station: any) => (
+      <MapLibreGL.PointAnnotation
+        key={station.id}
+        id={station.id}
+        coordinate={[station.coordinates.longitude, station.coordinates.latitude]}
+      >
+        <View style={{ backgroundColor: '#fff', borderRadius: 8, padding: 4, borderWidth: 1, borderColor: '#4F8EF7' }}>
+          <Text style={{ color: '#4F8EF7', fontWeight: 'bold', fontSize: 12 }}>🚉</Text>
+        </View>
+      </MapLibreGL.PointAnnotation>
+    ))}
+  </MapLibreGL.MapView>
+);
+// Placeholder implementations for missing components
+const ExpoMapView = (props: any) => <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}><Text>ExpoMapView</Text></View>;
+const FloatingControls = () => (
+  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+    <View style={{ margin: 8 }}>
+      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#4F8EF7', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+        <Text style={{ color: '#fff', fontSize: 32 }}>◎</Text>
+      </View>
+    </View>
+    {/* Add more FABs here as needed */}
+  </View>
+);
+const BottomSheet = (props: any) => <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, backgroundColor: '#fff', zIndex: 20 }}>{props.children}</View>;
+const RouteInfoPanel = () => <View style={{ padding: 8 }}><Text>RouteInfoPanel</Text></View>;
+const SafetyPanel = () => <View style={{ padding: 8 }}><Text>SafetyPanel</Text></View>;
+const FunFactCard = () => <View style={{ padding: 8 }}><Text>FunFactCard</Text></View>;
+const ParentControlsTab = () => <View style={{ padding: 8 }}><Text>ParentControlsTab</Text></View>;
+const AnimatedConfetti = () => <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 20, backgroundColor: 'transparent', zIndex: 100 }}><Text>AnimatedConfetti</Text></View>;
 import { StyleSheet, Text, View, Dimensions, Platform, Modal, ActivityIndicator, UIManager } from "react-native";
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
@@ -171,16 +242,44 @@ export default function MapScreen() {
   });
 
   return (
-    <View style={styles.container}>
-      <MapWithInfoPanel />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1, position: 'relative', backgroundColor: '#fff' }}>
+        {/* AnimatedConfetti overlays everything */}
+        <AnimatedConfetti />
+        {/* MapView fills space above bottom sheet */}
+        <View style={{ flex: 1, zIndex: 1 }}>
+          <MapLibreMapView
+            origin={origin}
+            destination={destination}
+            route={selectedRoute}
+            showTransitStations={true}
+            stations={[]} // TODO: Pass real station data here
+          />
+        </View>
+        {/* FloatingControls float above map, not inside it */}
+        <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
+          <FloatingControls />
+        </View>
+        {/* BottomSheet styled as panel, not overlapping map. Replace with @gorhom/bottom-sheet for interactive behavior. */}
+        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 8, shadowOffset: { width: 0, height: -2 }, elevation: 8, minHeight: 220, padding: 16, zIndex: 20 }}>
+          {/* TODO: Replace with <BottomSheet /> from @gorhom/bottom-sheet for drag-to-hide behavior */}
+          <BottomSheet>
+            <RouteInfoPanel />
+            <SafetyPanel />
+            <FunFactCard />
+            <ParentControlsTab />
+          </BottomSheet>
+        </View>
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
+  // ...existing code...
+  gpsStatusBar: {
+    position: 'absolute',
+    // Removed duplicate style keys for gpsStatusBar, gpsIndicator, gpsStatusText, mapImplementationBadge, mapImplementationText
   },
   gpsStatusBar: {
     position: 'absolute',
@@ -198,24 +297,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
-  },
-  gpsIndicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Colors.primary,
-  },
-  gpsStatusText: {
-    fontSize: 12,
-    color: Colors.text,
-    fontWeight: '600',
-    flex: 1,
-  },
-  mapImplementationBadge: {
-    backgroundColor: Colors.primary + '15',
-    paddingHorizontal: 6,
-    paddingVertical: 2,
     borderRadius: 4,
   },
   mapImplementationText: {

@@ -88,14 +88,16 @@ export default function MapWithInfoPanel() {
 
   return (
     <View style={styles.container}>
-      <InteractiveMap
-        origin={origin || undefined}
-        destination={destination || undefined}
-        route={selectedRoute || undefined}
-        showTransitStations
-        mascotHint={mascotHint}
-        setMascotHint={setMascotHint}
-      />
+      <View style={{ flex: 1 }}>
+        <InteractiveMap
+          origin={origin || undefined}
+          destination={destination || undefined}
+          route={selectedRoute || undefined}
+          showTransitStations
+          mascotHint={mascotHint}
+          setMascotHint={setMascotHint}
+        />
+      </View>
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
