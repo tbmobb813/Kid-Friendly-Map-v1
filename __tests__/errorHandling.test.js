@@ -7,7 +7,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
         removeItem: jest.fn(),
     },
 }));
-import { SafeAsyncStorage, withRetry, DEFAULT_RETRY_CONFIG } from '@/utils/errorHandling';
+import { SafeAsyncStorage, withRetry, DEFAULT_RETRY_CONFIG, handleLocationError, handleNetworkError, handleCameraError, createSafetyErrorBoundary } from '@/utils/errorHandling';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const mockAsyncStorage = AsyncStorage;
@@ -88,7 +88,6 @@ describe('Error Handling Utils', () => {
     });
     describe('Error message handling', () => {
         it('should provide user-friendly location error messages', async () => {
-            const { handleLocationError } = await import('@/utils/errorHandling');
             const permissionError = { code: 1 };
             const result = handleLocationError(permissionError);
             expect(result.userMessage).toBe('Location access is needed for safety features');
@@ -96,7 +95,6 @@ describe('Error Handling Utils', () => {
             expect(result.suggestedAction).toContain('enable location access');
         });
         it('should handle network errors appropriately', async () => {
-            const { handleNetworkError } = await import('@/utils/errorHandling');
             const networkError = { message: 'Network request failed' };
             const result = handleNetworkError(networkError);
             expect(result.userMessage).toBe('No internet connection');
@@ -104,7 +102,6 @@ describe('Error Handling Utils', () => {
             expect(result.canRetry).toBe(true);
         });
         it('should handle camera errors with permission context', async () => {
-            const { handleCameraError } = await import('@/utils/errorHandling');
             const permissionError = { message: 'Camera permission denied' };
             const result = handleCameraError(permissionError);
             expect(result.userMessage).toBe('Camera permission is needed for photo check-ins');
@@ -114,7 +111,6 @@ describe('Error Handling Utils', () => {
     });
     describe('Safety Error Boundary', () => {
         it('should create error boundary with proper configuration', async () => {
-            const { createSafetyErrorBoundary } = await import('@/utils/errorHandling');
             const ErrorBoundary = createSafetyErrorBoundary('TestComponent');
             expect(ErrorBoundary).toBeDefined();
             expect(ErrorBoundary.name).toBe('SafetyErrorBoundary');
