@@ -82,25 +82,7 @@ def enableMinifyInReleaseBuilds = (findProperty('android.enableMinifyInReleaseBu
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
-    ndkVersion = rootProject.ext.ndkVersion
-
-    // Force Folly to use fmt::format instead of std::format when building
-    // against Android's libc++ which may not have full std::format support.
-    // Try to set the CMake define via the Gradle DSL, but guard the change
-    // so AGP distributions that don't expose the property won't fail the
-    // project configuration step.
-    try {
-        externalNativeBuild {
-            cmake {
-                // Add the FOLLY_USE_FMT preprocessor define via cppFlags if
-                // the AGP/CMake DSL exposes it. If not, we'll skip and fall
-                // back to inspecting the compiler invocation in the logs.
-                cppFlags += "-DFOLLY_USE_FMT=1"
-            }
-        }
-    } catch (Exception e) {
-        println "Warning: skipping setting FOLLY_USE_FMT via cppFlags: ${e.message}"
-    }
+    ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion

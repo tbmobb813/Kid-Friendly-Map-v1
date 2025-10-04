@@ -20,44 +20,5 @@ allprojects {
   }
 }
 
-// Override the NDK version to use the stable one BEFORE applying plugins
-project.ext.ndkVersion = "26.3.11579264"
-
 apply plugin: "expo-root-project"
 apply plugin: "com.facebook.react.rootproject"
-
-// Attempt to propagate a CMake preprocessor define to native modules so
-// Folly will use fmt::format instead of std::format where necessary.
-// We do this in a guarded way to avoid failing configuration on AGP
-// distributions that don't expose the same CMake DSL properties.
-gradle.projectsEvaluated {
-  rootProject.allprojects.each { p ->
-    try {
-      p.afterEvaluate {
-        try {
-          def androidExt = p.extensions.findByName('android')
-          if (androidExt != null) {
-            try {
-              // Try to append to arguments if available
-              androidExt.externalNativeBuild.cmake.arguments += ['-DFOLLY_USE_FMT=1']
-              println "Applied -DFOLLY_USE_FMT=1 to ${p.name} via cmake.arguments"
-            } catch (Exception e1) {
-              try {
-                // Fall back to cppFlags when arguments isn't present
-                androidExt.externalNativeBuild.cmake.cppFlags += '-DFOLLY_USE_FMT=1'
-                println "Applied -DFOLLY_USE_FMT=1 to ${p.name} via cmake.cppFlags"
-              } catch (Exception e2) {
-                // Could not apply; skip this project
-                println "Could not apply FOLLY_USE_FMT to ${p.name}: ${e2.message}"
-              }
-            }
-          }
-        } catch (Exception inner) {
-          // ignore projects without android ext or externalNativeBuild
-        }
-      }
-    } catch (Exception outer) {
-      // ignore evaluation errors
-    }
-  }
-}
