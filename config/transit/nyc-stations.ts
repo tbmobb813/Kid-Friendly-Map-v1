@@ -1,3 +1,5 @@
+// ...existing code...
+
 export interface Station {
   id: string;
   name: string;
@@ -225,3 +227,7 @@ export function findNearestStations(
     .sort((a, b) => a.distance - b.distance)
     .slice(0, limit);
 }
+
+//const nearbyStations = originStation?.coordinates
+  //? findNearestStations(originStation.coordinates.latitude, originStation.coordinates.longitude, 10).map(s => s.station)
+  //: [];

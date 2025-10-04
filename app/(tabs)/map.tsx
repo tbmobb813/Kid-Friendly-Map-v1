@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 // (View, Text already imported below)
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
+import { HelpCircle, Accessibility } from 'lucide-react-native';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 // MapLibreGL Native Map scaffold
-const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations }: any) => (
+const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations, onStationPress }: any) => (
   <MapLibreGL.MapView style={{ flex: 1 }} mapStyle="https://demotiles.maplibre.org/style.json">
     {/* Center on origin if available */}
     <MapLibreGL.Camera
@@ -38,12 +40,13 @@ const MapLibreMapView = ({ origin, destination, route, showTransitStations, stat
         <MapLibreGL.LineLayer id="routeLine" style={{ lineColor: '#4F8EF7', lineWidth: 5 }} />
       </MapLibreGL.ShapeSource>
     )}
-    {/* Example: Show transit stations as markers */}
+    {/* Show transit stations as markers, wire up tap logic */}
     {showTransitStations && Array.isArray(stations) && stations.map((station: any) => (
       <MapLibreGL.PointAnnotation
         key={station.id}
         id={station.id}
         coordinate={[station.coordinates.longitude, station.coordinates.latitude]}
+        onSelected={() => onStationPress?.(station.id)}
       >
         <View style={{ backgroundColor: '#fff', borderRadius: 8, padding: 4, borderWidth: 1, borderColor: '#4F8EF7' }}>
           <Text style={{ color: '#4F8EF7', fontWeight: 'bold', fontSize: 12 }}>🚉</Text>
@@ -54,23 +57,36 @@ const MapLibreMapView = ({ origin, destination, route, showTransitStations, stat
 );
 // Placeholder implementations for missing components
 const ExpoMapView = (props: any) => <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}><Text>ExpoMapView</Text></View>;
-const FloatingControls = () => (
+const FloatingControls = ({ onRecenter, onHelp, onToggleAccessibility }: any) => (
   <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-    <View style={{ margin: 8 }}>
+    {/* Recenter Button */}
+    <TouchableOpacity onPress={onRecenter} style={{ margin: 8 }} accessibilityLabel="Recenter map">
       <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#4F8EF7', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
-        <Text style={{ color: '#fff', fontSize: 32 }}>◎</Text>
+        <Navigation color="#fff" size={32} />
       </View>
-    </View>
-    {/* Add more FABs here as needed */}
+    </TouchableOpacity>
+    {/* Help Button */}
+    <TouchableOpacity onPress={onHelp} style={{ margin: 8 }} accessibilityLabel="Help">
+      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#F7B500', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+        <HelpCircle color="#fff" size={32} />
+      </View>
+    </TouchableOpacity>
+    {/* Accessibility Toggle Button */}
+    <TouchableOpacity onPress={onToggleAccessibility} style={{ margin: 8 }} accessibilityLabel="Toggle accessibility mode">
+      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#98DDA1', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+        <Accessibility color="#fff" size={32} />
+      </View>
+    </TouchableOpacity>
   </View>
 );
-const BottomSheet = (props: any) => <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 200, backgroundColor: '#fff', zIndex: 20 }}>{props.children}</View>;
+// Removed local BottomSheet placeholder to avoid naming conflict
 const RouteInfoPanel = () => <View style={{ padding: 8 }}><Text>RouteInfoPanel</Text></View>;
 const SafetyPanel = () => <View style={{ padding: 8 }}><Text>SafetyPanel</Text></View>;
 const FunFactCard = () => <View style={{ padding: 8 }}><Text>FunFactCard</Text></View>;
 const ParentControlsTab = () => <View style={{ padding: 8 }}><Text>ParentControlsTab</Text></View>;
 const AnimatedConfetti = () => <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 20, backgroundColor: 'transparent', zIndex: 100 }}><Text>AnimatedConfetti</Text></View>;
 import { StyleSheet, Text, View, Dimensions, Platform, Modal, ActivityIndicator, UIManager } from "react-native";
+import BottomSheet, { BottomSheetView, BottomSheetHandle, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import MapWithInfoPanel from "@/components/MapWithInfoPanel";
@@ -78,7 +94,7 @@ import { useNavigationStore } from "@/stores/enhancedNavigationStore";
 import { Route } from "@/types/navigation";
 import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from "lucide-react-native";
 import useLocation from "@/hooks/useLocation";
-import { findStationById } from "@/config/transit/nyc-stations";
+import { findStationById, findNearestStations } from "@/config/transit/nyc-stations";
 import MapLibreRouteView from "@/components/MapLibreRouteView";
 import { isMapLibreAvailable } from "@/components/MapLibreMap";
 import { useRouteORS } from "@/hooks/useRouteORS";
@@ -94,6 +110,7 @@ export default function MapScreen() {
   const [showPreferences, setShowPreferences] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
   
+   const mapLibreCameraRef = React.useRef(null);
   const { 
     origin,
     destination,
@@ -237,50 +254,87 @@ export default function MapScreen() {
     [destination?.coordinates?.longitude, destination?.coordinates?.latitude]
   );
 
+  // Get real nearby stations using helper
+  const nearbyStations = useMemo(() => {
+    if (origin?.coordinates) {
+      return findNearestStations(origin.coordinates.latitude, origin.coordinates.longitude, 10).map(s => s.station);
+    }
+    return [];
+  }, [origin?.coordinates?.latitude, origin?.coordinates?.longitude]);
+
   const { geojson: orsRouteGeoJSON } = useRouteORS(originCoord, destinationCoord, {
     enabled: Boolean(originCoord && destinationCoord && Config.ROUTING.ORS_API_KEY),
   });
 
+  // ...existing code...
+  // Snap points for bottom sheet
+  const bottomSheetSnapPoints = ['25%', '60%'];
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={{ flex: 1, position: 'relative', backgroundColor: '#fff' }}>
-        {/* AnimatedConfetti overlays everything */}
-        <AnimatedConfetti />
-        {/* MapView fills space above bottom sheet */}
-        <View style={{ flex: 1, zIndex: 1 }}>
-          <MapLibreMapView
-            origin={origin}
-            destination={destination}
-            route={selectedRoute}
-            showTransitStations={true}
-            stations={[]} // TODO: Pass real station data here
-          />
-        </View>
-        {/* FloatingControls float above map, not inside it */}
-        <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
-          <FloatingControls />
-        </View>
-        {/* BottomSheet styled as panel, not overlapping map. Replace with @gorhom/bottom-sheet for interactive behavior. */}
-        <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 8, shadowOffset: { width: 0, height: -2 }, elevation: 8, minHeight: 220, padding: 16, zIndex: 20 }}>
-          {/* TODO: Replace with <BottomSheet /> from @gorhom/bottom-sheet for drag-to-hide behavior */}
-          <BottomSheet>
-            <RouteInfoPanel />
-            <SafetyPanel />
-            <FunFactCard />
-            <ParentControlsTab />
+  <BottomSheetModalProvider>
+        <View style={{ flex: 1, backgroundColor: '#fff' }}>
+          {/* AnimatedConfetti overlays everything */}
+          <AnimatedConfetti />
+          {/* MapView fills space above bottom sheet */}
+          <View style={{ flex: 1 }}>
+            <MapLibreMapView
+              origin={origin}
+              destination={destination}
+              route={selectedRoute}
+              showTransitStations={true}
+              stations={nearbyStations}
+              onStationPress={handleStationPress}
+            />
+          </View>
+          {/* FloatingControls float above map, not inside it */}
+          <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
+            <FloatingControls
+              onRecenter={() => {
+                // Recenter map to origin (user location)
+                if (origin?.coordinates && globalThis?.mapLibreCameraRef?.current) {
+                  globalThis.mapLibreCameraRef.current.setCamera({
+                    centerCoordinate: [origin.coordinates.longitude, origin.coordinates.latitude],
+                    zoomLevel: 15,
+                    animationDuration: 800,
+                  });
+                }
+              }}
+              onHelp={() => {
+                // Show help modal or info
+                alert('Help: Tap stations for info, drag up the panel for details, use accessibility for larger text.');
+              }}
+              onToggleAccessibility={() => {
+                // Toggle accessibility mode in navigation store
+                setShowPreferences((prev) => !prev);
+              }}
+            />
+          </View>
+          {/* Interactive BottomSheet from @gorhom/bottom-sheet */}
+          <BottomSheet
+            index={0}
+            snapPoints={bottomSheetSnapPoints}
+            backgroundStyle={{ backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 8, shadowOffset: { width: 0, height: -2 }, elevation: 8 }}
+            handleIndicatorStyle={{ backgroundColor: '#4F8EF7', width: 40, height: 6, borderRadius: 3, alignSelf: 'center', marginVertical: 8 }}
+          >
+            <BottomSheetView style={{ padding: 16 }}>
+              <RouteInfoPanel />
+              <SafetyPanel />
+              <FunFactCard />
+              <ParentControlsTab />
+              {/* Test content for visibility */}
+              <Text style={{ textAlign: 'center', color: '#4F8EF7', marginTop: 16 }}>BottomSheet is visible!</Text>
+            </BottomSheetView>
           </BottomSheet>
         </View>
-      </View>
+  </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   // ...existing code...
-  gpsStatusBar: {
-    position: 'absolute',
-    // Removed duplicate style keys for gpsStatusBar, gpsIndicator, gpsStatusText, mapImplementationBadge, mapImplementationText
-  },
+  // ...existing code...
   gpsStatusBar: {
     position: 'absolute',
     top: 0,
