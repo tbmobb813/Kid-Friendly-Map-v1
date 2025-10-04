@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  ors-mock:
+    build: .
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production

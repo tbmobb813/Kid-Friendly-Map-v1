@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 // (View, Text already imported below)
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native';
-import { HelpCircle, Accessibility } from 'lucide-react-native';
+import { HelpCircle, Accessibility, Menu } from 'lucide-react-native';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 // MapLibreGL Native Map scaffold
-const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations, onStationPress }: any) => (
-  <MapLibreGL.MapView style={{ flex: 1 }} mapStyle="https://demotiles.maplibre.org/style.json">
+const MapLibreMapView = ({ origin, destination, route, showTransitStations, stations, onStationPress, mapStyle }: any) => (
+  <MapLibreGL.MapView style={{ flex: 1 }} mapStyle={mapStyle}>
     {/* Center on origin if available */}
     <MapLibreGL.Camera
       zoomLevel={13}
@@ -57,36 +57,109 @@ const MapLibreMapView = ({ origin, destination, route, showTransitStations, stat
 );
 // Placeholder implementations for missing components
 const ExpoMapView = (props: any) => <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}><Text>ExpoMapView</Text></View>;
-const FloatingControls = ({ onRecenter, onHelp, onToggleAccessibility }: any) => (
-  <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-    {/* Recenter Button */}
-    <TouchableOpacity onPress={onRecenter} style={{ margin: 8 }} accessibilityLabel="Recenter map">
-      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#4F8EF7', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
-        <Navigation color="#fff" size={32} />
+
+// FAB bullet/burger menu: single main FAB that toggles small action buttons above it
+const FloatingMenu = ({ onRecenter, onHelp, onToggleAccessibility }: any) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <View style={{ alignItems: 'center' }}>
+      {open && (
+        <View style={{ marginBottom: 8, alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => { onRecenter?.(); setOpen(false); }} style={{ marginVertical: 6 }} accessibilityLabel="Recenter map">
+            <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#4F8EF7', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+              <Navigation color="#fff" size={22} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { onHelp?.(); setOpen(false); }} style={{ marginVertical: 6 }} accessibilityLabel="Help">
+            <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#F7B500', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+              <HelpCircle color="#fff" size={22} />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { onToggleAccessibility?.(); setOpen(false); }} style={{ marginVertical: 6 }} accessibilityLabel="Toggle accessibility mode">
+            <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#98DDA1', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
+              <Accessibility color="#fff" size={22} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <TouchableOpacity onPress={() => setOpen(o => !o)} accessibilityLabel="Open menu">
+        <View style={{ width: 64, height: 64, borderRadius: 32, backgroundColor: '#2D3748', alignItems: 'center', justifyContent: 'center', elevation: 12 }}>
+          <Menu color="#fff" size={28} />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+// Removed local BottomSheet placeholder to avoid naming conflict
+const RouteInfoPanel = ({ route, unifiedRoute }: any) => {
+  if (!route && !unifiedRoute) {
+    return (
+      <View style={{ padding: 8 }}>
+        <Text style={{ fontWeight: '600', color: '#4F8EF7' }}>No route selected</Text>
+        <Text style={{ color: '#666', marginTop: 6 }}>Set an origin and destination to see route details here.</Text>
       </View>
-    </TouchableOpacity>
-    {/* Help Button */}
-    <TouchableOpacity onPress={onHelp} style={{ margin: 8 }} accessibilityLabel="Help">
-      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#F7B500', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
-        <HelpCircle color="#fff" size={32} />
-      </View>
-    </TouchableOpacity>
-    {/* Accessibility Toggle Button */}
-    <TouchableOpacity onPress={onToggleAccessibility} style={{ margin: 8 }} accessibilityLabel="Toggle accessibility mode">
-      <View style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#98DDA1', alignItems: 'center', justifyContent: 'center', elevation: 8 }}>
-        <Accessibility color="#fff" size={32} />
+    );
+  }
+
+  const summary = route?.properties?.summary ?? unifiedRoute?.properties?.summary ?? null;
+
+  return (
+    <View style={{ padding: 8 }}>
+      <Text style={{ fontWeight: '700', fontSize: 16, color: '#0f172a' }}>{route?.name ?? unifiedRoute?.name ?? 'Selected route'}</Text>
+      {summary && (
+        <Text style={{ color: '#374151', marginTop: 6 }}>{`Distance: ${Math.round((summary.distance ?? 0) / 1000 * 10) / 10} km · Duration: ${Math.round((summary.duration ?? 0) / 60)} min`}</Text>
+      )}
+    </View>
+  );
+};
+
+const SafetyPanel = ({ children }: any) => (
+  <View style={{ padding: 8, backgroundColor: '#FEF3F2', borderRadius: 8, marginVertical: 8 }}>
+    <Text style={{ fontWeight: '700', color: '#B91C1C' }}>Safety tips</Text>
+    <Text style={{ color: '#7F1D1D', marginTop: 6 }}>• Stay on well-lit routes at night
+    {'\n'}• Keep an eye on surroundings and avoid isolated areas
+    {'\n'}• Make sure your child is visible to drivers</Text>
+    {children}
+  </View>
+);
+
+const FunFactCard = ({ fact }: any) => (
+  <View style={{ padding: 8, backgroundColor: '#EEF2FF', borderRadius: 8, marginVertical: 8 }}>
+    <Text style={{ fontWeight: '700', color: '#3730A3' }}>Fun fact</Text>
+    <Text style={{ color: '#3730A3', marginTop: 6 }}>{fact ?? 'Parks make kids happier — take a detour!'}</Text>
+  </View>
+);
+
+const ParentControlsTab = ({ onOpenSettings }: any) => (
+  <View style={{ padding: 8 }}>
+    <Text style={{ fontWeight: '700' }}>Parent Controls</Text>
+    <TouchableOpacity onPress={onOpenSettings} style={{ marginTop: 8 }}>
+      <View style={{ padding: 10, backgroundColor: '#fff', borderRadius: 8, borderWidth: 1, borderColor: '#E6E6E6' }}>
+        <Text>Settings</Text>
       </View>
     </TouchableOpacity>
   </View>
 );
-// Removed local BottomSheet placeholder to avoid naming conflict
-const RouteInfoPanel = () => <View style={{ padding: 8 }}><Text>RouteInfoPanel</Text></View>;
-const SafetyPanel = () => <View style={{ padding: 8 }}><Text>SafetyPanel</Text></View>;
-const FunFactCard = () => <View style={{ padding: 8 }}><Text>FunFactCard</Text></View>;
-const ParentControlsTab = () => <View style={{ padding: 8 }}><Text>ParentControlsTab</Text></View>;
 const AnimatedConfetti = () => <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 20, backgroundColor: 'transparent', zIndex: 100 }}><Text>AnimatedConfetti</Text></View>;
 import { StyleSheet, Text, View, Dimensions, Platform, Modal, ActivityIndicator, UIManager } from "react-native";
-import BottomSheet, { BottomSheetView, BottomSheetHandle, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+// Import bottom-sheet at runtime to avoid type resolution issues in some environments
+let BottomSheet: any = null;
+let BottomSheetView: any = null;
+let BottomSheetHandle: any = null;
+let BottomSheetModalProvider: any = ({ children }: any) => children;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const _bs = require('@gorhom/bottom-sheet');
+  BottomSheet = _bs.default ?? _bs;
+  BottomSheetView = _bs.BottomSheetView ?? _bs.BottomSheetView;
+  BottomSheetHandle = _bs.BottomSheetHandle ?? _bs.BottomSheetHandle;
+  BottomSheetModalProvider = _bs.BottomSheetModalProvider ?? _bs.BottomSheetModalProvider ?? BottomSheetModalProvider;
+} catch (e) {
+  // If module isn't present at runtime (e.g. tests), fallback to no-op components
+  BottomSheet = ({ children }: any) => <>{children}</>;
+}
 import { useRouter } from "expo-router";
 import Colors from "@/constants/colors";
 import MapWithInfoPanel from "@/components/MapWithInfoPanel";
@@ -284,12 +357,13 @@ export default function MapScreen() {
               route={selectedRoute}
               showTransitStations={true}
               stations={nearbyStations}
+              mapStyle={Config.MAP.STYLE_URL ?? 'https://demotiles.maplibre.org/style.json'}
               onStationPress={handleStationPress}
             />
           </View>
           {/* FloatingControls float above map, not inside it */}
           <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
-            <FloatingControls
+            <FloatingMenu
               onRecenter={() => {
                 // Recenter map to origin (user location)
                 if (origin?.coordinates && globalThis?.mapLibreCameraRef?.current) {
