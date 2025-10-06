@@ -103,6 +103,40 @@ export class TransitDataUpdater {
   }
 
   private async fetchTransitData(region: RegionConfig): Promise<TransitApiResponse> {
+    // If a server-side transit adapter is configured, call it to get normalized JSON feeds.
+    const adapterBase = process.env.TRANSIT_ADAPTER_URL;
+    if (adapterBase) {
+      const allRoutes: any[] = [];
+      const allSchedules: any[] = [];
+      const allAlerts: any[] = [];
+
+      for (const system of region.transitSystems) {
+        try {
+          const url = `${adapterBase.replace(/\/$/, '')}/feeds/${region.id}/${system.id}.json`;
+          // Use node-fetch if necessary
+          const fetchFn = (typeof fetch !== 'undefined') ? fetch : require('node-fetch');
+          const res = await fetchFn(url);
+          if (!res.ok) {
+            console.warn(`Adapter fetch failed for ${system.id}: ${res.status}`);
+            continue;
+          }
+          const json = await res.json();
+          if (json.routes) allRoutes.push(...json.routes);
+          if (json.schedules) allSchedules.push(...json.schedules);
+          if (json.alerts) allAlerts.push(...json.alerts);
+        } catch (err) {
+          console.warn(`Failed to fetch from adapter for ${system.id}:`, err);
+        }
+      }
+
+      return {
+        routes: allRoutes.length ? allRoutes : this.generateMockRoutes(region),
+        schedules: allSchedules.length ? allSchedules : this.generateMockSchedules(region),
+        alerts: allAlerts.length ? allAlerts : this.generateMockAlerts(region),
+        lastModified: new Date().toISOString()
+      };
+    }
+
     // If region has transitSystems with feedUrl set, fetch those feeds and normalize.
     const allRoutes: any[] = [];
     const allSchedules: any[] = [];
