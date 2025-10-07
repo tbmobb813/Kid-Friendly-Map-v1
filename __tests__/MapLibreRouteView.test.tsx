@@ -1,50 +1,26 @@
-import { renderHook } from '@testing-library/react-native';
-import { render } from '@testing-library/react-native';
-// Ensure the local MapLibreMap alias is mocked to the stable mock implementation
-// so imports during test initialization use a predictable wrapper component.
-jest.mock('@/components/MapLibreMap', () => require('../__mocks__/MapLibreMapMock'));
-import MapLibreRouteView from '@/components/MapLibreRouteView';
-import React from 'react';
+// MUST be first: mock the local MapLibreMap module used by MapLibreRouteView
+jest.mock('@/components/MapLibreMap', () => {
+  const React = require('react');
+  // use real host component 'View' so RN testing lib detects host names
+  const MapLibreMap = ({ children, ...props }: any) =>
+    React.createElement('View', { testID: props.testID ?? 'mock-maplibre-map', ...props }, children);
+  const ShapeSource = ({ children, ...props }: any) =>
+    React.createElement('View', { testID: `mock-shapesource-${props.id ?? 'unknown'}`, ...props }, children);
+  const LineLayer = (props: any) =>
+    React.createElement('View', { testID: `mock-linelayer-${props.id ?? 'unknown'}`, ...props });
+  const CircleLayer = (props: any) =>
+    React.createElement('View', { testID: `mock-circlelayer-${props.id ?? 'unknown'}`, ...props });
+  const Camera = (props: any) => React.createElement('View', { testID: 'mock-camera', ...props });
+
+  const MapLibreGL = { ShapeSource, LineLayer, CircleLayer, Camera };
+  return { __esModule: true, default: MapLibreMap, MapLibreGL, isMapLibreAvailable: true };
+});
+
+// imports must come after jest.mock
 import type { FeatureCollection, LineString } from 'geojson';
-
-// Mock MapLibre
-jest.mock('@maplibre/maplibre-react-native', () => ({
-  __esModule: true,
-  default: {
-    setAccessToken: jest.fn(),
-    requestAndroidPermissionsIfNeeded: jest.fn(),
-    MapView: ({ children, onPress, onDidFinishRenderingMapFully, ...props }: any) => {
-      return React.createElement(
-        'MapView',
-        {
-          testID: 'mock-mapview',
-          onPress,
-          onDidFinishRenderingMapFully,
-          ...props,
-        },
-        children,
-      );
-    },
-    Camera: (props: any) => React.createElement('Camera', { testID: 'mock-camera', ...props }),
-    ShapeSource: ({ children, onPress, ...props }: any) => {
-      return React.createElement(
-        'ShapeSource',
-        {
-          testID: `mock-shapesource-${props.id}`,
-          onPress,
-          ...props,
-        },
-        children,
-      );
-    },
-    LineLayer: (props: any) =>
-      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) =>
-      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
-  },
-}));
-
-// Use the central __mocks__/MapLibreMapMock.tsx for the MapLibreMap mock (moduleNameMapper maps the alias to that file)
+import { jest, describe, it, expect } from '@jest/globals';
+import { render } from '@testing-library/react-native';
+import MapLibreRouteView from '@/components/MapLibreRouteView';
 
 // Mock the config
 jest.mock('@/utils/config', () => ({
@@ -211,4 +187,7 @@ describe('MapLibreRouteView', () => {
     // Should still render content: either stations or a route shapesource is acceptable
     expect(rendered.toJSON()).toBeTruthy();
   });
+
+  // quick debug: only inspect the imported symbol (do NOT render at top-level)
+  console.log('MapLibreRouteView type:', typeof MapLibreRouteView);
 });

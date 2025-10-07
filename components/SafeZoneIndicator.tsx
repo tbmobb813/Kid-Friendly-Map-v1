@@ -26,7 +26,9 @@ export const SafeZoneIndicator: React.FC = () => {
     if (!isMonitoring) return 'Safe zone monitoring inactive';
     if (!status) return 'Getting location...';
     if (status.inside.length > 0) {
-      return `Inside ${status.inside[0].name}${status.inside.length > 1 ? ` +${status.inside.length - 1} more` : ''}`;
+      return `Inside ${status.inside[0].name}${
+        status.inside.length > 1 ? ` +${status.inside.length - 1} more` : ''
+      }`;
     }
     return 'Outside safe zones';
   };

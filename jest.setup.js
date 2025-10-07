@@ -60,3 +60,13 @@ jest.mock('@react-native-community/netinfo', () => ({
 	// also export named constant used in some modules
 	useNetInfo: () => ({ isConnected: true, isInternetReachable: true }),
 }));
+
+import 'whatwg-fetch'; // example: keep any globals you need
+
+// If you had code like `require('@testing-library/jest-native/extend-expect')`
+// migrate to the new matchers or remove if you already uninstalled the package.
+// e.g. import '@testing-library/jest-dom/extend-expect'; // optional
+
+// Any other global setup (mocks, timers, env vars) goes here.
+// Example:
+// globalThis.someMock = () => {};

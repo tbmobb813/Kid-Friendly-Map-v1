@@ -1,13 +1,29 @@
-// Mock AsyncStorage before importing the module under test so imports pick up the mock
-const mockAsyncStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+
+// create the mock inside the jest.mock factory so hoisting does not hit TDZ.
+// expose it on globalThis so tests can reference it reliably.
+jest.mock('@react-native-async-storage/async-storage', () => {
+  const m = {
+    getItem: jest.fn(async (key: string) => null),
+    setItem: jest.fn(async (key: string, value: string) => null),
+    removeItem: jest.fn(async (key: string) => null),
+    clear: jest.fn(async () => null),
+  };
+  // expose for tests
+  (globalThis as any).__mockAsyncStorage = m;
+  return {
+    __esModule: true,
+    default: m,
+  };
+});
+
+// after the hoisted mock factory runs, read the exposed mock for easier usage below
+const mockAsyncStorage = (globalThis as any).__mockAsyncStorage as {
+  getItem: jest.Mock;
+  setItem: jest.Mock;
+  removeItem: jest.Mock;
+  clear: jest.Mock;
 };
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  __esModule: true,
-  default: mockAsyncStorage,
-}));
 
 import {
   SafeAsyncStorage,
@@ -27,7 +43,7 @@ describe('Error Handling Utils', () => {
   describe('withRetry', () => {
     it('should succeed on first attempt', async () => {
       const mockOperation = jest.fn().mockResolvedValue('success');
-      const result = await withRetry(mockOperation, DEFAULT_RETRY_CONFIG.storage);
+      const result = await withRetry(() => mockOperation(), DEFAULT_RETRY_CONFIG.storage);
 
       expect(result).toBe('success');
       expect(mockOperation).toHaveBeenCalledTimes(1);
@@ -47,9 +63,9 @@ describe('Error Handling Utils', () => {
     });
 
     it('should fail after max attempts', async () => {
-      const mockOperation = jest.fn().mockRejectedValue(new Error('Persistent failure'));
+      const mockOperation = jest.fn<() => Promise<any>>().mockRejectedValue(new Error('Persistent failure'));
 
-      await expect(withRetry(mockOperation, { maxAttempts: 2, delayMs: 10 })).rejects.toThrow(
+      await expect(withRetry(() => mockOperation(), { maxAttempts: 2, delayMs: 10 })).rejects.toThrow(
         'Persistent failure',
       );
 
@@ -61,7 +77,7 @@ describe('Error Handling Utils', () => {
       const shouldRetry = jest.fn().mockReturnValue(false);
 
       await expect(
-        withRetry(mockOperation, {
+        withRetry(() => mockOperation(), {
           maxAttempts: 3,
           delayMs: 10,
           shouldRetry,

@@ -548,8 +548,7 @@ class UnifiedRoutingService {
 
       // Shorter waiting times
       const waitTime = route.waitingTime || 0;
-      if (waitTime < 300)
-        score += 10; // < 5 minutes
+      if (waitTime < 300) score += 10; // < 5 minutes
       else if (waitTime > 900) score -= 15; // > 15 minutes
     }
 

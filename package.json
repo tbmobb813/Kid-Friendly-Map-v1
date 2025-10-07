@@ -28,8 +28,8 @@
     "ios": "expo run:ios",
     "typescript": "tsc -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
-    "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint": "eslint \"**/*.{ts,tsx}\" --max-warnings=0",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -39,8 +39,6 @@
     "@react-native-community/netinfo": "11.4.1",
     "@react-navigation/native": "^7.1.6",
     "@tanstack/react-query": "^5.83.0",
-    "@testing-library/jest-native": "^5.4.3",
-    "@testing-library/react-native": "^13.2.2",
     "@types/react-test-renderer": "^19.1.0",
     "expo": "^54.0.0",
     "expo-av": "~16.0.7",
@@ -87,16 +85,21 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "typescript": "~5.9.2",
-    "eslint": "8.56.0",
-    "eslint-config-airbnb-typescript": "18.0.0",
-    "@typescript-eslint/parser": "7.18.0",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "eslint-plugin-react": "7.33.2",
-    "eslint-plugin-react-hooks": "4.6.0",
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@testing-library/react-native": "^12.4.0",
+    "@typescript-eslint/eslint-plugin": "8.46.0",
+    "@typescript-eslint/parser": "8.46.0",
+    "babel-jest": "^30.2.0",
+    "eslint": "8.57.1",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-prettier": "4.2.1",
-    "prettier": "2.8.8"
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "prettier": "2.8.8",
+    "react-test-renderer": "19.1.0"
   },
   "private": true
 }
