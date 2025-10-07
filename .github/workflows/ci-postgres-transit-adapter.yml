@@ -31,6 +31,10 @@ jobs:
         run: |
           cd server
           npm ci
+      - name: Docs lint
+        run: |
+          # Run markdown linter across docs; fails CI if lint issues
+          npx markdownlint-cli@0.34.0 "**/*.md"
       - name: Run server unit tests
         run: |
           cd server
@@ -51,12 +55,13 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test
         run: |
           psql $DATABASE_URL -f server/db/schema.sql
-      - name: Import to Postgres
+      - name: Import to Postgres (COPY inside container)
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test
         run: |
+          # Use the container-aware importer which copies CSVs into the DB container and runs \copy there.
           cd server
-          node tools/import-to-postgres.js
+          node tools/import-to-postgres-copy-in-container.js
       - name: Start server
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test

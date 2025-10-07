@@ -2,7 +2,9 @@
 
 ## 📋 Overview
 
-This document covers the comprehensive offline capabilities and application monitoring system implemented in the Kid-Friendly Map app. The system ensures reliable operation in offline scenarios and provides production-grade monitoring for errors, performance, and system health.
+This document covers the comprehensive offline capabilities and application monitoring system
+implemented in the Kid-Friendly Map app. The system ensures reliable operation in offline scenarios and
+provides production-grade monitoring for errors, performance, and system health.
 
 ---
 
@@ -102,9 +104,12 @@ await offlineManager.clearPendingActions();
 The system handles these action types:
 
 1. **PHOTO_CHECKIN** - Photo check-ins at locations
-2. **UPDATE_PROFILE** - User profile updates
-3. **SAVE_ROUTE** - Route saves and favorites
-4. **ERROR_REPORT** - Error reports for monitoring
+
+1. **UPDATE_PROFILE** - User profile updates
+
+1. **SAVE_ROUTE** - Route saves and favorites
+
+1. **ERROR_REPORT** - Error reports for monitoring
 
 ---
 
@@ -318,24 +323,39 @@ npm run test:all
 #### Offline Validation Tests (400+ lines)
 
 - ✅ Network state detection (online/offline transitions)
+
 - ✅ Network quality indicators (excellent/good/poor/offline)
+
 - ✅ Offline action queuing and persistence
+
 - ✅ Cache management (set/get/expire/clear)
+
 - ✅ Sync mechanism with retry logic
+
 - ✅ Data integrity and ordering
+
 - ✅ Edge cases (rapid transitions, empty queues, malformed data)
+
 - ✅ Performance (high-frequency operations)
 
 #### Monitoring Tests (400+ lines)
 
 - ✅ System initialization with various configs
+
 - ✅ Error tracking with different severity levels
+
 - ✅ Performance metric collection
+
 - ✅ User action tracking
+
 - ✅ System health monitoring
+
 - ✅ Memory pressure detection
+
 - ✅ Statistics and reporting
+
 - ✅ Breadcrumb management
+
 - ✅ Integration with offline manager
 
 ### Manual Testing Checklist
@@ -343,53 +363,85 @@ npm run test:all
 #### Offline Capabilities
 
 - [ ] **Network Detection**
+
   - [ ] Turn off WiFi - app detects offline state
+
   - [ ] Turn off cellular data - app detects offline state
+
   - [ ] Enable airplane mode - app detects offline state
+
   - [ ] Restore connection - app detects online state
 
 - [ ] **Offline Actions**
+
   - [ ] Perform action while offline - gets queued
+
   - [ ] Check pending actions count - shows queued items
+
   - [ ] Restore connection - actions sync automatically
+
   - [ ] Check logs - sync completion logged
 
 - [ ] **Cache Behavior**
+
   - [ ] Load data while online - data cached
+
   - [ ] Go offline and reload - cached data displayed
+
   - [ ] Wait for cache expiry - stale cache removed
+
   - [ ] Clear cache - all cached data removed
 
 - [ ] **Network Quality**
+
   - [ ] On WiFi - quality shows "excellent"
+
   - [ ] On 4G/LTE - quality shows "good"
+
   - [ ] On 3G/slow connection - quality shows "poor"
+
   - [ ] Offline - quality shows "offline"
 
 #### Monitoring System
 
 - [ ] **Error Tracking**
+
   - [ ] Trigger error - logged to console/Sentry
+
   - [ ] Check error context - includes metadata
+
   - [ ] Verify severity levels - low/medium/high/critical
+
   - [ ] Check user context - associated with user
 
 - [ ] **Performance Monitoring**
+
   - [ ] Perform slow operation - warning logged
+
   - [ ] Check performance stats - metrics collected
+
   - [ ] Verify average duration - calculated correctly
+
   - [ ] Check memory usage - old metrics cleared
 
 - [ ] **User Tracking**
+
   - [ ] Navigate screens - screen views tracked
+
   - [ ] Click buttons - actions tracked
+
   - [ ] Check action rate - calculated correctly
+
   - [ ] Verify breadcrumbs - added for debugging
 
 - [ ] **System Health**
+
   - [ ] Check network status - reflects current state
+
   - [ ] Check backend status - reflects API health
+
   - [ ] Check memory pressure - low/medium/high
+
   - [ ] Check pending sync - shows queue count
 
 ---
@@ -401,16 +453,23 @@ npm run test:all
 #### Offline Configuration
 
 - [ ] Set appropriate cache TTL values for each data type
+
 - [ ] Configure max retry attempts for sync actions
+
 - [ ] Set up offline action queue size limits
+
 - [ ] Test offline behavior with various network conditions
 
 #### Monitoring Configuration
 
 - [ ] Set up Sentry account and get DSN
+
 - [ ] Configure appropriate sample rates (0.1-0.3 for production)
+
 - [ ] Set up error alerts and notifications
+
 - [ ] Configure user privacy settings (remove PII)
+
 - [ ] Test monitoring in staging environment
 
 #### Environment Variables
@@ -430,16 +489,19 @@ ENABLE_USER_TRACKING=true
 #### Sentry Configuration
 
 1. **Create Sentry Project**
-   - Go to https://sentry.io
-   - Create new React Native project
-   - Copy DSN
 
-2. **Install Sentry SDK**
+1. Go to <https://sentry.io>
+1. Create new React Native project
+1. Copy DSN
+
+1. **Install Sentry SDK**
+
    ```bash
    npx expo install @sentry/react-native
    ```
 
-3. **Configure Sentry**
+1. **Configure Sentry**
+
    ```typescript
    await monitoring.initialize({
      sentryDsn: process.env.SENTRY_DSN,
@@ -448,9 +510,12 @@ ENABLE_USER_TRACKING=true
    });
    ```
 
-4. **Set Up Alerts**
+1. **Set Up Alerts**
+
    - Configure error rate alerts
+
    - Set up performance degradation alerts
+
    - Configure crash alerts for critical errors
 
 #### Alternative Monitoring Options
@@ -458,8 +523,11 @@ ENABLE_USER_TRACKING=true
 If not using Sentry, the monitoring system still works with local logging:
 
 - Errors logged to console and local storage
+
 - Performance metrics collected in-memory
+
 - User actions tracked locally
+
 - Health status monitored
 
 ---
@@ -469,20 +537,26 @@ If not using Sentry, the monitoring system still works with local logging:
 ### Offline Performance
 
 - **Cache Hit Rate**: % of requests served from cache
+
 - **Sync Success Rate**: % of queued actions successfully synced
+
 - **Average Sync Time**: Time to sync all pending actions
+
 - **Queue Depth**: Average number of pending actions
 
 ### Monitoring Metrics
 
 - **Error Rate**: Errors per minute/hour
+
 - **Crash-Free Sessions**: % of sessions without crashes
+
 - **Average Response Time**: API call performance
+
 - **Memory Pressure**: % of sessions with high memory usage
 
 ### Target Benchmarks
 
-```
+``` text
 ✅ Cache Hit Rate: > 60%
 ✅ Sync Success Rate: > 95%
 ✅ Average Sync Time: < 2 seconds
@@ -555,41 +629,63 @@ function HealthMonitor() {
 ### Offline First
 
 1. **Always cache important data**
+
    - User profiles
+
    - Recent routes
+
    - Safety zone information
+
    - Educational content
 
-2. **Queue user actions gracefully**
+1. **Queue user actions gracefully**
+
    - Show immediate feedback to user
+
    - Display "Will sync when online" message
+
    - Show pending action count indicator
 
-3. **Handle sync failures gracefully**
+1. **Handle sync failures gracefully**
+
    - Retry with exponential backoff
+
    - Show user-friendly error messages
+
    - Allow manual retry option
 
 ### Monitoring Best Practices
 
 1. **Don't over-monitor in production**
+
    - Use sampling (10-30%)
+
    - Limit breadcrumbs to 50-100
+
    - Clear old metrics regularly
 
-2. **Protect user privacy**
+1. **Protect user privacy**
+
    - Filter out PII from errors
+
    - Anonymize user IDs
+
    - Don't log sensitive data
 
-3. **Set up proper alerts**
+1. **Set up proper alerts**
+
    - Critical errors: immediate notification
+
    - High error rate: hourly digest
+
    - Performance degradation: daily report
 
-4. **Regular monitoring review**
+1. **Regular monitoring review**
+
    - Weekly: Review error trends
+
    - Monthly: Analyze performance metrics
+
    - Quarterly: Optimize monitoring config
 
 ---
@@ -597,23 +693,35 @@ function HealthMonitor() {
 ## 🚀 Next Steps
 
 1. **Enable Sentry in Production**
+
    - Get Sentry DSN
+
    - Configure environment variables
+
    - Set up error alerts
 
-2. **Add Custom Dashboards**
+1. **Add Custom Dashboards**
+
    - Create health status dashboard
+
    - Build offline sync monitor
+
    - Implement performance charts
 
-3. **Integrate with CI/CD**
+1. **Integrate with CI/CD**
+
    - Add monitoring to build pipeline
+
    - Upload source maps to Sentry
+
    - Automate error reporting tests
 
-4. **User Feedback Integration**
+1. **User Feedback Integration**
+
    - Add "Report Issue" button
+
    - Include monitoring context in reports
+
    - Link user feedback to error events
 
 ---
@@ -621,10 +729,15 @@ function HealthMonitor() {
 ## 📚 References
 
 - [Offline Manager Implementation](../utils/offlineManager.ts)
+
 - [Monitoring System Implementation](../utils/monitoring.ts)
+
 - [Offline Tests](__tests__/offline-validation.test.ts)
+
 - [Monitoring Tests](__tests__/monitoring.test.ts)
+
 - [API Layer with Caching](../utils/api.ts)
+
 - [Error Handling System](../utils/errorHandling.ts)
 
 ---

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD013 -->
 # Kid-Friendly Map — Privacy Policy (Draft)
 
 **Last updated:** 2025-10-01
@@ -13,7 +14,9 @@ Kid-Friendly Map ("Company", "we", "our", or "us") designs navigation and discov
 This policy applies to:
 
 - The Kid-Friendly Map mobile applications (iOS, Android) and web experiences.
+
 - Optional AI Journey Companion features.
+
 - Backend services, offline map packages, analytics dashboards, and customer support channels.
 
 It does not cover third-party services accessed via external links. Guardians should review third-party policies independently.
@@ -23,19 +26,25 @@ It does not cover third-party services accessed via external links. Guardians sh
 ### 3.1 Information Provided Directly
 
 - **Guardian Account Details:** Email address, password, two-factor authentication settings.
+
 - **Child Profile Data:** Nickname, avatar, age range band (e.g., 6–8, 9–11), and accessibility preferences.
+
 - **Parental Consent Records:** Verification status, consent timestamp, preferred contact method.
 
 ### 3.2 Information Collected Automatically
 
 - **Device Information:** Device model, OS version, app version, locale, anonymized identifiers (generated per install).
+
 - **Approximate Location:** City-level or region-level geolocation derived from guardian-approved inputs. Precise GPS coordinates are cached only locally for routing and never transmitted unless a guardian enables live tracking.
+
 - **Usage & Interactions:** Screen views, button taps, feature opt-ins, crash logs (via Sentry), and performance metrics.
+
 - **Offline Map Metadata:** Download timestamps, tile package identifiers, storage usage (aggregated).
 
 ### 3.3 Information Collected from Third Parties
 
 - **Guardian Sign-In Providers:** If using OAuth (Apple, Google), we receive tokens and basic profile (name, email) as permitted.
+
 - **Analytics Platform (Plausible):** Aggregated page views and events without cookies or persistent identifiers.
 
 We do not knowingly collect or store persistent identifiers for children beyond what is necessary to operate the service with parental consent.
@@ -43,9 +52,13 @@ We do not knowingly collect or store persistent identifiers for children beyond 
 ## 4. How We Use Information
 
 - Provide navigation, route planning, and discovery features tailored for children.
+
 - Personalize content (e.g., fun facts, achievements) within guardian-approved limits.
+
 - Maintain safety features, including arrival alerts and accessibility settings.
+
 - Monitor app performance, detect bugs, and improve reliability.
+
 - Comply with legal obligations, including record-keeping for parental consent and data-subject requests.
 
 ## 5. Legal Bases for Processing (GDPR)
@@ -62,8 +75,11 @@ When legitimate interests are used, we conduct balancing tests to ensure the int
 ## 6. Parental Consent & Controls
 
 - Guardians must create an account and verify their identity before enabling child profiles.
+
 - Consent flows provide granular toggles (location sharing, AI assistant, analytics).
+
 - Guardians can review, update, or revoke consent at any time in the parental dashboard.
+
 - If consent is revoked, associated child data is deactivated or deleted within 30 days unless retention is required by law.
 
 ## 7. Data Retention
@@ -82,7 +98,9 @@ When legitimate interests are used, we conduct balancing tests to ensure the int
 We do not sell personal data. We share information only with:
 
 - **Service Providers:** Hosting (e.g., AWS), analytics (Plausible), error monitoring (Sentry) with privacy-centric configurations.
+
 - **Legal Authorities:** When required to comply with law or protect vital interests.
+
 - **Business Transfers:** In the event of a merger or acquisition, subject to equivalent privacy protections.
 
 All vendors undergo data protection impact assessments (DPIA) and execute data processing agreements (DPAs).
@@ -94,8 +112,11 @@ If data is transferred outside the user’s region, we implement appropriate saf
 ## 10. Security Measures
 
 - Encryption in transit (TLS 1.2+) and at rest (AES-256).
+
 - Role-based access control with least-privilege principles.
+
 - Incident response plan with 72-hour notification window for GDPR reportable breaches.
+
 - Regular penetration testing and automated dependency scanning.
 
 ## 11. Data Subject & Guardian Rights
@@ -103,8 +124,11 @@ If data is transferred outside the user’s region, we implement appropriate saf
 Guardians and eligible users may:
 
 - Request access, correction, or deletion of child data.
+
 - Export guardian account information in a machine-readable format.
+
 - Object to or restrict processing of optional analytics features.
+
 - Withdraw consent at any time without affecting the legality of prior processing.
 
 Requests can be initiated via the in-app guardian dashboard or by contacting [privacy@kidfriendlymap.example](mailto:privacy@kidfriendlymap.example).
@@ -120,9 +144,12 @@ We will notify guardians of significant updates via email and in-app notices at 
 ## 14. Contact Us
 
 - **Privacy inquiries:** [privacy@kidfriendlymap.example](mailto:privacy@kidfriendlymap.example)
+
 - **Data protection officer:** [dpo@kidfriendlymap.example](mailto:dpo@kidfriendlymap.example)
+
 - **Postal address:** Kid-Friendly Map Privacy Office, 123 Maple Lane, Suite 200, Portland, OR 97205, USA
 
 ---
 
 _This draft is for internal collaboration. Do not distribute externally without legal approval._
+<!-- markdownlint-enable MD013 -->

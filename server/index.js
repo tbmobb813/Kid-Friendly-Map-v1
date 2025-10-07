@@ -29,6 +29,7 @@ const fetchDuration = new promClient.Histogram({
   buckets: [0.1, 0.5, 1, 2, 5]
 });
 const fetchFailures = new promClient.Counter({ name: 'transit_adapter_fetch_failures_total', help: 'Number of failed fetch attempts' });
+const enrichedRoutesGauge = new promClient.Gauge({ name: 'transit_adapter_enriched_routes', help: 'Number of enriched routes returned per request' });
 
 
 
@@ -103,7 +104,10 @@ app.get('/feeds/:region/:system.json', requireApiKey, async (req, res) => {
     // Integration log: count how many routes were enriched (have a destination or nextStopName)
     try {
       const enrichedCount = (normalized.routes || []).filter(r => (r.destination && String(r.destination).trim() !== '') || (r.nextStopName && String(r.nextStopName).trim() !== '')).length;
-      console.info(`[transit-adapter] enrichedRoutes=${enrichedCount} region=${region} system=${system}`);
+      // Structured JSON log for integration
+      const log = { ts: new Date().toISOString(), msg: 'transit_adapter.enriched', region, system, enrichedRoutes: enrichedCount };
+      console.info(JSON.stringify(log));
+      try { enrichedRoutesGauge.set(enrichedCount); } catch (e) { /* ignore */ }
     } catch (e) {
       // non-fatal logging error
     }
