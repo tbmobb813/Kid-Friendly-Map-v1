@@ -3,7 +3,7 @@ const { LRUCache } = require('lru-cache');
 const fs = require('fs');
 const path = require('path');
 const promClient = require('prom-client');
-const { normalizeFeedMessage, fetchGtfsRt } = require('./adapter');
+const { normalizeFeedMessage, normalizeFeedMessageAsync, fetchGtfsRt } = require('./adapter');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -84,7 +84,12 @@ app.get('/feeds/:region/:system.json', async (req, res) => {
         end();
       }
     }
-    const normalized = normalizeFeedMessage(feed, system);
+    let normalized;
+    if (typeof normalizeFeedMessageAsync === 'function') {
+      normalized = await normalizeFeedMessageAsync(feed, system);
+    } else {
+      normalized = normalizeFeedMessage(feed, system);
+    }
 
     return res.json({ routes: normalized.routes, alerts: normalized.alerts, lastModified: new Date().toISOString() });
   } catch (err) {

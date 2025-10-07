@@ -4,8 +4,22 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('csv-parse/sync');
 
-const gtfsDir = process.argv[2] || path.join(__dirname, '..', 'static-gtfs');
+const input = process.argv[2] || path.join(__dirname, '..', 'static-gtfs');
 const outDir = path.join(__dirname, '..', 'data');
+
+let gtfsDir = input;
+// Support zip input: extract to a temp directory
+let extractedTmp = null;
+if (input.endsWith('.zip') && fs.existsSync(input)) {
+  const unzipper = require('unzipper');
+  const tmpDir = path.join(__dirname, '..', 'tmp', `gtfs-${Date.now()}`);
+  fs.mkdirSync(tmpDir, { recursive: true });
+  const zipStream = fs.createReadStream(input).pipe(unzipper.Extract({ path: tmpDir }));
+  const wait = new Promise((resolve, reject) => zipStream.on('close', resolve).on('error', reject));
+  (async () => { await wait; })();
+  gtfsDir = tmpDir;
+  extractedTmp = tmpDir;
+}
 
 if (!fs.existsSync(gtfsDir)) {
   console.error('GTFS directory not found:', gtfsDir);
@@ -55,3 +69,8 @@ fs.writeFileSync(path.join(outDir, 'stops.json'), JSON.stringify(stopsById));
 fs.writeFileSync(path.join(outDir, 'stop_times_by_trip.json'), JSON.stringify(stopTimesByTrip));
 
 console.log('GTFS import complete to', outDir);
+
+// cleanup extracted tmp by default
+if (extractedTmp) {
+  try { fs.rmSync(extractedTmp, { recursive: true }); } catch (e) { }
+}

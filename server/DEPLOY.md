@@ -85,5 +85,39 @@ jobs:
 - Enforce TLS and use a reverse proxy or API Gateway for authentication and rate limiting.
 - Configure appropriate cache TTLs per-feed.
 
+## GTFS files and MTA API notes
+
+To run the adapter against MTA feeds you will need:
+
+- An MTA API key (register at https://datamine.mta.info/) — set this value as the env var named in `feeds.json` (default `MTA_API_KEY`).
+- Static GTFS files (optional but recommended) — download the agency-provided GTFS zip(s) and either:
+  - place extracted files in `server/static-gtfs/` and run `node tools/import-static-gtfs.js`, or
+  - place the GTFS zip and run `node tools/import-static-gtfs.js path/to/gtfs.zip`.
+
+Required GTFS files for the importer:
+- `routes.txt`
+- `trips.txt`
+- `stops.txt`
+- `stop_times.txt`
+
+If you plan to use a Postgres-backed store (recommended for production):
+- Use `server/db/schema.sql` to create the schema, then either run `server/tools/import-to-postgres.js` (simple inserts) or `server/tools/import-to-postgres-copy.js` (COPY-based, faster) to load the JSON indexes into Postgres.
+- The CI workflow `ci-postgres-transit-adapter.yml` demonstrates running migrations and importing JSON indexes into Postgres in CI.
+
+## docker-compose (local dev)
+
+Use the included `server/docker-compose.yml` to run a local Postgres and persist data:
+
+```bash
+cd server
+docker-compose up -d db
+# wait for DB, then load schema and import
+PG_CONN=postgres://postgres:postgres@localhost:5432/transit
+psql $PG_CONN -f db/schema.sql
+node tools/import-to-postgres.js # set DATABASE_URL env if needed
+node index.js
+```
+
+
 ---
 If you want, I can also scaffold the GitHub Actions workflow file in the repo (disabled by default) and a simple systemd unit file for a VM. Which do you prefer next?
