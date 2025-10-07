@@ -1,0 +1,65 @@
+name: CI - transit adapter (postgres)
+
+on:
+  pull_request:
+    branches: [ feat/transit ]
+
+jobs:
+  test-postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: transit_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d transit_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install deps
+        run: |
+          cd server
+          npm ci
+      - name: Prepare sample GTFS
+        run: |
+          cd server
+          node tools/prepare-sample-gtfs.js
+      - name: Import sample GTFS to JSON
+        run: |
+          cd server
+          node tools/import-static-gtfs.js static-gtfs
+      - name: Wait for Postgres
+        run: |
+          for i in {1..30}; do pg_isready -h localhost -p 5432 -U postgres && break || sleep 1; done
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test
+        run: |
+          psql $DATABASE_URL -f server/db/schema.sql
+      - name: Import to Postgres
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test
+        run: |
+          cd server
+          node tools/import-to-postgres.js
+      - name: Start server
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/transit_test
+        run: |
+          cd server
+          node index.js &
+          sleep 2
+      - name: Smoke test endpoint
+        run: |
+          curl 'http://localhost:3001/feeds/nyc/mta-subway.json?mock=1' | jq '.'

@@ -13,6 +13,14 @@ try {
 } catch (e) {
   gtfsStore = null;
 }
+let gtfsStorePg = null;
+if (process.env.DATABASE_URL) {
+  try {
+    gtfsStorePg = require('./lib/gtfsStore-pg');
+  } catch (e) {
+    gtfsStorePg = null;
+  }
+}
 
 // Normalize a GTFS-RT FeedMessage into { routes, alerts }
 function normalizeFeedMessage(feed, systemId) {
@@ -81,6 +89,27 @@ function normalizeFeedMessage(feed, systemId) {
   }
 
   return { routes, alerts };
+}
+
+// Async variant that can use Postgres-backed lookups
+async function normalizeFeedMessageAsync(feed, systemId) {
+  const base = normalizeFeedMessage(feed, systemId);
+  if (!gtfsStorePg) return base;
+  // Enrich routes with async lookups
+  for (const r of base.routes) {
+    try {
+      const tripId = (r.id || '').split('-').slice(1).join('-');
+      if (tripId) {
+        const t = await gtfsStorePg.getTrip(tripId);
+        if (t && t.trip_headsign) r.destination = t.trip_headsign;
+        const nextStops = await gtfsStorePg.getNextStopsForTrip(tripId, 1);
+        if (nextStops && nextStops.length) r.nextStopName = nextStops[0].stop_name;
+      }
+    } catch (e) {
+      // ignore enrichment errors
+    }
+  }
+  return base;
 }
 
 async function fetchGtfsRt(url, apiKeyHeader, apiKey) {
