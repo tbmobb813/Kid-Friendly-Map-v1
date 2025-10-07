@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Alert, TextInput } from 'react-native';
 import Colors from '@/constants/colors';
-import { Shield, Plus, MapPin, Edit, Trash2, ArrowLeft, ToggleLeft, ToggleRight } from 'lucide-react-native';
+import {
+  Shield,
+  Plus,
+  MapPin,
+  Edit,
+  Trash2,
+  ArrowLeft,
+  ToggleLeft,
+  ToggleRight,
+} from 'lucide-react-native';
 import { useParentalStore } from '@/stores/parentalStore';
 import { SafeZone } from '@/types/parental';
 
@@ -99,18 +108,14 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
   };
 
   const handleDelete = (zone: SafeZone) => {
-    Alert.alert(
-      'Delete Safe Zone',
-      `Are you sure you want to delete "${zone.name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => deleteSafeZone(zone.id),
-        },
-      ]
-    );
+    Alert.alert('Delete Safe Zone', `Are you sure you want to delete "${zone.name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => deleteSafeZone(zone.id),
+      },
+    ]);
   };
 
   const handleToggleActive = (zone: SafeZone) => {
@@ -120,7 +125,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
   const getCurrentLocation = () => {
     // In a real app, this would use the device's GPS
     // For demo purposes, we'll use a default location (New York City)
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       latitude: '40.7128',
       longitude: '-74.0060',
@@ -135,9 +140,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
           <Pressable style={styles.backButton} onPress={resetForm}>
             <ArrowLeft size={24} color={Colors.primary} />
           </Pressable>
-          <Text style={styles.headerTitle}>
-            {editingZone ? 'Edit Safe Zone' : 'Add Safe Zone'}
-          </Text>
+          <Text style={styles.headerTitle}>{editingZone ? 'Edit Safe Zone' : 'Add Safe Zone'}</Text>
         </View>
 
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -147,7 +150,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
               <TextInput
                 style={styles.input}
                 value={formData.name}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
                 placeholder="e.g., Home, School, Grandma's House"
                 placeholderTextColor={Colors.textLight}
               />
@@ -159,7 +162,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
                 <TextInput
                   style={[styles.input, styles.coordinateInput]}
                   value={formData.latitude}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, latitude: text }))}
+                  onChangeText={(text) => setFormData((prev) => ({ ...prev, latitude: text }))}
                   placeholder="Latitude"
                   placeholderTextColor={Colors.textLight}
                   keyboardType="numeric"
@@ -167,7 +170,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
                 <TextInput
                   style={[styles.input, styles.coordinateInput]}
                   value={formData.longitude}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, longitude: text }))}
+                  onChangeText={(text) => setFormData((prev) => ({ ...prev, longitude: text }))}
                   placeholder="Longitude"
                   placeholderTextColor={Colors.textLight}
                   keyboardType="numeric"
@@ -184,7 +187,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
               <TextInput
                 style={styles.input}
                 value={formData.radius}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, radius: text }))}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, radius: text }))}
                 placeholder="100"
                 placeholderTextColor={Colors.textLight}
                 keyboardType="numeric"
@@ -196,16 +199,18 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
 
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Notifications</Text>
-              
+
               <Pressable
                 style={styles.toggleRow}
-                onPress={() => setFormData(prev => ({
-                  ...prev,
-                  notifications: {
-                    ...prev.notifications,
-                    onEntry: !prev.notifications.onEntry,
-                  },
-                }))}
+                onPress={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    notifications: {
+                      ...prev.notifications,
+                      onEntry: !prev.notifications.onEntry,
+                    },
+                  }))
+                }
               >
                 <Text style={styles.toggleLabel}>Notify on entry</Text>
                 {formData.notifications.onEntry ? (
@@ -217,13 +222,15 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
 
               <Pressable
                 style={styles.toggleRow}
-                onPress={() => setFormData(prev => ({
-                  ...prev,
-                  notifications: {
-                    ...prev.notifications,
-                    onExit: !prev.notifications.onExit,
-                  },
-                }))}
+                onPress={() =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    notifications: {
+                      ...prev.notifications,
+                      onExit: !prev.notifications.onExit,
+                    },
+                  }))
+                }
               >
                 <Text style={styles.toggleLabel}>Notify on exit</Text>
                 {formData.notifications.onExit ? (
@@ -241,7 +248,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
                 {editingZone ? 'Update Safe Zone' : 'Create Safe Zone'}
               </Text>
             </Pressable>
-            
+
             <Pressable style={styles.cancelButton} onPress={resetForm}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </Pressable>
@@ -286,16 +293,13 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
                     {zone.latitude.toFixed(4)}, {zone.longitude.toFixed(4)} • {zone.radius}m radius
                   </Text>
                   <Text style={styles.zoneNotifications}>
-                    Notifications: {zone.notifications.onEntry ? 'Entry' : ''} 
+                    Notifications: {zone.notifications.onEntry ? 'Entry' : ''}
                     {zone.notifications.onEntry && zone.notifications.onExit ? ' & ' : ''}
                     {zone.notifications.onExit ? 'Exit' : ''}
                   </Text>
                 </View>
-                
-                <Pressable
-                  style={styles.toggleButton}
-                  onPress={() => handleToggleActive(zone)}
-                >
+
+                <Pressable style={styles.toggleButton} onPress={() => handleToggleActive(zone)}>
                   {zone.isActive ? (
                     <ToggleRight size={32} color={Colors.success} />
                   ) : (
@@ -305,10 +309,7 @@ const SafeZoneManagement: React.FC<SafeZoneManagementProps> = ({ onBack }) => {
               </View>
 
               <View style={styles.zoneActions}>
-                <Pressable
-                  style={styles.actionButton}
-                  onPress={() => handleEdit(zone)}
-                >
+                <Pressable style={styles.actionButton} onPress={() => handleEdit(zone)}>
                   <Edit size={16} color={Colors.primary} />
                   <Text style={styles.actionButtonText}>Edit</Text>
                 </Pressable>

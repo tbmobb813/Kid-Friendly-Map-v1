@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 import Config from '@/utils/config';
 import { showNotification } from '@/utils/notifications';
 
-export const GEOFENCE_TASK = "kidmap-geofence-task";
+export const GEOFENCE_TASK = 'kidmap-geofence-task';
 
 type GeofenceEventData = {
   eventType: Location.LocationGeofencingEventType;
@@ -23,7 +23,7 @@ TaskManager.defineTask(GEOFENCE_TASK, async ({ data, error }) => {
   }
 
   const { eventType, region } = (data ?? {}) as GeofenceEventData;
-  
+
   if (!eventType || !region) {
     console.warn('Geofence task: missing event data');
     return;
@@ -33,8 +33,8 @@ TaskManager.defineTask(GEOFENCE_TASK, async ({ data, error }) => {
 });
 
 async function handleGeofenceEvent(
-  eventType: Location.LocationGeofencingEventType, 
-  region: { identifier: string; latitude: number; longitude: number; radius: number }
+  eventType: Location.LocationGeofencingEventType,
+  region: { identifier: string; latitude: number; longitude: number; radius: number },
 ) {
   const isEntry = eventType === Location.LocationGeofencingEventType.Enter;
   const isExit = eventType === Location.LocationGeofencingEventType.Exit;
@@ -44,15 +44,15 @@ async function handleGeofenceEvent(
   }
 
   const title = isEntry ? '🟢 Safe Zone Entry' : '🔴 Safe Zone Exit';
-  const body = isEntry 
-    ? `Child has entered safe zone: ${region.identifier}` 
+  const body = isEntry
+    ? `Child has entered safe zone: ${region.identifier}`
     : `Child has left safe zone: ${region.identifier}`;
 
   try {
     // Send local notification
-    await showNotification({ 
-      title, 
-      body, 
+    await showNotification({
+      title,
+      body,
       priority: 'high',
     });
 
@@ -67,13 +67,14 @@ async function handleGeofenceEvent(
     // TODO: Send to guardian's device via push notification service
     // TODO: Log to analytics/monitoring system
     // TODO: Update parental dashboard with real-time activity
-    
   } catch (notificationError) {
     console.error('Failed to send geofence notification:', notificationError);
   }
 }
 
-export async function startGeofencing(regions: Array<{ latitude: number; longitude: number; radius: number; identifier: string }>) {
+export async function startGeofencing(
+  regions: Array<{ latitude: number; longitude: number; radius: number; identifier: string }>,
+) {
   if (!Config.FEATURES.GEOFENCING || regions.length === 0) {
     return;
   }

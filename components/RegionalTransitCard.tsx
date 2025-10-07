@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import Colors from "@/constants/colors";
-import { useRegionStore } from "@/stores/regionStore";
-import TransitStepIndicator from "./TransitStepIndicator";
-import { Train, Bus, Navigation, Ship } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import Colors from '@/constants/colors';
+import { useRegionStore } from '@/stores/regionStore';
+import TransitStepIndicator from './TransitStepIndicator';
+import { Train, Bus, Navigation, Ship } from 'lucide-react-native';
 
 const RegionalTransitCard: React.FC = () => {
   const { currentRegion, getCurrentTransitSystems } = useRegionStore();
@@ -11,21 +11,21 @@ const RegionalTransitCard: React.FC = () => {
 
   const getTransitIcon = (type: string) => {
     switch (type) {
-      case "subway":
-      case "train":
+      case 'subway':
+      case 'train':
         return <Train size={20} color="#FFFFFF" />;
-      case "bus":
+      case 'bus':
         return <Bus size={20} color="#FFFFFF" />;
-      case "tram":
+      case 'tram':
         return <Navigation size={20} color="#FFFFFF" />;
-      case "ferry":
+      case 'ferry':
         return <Ship size={20} color="#FFFFFF" />;
       default:
         return <Train size={20} color="#FFFFFF" />;
     }
   };
 
-  const renderTransitSystem = ({ item }: { item: typeof transitSystems[0] }) => (
+  const renderTransitSystem = ({ item }: { item: (typeof transitSystems)[0] }) => (
     <View style={styles.transitItem}>
       <View style={[styles.transitIcon, { backgroundColor: item.color }]}>
         {getTransitIcon(item.type)}
@@ -56,9 +56,7 @@ const RegionalTransitCard: React.FC = () => {
       />
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Emergency: {currentRegion.emergencyNumber}
-        </Text>
+        <Text style={styles.footerText}>Emergency: {currentRegion.emergencyNumber}</Text>
       </View>
     </View>
   );
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
@@ -91,15 +89,15 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   transitItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   transitIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   transitInfo: {
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
   },
   transitName: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 2,
   },
@@ -124,8 +122,8 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: Colors.error,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 

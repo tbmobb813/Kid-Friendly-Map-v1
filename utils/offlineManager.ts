@@ -26,7 +26,7 @@ class OfflineManager {
     isConnected: false,
     isInternetReachable: false,
     type: 'unknown',
-    isWifiEnabled: false
+    isWifiEnabled: false,
   };
   private offlineActions: OfflineAction[] = [];
   private listeners: ((state: NetworkState) => void)[] = [];
@@ -56,7 +56,7 @@ class OfflineManager {
 
       log.info('Network monitoring initialized', {
         isConnected: this.networkState.isConnected,
-        type: this.networkState.type
+        type: this.networkState.type,
       });
     } catch (error) {
       log.error('Failed to initialize network monitoring', error as Error);
@@ -68,7 +68,7 @@ class OfflineManager {
       isConnected: state.isConnected ?? false,
       isInternetReachable: state.isInternetReachable ?? false,
       type: state.type || 'unknown',
-      isWifiEnabled: state.type === 'wifi'
+      isWifiEnabled: state.type === 'wifi',
     };
 
     const wasOffline = !this.networkState.isConnected;
@@ -87,7 +87,7 @@ class OfflineManager {
   }
 
   private notifyListeners(state: NetworkState) {
-    this.listeners.forEach(listener => {
+    this.listeners.forEach((listener) => {
       try {
         listener(state);
       } catch (error) {
@@ -101,9 +101,9 @@ class OfflineManager {
       const actions = await SafeAsyncStorage.getItem<OfflineAction[]>(
         this.OFFLINE_ACTIONS_KEY,
         [],
-        { strategy: 'fallback', fallbackValue: [] }
+        { strategy: 'fallback', fallbackValue: [] },
       );
-      
+
       this.offlineActions = actions || [];
       log.debug(`Loaded ${this.offlineActions.length} offline actions`);
     } catch (error) {
@@ -114,28 +114,22 @@ class OfflineManager {
 
   private async saveOfflineActions() {
     try {
-      await SafeAsyncStorage.setItem(
-        this.OFFLINE_ACTIONS_KEY,
-        this.offlineActions,
-        { strategy: 'retry' }
-      );
+      await SafeAsyncStorage.setItem(this.OFFLINE_ACTIONS_KEY, this.offlineActions, {
+        strategy: 'retry',
+      });
     } catch (error) {
       log.error('Failed to save offline actions', error as Error);
     }
   }
 
-  async queueAction(
-    type: string,
-    payload: any,
-    maxRetries = 3
-  ): Promise<string> {
+  async queueAction(type: string, payload: any, maxRetries = 3): Promise<string> {
     const action: OfflineAction = {
       id: `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       type,
       payload,
       timestamp: Date.now(),
       retryCount: 0,
-      maxRetries
+      maxRetries,
     };
 
     this.offlineActions.push(action);
@@ -143,7 +137,7 @@ class OfflineManager {
 
     log.info('Action queued for offline sync', {
       id: action.id,
-      type: action.type
+      type: action.type,
     });
 
     // Try to sync immediately if online
@@ -169,12 +163,12 @@ class OfflineManager {
     for (const action of actionsToSync) {
       try {
         const success = await this.executeAction(action);
-        
+
         if (success) {
           successfulActions.push(action.id);
           log.debug('Offline action synced successfully', {
             id: action.id,
-            type: action.type
+            type: action.type,
           });
         } else {
           action.retryCount++;
@@ -183,22 +177,26 @@ class OfflineManager {
             log.warn('Offline action failed, will retry', {
               id: action.id,
               type: action.type,
-              retryCount: action.retryCount
+              retryCount: action.retryCount,
             });
           } else {
             log.error('Offline action exceeded max retries', undefined, {
               id: action.id,
               type: action.type,
-              retryCount: action.retryCount
+              retryCount: action.retryCount,
             } as any);
           }
         }
       } catch (error) {
-        log.error('Error executing offline action', error as Error, {
-          id: action.id,
-          type: action.type
-        } as any);
-        
+        log.error(
+          'Error executing offline action',
+          error as Error,
+          {
+            id: action.id,
+            type: action.type,
+          } as any,
+        );
+
         action.retryCount++;
         if (action.retryCount < action.maxRetries) {
           failedActions.push(action);
@@ -213,7 +211,7 @@ class OfflineManager {
     log.info('Offline sync completed', {
       successful: successfulActions.length,
       failed: failedActions.length,
-      remaining: this.offlineActions.length
+      remaining: this.offlineActions.length,
     });
 
     this.syncInProgress = false;
@@ -222,7 +220,7 @@ class OfflineManager {
   private async executeAction(action: OfflineAction): Promise<boolean> {
     // This would be implemented based on your specific action types
     // For now, we'll simulate the execution
-    
+
     switch (action.type) {
       case 'PHOTO_CHECKIN':
         return this.syncPhotoCheckin(action.payload);
@@ -327,7 +325,7 @@ class OfflineManager {
     }
 
     const healthStatus = backendHealthMonitor.getHealthStatus();
-    
+
     if (healthStatus === 'down') {
       return 'poor';
     } else if (healthStatus === 'degraded') {

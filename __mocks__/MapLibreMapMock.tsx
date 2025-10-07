@@ -5,14 +5,31 @@ import { View } from 'react-native';
 // codebase and tests resolve correctly. Render a plain React Native View so
 // @testing-library/react-native can query elements by testID.
 export const MapLibreGL = {
-  MapView: (props: any) => React.createElement(View as any, { testID: props.testID || 'mock-maplibre-map', ...props }, props.children),
+  MapView: (props: any) =>
+    React.createElement(
+      View as any,
+      { testID: props.testID || 'mock-maplibre-map', ...props },
+      props.children,
+    ),
   Camera: (props: any) => React.createElement(View as any, { testID: 'mock-camera', ...props }),
-  ShapeSource: (props: any) => React.createElement(View as any, { testID: `mock-shapesource-${props.id}`, ...props }, props.children),
-  LineLayer: (props: any) => React.createElement(View as any, { testID: `mock-linelayer-${props.id}`, ...props }),
-  CircleLayer: (props: any) => React.createElement(View as any, { testID: `mock-circlelayer-${props.id}`, ...props }),
+  ShapeSource: (props: any) =>
+    React.createElement(
+      View as any,
+      { testID: `mock-shapesource-${props.id}`, ...props },
+      props.children,
+    ),
+  LineLayer: (props: any) =>
+    React.createElement(View as any, { testID: `mock-linelayer-${props.id}`, ...props }),
+  CircleLayer: (props: any) =>
+    React.createElement(View as any, { testID: `mock-circlelayer-${props.id}`, ...props }),
 };
 
-const MapLibreMap = (props: any) => React.createElement(View as any, { testID: props.testID || 'mock-maplibre-map', ...props }, props.children);
+const MapLibreMap = (props: any) =>
+  React.createElement(
+    View as any,
+    { testID: props.testID || 'mock-maplibre-map', ...props },
+    props.children,
+  );
 
 export const isMapLibreAvailable = true;
 

@@ -29,7 +29,7 @@ jest.mock('../utils/unifiedRoutingService', () => ({
 describe('Enhanced Navigation Store', () => {
   it('should initialize with default values', () => {
     const store = useNavigationStore.getState();
-    
+
     expect(store.origin).toBe(null);
     expect(store.destination).toBe(null);
     expect(store.availableRoutes).toEqual([]);
@@ -40,13 +40,13 @@ describe('Enhanced Navigation Store', () => {
 
   it('should set origin and destination', () => {
     const { setOrigin, setDestination } = useNavigationStore.getState();
-    
+
     const origin = {
       id: 'test-origin',
       name: 'Test Origin',
       address: 'Test Address',
       category: 'other' as const,
-      coordinates: { latitude: 40.7128, longitude: -74.0060 },
+      coordinates: { latitude: 40.7128, longitude: -74.006 },
     };
 
     const destination = {
@@ -67,7 +67,7 @@ describe('Enhanced Navigation Store', () => {
 
   it('should update routing preferences', () => {
     const { updateRoutingPreferences } = useNavigationStore.getState();
-    
+
     updateRoutingPreferences({
       childAge: 8,
       wheelchair: true,
@@ -84,18 +84,18 @@ describe('Enhanced Navigation Store', () => {
 
   it('should toggle advanced routing', () => {
     const { toggleAdvancedRouting } = useNavigationStore.getState();
-    
+
     const initialState = useNavigationStore.getState().useAdvancedRouting;
-    
+
     toggleAdvancedRouting(!initialState);
-    
+
     const newState = useNavigationStore.getState().useAdvancedRouting;
     expect(newState).toBe(!initialState);
   });
 
   it('should update accessibility settings', () => {
     const { updateAccessibilitySettings } = useNavigationStore.getState();
-    
+
     updateAccessibilitySettings({
       largeText: true,
       voiceDescriptions: true,

@@ -12,11 +12,17 @@ export default function TransitPreview() {
     <ScrollView style={{ padding: 12 }}>
       <Text style={{ fontWeight: 'bold', marginBottom: 8 }}>Transit Preview</Text>
       {data?.routes && data.routes.length ? (
-        data.routes.map(r => (
+        data.routes.map((r) => (
           <View key={r.id} style={{ marginBottom: 8 }}>
-            <Text>{r.name} — {r.status} — next in {r.nextArrival ?? 'N/A'} min</Text>
-            {r.nextStopName ? <Text style={{ color: '#666' }}>Next stop: {r.nextStopName}</Text> : null}
-            {r.destination ? <Text style={{ color: '#666' }}>Destination: {r.destination}</Text> : null}
+            <Text>
+              {r.name} — {r.status} — next in {r.nextArrival ?? 'N/A'} min
+            </Text>
+            {r.nextStopName ? (
+              <Text style={{ color: '#666' }}>Next stop: {r.nextStopName}</Text>
+            ) : null}
+            {r.destination ? (
+              <Text style={{ color: '#666' }}>Destination: {r.destination}</Text>
+            ) : null}
           </View>
         ))
       ) : (
@@ -26,7 +32,7 @@ export default function TransitPreview() {
       {data?.alerts && data.alerts.length ? (
         <View style={{ marginTop: 12 }}>
           <Text style={{ fontWeight: 'bold' }}>Alerts</Text>
-          {data.alerts.map(a => (
+          {data.alerts.map((a) => (
             <Text key={a.id}>{a.message}</Text>
           ))}
         </View>

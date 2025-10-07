@@ -53,19 +53,22 @@ export function useTransitFeed(opts?: UseTransitFeedOpts) {
   const {
     region = 'nyc',
     system = 'mta-subway',
-    baseUrl = (typeof process !== 'undefined' && (process.env as any).EXPO_PUBLIC_TRANSIT_BASE_URL) || 'http://localhost:3001',
+    baseUrl = (typeof process !== 'undefined' &&
+      (process.env as any).EXPO_PUBLIC_TRANSIT_BASE_URL) ||
+      'http://localhost:3001',
     mock = false,
     refetchInterval = 8000,
-    enabled = true
+    enabled = true,
   } = opts || {};
 
   return useQuery<TransitFeed, Error>({
     queryKey: ['transit', region, system, mock ? 'mock' : 'live'],
     queryFn: () => fetchFeed(baseUrl, region, system, mock),
-    staleTime: typeof refetchInterval === 'number' ? Math.max(0, (refetchInterval as number) - 1000) : 0,
+    staleTime:
+      typeof refetchInterval === 'number' ? Math.max(0, (refetchInterval as number) - 1000) : 0,
     refetchInterval: refetchInterval,
     retry: 1,
-    enabled
+    enabled,
   });
 }
 

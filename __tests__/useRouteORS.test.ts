@@ -80,14 +80,16 @@ describe('useRouteORS', () => {
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('https://api.openrouteservice.org/v2/directions/foot-walking/geojson'),
+      expect.stringContaining(
+        'https://api.openrouteservice.org/v2/directions/foot-walking/geojson',
+      ),
       expect.objectContaining({
         method: 'GET',
         headers: {
           Authorization: 'test-api-key',
         },
         signal: expect.any(AbortSignal),
-      })
+      }),
     );
 
     expect(result.current.geojson).toEqual(mockSuccessResponse);
@@ -99,9 +101,7 @@ describe('useRouteORS', () => {
   });
 
   it('should not fetch when coordinates are invalid', () => {
-    const { result } = renderHook(() =>
-      useRouteORS([NaN, 40.7128], [-74.004, 40.7142])
-    );
+    const { result } = renderHook(() => useRouteORS([NaN, 40.7128], [-74.004, 40.7142]));
 
     expect(result.current.loading).toBe(false);
     expect(mockFetch).not.toHaveBeenCalled();
@@ -112,9 +112,7 @@ describe('useRouteORS', () => {
     const start: [number, number] = [-74.006, 40.7128];
     const end: [number, number] = [-74.004, 40.7142];
 
-    const { result } = renderHook(() =>
-      useRouteORS(start, end, { enabled: false })
-    );
+    const { result } = renderHook(() => useRouteORS(start, end, { enabled: false }));
 
     expect(result.current.loading).toBe(false);
     expect(mockFetch).not.toHaveBeenCalled();
@@ -169,9 +167,7 @@ describe('useRouteORS', () => {
     const start: [number, number] = [-74.006, 40.7128];
     const end: [number, number] = [-74.004, 40.7142];
 
-    renderHook(() =>
-      useRouteORS(start, end, { profile: 'cycling-regular' })
-    );
+    renderHook(() => useRouteORS(start, end, { profile: 'cycling-regular' }));
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalled();
@@ -179,7 +175,7 @@ describe('useRouteORS', () => {
 
     expect(mockFetch).toHaveBeenCalledWith(
       expect.stringContaining('/v2/directions/cycling-regular/geojson'),
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
@@ -199,11 +195,11 @@ describe('useRouteORS', () => {
     mockFetch.mockReturnValueOnce(firstFetchPromise);
 
     const { result, rerender } = renderHook(
-      (props: { start: [number, number]; end: [number, number] }) => 
+      (props: { start: [number, number]; end: [number, number] }) =>
         useRouteORS(props.start, props.end),
       {
         initialProps: { start: start1, end: end1 },
-      }
+      },
     );
 
     expect(result.current.loading).toBe(true);
@@ -242,7 +238,7 @@ describe('useRouteORS', () => {
       Promise.resolve({
         ok: true,
         json: () => Promise.resolve(mockSuccessResponse),
-      } as Response)
+      } as Response),
     );
 
     let refetchPromise: Promise<any>;
@@ -275,9 +271,7 @@ describe('useRouteORS', () => {
     const start: [number, number] = [-74.006, 40.7128];
     const end: [number, number] = [-74.004, 40.7142];
 
-    const { result } = renderHook(() =>
-      useRouteORS(start, end, { includeEta: false })
-    );
+    const { result } = renderHook(() => useRouteORS(start, end, { includeEta: false }));
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false);

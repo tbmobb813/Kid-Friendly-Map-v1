@@ -10,6 +10,7 @@
 ### 1. Enable USB Debugging on Your Phone
 
 **On your Android device:**
+
 1. Go to **Settings** → **About phone**
 2. Tap **Build number** 7 times (you'll see "You are now a developer!")
 3. Go back to **Settings** → **System** → **Developer options**
@@ -36,10 +37,12 @@ adb devices
 When you plug in your device with USB debugging enabled, you should see a popup on your phone:
 
 **"Allow USB debugging?"**
+
 - ✅ Check "Always allow from this computer"
 - Tap **OK**
 
 If you don't see this popup:
+
 ```bash
 adb kill-server
 adb start-server
@@ -51,21 +54,25 @@ adb start-server
 ## Verification Steps
 
 ### Step 1: Check ADB sees your device
+
 ```bash
 adb devices
 ```
 
 **Expected output:**
+
 ```
 List of devices attached
 ABC123456789    device
 ```
 
 **If you see "unauthorized":**
+
 - Check your phone for the authorization popup
 - Tap "Always allow" and OK
 
 **If you see "no permissions":**
+
 ```bash
 sudo adb kill-server
 sudo adb start-server
@@ -73,6 +80,7 @@ adb devices
 ```
 
 ### Step 2: Once device shows as "device", try building
+
 ```bash
 npx expo run:android
 ```
@@ -84,6 +92,7 @@ npx expo run:android
 ### Option A: Quick Emulator Setup via Android Studio
 
 1. **Install Android Studio** (if not installed):
+
    ```bash
    # Download from: https://developer.android.com/studio
    ```
@@ -97,6 +106,7 @@ npx expo run:android
    - Click **Finish**
 
 3. **Start emulator:**
+
    ```bash
    # List available emulators
    emulator -list-avds
@@ -122,6 +132,7 @@ Since you're on the dev server already, you can use the Expo Go app temporarily:
 Once device is connected, you can build:
 
 ### Development Build (for testing native modules)
+
 ```bash
 npx expo run:android
 ```
@@ -129,6 +140,7 @@ npx expo run:android
 This creates a dev build with native modules that you can test immediately.
 
 ### Production Build via EAS (requires setup)
+
 ```bash
 # Install EAS CLI globally
 npm install -g eas-cli
@@ -148,14 +160,18 @@ eas build --profile development --platform android
 ## Common Issues & Solutions
 
 ### Issue: "adb: command not found"
+
 **Solution:** Add ADB to PATH
+
 ```bash
 echo 'export PATH=$PATH:$HOME/Android/Sdk/platform-tools' >> ~/.bashrc
 source ~/.bashrc
 ```
 
 ### Issue: Device shows as "unauthorized"
-**Solution:** 
+
+**Solution:**
+
 1. Revoke USB debugging authorizations on phone:
    - Settings → Developer options → Revoke USB debugging authorizations
 2. Unplug device
@@ -163,14 +179,18 @@ source ~/.bashrc
 4. Authorize popup should appear
 
 ### Issue: "No Android connected device found"
+
 **Solution:**
+
 1. Check `adb devices` shows device as "device" (not "unauthorized")
 2. Ensure USB debugging is enabled
 3. Try different USB cable/port
 4. Restart ADB server: `adb kill-server && adb start-server`
 
 ### Issue: Device connected but build fails
+
 **Solution:**
+
 ```bash
 # Clear caches
 rm -rf android/.gradle
@@ -185,6 +205,7 @@ npx expo run:android
 ## Why Native Build is Important
 
 Building with `npx expo run:android` will:
+
 - ✅ **Fix the navigation context error** (native React Navigation setup)
 - ✅ **Enable MapLibre** (native mapping library)
 - ✅ **Enable MMKV** (native storage with TurboModules)
@@ -210,6 +231,7 @@ Server: http://192.168.1.19:8082
 4. **Test navigation** - the "prevent remove context" error should be gone!
 
 If device connection continues to fail after trying everything:
+
 - Use Android Emulator (Option A above)
 - Or test with Expo Go temporarily (won't solve native issues but tests navigation)
 - Or let me know and we can explore other options!

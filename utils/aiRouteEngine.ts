@@ -1,6 +1,6 @@
 /**
  * AI-Powered Smart Route Engine
- * 
+ *
  * Provides intelligent route suggestions based on:
  * - Child's age and preferences
  * - Safety considerations
@@ -108,11 +108,11 @@ export class AIRouteEngine {
   async generateSmartRoutes(
     origin: Location.LocationObject,
     destination: { latitude: number; longitude: number },
-    context?: Partial<RouteContext>
+    context?: Partial<RouteContext>,
   ): Promise<SmartRoute[]> {
     try {
       const routeContext = this.buildContext(context);
-      
+
       // Generate multiple route options
       const routes = await Promise.all([
         this.generateSafestRoute(origin, destination, routeContext),
@@ -122,8 +122,8 @@ export class AIRouteEngine {
       ]);
 
       // Score and rank routes using AI logic
-      const scoredRoutes = routes.map(route => this.scoreRoute(route, routeContext));
-      
+      const scoredRoutes = routes.map((route) => this.scoreRoute(route, routeContext));
+
       // Sort by AI score
       const rankedRoutes = scoredRoutes.sort((a, b) => b.score - a.score);
 
@@ -143,13 +143,13 @@ export class AIRouteEngine {
   private async generateSafestRoute(
     origin: Location.LocationObject,
     destination: { latitude: number; longitude: number },
-    context: RouteContext
+    context: RouteContext,
   ): Promise<SmartRoute> {
     const steps: RouteStep[] = [];
-    
+
     // Prioritize routes through safe zones
     const safeZonesOnRoute = this.findSafeZonesOnRoute(origin.coords, destination);
-    
+
     // Calculate route with maximum safe zone coverage
     const walkingDistance = this.calculateDistance(origin.coords, destination);
     const estimatedDuration = Math.ceil(walkingDistance / 80); // 80m/min walking speed
@@ -158,7 +158,7 @@ export class AIRouteEngine {
       id: 'step-1',
       type: 'walk',
       instruction: 'Start your journey',
-      kidFriendlyInstruction: 'Let\'s begin our adventure! Stay with your grown-up.',
+      kidFriendlyInstruction: "Let's begin our adventure! Stay with your grown-up.",
       duration: estimatedDuration,
       distance: walkingDistance,
       location: origin.coords,
@@ -202,7 +202,7 @@ export class AIRouteEngine {
   private async generateFastestRoute(
     origin: Location.LocationObject,
     destination: { latitude: number; longitude: number },
-    context: RouteContext
+    context: RouteContext,
   ): Promise<SmartRoute> {
     const steps: RouteStep[] = [];
     const walkingDistance = this.calculateDistance(origin.coords, destination);
@@ -231,11 +231,7 @@ export class AIRouteEngine {
       estimatedDuration,
       walkingDistance: walkingDistance * 0.6, // Less walking
       steps,
-      safetyFeatures: [
-        'Express service',
-        'Fewer stops means faster',
-        'Direct route',
-      ],
+      safetyFeatures: ['Express service', 'Fewer stops means faster', 'Direct route'],
       aiRecommendations: [
         'Best for older children',
         'Good when running late',
@@ -257,7 +253,7 @@ export class AIRouteEngine {
   private async generateEasiestRoute(
     origin: Location.LocationObject,
     destination: { latitude: number; longitude: number },
-    context: RouteContext
+    context: RouteContext,
   ): Promise<SmartRoute> {
     const steps: RouteStep[] = [];
     const walkingDistance = this.calculateDistance(origin.coords, destination);
@@ -298,7 +294,7 @@ export class AIRouteEngine {
   private async generateScenicRoute(
     origin: Location.LocationObject,
     destination: { latitude: number; longitude: number },
-    context: RouteContext
+    context: RouteContext,
   ): Promise<SmartRoute> {
     const steps: RouteStep[] = [];
     const walkingDistance = this.calculateDistance(origin.coords, destination) * 1.2; // Longer
@@ -312,11 +308,7 @@ export class AIRouteEngine {
       estimatedDuration,
       walkingDistance,
       steps,
-      safetyFeatures: [
-        'Park pathways',
-        'Historical landmarks',
-        'Photo opportunities',
-      ],
+      safetyFeatures: ['Park pathways', 'Historical landmarks', 'Photo opportunities'],
       aiRecommendations: [
         'Great for educational trips',
         'Perfect for nice weather',
@@ -364,7 +356,8 @@ export class AIRouteEngine {
     // Historical learning
     const similarJourneys = this.findSimilarJourneys(route);
     if (similarJourneys.length > 0) {
-      const avgSuccess = similarJourneys.reduce((sum, j) => sum + (j.completed ? 1 : 0), 0) / similarJourneys.length;
+      const avgSuccess =
+        similarJourneys.reduce((sum, j) => sum + (j.completed ? 1 : 0), 0) / similarJourneys.length;
       score += avgSuccess * 10;
     }
 
@@ -376,16 +369,16 @@ export class AIRouteEngine {
    */
   private findSafeZonesOnRoute(
     origin: { latitude: number; longitude: number },
-    destination: { latitude: number; longitude: number }
+    destination: { latitude: number; longitude: number },
   ): any[] {
-    return this.safeZones.filter(zone => {
+    return this.safeZones.filter((zone) => {
       // Simple check if zone is between origin and destination
-      const isOnRoute = 
-        (zone.center.latitude >= Math.min(origin.latitude, destination.latitude) &&
-         zone.center.latitude <= Math.max(origin.latitude, destination.latitude)) &&
-        (zone.center.longitude >= Math.min(origin.longitude, destination.longitude) &&
-         zone.center.longitude <= Math.max(origin.longitude, destination.longitude));
-      
+      const isOnRoute =
+        zone.center.latitude >= Math.min(origin.latitude, destination.latitude) &&
+        zone.center.latitude <= Math.max(origin.latitude, destination.latitude) &&
+        zone.center.longitude >= Math.min(origin.longitude, destination.longitude) &&
+        zone.center.longitude <= Math.max(origin.longitude, destination.longitude);
+
       return isOnRoute;
     });
   }
@@ -395,7 +388,7 @@ export class AIRouteEngine {
    */
   private calculateDistance(
     point1: { latitude: number; longitude: number },
-    point2: { latitude: number; longitude: number }
+    point2: { latitude: number; longitude: number },
   ): number {
     const R = 6371e3; // Earth's radius in meters
     const φ1 = (point1.latitude * Math.PI) / 180;
@@ -415,7 +408,7 @@ export class AIRouteEngine {
    * Find similar past journeys for learning
    */
   private findSimilarJourneys(route: SmartRoute): any[] {
-    return this.journeyHistory.filter(journey => {
+    return this.journeyHistory.filter((journey) => {
       // Check if journey had similar characteristics
       return (
         Math.abs(journey.duration - route.estimatedDuration) < 10 &&
@@ -484,7 +477,7 @@ export class AIRouteEngine {
 
     learning.push({
       timestamp: Date.now(),
-      routes: routes.map(r => ({ id: r.id, score: r.score })),
+      routes: routes.map((r) => ({ id: r.id, score: r.score })),
       context: this.buildContext(),
     });
 
@@ -555,9 +548,9 @@ export class AIRouteEngine {
     recommendations.push(`Your average journey takes ${Math.ceil(avgDuration)} minutes`);
 
     // Success rate
-    const completedCount = history.filter(j => j.completed).length;
+    const completedCount = history.filter((j) => j.completed).length;
     const successRate = (completedCount / history.length) * 100;
-    
+
     if (successRate > 90) {
       recommendations.push('🌟 Great job! You complete almost all your journeys successfully!');
     }

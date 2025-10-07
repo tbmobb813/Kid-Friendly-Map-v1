@@ -9,12 +9,8 @@ import React from 'react';
 import { log as baseLog } from './logger';
 import Config from './config';
 
-declare const beforeEach:
-  | undefined
-  | ((fn: () => void | Promise<void>, timeout?: number) => void);
-declare const afterEach:
-  | undefined
-  | ((fn: () => void | Promise<void>, timeout?: number) => void);
+declare const beforeEach: undefined | ((fn: () => void | Promise<void>, timeout?: number) => void);
+declare const afterEach: undefined | ((fn: () => void | Promise<void>, timeout?: number) => void);
 
 const isTestEnvironment =
   typeof process !== 'undefined' &&
@@ -31,10 +27,8 @@ const getLog = (): Logger => {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mockedModule = require('./logger');
-    const resolvedLog: Logger =
-      mockedModule?.log ?? mockedModule?.default ?? cachedLog;
+    const resolvedLog: Logger = mockedModule?.log ?? mockedModule?.default ?? cachedLog;
 
     if (resolvedLog && resolvedLog !== cachedLog) {
       cachedLog = resolvedLog;
@@ -56,12 +50,8 @@ const logger = {
 };
 let offlineManager: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const offlineModule = require('./offlineManager');
-  offlineManager =
-    offlineModule?.offlineManager ||
-    offlineModule?.default ||
-    offlineModule;
+  offlineManager = offlineModule?.offlineManager || offlineModule?.default || offlineModule;
 } catch (error) {
   offlineManager = null;
 }
@@ -92,12 +82,9 @@ if (
 
 let backendHealthMonitor: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const apiModule = require('./api');
   backendHealthMonitor =
-    apiModule?.backendHealthMonitor ||
-    apiModule?.default?.backendHealthMonitor ||
-    apiModule;
+    apiModule?.backendHealthMonitor || apiModule?.default?.backendHealthMonitor || apiModule;
 } catch (error) {
   backendHealthMonitor = null;
 }
@@ -110,7 +97,6 @@ if (!backendHealthMonitor || typeof backendHealthMonitor.getHealthStatus !== 'fu
 
 let Device: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   Device = require('expo-device');
 } catch (error) {
   Device = {
@@ -278,10 +264,13 @@ class ApplicationMonitoring {
           integrations.push(
             new Sentry.ReactNativeTracing({
               routingInstrumentation,
-            })
+            }),
           );
         } catch (instrumentationError) {
-          logger.warn('Failed to configure Sentry navigation instrumentation', instrumentationError as Error);
+          logger.warn(
+            'Failed to configure Sentry navigation instrumentation',
+            instrumentationError as Error,
+          );
         }
       }
 
@@ -305,12 +294,12 @@ class ApplicationMonitoring {
             delete event.user.email;
             delete event.user.username;
           }
-          
+
           // Don't send development errors
           if (this.config.environment === 'development') {
             return null;
           }
-          
+
           return event;
         },
 
@@ -330,8 +319,10 @@ class ApplicationMonitoring {
       // Set app context
       Sentry.setContext('app', {
         version: Constants.expoConfig?.version || 'unknown',
-        buildNumber: Constants.expoConfig?.ios?.buildNumber || 
-                     Constants.expoConfig?.android?.versionCode || 'unknown',
+        buildNumber:
+          Constants.expoConfig?.ios?.buildNumber ||
+          Constants.expoConfig?.android?.versionCode ||
+          'unknown',
         expoVersion: Constants.expoConfig?.sdkVersion || 'unknown',
       });
 
@@ -360,7 +351,7 @@ class ApplicationMonitoring {
         context: 'Global Error Handler',
         severity: isFatal ? 'critical' : 'high',
       });
-      
+
       // Call original handler
       if (originalErrorHandler) {
         originalErrorHandler(error, isFatal);
@@ -371,21 +362,18 @@ class ApplicationMonitoring {
     if (typeof Promise !== 'undefined') {
       const originalRejectionHandler = Promise.prototype.catch;
       Promise.prototype.catch = function (onRejected) {
-        return originalRejectionHandler.call(
-          this,
-          (reason: any) => {
-            ApplicationMonitoring.getInstance().captureError({
-              error: reason instanceof Error ? reason : new Error(String(reason)),
-              context: 'Unhandled Promise Rejection',
-              severity: 'high',
-            });
-            
-            if (onRejected) {
-              return onRejected(reason);
-            }
-            throw reason;
+        return originalRejectionHandler.call(this, (reason: any) => {
+          ApplicationMonitoring.getInstance().captureError({
+            error: reason instanceof Error ? reason : new Error(String(reason)),
+            context: 'Unhandled Promise Rejection',
+            severity: 'high',
+          });
+
+          if (onRejected) {
+            return onRejected(reason);
           }
-        );
+          throw reason;
+        });
       };
     }
   }
@@ -430,7 +418,7 @@ class ApplicationMonitoring {
    */
   captureError(report: ErrorReport): void {
     const { error, context, severity, userId, metadata } = report;
-    
+
     this.errorCount++;
 
     // Log locally
@@ -441,11 +429,11 @@ class ApplicationMonitoring {
       this.sentry.withScope((scope: any) => {
         scope.setLevel(severity);
         scope.setContext('error_context', { context, ...metadata });
-        
+
         if (userId) {
           scope.setUser({ id: userId });
         }
-        
+
         // Add breadcrumbs
         scope.addBreadcrumb({
           category: 'error',
@@ -485,7 +473,7 @@ class ApplicationMonitoring {
     };
 
     this.performanceMetrics.push(fullMetric);
-    
+
     // Keep only recent metrics
     if (this.performanceMetrics.length > this.maxMetricsInMemory) {
       this.performanceMetrics.shift();
@@ -507,10 +495,10 @@ class ApplicationMonitoring {
 
     // Alert on slow operations
     if (metric.duration > 3000) {
-    logger.warn('Slow operation detected', {
-      name: metric.name,
-      duration: metric.duration,
-    });
+      logger.warn('Slow operation detected', {
+        name: metric.name,
+        duration: metric.duration,
+      });
     }
   }
 
@@ -549,7 +537,7 @@ class ApplicationMonitoring {
    */
   startPerformanceTimer(name: string): (metadata?: Record<string, any>) => void {
     const startTime = Date.now();
-    
+
     return (metadata?: Record<string, any>) => {
       const duration = Date.now() - startTime;
       this.trackPerformance({ name, duration, metadata });
@@ -568,7 +556,6 @@ class ApplicationMonitoring {
     // the expected functions. Do this defensively so real runtime behavior
     // remains unchanged but tests get the mocked implementations.
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const offlineModule = require('./offlineManager');
       const candidate = offlineModule?.offlineManager ?? offlineModule?.default ?? offlineModule;
       if (candidate && typeof candidate.getNetworkState === 'function') {
@@ -579,9 +566,9 @@ class ApplicationMonitoring {
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const apiModule = require('./api');
-      const candidateApi = apiModule?.backendHealthMonitor ?? apiModule?.default?.backendHealthMonitor ?? apiModule;
+      const candidateApi =
+        apiModule?.backendHealthMonitor ?? apiModule?.default?.backendHealthMonitor ?? apiModule;
       if (candidateApi && typeof candidateApi.getHealthStatus === 'function') {
         backendHealthMonitor = candidateApi;
       }
@@ -621,7 +608,7 @@ class ApplicationMonitoring {
     try {
       if (offlineManager && typeof offlineManager.getPendingActionsCount === 'function') {
         // Some mocks may return undefined; coerce to number
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         pendingSyncActionsRaw = offlineManager.getPendingActionsCount();
       }
     } catch (e) {
@@ -636,8 +623,8 @@ class ApplicationMonitoring {
     }
 
     return {
-      networkStatus: networkQuality === 'offline' ? 'offline' : 
-                    networkQuality === 'poor' ? 'poor' : 'online',
+      networkStatus:
+        networkQuality === 'offline' ? 'offline' : networkQuality === 'poor' ? 'poor' : 'online',
       backendStatus,
       storageAvailable: true, // Could add actual check
       memoryPressure,
@@ -650,7 +637,7 @@ class ApplicationMonitoring {
    */
   private calculateMemoryPressure(): 'low' | 'medium' | 'high' {
     const metricsCount = this.performanceMetrics.length + this.userActions.length;
-    
+
     if (metricsCount > 150) return 'high';
     if (metricsCount > 80) return 'medium';
     return 'low';
@@ -661,10 +648,10 @@ class ApplicationMonitoring {
    */
   private clearOldMetrics(): void {
     const keepCount = Math.floor(this.maxMetricsInMemory / 2);
-    
+
     this.performanceMetrics = this.performanceMetrics.slice(-keepCount);
     this.userActions = this.userActions.slice(-keepCount);
-    
+
     logger.info('Cleared old metrics', {
       performanceMetricsKept: this.performanceMetrics.length,
       userActionsKept: this.userActions.length,
@@ -690,10 +677,11 @@ class ApplicationMonitoring {
       },
       performance: {
         metricsTracked: this.performanceMetrics.length,
-        avgDuration: this.performanceMetrics.length > 0
-          ? this.performanceMetrics.reduce((sum, m) => sum + m.duration, 0) / 
-            this.performanceMetrics.length
-          : 0,
+        avgDuration:
+          this.performanceMetrics.length > 0
+            ? this.performanceMetrics.reduce((sum, m) => sum + m.duration, 0) /
+              this.performanceMetrics.length
+            : 0,
       },
       userActions: {
         total: this.userActions.length,
@@ -713,7 +701,7 @@ class ApplicationMonitoring {
         ...metadata,
       });
     }
-    
+
     logger.debug('User context set', { userId });
   }
 
@@ -724,18 +712,14 @@ class ApplicationMonitoring {
     if (this.sentry) {
       this.sentry.setUser(null);
     }
-    
+
     logger.debug('User context cleared');
   }
 
   /**
    * Add custom breadcrumb
    */
-  addBreadcrumb(
-    message: string,
-    category: string,
-    data?: Record<string, any>
-  ): void {
+  addBreadcrumb(message: string, category: string, data?: Record<string, any>): void {
     if (this.sentry) {
       this.sentry.addBreadcrumb({
         message,
@@ -744,7 +728,7 @@ class ApplicationMonitoring {
         timestamp: Date.now(),
       });
     }
-    
+
     logger.debug(`Breadcrumb: [${category}] ${message}`, data);
   }
 
@@ -755,7 +739,7 @@ class ApplicationMonitoring {
     if (this.sentry) {
       await this.sentry.flush(2000);
     }
-    
+
     logger.info('Monitoring data flushed');
   }
 
@@ -773,11 +757,11 @@ export const monitoring = ApplicationMonitoring.getInstance();
 // Helper HOC for tracking component renders
 export function withPerformanceTracking<P extends object>(
   Component: React.ComponentType<P>,
-  componentName: string
+  componentName: string,
 ): React.ComponentType<P> {
   return (props: P) => {
     const endTimer = monitoring.startPerformanceTimer(`render_${componentName}`);
-    
+
     React.useEffect(() => {
       endTimer();
     }, []);

@@ -1,8 +1,18 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { Place } from "@/types/navigation";
-import Colors from "@/constants/colors";
-import { Home, School, BookOpen, Trees, Store, Utensils, Users, Heart, MapPin } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Place } from '@/types/navigation';
+import Colors from '@/constants/colors';
+import {
+  Home,
+  School,
+  BookOpen,
+  Trees,
+  Store,
+  Utensils,
+  Users,
+  Heart,
+  MapPin,
+} from 'lucide-react-native';
 
 type PlaceCardProps = {
   place: Place;
@@ -12,21 +22,21 @@ type PlaceCardProps = {
 const PlaceCard: React.FC<PlaceCardProps> = ({ place, onPress }) => {
   const getIcon = () => {
     switch (place.category) {
-      case "home":
+      case 'home':
         return <Home size={24} color={Colors.primary} />;
-      case "school":
+      case 'school':
         return <School size={24} color={Colors.primary} />;
-      case "library":
+      case 'library':
         return <BookOpen size={24} color={Colors.primary} />;
-      case "park":
+      case 'park':
         return <Trees size={24} color={Colors.primary} />;
-      case "store":
+      case 'store':
         return <Store size={24} color={Colors.primary} />;
-      case "restaurant":
+      case 'restaurant':
         return <Utensils size={24} color={Colors.primary} />;
-      case "friend":
+      case 'friend':
         return <Users size={24} color={Colors.primary} />;
-      case "family":
+      case 'family':
         return <Heart size={24} color={Colors.primary} />;
       default:
         return <MapPin size={24} color={Colors.primary} />;
@@ -34,19 +44,16 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, onPress }) => {
   };
 
   return (
-    <Pressable 
-      style={({ pressed }) => [
-        styles.container,
-        pressed && styles.pressed
-      ]}
+    <Pressable
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={() => onPress(place)}
     >
-      <View style={styles.iconContainer}>
-        {getIcon()}
-      </View>
+      <View style={styles.iconContainer}>{getIcon()}</View>
       <View style={styles.textContainer}>
         <Text style={styles.name}>{place.name}</Text>
-        <Text style={styles.address} numberOfLines={1}>{place.address}</Text>
+        <Text style={styles.address} numberOfLines={1}>
+          {place.address}
+        </Text>
       </View>
     </Pressable>
   );
@@ -54,13 +61,13 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -68,15 +75,15 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.8,
-    backgroundColor: "#EAEAEA",
+    backgroundColor: '#EAEAEA',
   },
   iconContainer: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: "#EEF2FF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#EEF2FF',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
   },
   textContainer: {
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },

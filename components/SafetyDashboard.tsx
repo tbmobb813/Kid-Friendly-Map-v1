@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Alert } from 'react-native';
 import Colors from '@/constants/colors';
-import { 
-  Shield, 
-  Camera, 
-  MapPin, 
-  Phone, 
-  MessageCircle, 
-  Clock, 
+import {
+  Shield,
+  Camera,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Clock,
   CheckCircle,
   AlertTriangle,
   Users,
   Settings,
-  ArrowRight
+  ArrowRight,
 } from 'lucide-react-native';
 import { useParentalStore } from '@/stores/parentalStore';
 import { useNavigationStore } from '@/stores/navigationStore';
@@ -32,10 +32,10 @@ type SafetyDashboardProps = {
   onNavigateToSettings?: () => void;
 };
 
-const SafetyDashboard: React.FC<SafetyDashboardProps> = ({ 
-  currentLocation, 
+const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
+  currentLocation,
   currentPlace,
-  onNavigateToSettings 
+  onNavigateToSettings,
 }) => {
   const { settings, checkInRequests, safeZones } = useParentalStore();
   const { photoCheckIns } = useNavigationStore();
@@ -45,40 +45,32 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
 
   // Calculate safety stats
   const recentCheckIns = photoCheckIns.slice(0, 3);
-  const activeSafeZones = safeZones.filter(zone => zone.isActive).length;
-  const pendingCheckInRequests = checkInRequests.filter(req => req.status === 'pending').length;
+  const activeSafeZones = safeZones.filter((zone) => zone.isActive).length;
+  const pendingCheckInRequests = checkInRequests.filter((req) => req.status === 'pending').length;
   const emergencyContacts = settings.emergencyContacts.length;
 
   const handleEmergencyCall = () => {
-    Alert.alert(
-      "Emergency Help",
-      "Choose how you'd like to get help:",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Call 911", style: "destructive", onPress: () => console.log("Emergency call") },
-        { text: "Call Parent", onPress: () => console.log("Parent call") }
-      ]
-    );
+    Alert.alert('Emergency Help', "Choose how you'd like to get help:", [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Call 911', style: 'destructive', onPress: () => console.log('Emergency call') },
+      { text: 'Call Parent', onPress: () => console.log('Parent call') },
+    ]);
   };
 
   const handleQuickCheckIn = () => {
-    Alert.alert(
-      "Quick Check-in",
-      "Let your family know you're okay?",
-      [
-        { text: "Not now", style: "cancel" },
-        { text: "I&apos;m OK!", onPress: () => console.log("Quick check-in sent") }
-      ]
-    );
+    Alert.alert('Quick Check-in', "Let your family know you're okay?", [
+      { text: 'Not now', style: 'cancel' },
+      { text: 'I&apos;m OK!', onPress: () => console.log('Quick check-in sent') },
+    ]);
   };
 
-  const SafetyStatCard = ({ 
-    icon, 
-    title, 
-    value, 
-    subtitle, 
+  const SafetyStatCard = ({
+    icon,
+    title,
+    value,
+    subtitle,
     color = Colors.primary,
-    onPress 
+    onPress,
   }: {
     icon: React.ReactNode;
     title: string;
@@ -87,15 +79,15 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
     color?: string;
     onPress?: () => void;
   }) => (
-    <Pressable 
-      style={[styles.statCard, onPress && styles.pressableCard]} 
-      onPress={onPress}
-    >
+    <Pressable style={[styles.statCard, onPress && styles.pressableCard]} onPress={onPress}>
       <View style={[styles.statIcon, { backgroundColor: `${color}20` }]}>
-        {React.cloneElement(icon as React.ReactElement, ({ 
-          size: 20, 
-          color 
-        } as any))}
+        {React.cloneElement(
+          icon as React.ReactElement,
+          {
+            size: 20,
+            color,
+          } as any,
+        )}
       </View>
       <View style={styles.statContent}>
         <Text style={styles.statValue}>{value}</Text>
@@ -106,11 +98,11 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
     </Pressable>
   );
 
-  const QuickActionButton = ({ 
-    icon, 
-    title, 
-    onPress, 
-    color = Colors.primary 
+  const QuickActionButton = ({
+    icon,
+    title,
+    onPress,
+    color = Colors.primary,
   }: {
     icon: React.ReactNode;
     title: string;
@@ -118,10 +110,13 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
     color?: string;
   }) => (
     <Pressable style={[styles.quickActionButton, { backgroundColor: color }]} onPress={onPress}>
-      {React.cloneElement(icon as React.ReactElement, ({ 
-        size: 20, 
-        color: '#FFFFFF' 
-      } as any))}
+      {React.cloneElement(
+        icon as React.ReactElement,
+        {
+          size: 20,
+          color: '#FFFFFF',
+        } as any,
+      )}
       <Text style={styles.quickActionText}>{title}</Text>
     </Pressable>
   );
@@ -146,27 +141,31 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
           <Text style={styles.sectionTitle}>Current Status</Text>
           <SafeZoneIndicator />
 
-              {currentZoneStatus && (() => {
-                const isInSafeZone = currentZoneStatus.inside && currentZoneStatus.inside.length > 0;
-                const zoneName = isInSafeZone ? currentZoneStatus.inside[0].name : undefined;
-                return (
-                  <View style={[
+          {currentZoneStatus &&
+            (() => {
+              const isInSafeZone = currentZoneStatus.inside && currentZoneStatus.inside.length > 0;
+              const zoneName = isInSafeZone ? currentZoneStatus.inside[0].name : undefined;
+              return (
+                <View
+                  style={[
                     styles.statusCard,
-                    { backgroundColor: isInSafeZone ? '#E8F5E8' : '#FFF3E0' }
-                  ]}>
-                    <View style={[
+                    { backgroundColor: isInSafeZone ? '#E8F5E8' : '#FFF3E0' },
+                  ]}
+                >
+                  <View
+                    style={[
                       styles.statusIndicator,
-                      { backgroundColor: isInSafeZone ? Colors.success : Colors.warning }
-                    ]} />
-                    <Text style={styles.statusText}>
-                      {isInSafeZone
-                        ? `You're in the ${zoneName} safe zone`
-                        : 'Outside safe zones - stay alert!'
-                      }
-                    </Text>
-                  </View>
-                );
-              })()}
+                      { backgroundColor: isInSafeZone ? Colors.success : Colors.warning },
+                    ]}
+                  />
+                  <Text style={styles.statusText}>
+                    {isInSafeZone
+                      ? `You're in the ${zoneName} safe zone`
+                      : 'Outside safe zones - stay alert!'}
+                  </Text>
+                </View>
+              );
+            })()}
         </View>
 
         {/* Quick Actions */}
@@ -178,7 +177,7 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
                 <Text style={styles.hideButton}>Hide</Text>
               </Pressable>
             </View>
-            
+
             <View style={styles.quickActionsGrid}>
               <QuickActionButton
                 icon={<Phone />}
@@ -186,25 +185,25 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
                 onPress={handleEmergencyCall}
                 color="#FF3B30"
               />
-              
+
               <QuickActionButton
                 icon={<MessageCircle />}
-                title="I&apos;m OK!"
+                title="I'm OK!"
                 onPress={handleQuickCheckIn}
                 color={Colors.success}
               />
-              
+
               <QuickActionButton
                 icon={<MapPin />}
                 title="Share Location"
-                onPress={() => console.log("Share location")}
+                onPress={() => console.log('Share location')}
                 color={Colors.primary}
               />
-              
+
               <QuickActionButton
                 icon={<Camera />}
                 title="Photo Check-in"
-                onPress={() => console.log("Photo check-in")}
+                onPress={() => console.log('Photo check-in')}
                 color={Colors.secondary}
               />
             </View>
@@ -215,33 +214,30 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
         {currentPlace && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Check-in at Current Location</Text>
-            <PhotoCheckInButton 
-              placeName={currentPlace.name}
-              placeId={currentPlace.id}
-            />
+            <PhotoCheckInButton placeName={currentPlace.name} placeId={currentPlace.id} />
           </View>
         )}
 
         {/* Safety Stats */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Safety Overview</Text>
-          
+
           <View style={styles.statsGrid}>
             <SafetyStatCard
               icon={<Shield />}
               title="Safe Zones"
               value={activeSafeZones}
               subtitle="Active zones"
-              onPress={() => console.log("Navigate to safe zones")}
+              onPress={() => console.log('Navigate to safe zones')}
             />
-            
+
             <SafetyStatCard
               icon={<Camera />}
               title="Check-ins"
               value={recentCheckIns.length}
               subtitle="Recent"
               color={Colors.secondary}
-              onPress={() => console.log("Navigate to check-in history")}
+              onPress={() => console.log('Navigate to check-in history')}
             />
           </View>
 
@@ -253,14 +249,14 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
               subtitle="Pending"
               color={pendingCheckInRequests > 0 ? Colors.warning : Colors.success}
             />
-            
+
             <SafetyStatCard
               icon={<Users />}
               title="Contacts"
               value={emergencyContacts}
               subtitle="Emergency"
               color="#9C27B0"
-              onPress={() => console.log("Navigate to emergency contacts")}
+              onPress={() => console.log('Navigate to emergency contacts')}
             />
           </View>
         </View>
@@ -268,7 +264,7 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
         {/* Recent Activity */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Recent Activity</Text>
-          
+
           {recentCheckIns.length > 0 ? (
             recentCheckIns.map((checkIn, index) => (
               <View key={index} style={styles.activityItem}>
@@ -276,9 +272,9 @@ const SafetyDashboard: React.FC<SafetyDashboardProps> = ({
                 <View style={styles.activityContent}>
                   <Text style={styles.activityTitle}>Checked in at {checkIn.placeName}</Text>
                   <Text style={styles.activityTime}>
-                    {new Date(checkIn.timestamp).toLocaleTimeString([], { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
+                    {new Date(checkIn.timestamp).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
                     })}
                   </Text>
                 </View>

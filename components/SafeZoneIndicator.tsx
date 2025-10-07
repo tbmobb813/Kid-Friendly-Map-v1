@@ -7,9 +7,9 @@ import { useParentalStore } from '@/stores/parentalStore';
 export const SafeZoneIndicator: React.FC = () => {
   const { isMonitoring, getCurrentSafeZoneStatus } = useSafeZoneMonitor();
   const { settings, safeZones } = useParentalStore();
-  
+
   const status = getCurrentSafeZoneStatus();
-  const activeSafeZones = safeZones.filter(zone => zone.isActive);
+  const activeSafeZones = safeZones.filter((zone) => zone.isActive);
 
   // Don't show if safe zone alerts are disabled or no safe zones exist
   if (!settings.safeZoneAlerts || activeSafeZones.length === 0) {

@@ -30,7 +30,7 @@ export default class ApiErrorBoundary extends Component<Props, State> {
       error: null,
       errorInfo: null,
       isRetrying: false,
-      networkState: offlineManager.getNetworkState()
+      networkState: offlineManager.getNetworkState(),
     };
   }
 
@@ -38,7 +38,7 @@ export default class ApiErrorBoundary extends Component<Props, State> {
     if (this.props.showNetworkStatus) {
       this.networkUnsubscribe = offlineManager.addNetworkListener((networkState) => {
         this.setState({ networkState });
-        
+
         // Auto-retry when coming back online
         if (this.state.hasError && networkState.isConnected) {
           this.handleRetry();
@@ -56,14 +56,14 @@ export default class ApiErrorBoundary extends Component<Props, State> {
   static getDerivedStateFromError(error: Error): Partial<State> {
     return {
       hasError: true,
-      error
+      error,
     };
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
     this.setState({
       error,
-      errorInfo
+      errorInfo,
     });
 
     // Log the error
@@ -95,7 +95,7 @@ export default class ApiErrorBoundary extends Component<Props, State> {
         hasError: false,
         error: null,
         errorInfo: null,
-        isRetrying: false
+        isRetrying: false,
       });
     } catch (error) {
       console.warn('Retry failed:', error);
@@ -105,7 +105,7 @@ export default class ApiErrorBoundary extends Component<Props, State> {
 
   getErrorMessage(): string {
     const { error } = this.state;
-    
+
     if (!error) {
       return 'An unexpected error occurred';
     }
@@ -135,15 +135,15 @@ export default class ApiErrorBoundary extends Component<Props, State> {
 
   getErrorIcon() {
     const { error, networkState } = this.state;
-    
+
     if (!networkState.isConnected) {
       return Wifi;
     }
-    
+
     if (error?.message.includes('timeout') || error?.message.includes('Network')) {
       return Wifi;
     }
-    
+
     return AlertTriangle;
   }
 
@@ -161,23 +161,17 @@ export default class ApiErrorBoundary extends Component<Props, State> {
         <View style={styles.container}>
           <View style={styles.content}>
             <ErrorIcon size={48} color={Colors.error} style={styles.icon} />
-            
+
             <Text style={styles.title}>Oops! Something went wrong</Text>
-            
-            <Text style={styles.message}>
-              {this.getErrorMessage()}
-            </Text>
+
+            <Text style={styles.message}>{this.getErrorMessage()}</Text>
 
             {this.props.showNetworkStatus && (
               <View style={styles.networkStatus}>
                 <Text style={styles.networkText}>
                   Network: {networkState.isConnected ? 'Connected' : 'Disconnected'}
                 </Text>
-                {networkState.type && (
-                  <Text style={styles.networkType}>
-                    ({networkState.type})
-                  </Text>
-                )}
+                {networkState.type && <Text style={styles.networkType}>({networkState.type})</Text>}
               </View>
             )}
 
@@ -188,20 +182,19 @@ export default class ApiErrorBoundary extends Component<Props, State> {
                 disabled={isRetrying}
                 testID="retry-button"
               >
-                <RefreshCw 
-                  size={20} 
-                  color="white" 
-                  style={[styles.retryIcon, isRetrying && styles.retryIconSpinning]} 
+                <RefreshCw
+                  size={20}
+                  color="white"
+                  style={[styles.retryIcon, isRetrying && styles.retryIconSpinning]}
                 />
-                <Text style={styles.retryText}>
-                  {isRetrying ? 'Retrying...' : 'Try Again'}
-                </Text>
+                <Text style={styles.retryText}>{isRetrying ? 'Retrying...' : 'Try Again'}</Text>
               </Pressable>
             )}
 
             {!networkState.isConnected && (
               <Text style={styles.offlineNote}>
-                You&apos;re currently offline. The app will retry automatically when your connection is restored.
+                You&apos;re currently offline. The app will retry automatically when your connection
+                is restored.
               </Text>
             )}
           </View>

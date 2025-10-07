@@ -15,7 +15,7 @@ export interface ORSConfig {
 }
 
 // Route Profiles supported by ORS
-export type ORSProfile = 
+export type ORSProfile =
   | 'driving-car'
   | 'driving-hgv'
   | 'cycling-regular'
@@ -145,7 +145,7 @@ class OpenRouteService {
     try {
       // Create cache key
       const cacheKey = this.createCacheKey(request);
-      
+
       // Check cache first
       const cached = await this.getCachedRoute(cacheKey);
       if (cached) {
@@ -161,21 +161,23 @@ class OpenRouteService {
       }
 
       // Make API request and store as pending
-      const requestPromise = this.makeRouteRequest(request).then(async (response) => {
-        // Cache response
-        await this.cacheRoute(cacheKey, response);
-        // Clear pending
-        this.pendingRequests.delete(cacheKey);
-        return response;
-      }).catch((error) => {
-        // Clear pending on error
-        this.pendingRequests.delete(cacheKey);
-        throw error;
-      });
+      const requestPromise = this.makeRouteRequest(request)
+        .then(async (response) => {
+          // Cache response
+          await this.cacheRoute(cacheKey, response);
+          // Clear pending
+          this.pendingRequests.delete(cacheKey);
+          return response;
+        })
+        .catch((error) => {
+          // Clear pending on error
+          this.pendingRequests.delete(cacheKey);
+          throw error;
+        });
 
       this.pendingRequests.set(cacheKey, requestPromise);
       const response = await requestPromise;
-      
+
       endTimer({ source: 'api' });
       return response;
     } catch (error) {
@@ -196,7 +198,7 @@ class OpenRouteService {
   async getRouteAlternatives(
     coordinates: [number, number][],
     profiles: ORSProfile[] = ['foot-walking', 'cycling-regular'],
-    options?: Partial<ORSRouteRequest>
+    options?: Partial<ORSRouteRequest>,
   ): Promise<{ profile: ORSProfile; route: ORSRouteResponse }[]> {
     const results = await Promise.allSettled(
       profiles.map(async (profile) => {
@@ -210,16 +212,20 @@ class OpenRouteService {
           extra_info: ['surface', 'steepness', 'waytype'],
           ...options,
         };
-        
+
         const route = await this.getRoute(request);
         return { profile, route };
-      })
+      }),
     );
 
     return results
-      .filter((result): result is PromiseFulfilledResult<{ profile: ORSProfile; route: ORSRouteResponse }> => 
-        result.status === 'fulfilled')
-      .map(result => result.value);
+      .filter(
+        (
+          result,
+        ): result is PromiseFulfilledResult<{ profile: ORSProfile; route: ORSRouteResponse }> =>
+          result.status === 'fulfilled',
+      )
+      .map((result) => result.value);
   }
 
   /**
@@ -227,7 +233,7 @@ class OpenRouteService {
    */
   async getKidFriendlyRoute(
     coordinates: [number, number][],
-    childAge: number
+    childAge: number,
   ): Promise<ORSRouteResponse> {
     const request: ORSRouteRequest = {
       coordinates,
@@ -258,10 +264,10 @@ class OpenRouteService {
    */
   async getAccessibleRoute(
     coordinates: [number, number][],
-    wheelchairAccessible = true
+    wheelchairAccessible = true,
   ): Promise<ORSRouteResponse> {
     const profile: ORSProfile = wheelchairAccessible ? 'wheelchair' : 'foot-walking';
-    
+
     const request: ORSRouteRequest = {
       coordinates,
       profile,
@@ -291,13 +297,13 @@ class OpenRouteService {
     location: [number, number],
     range: number[], // time in seconds or distance in meters
     profile: ORSProfile = 'foot-walking',
-    rangeType: 'time' | 'distance' = 'time'
+    rangeType: 'time' | 'distance' = 'time',
   ): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('ors_isochrone_request');
 
     try {
       const url = `${this.config.baseUrl}/v2/isochrones/${profile}`;
-      
+
       const body = {
         locations: [location],
         range: range,
@@ -308,9 +314,9 @@ class OpenRouteService {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json, application/geo+json',
+          Accept: 'application/json, application/geo+json',
           'Content-Type': 'application/json',
-          'Authorization': this.config.apiKey,
+          Authorization: this.config.apiKey,
         },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(this.config.timeout),
@@ -341,13 +347,13 @@ class OpenRouteService {
   async getPOIs(
     location: [number, number],
     categories: string[],
-    radius = 1000 // meters
+    radius = 1000, // meters
   ): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('ors_poi_request');
 
     try {
       const url = `${this.config.baseUrl}/pois`;
-      
+
       const params = new URLSearchParams({
         request: 'pois',
         geometry: `${location[0]},${location[1]}`,
@@ -358,8 +364,8 @@ class OpenRouteService {
 
       const response = await fetch(`${url}?${params}`, {
         headers: {
-          'Accept': 'application/json',
-          'Authorization': this.config.apiKey,
+          Accept: 'application/json',
+          Authorization: this.config.apiKey,
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -389,13 +395,13 @@ class OpenRouteService {
   async getMatrix(
     locations: [number, number][],
     profile: ORSProfile = 'foot-walking',
-    metrics: ('distance' | 'duration')[] = ['duration', 'distance']
+    metrics: ('distance' | 'duration')[] = ['duration', 'distance'],
   ): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('ors_matrix_request');
 
     try {
       const url = `${this.config.baseUrl}/v2/matrix/${profile}`;
-      
+
       const body = {
         locations,
         metrics,
@@ -405,9 +411,9 @@ class OpenRouteService {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': this.config.apiKey,
+          Authorization: this.config.apiKey,
         },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(this.config.timeout),
@@ -445,7 +451,7 @@ class OpenRouteService {
    */
   private async makeRouteRequest(request: ORSRouteRequest, retries = 3): Promise<ORSRouteResponse> {
     const url = `${this.config.baseUrl}/v2/directions/${request.profile}`;
-    
+
     const body = {
       coordinates: request.coordinates,
       format: request.format || 'json',
@@ -460,15 +466,15 @@ class OpenRouteService {
     };
 
     let lastError: Error | null = null;
-    
+
     for (let attempt = 0; attempt < retries; attempt++) {
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: {
-            'Accept': 'application/json, application/geo+json',
+            Accept: 'application/json, application/geo+json',
             'Content-Type': 'application/json',
-            'Authorization': this.config.apiKey,
+            Authorization: this.config.apiKey,
           },
           body: JSON.stringify(body),
           signal: AbortSignal.timeout(this.config.timeout),
@@ -482,19 +488,19 @@ class OpenRouteService {
         return response.json();
       } catch (error) {
         lastError = error as Error;
-        
+
         // Don't retry on HTTP errors, only network errors
         if (error instanceof Error && error.message.includes('ORS API error')) {
           throw error;
         }
-        
+
         // Log retry attempt
         if (attempt < retries - 1) {
           log.warn(`ORS request failed, retrying (${attempt + 1}/${retries})`, error as Error);
         }
       }
     }
-    
+
     throw lastError || new Error('ORS request failed after retries');
   }
 
@@ -502,7 +508,7 @@ class OpenRouteService {
    * Create cache key for route request
    */
   private createCacheKey(request: ORSRouteRequest): string {
-    const coords = request.coordinates.map(c => `${c[0]},${c[1]}`).join('|');
+    const coords = request.coordinates.map((c) => `${c[0]},${c[1]}`).join('|');
     const options = JSON.stringify(request.options || {});
     return `ors_${request.profile}_${coords}_${request.preference || 'default'}_${options}`;
   }

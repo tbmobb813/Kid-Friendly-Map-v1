@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { AlertTriangle, RefreshCw } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { AlertTriangle, RefreshCw } from 'lucide-react-native';
 
 type ErrorBoundaryState = {
   hasError: boolean;
@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Error caught by boundary:", error, errorInfo);
+    console.error('Error caught by boundary:', error, errorInfo);
   }
 
   retry = () => {
@@ -43,7 +43,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
           <AlertTriangle size={48} color={Colors.error} />
           <Text style={styles.title}>Oops! Something went wrong</Text>
           <Text style={styles.message}>
-            {this.state.error?.message || "An unexpected error occurred"}
+            {this.state.error?.message || 'An unexpected error occurred'}
           </Text>
           <Pressable style={styles.retryButton} onPress={this.retry}>
             <RefreshCw size={20} color="#FFFFFF" />
@@ -60,29 +60,29 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 32,
     backgroundColor: Colors.background,
   },
   title: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginTop: 16,
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
   message: {
     fontSize: 16,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 24,
     lineHeight: 24,
   },
   retryButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   retryText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 

@@ -5,11 +5,12 @@
 
 ---
 
-## 🎉 SUCCESS: Navigation Error is RESOLVED!
+## 🎉 SUCCESS: Navigation Error is RESOLVED
 
 The "Couldn't find the prevent remove context" error is **GONE** after downgrading to `@react-navigation/native@7.1.8`.
 
 **Evidence from logs:**
+
 - ✅ `LOG RootLayout render` appears (layout renders successfully)
 - ✅ NO "prevent remove context" error
 - ⚠️ New error: `useCategoryStore` issue (different, fixable)
@@ -19,16 +20,19 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 ## Current Blockers
 
 ### 1. USB Device Not Recognized
+
 **Problem:** Your Android phone doesn't show up in `lsusb`  
 **Cause:** USB mode set to "Charging only" OR bad cable  
 **Solution:** See "Quick USB Fix" section below
 
 ### 2. Emulator Won't Start
+
 **Problem:** Not enough disk space (need 7.4GB, have 4.9GB)  
 **Disk Usage:** 82GB / 92GB (95% full)  
 **Solution:** See "Free Up Space" section below
 
 ### 3. New App Error
+
 **Problem:** `TypeError: Cannot read property 'getApprovedCategories' of undefined`  
 **Location:** `app/(tabs)/index.tsx:57`  
 **Solution:** See "Fix CategoryStore Error" section below
@@ -37,7 +41,7 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 
 ## OPTION 1: Quick USB Fix (Fastest if it Works!)
 
-### Steps to Get Device Connected:
+### Steps to Get Device Connected
 
 1. **On your Android phone RIGHT NOW:**
    - Plug in USB cable
@@ -47,17 +51,20 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
    - Select **"File Transfer"** or **"MTP"** (NOT "Charging only"!)
 
 2. **Enable Developer Mode:**
+
    ```
    Settings → About phone → Tap "Build number" 7 times
    You'll see "You are now a developer!"
    ```
 
 3. **Enable USB Debugging:**
+
    ```
    Settings → Developer options → Toggle ON "USB debugging"
    ```
 
 4. **Restart ADB and check:**
+
    ```bash
    adb kill-server && adb start-server
    lsusb  # Should show a new device now!
@@ -70,6 +77,7 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
    - Tap OK
 
 6. **Build!**
+
    ```bash
    npx expo run:android
    ```
@@ -80,7 +88,7 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 
 You need ~3GB more space. Here's how:
 
-### Quick Space-Saving Commands:
+### Quick Space-Saving Commands
 
 ```bash
 # Clean npm cache
@@ -101,7 +109,7 @@ rm -rf $HOME/Projects/Kid-Friendly-Map-v1/android/.gradle
 df -h /
 ```
 
-### If You Need More Space:
+### If You Need More Space
 
 ```bash
 # Clean apt cache
@@ -116,7 +124,7 @@ sudo journalctl --vacuum-time=3d
 df -h /
 ```
 
-### Then Create Smaller Emulator:
+### Then Create Smaller Emulator
 
 ```bash
 # Create emulator with smaller disk (2GB instead of 7GB)
@@ -157,6 +165,7 @@ To quickly test on your physical phone without native build:
 4. **Scan QR code with Expo Go app**
 
 **Limitations:**
+
 - ❌ MapLibre won't work (needs native build)
 - ❌ MMKV won't work (needs native build)
 - ✅ Can test navigation (the main fix!)
@@ -219,16 +228,19 @@ Or let me know and I can help debug the store implementation!
 
 ## Current File Status
 
-### ✅ Fixed Files:
+### ✅ Fixed Files
+
 - `package.json` - @react-navigation/native downgraded to 7.1.8
 - `node_modules` - Clean reinstalled
 - Navigation - Working! No more context error
 
-### ⚠️ Files Needing Attention:
+### ⚠️ Files Needing Attention
+
 - `app/(tabs)/index.tsx` - CategoryStore error on line 57
 - Possibly `stores/categoryStore.ts` - May need implementation check
 
-### 📝 Documentation Created:
+### 📝 Documentation Created
+
 - `DEPENDENCY_FIX_SUMMARY.md` - Navigation fix details
 - `ANDROID_DEVICE_SETUP.md` - Device connection guide
 - `USB_DEBUG_GUIDE.md` - Detailed USB troubleshooting
@@ -244,6 +256,7 @@ Or let me know and I can help debug the store implementation!
    (Pull down notification, tap USB notification, select File Transfer)
 
 2. **Run these commands:**
+
    ```bash
    adb devices
    # If device shows up, run:
@@ -259,12 +272,14 @@ Or let me know and I can help debug the store implementation!
 
 ## Success Criteria
 
-### Minimum Success (What We've Achieved):
+### Minimum Success (What We've Achieved)
+
 - ✅ Navigation context error eliminated
 - ✅ `@react-navigation/native@7.1.8` installed
 - ✅ Clean node_modules reinstall
 
-### Full Success (What We Need):
+### Full Success (What We Need)
+
 - 🎯 Device/emulator connected to ADB
 - 🎯 Native build running (`npx expo run:android`)
 - 🎯 MapLibre native modules working
@@ -274,6 +289,7 @@ Or let me know and I can help debug the store implementation!
 ---
 
 **What should we tackle first?** Let me know:
+
 - A) Keep trying USB device connection
 - B) Free up space for emulator  
 - C) Use Expo Go to test current fix

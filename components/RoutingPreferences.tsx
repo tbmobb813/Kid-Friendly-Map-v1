@@ -15,11 +15,11 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { 
-  Settings, 
-  Shield, 
-  Heart, 
-  Accessibility, 
+import {
+  Settings,
+  Shield,
+  Heart,
+  Accessibility,
   MapPin,
   Users,
   X,
@@ -46,13 +46,11 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
 
   const [localPreferences, setLocalPreferences] = useState(routingPreferences);
   const [localAccessibility, setLocalAccessibility] = useState(accessibilitySettings);
-  const [childAgeText, setChildAgeText] = useState(
-    localPreferences.childAge?.toString() || ''
-  );
+  const [childAgeText, setChildAgeText] = useState(localPreferences.childAge?.toString() || '');
 
   const handleSave = () => {
     const childAge = childAgeText ? parseInt(childAgeText) : undefined;
-    
+
     if (childAgeText && (isNaN(childAge!) || childAge! < 0 || childAge! > 18)) {
       Alert.alert('Invalid Age', 'Please enter a valid age between 0 and 18');
       return;
@@ -62,7 +60,7 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
       ...localPreferences,
       childAge,
     });
-    
+
     updateAccessibilitySettings(localAccessibility);
     onClose();
   };
@@ -76,13 +74,9 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
     disabled?: boolean;
   }> = ({ icon, title, description, value, onValueChange, disabled = false }) => (
     <View style={styles.settingRow}>
-      <View style={styles.settingIcon}>
-        {icon}
-      </View>
+      <View style={styles.settingIcon}>{icon}</View>
       <View style={styles.settingContent}>
-        <Text style={[styles.settingTitle, disabled && styles.disabledText]}>
-          {title}
-        </Text>
+        <Text style={[styles.settingTitle, disabled && styles.disabledText]}>{title}</Text>
         <Text style={[styles.settingDescription, disabled && styles.disabledText]}>
           {description}
         </Text>
@@ -119,9 +113,7 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
 
     return (
       <View style={styles.settingRow}>
-        <View style={styles.settingIcon}>
-          {icon}
-        </View>
+        <View style={styles.settingIcon}>{icon}</View>
         <View style={styles.settingContent}>
           <Text style={styles.settingTitle}>{title}</Text>
           <Text style={styles.settingDescription}>{description}</Text>
@@ -169,7 +161,9 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Routing Service</Text>
             <SettingRow
-              icon={<Sliders size={20} color={useAdvancedRouting ? Colors.primary : Colors.textLight} />}
+              icon={
+                <Sliders size={20} color={useAdvancedRouting ? Colors.primary : Colors.textLight} />
+              }
               title="Advanced Routing"
               description="Use ORS and OTP2 for better route quality and safety scores"
               value={useAdvancedRouting}
@@ -182,7 +176,7 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
               {/* Child Settings */}
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Child Safety</Text>
-                
+
                 <View style={styles.childAgeContainer}>
                   <View style={styles.settingRow}>
                     <View style={styles.settingIcon}>
@@ -209,12 +203,17 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                 </View>
 
                 <SettingRow
-                  icon={<Shield size={20} color={localPreferences.prioritizeSafety ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <Shield
+                      size={20}
+                      color={localPreferences.prioritizeSafety ? Colors.primary : Colors.textLight}
+                    />
+                  }
                   title="Prioritize Safety"
                   description="Choose safer routes even if they take longer"
                   value={localPreferences.prioritizeSafety}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, prioritizeSafety: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, prioritizeSafety: value }))
                   }
                 />
               </View>
@@ -222,34 +221,51 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
               {/* Accessibility */}
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Accessibility</Text>
-                
+
                 <SettingRow
-                  icon={<Accessibility size={20} color={localPreferences.wheelchair ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <Accessibility
+                      size={20}
+                      color={localPreferences.wheelchair ? Colors.primary : Colors.textLight}
+                    />
+                  }
                   title="Wheelchair Accessible"
                   description="Show only wheelchair accessible routes"
                   value={localPreferences.wheelchair}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, wheelchair: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, wheelchair: value }))
                   }
                 />
 
                 <SettingRow
-                  icon={<Heart size={20} color={localAccessibility.simplifiedMode ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <Heart
+                      size={20}
+                      color={localAccessibility.simplifiedMode ? Colors.primary : Colors.textLight}
+                    />
+                  }
                   title="Simplified Mode"
                   description="Use simple language and clear directions"
                   value={localAccessibility.simplifiedMode}
-                  onValueChange={(value) => 
-                    setLocalAccessibility(prev => ({ ...prev, simplifiedMode: value }))
+                  onValueChange={(value) =>
+                    setLocalAccessibility((prev) => ({ ...prev, simplifiedMode: value }))
                   }
                 />
 
                 <SettingRow
-                  icon={<Info size={20} color={localAccessibility.voiceDescriptions ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <Info
+                      size={20}
+                      color={
+                        localAccessibility.voiceDescriptions ? Colors.primary : Colors.textLight
+                      }
+                    />
+                  }
                   title="Voice Descriptions"
                   description="Detailed audio descriptions for navigation"
                   value={localAccessibility.voiceDescriptions}
-                  onValueChange={(value) => 
-                    setLocalAccessibility(prev => ({ ...prev, voiceDescriptions: value }))
+                  onValueChange={(value) =>
+                    setLocalAccessibility((prev) => ({ ...prev, voiceDescriptions: value }))
                   }
                 />
               </View>
@@ -257,14 +273,14 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
               {/* Distance and Transfer Limits */}
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Travel Limits</Text>
-                
+
                 <NumberInput
                   icon={<MapPin size={20} color={Colors.primary} />}
                   title="Max Walking Distance"
                   description="Maximum distance you're willing to walk"
                   value={localPreferences.maxWalkDistance}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, maxWalkDistance: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, maxWalkDistance: value }))
                   }
                   unit="meters"
                   min={100}
@@ -276,8 +292,8 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                   title="Max Transfers"
                   description="Maximum number of transit transfers"
                   value={localPreferences.maxTransfers}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, maxTransfers: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, maxTransfers: value }))
                   }
                   unit="transfers"
                   min={0}
@@ -288,24 +304,34 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
               {/* Route Avoidance */}
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Route Avoidance</Text>
-                
+
                 <SettingRow
-                  icon={<MapPin size={20} color={localPreferences.avoidHighways ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <MapPin
+                      size={20}
+                      color={localPreferences.avoidHighways ? Colors.primary : Colors.textLight}
+                    />
+                  }
                   title="Avoid Highways"
                   description="Prefer local roads over highways"
                   value={localPreferences.avoidHighways}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, avoidHighways: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, avoidHighways: value }))
                   }
                 />
 
                 <SettingRow
-                  icon={<MapPin size={20} color={localPreferences.avoidTolls ? Colors.primary : Colors.textLight} />}
+                  icon={
+                    <MapPin
+                      size={20}
+                      color={localPreferences.avoidTolls ? Colors.primary : Colors.textLight}
+                    />
+                  }
                   title="Avoid Tolls"
                   description="Choose routes without toll roads"
                   value={localPreferences.avoidTolls}
-                  onValueChange={(value) => 
-                    setLocalPreferences(prev => ({ ...prev, avoidTolls: value }))
+                  onValueChange={(value) =>
+                    setLocalPreferences((prev) => ({ ...prev, avoidTolls: value }))
                   }
                 />
               </View>
@@ -324,10 +350,8 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                       <>
                         <Text style={styles.recommendationTitle}>Ages 3-5: Stroller-Friendly</Text>
                         <Text style={styles.recommendationText}>
-                          • Maximum 200m walking{'\n'}
-                          • Avoid stairs, prefer elevators{'\n'}
-                          • No transit transfers{'\n'}
-                          • Prefer wide sidewalks and parks
+                          • Maximum 200m walking{'\n'}• Avoid stairs, prefer elevators{'\n'}• No
+                          transit transfers{'\n'}• Prefer wide sidewalks and parks
                         </Text>
                       </>
                     );
@@ -336,10 +360,8 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                       <>
                         <Text style={styles.recommendationTitle}>Ages 6-8: Supervised Walking</Text>
                         <Text style={styles.recommendationText}>
-                          • Maximum 400m walking{'\n'}
-                          • Prioritize safety over speed{'\n'}
-                          • Maximum 1 transit transfer{'\n'}
-                          • Avoid busy intersections
+                          • Maximum 400m walking{'\n'}• Prioritize safety over speed{'\n'}• Maximum
+                          1 transit transfer{'\n'}• Avoid busy intersections
                         </Text>
                       </>
                     );
@@ -348,10 +370,8 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                       <>
                         <Text style={styles.recommendationTitle}>Ages 9-12: Semi-Independent</Text>
                         <Text style={styles.recommendationText}>
-                          • Maximum 800m walking{'\n'}
-                          • Include cycling routes{'\n'}
-                          • Maximum 2 transit transfers{'\n'}
-                          • Balance safety and efficiency
+                          • Maximum 800m walking{'\n'}• Include cycling routes{'\n'}• Maximum 2
+                          transit transfers{'\n'}• Balance safety and efficiency
                         </Text>
                       </>
                     );
@@ -360,10 +380,8 @@ const RoutingPreferences: React.FC<RoutingPreferencesProps> = ({ visible, onClos
                       <>
                         <Text style={styles.recommendationTitle}>Teen: Independent Travel</Text>
                         <Text style={styles.recommendationText}>
-                          • Normal walking distances{'\n'}
-                          • All transport modes available{'\n'}
-                          • Standard transfer limits{'\n'}
-                          • Focus on efficiency
+                          • Normal walking distances{'\n'}• All transport modes available{'\n'}•
+                          Standard transfer limits{'\n'}• Focus on efficiency
                         </Text>
                       </>
                     );

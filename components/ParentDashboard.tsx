@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable, Alert, Image } from 'react-native';
 import Colors from '@/constants/colors';
-import { 
-  Shield, 
-  MapPin, 
-  Camera, 
-  Clock, 
-  CheckCircle, 
-  AlertTriangle, 
-  Phone, 
+import {
+  Shield,
+  MapPin,
+  Camera,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  Phone,
   Settings,
   Plus,
   Eye,
   LogOut,
-  MessageCircle
+  MessageCircle,
 } from 'lucide-react-native';
 import { useParentalStore } from '@/stores/parentalStore';
 import { useCategoryStore } from '@/stores/categoryStore';
@@ -27,43 +27,39 @@ type ParentDashboardProps = {
 };
 
 const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
-  const {
-    dashboardData,
-    checkInRequests,
-    safeZones,
-    settings,
-    sendDevicePing,
-    requestCheckIn,
-  } = useParentalStore();
-  
+  const { dashboardData, checkInRequests, safeZones, settings, sendDevicePing, requestCheckIn } =
+    useParentalStore();
+
   const { getPendingCategories, approveCategory } = useCategoryStore();
-  const [activeTab, setActiveTab] = useState<'overview' | 'checkins' | 'safezones' | 'pings' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'checkins' | 'safezones' | 'pings' | 'settings'
+  >('overview');
   const [showSafeZoneManagement, setShowSafeZoneManagement] = useState(false);
 
   const pendingCategories = getPendingCategories();
-  const pendingCheckIns = checkInRequests.filter(req => req.status === 'pending');
+  const pendingCheckIns = checkInRequests.filter((req) => req.status === 'pending');
 
   const handleRequestCheckIn = () => {
-    Alert.alert(
-      'Request Check-in',
-      'Send a check-in request to your child?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Send Request', 
-          onPress: () => {
-            requestCheckIn('Please check in and let me know you are safe', false);
-            Alert.alert('Request Sent', 'Your child will receive a check-in request');
-          }
-        }
-      ]
-    );
+    Alert.alert('Request Check-in', 'Send a check-in request to your child?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Send Request',
+        onPress: () => {
+          requestCheckIn('Please check in and let me know you are safe', false);
+          Alert.alert('Request Sent', 'Your child will receive a check-in request');
+        },
+      },
+    ]);
   };
 
   const handleDevicePing = (type: 'location' | 'ring') => {
-    const message = type === 'location' ? 'Parent requested your location' : 'Parent is pinging your device';
+    const message =
+      type === 'location' ? 'Parent requested your location' : 'Parent is pinging your device';
     sendDevicePing(type, message);
-    Alert.alert('Ping Sent', `${type === 'location' ? 'Location request' : 'Device ping'} sent to child's device`);
+    Alert.alert(
+      'Ping Sent',
+      `${type === 'location' ? 'Location request' : 'Device ping'} sent to child's device`,
+    );
   };
 
   const handleSendMessage = () => {
@@ -84,7 +80,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
       ],
       'plain-text',
       '',
-      'default'
+      'default',
     );
   };
 
@@ -101,7 +97,15 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
     return new Date(timestamp).toLocaleDateString();
   };
 
-  const TabButton = ({ id, title, icon }: { id: typeof activeTab; title: string; icon: React.ReactNode }) => (
+  const TabButton = ({
+    id,
+    title,
+    icon,
+  }: {
+    id: typeof activeTab;
+    title: string;
+    icon: React.ReactNode;
+  }) => (
     <Pressable
       style={[styles.tabButton, activeTab === id && styles.activeTab]}
       onPress={() => setActiveTab(id)}
@@ -121,17 +125,17 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
             <CheckCircle size={24} color="#FFFFFF" />
             <Text style={styles.quickActionText}>Request Check-in</Text>
           </Pressable>
-          
+
           <Pressable style={styles.quickActionButton} onPress={() => handleDevicePing('location')}>
             <MapPin size={24} color="#FFFFFF" />
             <Text style={styles.quickActionText}>Get Location</Text>
           </Pressable>
-          
+
           <Pressable style={styles.quickActionButton} onPress={() => handleDevicePing('ring')}>
             <Phone size={24} color="#FFFFFF" />
             <Text style={styles.quickActionText}>Ring Device</Text>
           </Pressable>
-          
+
           <Pressable style={styles.quickActionButton} onPress={() => handleSendMessage()}>
             <MessageCircle size={24} color="#FFFFFF" />
             <Text style={styles.quickActionText}>Send Message</Text>
@@ -143,8 +147,8 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
       {(pendingCheckIns.length > 0 || pendingCategories.length > 0) && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Alerts</Text>
-          
-          {pendingCheckIns.map(request => (
+
+          {pendingCheckIns.map((request) => (
             <View key={request.id} style={styles.alertCard}>
               <AlertTriangle size={20} color={Colors.warning} />
               <View style={styles.alertContent}>
@@ -156,7 +160,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
             </View>
           ))}
 
-          {pendingCategories.map(category => (
+          {pendingCategories.map((category) => (
             <View key={category.id} style={styles.alertCard}>
               <View style={styles.alertContent}>
                 <Text style={styles.alertTitle}>Category Approval Needed</Text>
@@ -186,7 +190,8 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
                 {dashboardData.lastKnownLocation.placeName || 'Unknown Location'}
               </Text>
               <Text style={styles.locationSubtitle}>
-                {formatTime(dashboardData.lastKnownLocation.timestamp)} on {formatDate(dashboardData.lastKnownLocation.timestamp)}
+                {formatTime(dashboardData.lastKnownLocation.timestamp)} on{' '}
+                {formatDate(dashboardData.lastKnownLocation.timestamp)}
               </Text>
             </View>
           </View>
@@ -199,7 +204,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
         {dashboardData.recentCheckIns.length === 0 ? (
           <Text style={styles.emptyText}>No recent check-ins</Text>
         ) : (
-          dashboardData.recentCheckIns.slice(0, 3).map(checkIn => (
+          dashboardData.recentCheckIns.slice(0, 3).map((checkIn) => (
             <View key={checkIn.id} style={styles.checkInCard}>
               <Camera size={20} color={Colors.primary} />
               <View style={styles.checkInContent}>
@@ -225,7 +230,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
         {dashboardData.recentCheckIns.length === 0 ? (
           <Text style={styles.emptyText}>No check-ins yet</Text>
         ) : (
-          dashboardData.recentCheckIns.map(checkIn => (
+          dashboardData.recentCheckIns.map((checkIn) => (
             <View key={checkIn.id} style={styles.checkInCard}>
               <Camera size={20} color={Colors.primary} />
               <View style={styles.checkInContent}>
@@ -252,7 +257,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
   const renderSafeZones = () => (
     <ScrollView style={styles.safeZonesContent} showsVerticalScrollIndicator={false}>
       <SafeZoneStatusCard />
-      
+
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Manage Safe Zones</Text>
@@ -260,7 +265,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
             <Plus size={20} color={Colors.primary} />
           </Pressable>
         </View>
-        
+
         {safeZones.length === 0 ? (
           <View style={styles.emptyStateCard}>
             <Shield size={48} color={Colors.textLight} />
@@ -268,16 +273,13 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
             <Text style={styles.emptyStateSubtitle}>
               Create safe zones to monitor when your child enters or leaves specific areas
             </Text>
-            <Pressable 
-              style={styles.createButton} 
-              onPress={() => setShowSafeZoneManagement(true)}
-            >
+            <Pressable style={styles.createButton} onPress={() => setShowSafeZoneManagement(true)}>
               <Plus size={16} color="#FFFFFF" />
               <Text style={styles.createButtonText}>Create Safe Zone</Text>
             </Pressable>
           </View>
         ) : (
-          safeZones.map(zone => (
+          safeZones.map((zone) => (
             <View key={zone.id} style={styles.safeZoneCard}>
               <Shield size={20} color={zone.isActive ? Colors.success : Colors.textLight} />
               <View style={styles.safeZoneContent}>
@@ -301,15 +303,13 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
     </ScrollView>
   );
 
-  const renderPings = () => (
-    <DevicePingHistory testId="device-ping-history" />
-  );
+  const renderPings = () => <DevicePingHistory testId="device-ping-history" />;
 
   const renderSettings = () => (
     <View style={styles.tabContent}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Parental Settings</Text>
-        
+
         <View style={styles.settingCard}>
           <Text style={styles.settingTitle}>Category Management</Text>
           <Text style={styles.settingSubtitle}>
@@ -332,7 +332,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
 
         <View style={styles.settingCard}>
           <Text style={styles.settingTitle}>Emergency Contacts</Text>
-          {settings.emergencyContacts.map(contact => (
+          {settings.emergencyContacts.map((contact) => (
             <Text key={contact.id} style={styles.settingSubtitle}>
               {contact.name} ({contact.relationship}) - {contact.phone}
               {contact.isPrimary && ' • Primary'}
@@ -344,9 +344,7 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
   );
 
   if (showSafeZoneManagement) {
-    return (
-      <SafeZoneManagement onBack={() => setShowSafeZoneManagement(false)} />
-    );
+    return <SafeZoneManagement onBack={() => setShowSafeZoneManagement(false)} />;
   }
 
   return (
@@ -362,11 +360,37 @@ const ParentDashboard: React.FC<ParentDashboardProps> = ({ onExit }) => {
       </View>
 
       <View style={styles.tabs}>
-        <TabButton id="overview" title="Overview" icon={<Eye size={16} color={activeTab === 'overview' ? '#FFFFFF' : Colors.textLight} />} />
-        <TabButton id="checkins" title="Check-ins" icon={<Camera size={16} color={activeTab === 'checkins' ? '#FFFFFF' : Colors.textLight} />} />
-        <TabButton id="safezones" title="Safe Zones" icon={<Shield size={16} color={activeTab === 'safezones' ? '#FFFFFF' : Colors.textLight} />} />
-        <TabButton id="pings" title="Device Pings" icon={<Phone size={16} color={activeTab === 'pings' ? '#FFFFFF' : Colors.textLight} />} />
-        <TabButton id="settings" title="Settings" icon={<Settings size={16} color={activeTab === 'settings' ? '#FFFFFF' : Colors.textLight} />} />
+        <TabButton
+          id="overview"
+          title="Overview"
+          icon={<Eye size={16} color={activeTab === 'overview' ? '#FFFFFF' : Colors.textLight} />}
+        />
+        <TabButton
+          id="checkins"
+          title="Check-ins"
+          icon={
+            <Camera size={16} color={activeTab === 'checkins' ? '#FFFFFF' : Colors.textLight} />
+          }
+        />
+        <TabButton
+          id="safezones"
+          title="Safe Zones"
+          icon={
+            <Shield size={16} color={activeTab === 'safezones' ? '#FFFFFF' : Colors.textLight} />
+          }
+        />
+        <TabButton
+          id="pings"
+          title="Device Pings"
+          icon={<Phone size={16} color={activeTab === 'pings' ? '#FFFFFF' : Colors.textLight} />}
+        />
+        <TabButton
+          id="settings"
+          title="Settings"
+          icon={
+            <Settings size={16} color={activeTab === 'settings' ? '#FFFFFF' : Colors.textLight} />
+          }
+        />
       </View>
 
       {activeTab === 'safezones' ? (
