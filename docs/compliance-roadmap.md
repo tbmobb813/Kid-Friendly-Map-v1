@@ -1,11 +1,13 @@
 # Compliance & Privacy Roadmap
 
-_Last updated: 2025-10-01_
+### Last Updated: 2025-10-01
 
 ## Objectives
 
 - Achieve COPPA and GDPR alignment ahead of external beta launch.
+
 - Deliver auditable policies and internal controls for handling child-directed data.
+
 - Establish ongoing monitoring to keep legal, engineering, and product teams in sync.
 
 ## Timeline Overview
@@ -24,50 +26,75 @@ _Last updated: 2025-10-01_
 ### 1. Legal Counsel Engagement
 
 - **Tasks**
+
   - Assemble product brief (data flows, parental consent UX, retention defaults).
+
   - Shortlist 3 specialist firms; collect scope & budget (<$12k target).
+
   - Schedule kickoff workshop (60 min) covering COPPA nuances, cross-border transfers, breach response.
+
 - **Dependencies**: Updated DPIA draft, data inventory spreadsheet.
+
 - **Outputs**: Signed engagement, action list of required product changes, meeting notes.
 
 ### 2. Privacy Policy Drafting
 
 - **Tasks**
+
   - Start from counsel template; tailor kid-facing disclosures, guardian contact channels, analytics vendor list.
+
   - Capture data minimization rationale for location, AI assistant transcripts, offline caches.
+
   - Run internal review (Engineering check for accuracy; Marketing check for tone) before legal sign-off.
+
 - **Outputs**: `docs/privacy-policy.md` draft, revision log, translation plan (ES/FR next).
 
 ### 3. Terms of Service
 
 - **Tasks**
+
   - Define acceptable use, guardianship responsibilities, arbitration locale, licensing for map/AI assets.
+
   - Align with app store policy and include COPPA-compliant consent language.
+
   - Add change-management clause for AI feature updates.
+
 - **Outputs**: `docs/terms-of-service.md` draft, version control with semantic versioning (v0.8 now).
 
 ### 4. Data-Handling Controls
 
 - **Tasks**
+
   - Build actionable checklist (collection, storage, retention, access, deletion) tied to release cycle.
+
   - Map each data element to lawful basis and retention window.
+
   - Integrate checklist into QA exit criteria and CI gates (manual for now).
+
 - **Outputs**: `docs/data-handling-checklist.md`, Jira template for "Privacy Review" stories.
 
 ### 5. Monitoring & Analytics
 
 - **Tasks**
+
   - Finalize Sentry wiring (Expo + backend) with sanitized context.
+
   - Deploy Plausible (EU region) with event catalog; expose opt-out in parental controls.
+
   - Publish `docs/monitoring-runbook.md` covering alerts, dashboards, on-call rotation.
+
 - **Quality Gates**: Crash-free users > 99%; analytics retention <= 12 months; privacy toggle unit tests.
 
 ### 6. Offline Map Tiles
 
 - **Tasks**
+
   - Week 5 spike: compare Native SDK vs Enhanced WebView caching vs hybrid approach.
+
   - Score options (func coverage, bundle size, privacy, maintenance) and pick.
+
   - Weeks 7-8: implement MVP offline UX, with encryption and guardian-managed download quotas.
+
 - **Outputs**: Decision doc, implementation tickets, QA scripts for airplane mode testing.
 
 ## RACI Snapshot
@@ -93,6 +120,9 @@ _Last updated: 2025-10-01_
 ## Next Steps
 
 1. Create tracking tickets for Week 1 deliverables.
-2. Prepare legal briefing pack by 2025-10-03.
-3. Schedule monitoring architecture review on 2025-10-04.
-4. Draft privacy policy & ToS skeletons and circulate internally by Week 2 end.
+
+1. Prepare legal briefing pack by 2025-10-03.
+
+1. Schedule monitoring architecture review on 2025-10-04.
+
+1. Draft privacy policy & ToS skeletons and circulate internally by Week 2 end.

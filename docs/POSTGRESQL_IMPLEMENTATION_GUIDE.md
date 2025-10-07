@@ -1009,8 +1009,10 @@ docker exec -it kidfriendlymap-db psql -U kidmap_user -d kidfriendlymap -c "SELE
 Access pgAdmin to monitor your spatial data:
 
 1. Open <http://localhost:5050>
-2. Login with <admin@kidfriendlymap.com> / admin123
-3. Add server: localhost:5432, user: kidmap_user
+
+1. Login with <admin@kidfriendlymap.com> / admin123
+
+1. Add server: localhost:5432, user: kidmap_user
 
 ### **Performance Monitoring**
 
@@ -1037,9 +1039,12 @@ export const spatialMetrics = (req: any, res: any, next: any) => {
 After completing this basic integration:
 
 1. **Week 4**: Add real-time geofencing with WebSockets
-2. **Week 5**: Implement spatial analytics and reporting
-3. **Week 6**: Add advanced route optimization
-4. **Week 7**: Performance optimization and production deployment
+
+1. **Week 5**: Implement spatial analytics and reporting
+
+1. **Week 6**: Add advanced route optimization
+
+1. **Week 7**: Performance optimization and production deployment
 
 ## 🆘 **Troubleshooting**
 
@@ -1055,30 +1060,36 @@ After completing this basic integration:
    docker logs kidfriendlymap-db
    ```
 
-2. **PostGIS Extension Missing**
+1. **PostGIS Extension Missing**
 
    ```sql
    -- Connect to database and run:
    CREATE EXTENSION IF NOT EXISTS postgis;
    ```
 
-3. **Spatial Queries Fail**
+1. **Spatial Queries Fail**
 
    ```bash
    # Verify PostGIS is working
    docker exec -it kidfriendlymap-db psql -U kidmap_user -d kidfriendlymap -c "SELECT PostGIS_Version();"
    ```
 
-4. **API Connection Issues**
+1. **API Connection Issues**
+
    - Check your .env file has correct EXPO_PUBLIC_SPATIAL_API_URL
+
    - Verify backend is running on correct port
+
    - Test API directly: curl <http://localhost:3000/api/health>
 
 This implementation guide maintains your existing architecture while adding powerful spatial capabilities. The integration is designed to be:
 
 - **Non-breaking**: Existing features continue to work
+
 - **Graceful**: Falls back to existing logic when spatial services are unavailable
+
 - **Scalable**: Foundation for advanced spatial features
+
 - **Production-ready**: Includes proper error handling, caching, and monitoring
 
 Start with Phase 1 and test each step before proceeding to the next phase!

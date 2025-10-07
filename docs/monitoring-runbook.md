@@ -30,15 +30,21 @@ Store secrets in EAS environment configs and backend secret manager. Never commi
 ## Setup Checklist
 
 1. Configure Sentry native modules via `@sentry/react-native` and ensure source maps upload during EAS builds.
-2. Register Plausible site (EU data center) and set retention to 12 months.
-3. Implement opt-in toggles in parental dashboard; default analytics to disabled until consent recorded.
-4. Add heartbeat monitors for AI assistant latency, map tile delivery, and backend job queues.
-5. Update CI to run monitoring unit tests (`__tests__/monitoring.test.ts`).
+
+1. Register Plausible site (EU data center) and set retention to 12 months.
+
+1. Implement opt-in toggles in parental dashboard; default analytics to disabled until consent recorded.
+
+1. Add heartbeat monitors for AI assistant latency, map tile delivery, and backend job queues.
+
+1. Update CI to run monitoring unit tests (`__tests__/monitoring.test.ts`).
 
 ## Onboarding & Dashboards
 
 - Sentry dashboards: Crash-free users, top issues, release comparisons.
+
 - Plausible dashboards: Daily active guardians, session duration, feature adoption.
+
 - Status page: Publish real-time uptime (private initially, on-call only).
 
 Provide read-only access to Product, Support, and Legal for transparency.
@@ -57,29 +63,41 @@ Escalation: If P0 unresolved after 30 min, notify CTO and Legal if user data ris
 ## Incident Response Steps
 
 1. Triage alert severity (P0–P3) and acknowledge within 5 minutes.
-2. Assign incident commander (on-call engineer) and scribe.
-3. Communicate status updates in Slack `#incident-room` every 15 minutes.
-4. Engage Legal/Privacy if issue involves personal data exposure.
-5. Publish post-incident report within 48 hours; include remediation tasks and privacy impact review.
+
+1. Assign incident commander (on-call engineer) and scribe.
+
+1. Communicate status updates in Slack `#incident-room` every 15 minutes.
+
+1. Engage Legal/Privacy if issue involves personal data exposure.
+
+1. Publish post-incident report within 48 hours; include remediation tasks and privacy impact review.
 
 ## Privacy Considerations
 
 - Redact user identifiers before sending to Sentry using `beforeSend` hooks.
+
 - Configure Plausible in cookieless mode with no local storage.
+
 - Log consent state changes and analytics opt-in/out events for auditing.
+
 - Retain raw logs no longer than 30 days; aggregate metrics only beyond that.
 
 ## Testing & Verification
 
 - Run synthetic error injection weekly to confirm Sentry ingestion.
+
 - Execute Plausible event smoke test (trigger sample events) after each release.
+
 - Validate parental opt-out by toggling setting and confirming events cease within 5 minutes.
+
 - Track test cases in `__tests__/monitoring.test.ts` and update when instrumentation changes.
 
 ## Change Management
 
 - Document monitoring configuration changes in CHANGELOG.
+
 - For new alerts, attach runbook entry and test evidence before enabling.
+
 - Legal review required if tooling begins collecting new categories of data.
 
 ## Contacts

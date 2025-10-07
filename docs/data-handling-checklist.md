@@ -70,5 +70,7 @@
 ## 8. Documentation & Sign-Off
 
 - Attach evidence (screenshots, Jira tickets, logs) for completed items.
+
 - Capture exceptions or deferrals in the risk register with mitigation owners.
+
 - Final review requires signatures from Legal, Privacy PM, and Engineering lead before release.

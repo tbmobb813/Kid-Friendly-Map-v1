@@ -104,5 +104,7 @@ npx expo start --ios
 ## Benefits
 
 - ⚡ MMKV: 10x faster than AsyncStorage
+
 - 🎤 Voice: Kid-friendly TTS with queue management
+
 - 🗺️ Maps: Native performance with safe zones

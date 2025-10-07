@@ -1,6 +1,7 @@
 # KidMap Performance Optimization Guide
 
 ## Overview
+
 This guide covers performance optimization strategies implemented in KidMap and recommendations for maintaining optimal performance as the app scales.
 
 ## Current Optimizations
@@ -8,6 +9,7 @@ This guide covers performance optimization strategies implemented in KidMap and 
 ### 🚀 **React Performance Optimizations**
 
 #### Manual Optimization (No React Compiler)
+
 Since this project doesn't use React Compiler, all optimizations are manual:
 
 ```typescript
@@ -31,14 +33,19 @@ useEffect(() => {
 ```
 
 #### Component Optimization Patterns
+
 - **React.memo()** for preventing unnecessary re-renders
+
 - **useMemo()** for expensive calculations
+
 - **useCallback()** for stable function references
+
 - **Explicit dependency arrays** in all hooks
 
 ### 📱 **Mobile-Specific Optimizations**
 
 #### Image Optimization
+
 ```typescript
 // OptimizedImage component with lazy loading
 const OptimizedImage = ({ uri, width, height, ...props }) => {
@@ -60,6 +67,7 @@ const OptimizedImage = ({ uri, width, height, ...props }) => {
 ```
 
 #### List Performance
+
 ```typescript
 // FlatList optimizations
 <FlatList
@@ -84,6 +92,7 @@ const OptimizedImage = ({ uri, width, height, ...props }) => {
 ### 🌐 **Web Compatibility Optimizations**
 
 #### Platform-Specific Code Splitting
+
 ```typescript
 // Conditional imports for web compatibility
 const LocationService = Platform.select({
@@ -96,14 +105,19 @@ const HeavyComponent = lazy(() => import('./HeavyComponent'));
 ```
 
 #### Web-Specific Optimizations
+
 - **Code splitting** for reduced bundle size
+
 - **Service workers** for offline functionality
+
 - **Web Workers** for background processing
+
 - **Intersection Observer** for lazy loading
 
 ### 💾 **Data Management Optimizations**
 
 #### Efficient State Management
+
 ```typescript
 // Using @nkzw/create-context-hook for optimized context
 export const [PlacesContext, usePlaces] = createContextHook(() => {
@@ -124,6 +138,7 @@ export const [PlacesContext, usePlaces] = createContextHook(() => {
 ```
 
 #### React Query Optimizations
+
 ```typescript
 // Efficient data fetching with React Query
 const usePlacesQuery = (location: Location) => {
@@ -141,6 +156,7 @@ const usePlacesQuery = (location: Location) => {
 ### 🔄 **Background Processing Optimizations**
 
 #### Location Monitoring
+
 ```typescript
 // Optimized location tracking
 const useOptimizedLocation = () => {
@@ -169,6 +185,7 @@ const useOptimizedLocation = () => {
 ```
 
 #### Safe Zone Monitoring
+
 ```typescript
 // Debounced safe zone checks
 const useSafeZoneMonitor = () => {
@@ -190,14 +207,21 @@ const useSafeZoneMonitor = () => {
 ### 🔍 **Built-in Monitoring**
 
 #### System Health Monitor
+
 The app includes a comprehensive system health monitor that tracks:
+
 - Network connectivity status
+
 - Memory usage (web only)
+
 - Storage availability
+
 - Location services status
+
 - Platform compatibility
 
 #### Performance Metrics
+
 ```typescript
 // Performance tracking utility
 export const trackPerformance = (operation: string, fn: () => Promise<any>) => {
@@ -220,72 +244,113 @@ export const trackPerformance = (operation: string, fn: () => Promise<any>) => {
 ### 📊 **Performance Benchmarks**
 
 #### Target Performance Metrics
+
 - **App Launch Time:** < 3 seconds
+
 - **Screen Transitions:** < 300ms
+
 - **Search Results:** < 1 second
+
 - **Map Rendering:** < 2 seconds
+
 - **Photo Processing:** < 5 seconds
 
 #### Memory Usage Targets
+
 - **Initial Load:** < 50MB
+
 - **Peak Usage:** < 100MB
+
 - **Background:** < 30MB
 
 ## Optimization Strategies by Feature
 
 ### 🏠 **Home Screen**
+
 - Virtualized place lists for large datasets
+
 - Lazy loading of place images
+
 - Debounced search input
+
 - Cached category filters
 
 ### 🗺️ **Map & Navigation**
+
 - Optimized map tile loading
+
 - Route caching for common destinations
+
 - Simplified geometry for complex routes
+
 - Background location updates
 
 ### 📸 **Photo Check-ins**
+
 - Image compression before storage
+
 - Thumbnail generation
+
 - Progressive image loading
+
 - Background upload queue
 
 ### 👨‍👩‍👧‍👦 **Parental Controls**
+
 - Efficient safe zone calculations
+
 - Batched notification delivery
+
 - Optimized dashboard queries
+
 - Smart polling intervals
 
 ## Platform-Specific Considerations
 
 ### 📱 **Mobile (iOS/Android)**
+
 - Native module optimizations
+
 - Background task management
+
 - Battery usage optimization
+
 - Memory pressure handling
 
 ### 🌐 **Web**
+
 - Bundle size optimization
+
 - Progressive loading
+
 - Service worker caching
+
 - Responsive image delivery
 
 ### 🔄 **Cross-Platform**
+
 - Shared business logic
+
 - Platform-specific UI optimizations
+
 - Consistent performance across platforms
+
 - Unified error handling
 
 ## Development Best Practices
 
 ### 🛠️ **Code Organization**
+
 - Small, focused components (< 50 lines)
+
 - Proper separation of concerns
+
 - Reusable utility functions
+
 - Consistent naming conventions
 
 ### 🧪 **Performance Testing**
+
 ```typescript
 // Performance test example
 describe('PlacesList Performance', () => {
@@ -301,9 +366,13 @@ describe('PlacesList Performance', () => {
 ```
 
 ### 📈 **Continuous Monitoring**
+
 - Performance regression tests
+
 - Bundle size monitoring
+
 - Memory leak detection
+
 - User experience metrics
 
 ## Troubleshooting Performance Issues
@@ -311,55 +380,85 @@ describe('PlacesList Performance', () => {
 ### 🐌 **Common Performance Problems**
 
 #### Slow Rendering
+
 - **Cause:** Unnecessary re-renders
+
 - **Solution:** Add React.memo() and optimize dependencies
+
 - **Detection:** React DevTools Profiler
 
 #### Memory Leaks
+
 - **Cause:** Uncleaned subscriptions/timers
+
 - **Solution:** Proper cleanup in useEffect
+
 - **Detection:** Browser DevTools Memory tab
 
 #### Large Bundle Size
+
 - **Cause:** Unused imports and large dependencies
+
 - **Solution:** Tree shaking and code splitting
+
 - **Detection:** Bundle analyzer tools
 
 ### 🔧 **Performance Debugging Tools**
 
 #### React DevTools
+
 - Component render profiling
+
 - State change tracking
+
 - Hook dependency analysis
 
 #### Browser DevTools
+
 - Network performance
+
 - Memory usage analysis
+
 - CPU profiling
 
 #### Mobile Debugging
+
 - Flipper for React Native
+
 - Xcode Instruments (iOS)
+
 - Android Studio Profiler
 
 ## Future Optimizations
 
 ### 🚀 **Planned Improvements**
+
 - React Compiler integration (when stable)
+
 - Advanced caching strategies
+
 - Machine learning for predictive loading
+
 - Edge computing for location services
 
 ### 📱 **Native Optimizations**
+
 - Custom native modules for critical paths
+
 - Platform-specific performance tuning
+
 - Hardware acceleration utilization
+
 - Background processing optimization
 
 ### 🌐 **Web Optimizations**
+
 - WebAssembly for heavy computations
+
 - Advanced service worker strategies
+
 - HTTP/3 and modern protocols
+
 - Edge CDN optimization
 
 ---

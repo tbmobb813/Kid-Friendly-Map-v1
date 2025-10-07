@@ -22,6 +22,7 @@ useEffect(() => {
 ### Manual Code Updates
 
 **Before (AsyncStorage):**
+
 ```typescript
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,6 +38,7 @@ await AsyncStorage.removeItem('key');
 ```
 
 **After (MMKV):**
+
 ```typescript
 import { mainStorage } from '../utils/storage';
 
@@ -53,8 +55,11 @@ mainStorage.delete('key');
 ### Benefits
 
 - No more `await` needed
+
 - Automatic JSON parsing
+
 - Type-safe operations
+
 - 10x faster
 
 ## 2. Adding Voice to Existing Features
@@ -62,6 +67,7 @@ mainStorage.delete('key');
 ### Navigation Updates
 
 **Before:**
+
 ```typescript
 const navigateToLocation = (destination) => {
   // Just visual navigation
@@ -70,6 +76,7 @@ const navigateToLocation = (destination) => {
 ```
 
 **After:**
+
 ```typescript
 import { speakNavigation } from '../utils/voice';
 
@@ -83,6 +90,7 @@ const navigateToLocation = async (destination) => {
 ### Safety Features
 
 **Before:**
+
 ```typescript
 const checkSafety = () => {
   if (isSafe) {
@@ -92,6 +100,7 @@ const checkSafety = () => {
 ```
 
 **After:**
+
 ```typescript
 import { speakSafety, KidFriendlyPhrases } from '../utils/voice';
 
@@ -105,6 +114,7 @@ const checkSafety = async () => {
 ### Achievement System
 
 **Before:**
+
 ```typescript
 const awardBadge = (badge) => {
   showNotification(`You earned: ${badge.name}`);
@@ -112,6 +122,7 @@ const awardBadge = (badge) => {
 ```
 
 **After:**
+
 ```typescript
 import { speakAchievement, KidFriendlyPhrases } from '../utils/voice';
 
@@ -126,6 +137,7 @@ const awardBadge = async (badge) => {
 ### From expo-maps to react-native-maps
 
 **Before (expo-maps):**
+
 ```typescript
 import MapView from 'expo-maps';
 
@@ -135,6 +147,7 @@ import MapView from 'expo-maps';
 ```
 
 **After (react-native-maps with enhancements):**
+
 ```typescript
 import KidFriendlyMap from '../components/KidFriendlyMap';
 
@@ -185,12 +198,14 @@ const route = [
 ### Create Typed Keys
 
 **Before:**
+
 ```typescript
 await AsyncStorage.setItem('user_favorites', JSON.stringify(favorites));
 const stored = await AsyncStorage.getItem('user_favorites');
 ```
 
 **After:**
+
 ```typescript
 import { mainStorage, StorageKeys } from '../utils/storage';
 
@@ -236,6 +251,7 @@ function SettingsScreen() {
 ### Implement Cache Expiration
 
 **Before:**
+
 ```typescript
 const cacheData = async (key, data) => {
   await AsyncStorage.setItem(key, JSON.stringify({
@@ -257,6 +273,7 @@ const getCachedData = async (key, maxAge) => {
 ```
 
 **After:**
+
 ```typescript
 import { StorageUtils } from '../utils/storage';
 
@@ -277,6 +294,7 @@ StorageUtils.clearExpired();
 ### Update Location Handlers
 
 **Before:**
+
 ```typescript
 const trackLocation = async () => {
   const location = await Location.getCurrentPositionAsync();
@@ -285,6 +303,7 @@ const trackLocation = async () => {
 ```
 
 **After:**
+
 ```typescript
 import { mainStorage } from '../utils/storage';
 
@@ -386,33 +405,47 @@ export default function JourneyScreen() {
 ## 9. Testing Checklist
 
 - [ ] Run automatic AsyncStorage migration
+
 - [ ] Test MMKV storage operations
+
 - [ ] Verify voice settings work
+
 - [ ] Test voice announcements
+
 - [ ] Check map rendering
+
 - [ ] Verify safe zone detection
+
 - [ ] Test route visualization
+
 - [ ] Confirm location tracking
+
 - [ ] Test on physical device
 
 ## 10. Common Issues
 
 ### Issue: Voice not working
+
 **Solution:** Test on physical device (simulators have limited voices)
 
 ### Issue: Map not showing
+
 **Solution:** Check location permissions and test on device
 
 ### Issue: Storage migration slow
+
 **Solution:** Run migration once, then remove the call
 
 ### Issue: TypeScript errors
+
 **Solution:** Ensure you're using typed keys and proper imports
 
 ## Resources
 
 - [Enhanced Features Guide](./ENHANCED_FEATURES_GUIDE.md)
+
 - [Quick Reference](./QUICK_REFERENCE.md)
+
 - [Summary](./ENHANCED_FEATURES_SUMMARY.md)
 
 ---
