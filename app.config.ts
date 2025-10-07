@@ -78,15 +78,15 @@ const routingExtras = {
   baseUrl:
     typeof orsBaseUrlFromEnv === 'string' && orsBaseUrlFromEnv.length > 0
       ? orsBaseUrlFromEnv
-      : ((baseConfig.extra as any)?.routing?.baseUrl ?? 'https://api.openrouteservice.org'),
+      : (baseConfig.extra as any)?.routing?.baseUrl ?? 'https://api.openrouteservice.org',
   orsApiKey:
     typeof orsApiKeyFromEnv === 'string' && orsApiKeyFromEnv.length > 0
       ? orsApiKeyFromEnv
-      : ((baseConfig.extra as any)?.routing?.orsApiKey ?? ''),
+      : (baseConfig.extra as any)?.routing?.orsApiKey ?? '',
   defaultProfile:
     typeof orsProfileFromEnv === 'string' && orsProfileFromEnv.length > 0
       ? orsProfileFromEnv
-      : ((baseConfig.extra as any)?.routing?.defaultProfile ?? 'foot-walking'),
+      : (baseConfig.extra as any)?.routing?.defaultProfile ?? 'foot-walking',
   requestTimeout: ensureNumber(
     (baseConfig.extra as any)?.routing?.requestTimeout,
     ensureNumber(orsTimeoutFromEnv, 15000),

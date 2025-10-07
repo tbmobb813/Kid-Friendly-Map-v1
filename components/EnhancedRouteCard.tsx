@@ -202,7 +202,9 @@ const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({
           <Text style={styles.transferText}>
             {unifiedRoute.summary.transfers === 0
               ? 'Direct route'
-              : `${unifiedRoute.summary.transfers} transfer${unifiedRoute.summary.transfers > 1 ? 's' : ''}`}
+              : `${unifiedRoute.summary.transfers} transfer${
+                  unifiedRoute.summary.transfers > 1 ? 's' : ''
+                }`}
           </Text>
         </View>
       )}

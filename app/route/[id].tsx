@@ -43,7 +43,9 @@ export default function RouteDetailScreen() {
       <VoiceNavigation
         currentStep={
           route.steps[0]?.from
-            ? `${route.steps[0].type === 'walk' ? 'Walk' : 'Take'} from ${route.steps[0].from} to ${route.steps[0].to}`
+            ? `${route.steps[0].type === 'walk' ? 'Walk' : 'Take'} from ${route.steps[0].from} to ${
+                route.steps[0].to
+              }`
             : 'Starting your journey'
         }
       />

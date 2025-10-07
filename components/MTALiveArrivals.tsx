@@ -310,8 +310,8 @@ const MTALiveArrivals: React.FC<MTALiveArrivalsProps> = ({
           {alert.type === 'delay'
             ? 'Service Delay'
             : alert.type === 'service-change'
-              ? 'Service Change'
-              : 'Information'}
+            ? 'Service Change'
+            : 'Information'}
         </Text>
       </View>
 

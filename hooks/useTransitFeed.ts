@@ -39,7 +39,9 @@ type UseTransitFeedOpts = {
 };
 
 async function fetchFeed(baseUrl: string, region: string, system: string, mock: boolean) {
-  const url = `${baseUrl.replace(/\/$/, '')}/feeds/${encodeURIComponent(region)}/${encodeURIComponent(system)}.json${mock ? '?mock=1' : ''}`;
+  const url = `${baseUrl.replace(/\/$/, '')}/feeds/${encodeURIComponent(
+    region,
+  )}/${encodeURIComponent(system)}.json${mock ? '?mock=1' : ''}`;
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text().catch(() => '');

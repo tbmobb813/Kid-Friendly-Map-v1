@@ -33,7 +33,7 @@ Notifications.setNotificationHandler({
       // Include web/modern fields required by NotificationBehavior
       shouldShowBanner: true,
       shouldShowList: true,
-    }) as any,
+    } as any),
 });
 
 const SmartNotification: React.FC<SmartNotificationProps> = ({
@@ -111,8 +111,8 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
           priority: (priority === 'high'
             ? (Notifications as any).AndroidNotificationPriority.HIGH
             : priority === 'low'
-              ? (Notifications as any).AndroidNotificationPriority.LOW
-              : (Notifications as any).AndroidNotificationPriority.DEFAULT) as any,
+            ? (Notifications as any).AndroidNotificationPriority.LOW
+            : (Notifications as any).AndroidNotificationPriority.DEFAULT) as any,
         },
         trigger: scheduledFor ? ({ type: 'date', date: scheduledFor } as any) : null,
       });

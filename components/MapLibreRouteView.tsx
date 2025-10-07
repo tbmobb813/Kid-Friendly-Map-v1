@@ -175,9 +175,9 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   const resolvedIsAvailable =
     typeof isMapLibreAvailable !== 'undefined'
       ? isMapLibreAvailable
-      : (resolvedModule.isMapLibreAvailable ??
+      : resolvedModule.isMapLibreAvailable ??
         (resolvedModule.default && resolvedModule.default.isMapLibreAvailable) ??
-        true);
+        true;
 
   // If the module explicitly indicates MapLibre is unavailable, bail out.
   // Otherwise continue — tests provide mocks that may not expose the full

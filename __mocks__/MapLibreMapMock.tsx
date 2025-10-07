@@ -39,4 +39,6 @@ const defaultExport: any = MapLibreMap;
 defaultExport.MapLibreGL = MapLibreGL;
 defaultExport.isMapLibreAvailable = isMapLibreAvailable;
 
-export default defaultExport;
+export default function MapLibreMapMock(props: any) {
+  return <div data-testid="maplibre-mock" {...props} />;
+}

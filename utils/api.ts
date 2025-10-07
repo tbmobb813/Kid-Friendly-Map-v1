@@ -122,7 +122,9 @@ export const transitApi = {
 export const placesApi = {
   search: (query: string, location?: { lat: number; lng: number }) =>
     apiClient.get(
-      `/places/search?q=${encodeURIComponent(query)}${location ? `&lat=${location.lat}&lng=${location.lng}` : ''}`,
+      `/places/search?q=${encodeURIComponent(query)}${
+        location ? `&lat=${location.lat}&lng=${location.lng}` : ''
+      }`,
     ),
 
   getDetails: (placeId: string) => apiClient.get(`/places/${placeId}`),
@@ -160,7 +162,11 @@ export const smartRoutesApi = {
     timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
   }) =>
     apiClient.get<SmartSuggestionDTO[]>(
-      `/routes/smart?destId=${encodeURIComponent(params.destId ?? '')}&destLat=${params.destLat}&destLng=${params.destLng}&curLat=${params.curLat}&curLng=${params.curLng}&weather=${encodeURIComponent(params.weather ?? '')}&timeOfDay=${params.timeOfDay}`,
+      `/routes/smart?destId=${encodeURIComponent(params.destId ?? '')}&destLat=${
+        params.destLat
+      }&destLng=${params.destLng}&curLat=${params.curLat}&curLng=${
+        params.curLng
+      }&weather=${encodeURIComponent(params.weather ?? '')}&timeOfDay=${params.timeOfDay}`,
     ),
   likeSuggestion: (id: string, liked: boolean) =>
     apiClient.post<{ id: string; liked: boolean }>(`/routes/suggestions/${id}/like`, { liked }),

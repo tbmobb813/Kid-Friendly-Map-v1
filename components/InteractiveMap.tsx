@@ -128,27 +128,40 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         : '';
 
       const originMarkerJs = origin
-        ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${origin.coordinates.longitude}], { icon: originIcon }).addTo(map).bindPopup(${JSON.stringify(origin.name)});`
+        ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${
+            origin.coordinates.longitude
+          }], { icon: originIcon }).addTo(map).bindPopup(${JSON.stringify(origin.name)});`
         : '';
 
       const destinationMarkerJs = destination
-        ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
+        ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${
+            destination.coordinates.longitude
+          }], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
         : '';
 
       const transitStationsJs = showTransitStations
         ? nycStations
             .map(
               (station) => `
-          const station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')} = L.marker([${station.coordinates.latitude}, ${station.coordinates.longitude}], { 
+          const station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')} = L.marker([${
+                station.coordinates.latitude
+              }, ${station.coordinates.longitude}], { 
             icon: transitIcon 
           }).addTo(map).bindPopup(\`
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
               <h3 style="margin: 0 0 8px 0; color: #333;">${station.name}</h3>
               <div style="margin-bottom: 8px;">
-                <strong>Lines:</strong> ${station.lines.map((line) => `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`).join('')}
+                <strong>Lines:</strong> ${station.lines
+                  .map(
+                    (line) =>
+                      `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`,
+                  )
+                  .join('')}
               </div>
               <div style="margin-bottom: 8px;">
-                <strong>Safety Rating:</strong> ${'⭐'.repeat(station.kidFriendly.safetyRating)} (${station.kidFriendly.safetyRating}/5)
+                <strong>Safety Rating:</strong> ${'⭐'.repeat(station.kidFriendly.safetyRating)} (${
+                station.kidFriendly.safetyRating
+              }/5)
               </div>
               <div style="margin-bottom: 8px;">
                 <strong>Kid-Friendly Features:</strong><br/>
@@ -167,7 +180,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
               `
                   : ''
               }
-              <button onclick="handleStationClick('${station.id}')" style="background: #007AFF; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px;">
+              <button onclick="handleStationClick('${
+                station.id
+              }')" style="background: #007AFF; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px;">
                 View Live Arrivals
               </button>
             </div>
@@ -245,11 +260,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 
         const originIcon = L.divIcon({
-          html: '<div style="background: ${Colors.primary}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+          html: '<div style="background: ${
+            Colors.primary
+          }; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
           iconSize: [26,26], iconAnchor: [13,13]
         });
         const destinationIcon = L.divIcon({
-          html: '<div style="background: ${Colors.secondary}; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+          html: '<div style="background: ${
+            Colors.secondary
+          }; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
           iconSize: [26,26], iconAnchor: [13,13]
         });
         const transitIcon = L.divIcon({
@@ -278,7 +297,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         });
 
         function recenter() {
-          try { ${routeCoords ? 'map.fitBounds(poly.getBounds().pad(0.15));' : `map.setView([${centerLat}, ${centerLng}], 13);`} } catch (e) { console.log('recenter error', e); }
+          try { ${
+            routeCoords
+              ? 'map.fitBounds(poly.getBounds().pad(0.15));'
+              : `map.setView([${centerLat}, ${centerLng}], 13);`
+          } } catch (e) { console.log('recenter error', e); }
         }
 
         document.addEventListener('message', function(event) {
