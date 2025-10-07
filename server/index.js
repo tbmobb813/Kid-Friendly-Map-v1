@@ -8,6 +8,15 @@ const { normalizeFeedMessage, normalizeFeedMessageAsync, fetchGtfsRt } = require
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Simple API key middleware: set API_AUTH_KEY to require this key in 'x-adapter-key' header
+const apiAuthKey = process.env.API_AUTH_KEY;
+function requireApiKey(req, res, next) {
+  if (!apiAuthKey) return next();
+  const v = req.headers['x-adapter-key'] || req.query._key;
+  if (!v || v !== apiAuthKey) return res.status(401).json({ error: 'unauthorized' });
+  return next();
+}
+
 // Simple in-memory cache with short TTL
 const cache = new LRUCache({ max: 100, ttl: 10000 }); // 10s default
 
@@ -35,7 +44,7 @@ async function fetchAndCache(url, apiKeyHeader, apiKey) {
 const feedMap = require('./feeds.json');
 
 // GET /feeds/:region/:system.json
-app.get('/feeds/:region/:system.json', async (req, res) => {
+app.get('/feeds/:region/:system.json', requireApiKey, async (req, res) => {
   try {
     const { region, system } = req.params;
     const regionMap = feedMap[region];
@@ -89,6 +98,14 @@ app.get('/feeds/:region/:system.json', async (req, res) => {
       normalized = await normalizeFeedMessageAsync(feed, system);
     } else {
       normalized = normalizeFeedMessage(feed, system);
+    }
+
+    // Integration log: count how many routes were enriched (have a destination or nextStopName)
+    try {
+      const enrichedCount = (normalized.routes || []).filter(r => (r.destination && String(r.destination).trim() !== '') || (r.nextStopName && String(r.nextStopName).trim() !== '')).length;
+      console.info(`[transit-adapter] enrichedRoutes=${enrichedCount} region=${region} system=${system}`);
+    } catch (e) {
+      // non-fatal logging error
     }
 
     return res.json({ routes: normalized.routes, alerts: normalized.alerts, lastModified: new Date().toISOString() });

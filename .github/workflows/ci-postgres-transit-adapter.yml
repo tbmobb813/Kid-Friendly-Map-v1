@@ -63,3 +63,10 @@ jobs:
       - name: Smoke test endpoint
         run: |
           curl 'http://localhost:3001/feeds/nyc/mta-subway.json?mock=1' | jq '.'
+      - name: Assert enrichment
+        run: |
+          # ensure at least one route has a destination (enriched from Postgres)
+          OUT=$(curl -s 'http://localhost:3001/feeds/nyc/mta-subway.json?mock=1')
+          COUNT=$(echo "$OUT" | jq '[.routes[] | select(.destination != null and .destination != "") ] | length')
+          echo "Enriched routes with destination: $COUNT"
+          test "$COUNT" -ge 1

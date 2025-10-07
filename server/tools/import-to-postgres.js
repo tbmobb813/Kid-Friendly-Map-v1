@@ -16,8 +16,13 @@ async function copyFromJson(file, table, columns) {
   if (!rows.length) return;
   const client = await pool.connect();
   try {
+    // insert into staging table
+    const staging = `${table}_staging`;
     await client.query('BEGIN');
-    // create temp table and copy in (simple approach, using parameterized multi-row insert)
+    // ensure staging exists
+    await client.query(`CREATE TABLE IF NOT EXISTS ${staging} (LIKE ${table} INCLUDING ALL)`);
+    // clear staging
+    await client.query(`TRUNCATE ${staging}`);
     const values = [];
     const params = [];
     let idx = 1;
@@ -26,10 +31,17 @@ async function copyFromJson(file, table, columns) {
       values.push(`(${placeholders.join(',')})`);
       params.push(...r);
     }
-    const query = `INSERT INTO ${table}(${columns.join(',')}) VALUES ${values.join(',')} ON CONFLICT DO NOTHING`;
-    await client.query(query, params);
+    if (values.length) {
+      const query = `INSERT INTO ${staging}(${columns.join(',')}) VALUES ${values.join(',')}`;
+      await client.query(query, params);
+    }
+    // swap tables atomically
+    await client.query(`BEGIN`);
+    await client.query(`ALTER TABLE ${table} RENAME TO ${table}_old`);
+    await client.query(`ALTER TABLE ${staging} RENAME TO ${table}`);
+    await client.query(`DROP TABLE IF EXISTS ${table}_old`);
     await client.query('COMMIT');
-    console.log(`Imported ${rows.length} rows into ${table}`);
+    console.log(`Imported ${rows.length} rows into ${table} (staged swap)`);
   } finally {
     client.release();
   }
