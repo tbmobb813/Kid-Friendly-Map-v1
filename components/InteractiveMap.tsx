@@ -8,18 +8,24 @@ import { Crosshair, Train } from 'lucide-react-native';
 
 type LatLng = { latitude: number; longitude: number };
 
-type InteractiveMapProps = {
+export interface InteractiveMapProps {
   origin?: Place;
   destination?: Place;
-  route?: Route & { geometry?: { coordinates: LatLng[] } };
+  route?: Route;
+  showTransitStations?: boolean;
+  // make mascot props optional so callers that don't use mascot can skip them
+  mascotHint?: string;
+  setMascotHint?: React.Dispatch<React.SetStateAction<string>>;
   onMapReady?: () => void;
   onSelectLocation?: (coords: LatLng) => void;
   onStationPress?: (stationId: string) => void;
-  showTransitStations?: boolean;
   testId?: string;
-};
+}
 
-const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null }> = ({ testId, WebViewComponent }) => {
+const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null }> = ({
+  testId,
+  WebViewComponent,
+}) => {
   if (Platform.OS === 'web' || !WebViewComponent) {
     return null;
   }
@@ -55,7 +61,9 @@ const MapboxPreloader: React.FC<{ testId?: string; WebViewComponent: any | null 
       javaScriptEnabled
       domStorageEnabled
       onMessage={(e: any) => {
-        try { console.log('Mapbox preloader message', e?.nativeEvent?.data ?? ''); } catch {}
+        try {
+          console.log('Mapbox preloader message', e?.nativeEvent?.data ?? '');
+        } catch {}
       }}
     />
   );
@@ -70,11 +78,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onStationPress,
   showTransitStations = true,
   testId,
+  mascotHint,
+  setMascotHint,
 }) => {
   const WebViewComponent = useMemo(() => {
     if (Platform.OS === 'web') return null;
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const mod = require('react-native-webview');
       return mod?.WebView ?? null;
     } catch (e) {
@@ -85,53 +94,58 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const webViewRef = useRef<any>(null);
   const [isMapReady, setMapReady] = useState<boolean>(false);
-  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(null);
+  const [containerLayout, setContainerLayout] = useState<{ width: number; height: number } | null>(
+    null,
+  );
 
   const routeCoords = useMemo<LatLng[] | undefined>(() => {
-    if (route?.geometry?.coordinates && route.geometry.coordinates.length > 0) {
-      return route.geometry.coordinates;
+    // support both GeoJSON-style route.geometry.coordinates and other shapes where coordinates may be at route.coordinates
+    const coordsFromRoute = (route as any)?.geometry?.coordinates ?? (route as any)?.coordinates;
+    if (Array.isArray(coordsFromRoute) && coordsFromRoute.length > 0) {
+      return coordsFromRoute as LatLng[];
     }
     if (origin?.coordinates && destination?.coordinates) {
       return [origin.coordinates, destination.coordinates];
     }
     return undefined;
-  }, [route?.geometry?.coordinates, origin?.coordinates, destination?.coordinates]);
+  }, [route, origin?.coordinates, destination?.coordinates]);
 
-  const generateLeafletHTML = useCallback((layout?: { width: number; height: number }) => {
-    const centerLat = origin?.coordinates?.latitude ?? 40.7128;
-    const centerLng = origin?.coordinates?.longitude ?? -74.0060;
-    const widthPx = layout?.width ? `${layout.width}px` : '100%';
-    const heightPx = layout?.height ? `${layout.height}px` : '100%';
+  const generateLeafletHTML = useCallback(
+    (layout?: { width: number; height: number }) => {
+      const centerLat = origin?.coordinates?.latitude ?? 40.7128;
+      const centerLng = origin?.coordinates?.longitude ?? -74.006;
+      const widthPx = layout?.width ? `${layout.width}px` : '100%';
+      const heightPx = layout?.height ? `${layout.height}px` : '100%';
 
-    const polylineJs = routeCoords
-      ? `const poly = L.polyline(${JSON.stringify(
-          routeCoords.map((c) => [c.latitude, c.longitude])
-        )}, { color: '${Colors.primary}', weight: 4, opacity: 0.9 }).addTo(map);`
-      : '';
+      const polylineJs = routeCoords
+        ? `const poly = L.polyline(${JSON.stringify(
+            routeCoords.map((c) => [c.latitude, c.longitude]),
+          )}, { color: '${Colors.primary}', weight: 4, opacity: 0.9 }).addTo(map);`
+        : '';
 
-    const fitBoundsJs = routeCoords
-      ? `try { map.fitBounds(poly.getBounds().pad(0.15)); } catch (e) { console.log('fitBounds error', e); }`
-      : '';
+      const fitBoundsJs = routeCoords
+        ? `try { map.fitBounds(poly.getBounds().pad(0.15)); } catch (e) { console.log('fitBounds error', e); }`
+        : '';
 
-    const originMarkerJs = origin
-      ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${origin.coordinates.longitude}], { icon: originIcon }).addTo(map).bindPopup(${JSON.stringify(origin.name)});`
-      : '';
+      const originMarkerJs = origin
+        ? `const originMarker = L.marker([${origin.coordinates.latitude}, ${origin.coordinates.longitude}], { icon: originIcon }).addTo(map).bindPopup(${JSON.stringify(origin.name)});`
+        : '';
 
-    const destinationMarkerJs = destination
-      ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
-      : '';
+      const destinationMarkerJs = destination
+        ? `const destMarker = L.marker([${destination.coordinates.latitude}, ${destination.coordinates.longitude}], { icon: destinationIcon }).addTo(map).bindPopup(${JSON.stringify(destination.name)});`
+        : '';
 
-    const transitStationsJs = showTransitStations
-      ? nycStations
-          .map(
-            (station) => `
+      const transitStationsJs = showTransitStations
+        ? nycStations
+            .map(
+              (station) => `
           const station_${station.id.replace(/[^a-zA-Z0-9]/g, '_')} = L.marker([${station.coordinates.latitude}, ${station.coordinates.longitude}], { 
             icon: transitIcon 
           }).addTo(map).bindPopup(\`
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
               <h3 style="margin: 0 0 8px 0; color: #333;">${station.name}</h3>
               <div style="margin-bottom: 8px;">
-                <strong>Lines:</strong> ${station.lines.map(line => `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`).join('')}
+                <strong>Lines:</strong> ${station.lines.map((line) => `<span style="background: #007AFF; color: white; padding: 2px 6px; border-radius: 12px; font-size: 12px; margin-right: 4px;">${line}</span>`).join('')}
               </div>
               <div style="margin-bottom: 8px;">
                 <strong>Safety Rating:</strong> ${'⭐'.repeat(station.kidFriendly.safetyRating)} (${station.kidFriendly.safetyRating}/5)
@@ -142,12 +156,17 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
                 ${station.kidFriendly.hasBathroom ? '✅ Bathroom' : '❌ No Bathroom'}<br/>
                 ${station.kidFriendly.hasWideGates ? '✅ Wide Gates' : '❌ Standard Gates'}
               </div>
-              ${station.kidFriendly.nearbyAttractions && station.kidFriendly.nearbyAttractions.length > 0 ? `
+              ${
+                station.kidFriendly.nearbyAttractions &&
+                station.kidFriendly.nearbyAttractions.length > 0
+                  ? `
                 <div style="margin-bottom: 8px;">
                   <strong>Nearby Attractions:</strong><br/>
-                  ${station.kidFriendly.nearbyAttractions.map(attr => `• ${attr}`).join('<br/>')}
+                  ${station.kidFriendly.nearbyAttractions.map((attr) => `• ${attr}`).join('<br/>')}
                 </div>
-              ` : ''}
+              `
+                  : ''
+              }
               <button onclick="handleStationClick('${station.id}')" style="background: #007AFF; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 8px;">
                 View Live Arrivals
               </button>
@@ -160,12 +179,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
               window.ReactNativeWebView && window.ReactNativeWebView.postMessage(payload);
             } catch (err) { console.log('station click error', err); }
           });
-        `
-          )
-          .join('\n')
-      : '';
+        `,
+            )
+            .join('\n')
+        : '';
 
-    return `
+      return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -278,37 +297,42 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       </script>
     </body>
     </html>`;
-  }, [origin, destination, routeCoords, showTransitStations]);
+    },
+    [origin, destination, routeCoords, showTransitStations],
+  );
 
-  const handleMessage = useCallback((event: any) => {
-    try {
-      const raw: string = event?.nativeEvent?.data ?? '';
-      if (!raw) return;
-      if (raw === 'mapReady') {
-        setMapReady(true);
-        onMapReady?.();
-        return;
+  const handleMessage = useCallback(
+    (event: any) => {
+      try {
+        const raw: string = event?.nativeEvent?.data ?? '';
+        if (!raw) return;
+        if (raw === 'mapReady') {
+          setMapReady(true);
+          onMapReady?.();
+          return;
+        }
+        const data = JSON.parse(raw);
+        if (data?.type === 'mapLog') {
+          console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
+          return;
+        }
+        if (data?.type === 'ready') {
+          setMapReady(true);
+          onMapReady?.();
+          return;
+        }
+        if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
+          onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
+        }
+        if (data?.type === 'station' && typeof data.stationId === 'string') {
+          onStationPress?.(data.stationId);
+        }
+      } catch (e) {
+        console.log('InteractiveMap handleMessage error', e);
       }
-      const data = JSON.parse(raw);
-      if (data?.type === 'mapLog') {
-        console.log(`🛰️ Leaflet [${data.label ?? 'log'}]`, data.payload ?? null);
-        return;
-      }
-      if (data?.type === 'ready') {
-        setMapReady(true);
-        onMapReady?.();
-        return;
-      }
-      if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
-        onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
-      }
-      if (data?.type === 'station' && typeof data.stationId === 'string') {
-        onStationPress?.(data.stationId);
-      }
-    } catch (e) {
-      console.log('InteractiveMap handleMessage error', e);
-    }
-  }, [onMapReady, onSelectLocation, onStationPress]);
+    },
+    [onMapReady, onSelectLocation, onStationPress],
+  );
 
   const sendRecenter = useCallback(() => {
     try {
@@ -319,8 +343,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   }, []);
 
   return (
-    <View 
-      style={styles.container} 
+    <View
+      style={styles.container}
       testID={testId ?? (Platform.OS === 'web' ? 'interactive-map-web' : 'interactive-map')}
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout;
@@ -330,7 +354,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     >
       {Platform.OS === 'web' ? (
         <MapPlaceholder
-          message={destination ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}` : 'Select destination for interactive map'}
+          message={
+            destination
+              ? `Interactive map: ${origin?.name ?? 'Origin'} → ${destination.name}`
+              : 'Select destination for interactive map'
+          }
         />
       ) : WebViewComponent && containerLayout ? (
         <WebViewComponent
@@ -385,7 +413,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <MapPlaceholder message="Map unavailable on this device" />
       )}
 
-      <Pressable accessibilityRole="button" testID="recenter-button" style={styles.recenterBtn} onPress={sendRecenter}>
+      <Pressable
+        accessibilityRole="button"
+        testID="recenter-button"
+        style={styles.recenterBtn}
+        onPress={sendRecenter}
+      >
         <Crosshair color={Colors.text} size={18} />
         <Text style={styles.recenterLabel}>Recenter</Text>
       </Pressable>
@@ -404,7 +437,14 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'transparent', position: 'relative' },
-  webMap: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'transparent' },
+  webMap: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'transparent',
+  },
   preloader: { position: 'absolute', width: 1, height: 1, opacity: 0 },
   recenterBtn: {
     position: 'absolute',

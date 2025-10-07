@@ -24,12 +24,18 @@ export type SmartRouteSuggestionsProps = {
 
 const iconForType = (type: RouteType) => {
   switch (type) {
-    case 'fastest': return Clock;
-    case 'safest': return Zap;
-    case 'scenic': return Sun;
-    case 'covered': return CloudRain;
-    case 'quiet': return MapPin;
-    default: return Clock;
+    case 'fastest':
+      return Clock;
+    case 'safest':
+      return Zap;
+    case 'scenic':
+      return Sun;
+    case 'covered':
+      return CloudRain;
+    case 'quiet':
+      return MapPin;
+    default:
+      return Clock;
   }
 };
 
@@ -58,15 +64,25 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
     return () => clearInterval(id);
   }, [simulateCrowdLevel]);
 
-  const queryKey = useMemo(() => [
-    'smartSuggestions',
-    destination.id,
-    currentLocation.latitude,
-    currentLocation.longitude,
-    weather,
-    timeOfDay,
-    crowdLevel,
-  ], [destination.id, currentLocation.latitude, currentLocation.longitude, weather, timeOfDay, crowdLevel]);
+  const queryKey = useMemo(
+    () => [
+      'smartSuggestions',
+      destination.id,
+      currentLocation.latitude,
+      currentLocation.longitude,
+      weather,
+      timeOfDay,
+      crowdLevel,
+    ],
+    [
+      destination.id,
+      currentLocation.latitude,
+      currentLocation.longitude,
+      weather,
+      timeOfDay,
+      crowdLevel,
+    ],
+  );
 
   const suggestionsQuery = useQuery({
     queryKey,
@@ -101,8 +117,12 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
       const profileKey = ['userProfile'];
       const prevProfile = qc.getQueryData<any>(profileKey);
       if (prevProfile) {
-        const likedIds: string[] = Array.isArray(prevProfile.likedSuggestions) ? prevProfile.likedSuggestions : [];
-        const updatedLiked = liked ? Array.from(new Set([...likedIds, id])) : likedIds.filter((x: string) => x !== id);
+        const likedIds: string[] = Array.isArray(prevProfile.likedSuggestions)
+          ? prevProfile.likedSuggestions
+          : [];
+        const updatedLiked = liked
+          ? Array.from(new Set([...likedIds, id]))
+          : likedIds.filter((x: string) => x !== id);
         qc.setQueryData(profileKey, { ...prevProfile, likedSuggestions: updatedLiked });
       }
       return { prev, prevProfile };
@@ -123,23 +143,30 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
     onSettled: () => {
       qc.invalidateQueries({ queryKey });
       qc.invalidateQueries({ queryKey: ['userProfile'] });
-    }
+    },
   });
 
   const getWeatherIcon = () => {
     switch (weather) {
-      case 'sunny': return Sun;
-      case 'cloudy': return Cloud;
-      case 'rainy': return CloudRain;
-      default: return Sun;
+      case 'sunny':
+        return Sun;
+      case 'cloudy':
+        return Cloud;
+      case 'rainy':
+        return CloudRain;
+      default:
+        return Sun;
     }
   };
 
   const getCrowdColor = () => {
     switch (crowdLevel) {
-      case 'low': return '#4CAF50';
-      case 'medium': return '#FF9800';
-      case 'high': return '#F44336';
+      case 'low':
+        return '#4CAF50';
+      case 'medium':
+        return '#FF9800';
+      case 'high':
+        return '#F44336';
     }
   };
 
@@ -175,7 +202,11 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
           <Text style={styles.errorText}>Could not load suggestions.</Text>
         </View>
       ) : (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.suggestionsScroll}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.suggestionsScroll}
+        >
           {mappedSuggestions.map((suggestion) => (
             <Pressable
               key={suggestion.id}
@@ -189,17 +220,22 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
                 </View>
                 <Text style={styles.suggestionTitle}>{suggestion.title}</Text>
                 <Pressable
-                  onPress={() => likeMutation.mutate({ id: suggestion.id, liked: !(suggestion.liked ?? false) })}
+                  onPress={() =>
+                    likeMutation.mutate({ id: suggestion.id, liked: !(suggestion.liked ?? false) })
+                  }
                   hitSlop={8}
                   accessibilityRole="button"
                   testID={`like-${suggestion.id}`}
                 >
-                  <Heart size={18} color={(suggestion.liked ?? false) ? Colors.secondary : Colors.textLight} />
+                  <Heart
+                    size={18}
+                    color={(suggestion.liked ?? false) ? Colors.secondary : Colors.textLight}
+                  />
                 </Pressable>
               </View>
-              
+
               <Text style={styles.suggestionDescription}>{suggestion.description}</Text>
-              
+
               <View style={styles.suggestionFooter}>
                 <Text style={styles.estimatedTime}>{suggestion.estimatedTime}</Text>
                 <Text style={styles.reason}>{suggestion.reason}</Text>
@@ -235,17 +271,50 @@ const styles = StyleSheet.create({
   title: { fontSize: 18, fontWeight: '700' as const, color: Colors.text, marginBottom: 8 },
   conditions: { flexDirection: 'row', gap: 16 },
   conditionItem: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  conditionText: { fontSize: 12, color: Colors.textLight, fontWeight: '500' as const, textTransform: 'capitalize' as const },
+  conditionText: {
+    fontSize: 12,
+    color: Colors.textLight,
+    fontWeight: '500' as const,
+    textTransform: 'capitalize' as const,
+  },
   suggestionsScroll: { marginBottom: 16 },
-  suggestionCard: { backgroundColor: Colors.background, borderRadius: 12, padding: 16, marginRight: 12, width: 220, borderWidth: 1, borderColor: Colors.border },
+  suggestionCard: {
+    backgroundColor: Colors.background,
+    borderRadius: 12,
+    padding: 16,
+    marginRight: 12,
+    width: 220,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
   suggestionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 8, gap: 8 },
-  iconContainer: { width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.primaryLight, justifyContent: 'center', alignItems: 'center', marginRight: 4 },
+  iconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: Colors.primaryLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+  },
   suggestionTitle: { fontSize: 14, fontWeight: '600' as const, color: Colors.text, flex: 1 },
-  suggestionDescription: { fontSize: 12, color: Colors.textLight, lineHeight: 16, marginBottom: 12 },
+  suggestionDescription: {
+    fontSize: 12,
+    color: Colors.textLight,
+    lineHeight: 16,
+    marginBottom: 12,
+  },
   suggestionFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   estimatedTime: { fontSize: 14, fontWeight: '700' as const, color: Colors.primary },
   reason: { fontSize: 10, color: Colors.textLight, fontStyle: 'italic' as const },
-  smartTip: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.secondaryLight, padding: 12, borderRadius: 8, gap: 8 },
+  smartTip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.secondaryLight,
+    padding: 12,
+    borderRadius: 8,
+    gap: 8,
+  },
   smartTipText: { flex: 1, fontSize: 12, color: Colors.secondary, fontWeight: '500' as const },
   loadingWrap: { paddingVertical: 16, alignItems: 'center' },
   errorWrap: { paddingVertical: 16, alignItems: 'center' },

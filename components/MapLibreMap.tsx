@@ -13,9 +13,9 @@ function getMapLibreModule(): MapLibreModule | null {
   if (mapLibreLoadAttempted) {
     return mapLibreModule;
   }
-  
+
   mapLibreLoadAttempted = true;
-  
+
   try {
     const imported = require('@maplibre/maplibre-react-native');
     mapLibreModule = imported?.default ?? imported;
@@ -30,7 +30,7 @@ function getMapLibreModule(): MapLibreModule | null {
       });
     }
   }
-  
+
   return mapLibreModule;
 }
 
@@ -54,7 +54,8 @@ type MapLibreMapProps = {
   testID?: string;
 };
 
-const fallbackStyleUrl = Config.MAP.FALLBACK_STYLE_URL ?? 'https://demotiles.maplibre.org/style.json';
+const fallbackStyleUrl =
+  Config.MAP.FALLBACK_STYLE_URL ?? 'https://demotiles.maplibre.org/style.json';
 
 const defaultCenter: [number, number] = [
   Config.MAP.DEFAULT_CENTER.longitude,
@@ -74,7 +75,7 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
 }) => {
   // Lazy load MapLibre module
   const MapLibre = getMapLibreModule();
-  
+
   if (!MapLibre || typeof MapLibre !== 'object' || !(MapLibre as any).MapView) {
     if (__DEV__) {
       log.debug('MapLibre not available, rendering null');
@@ -86,14 +87,17 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
     if (MapLibre && typeof (MapLibre as any).requestAndroidPermissionsIfNeeded === 'function') {
       (MapLibre as any).requestAndroidPermissionsIfNeeded();
     }
-    
+
     // Set access token if available
     if (MapLibre && typeof (MapLibre as any).setAccessToken === 'function') {
       try {
         (MapLibre as any).setAccessToken(Config.MAP.ACCESS_TOKEN ?? null);
       } catch (error) {
         log.warn('Unable to set MapLibre access token', {
-          error: error instanceof Error ? { name: error.name, message: error.message } : { message: String(error) },
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message }
+              : { message: String(error) },
         });
       }
     }

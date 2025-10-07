@@ -14,23 +14,33 @@ jest.mock('@maplibre/maplibre-react-native', () => ({
     setAccessToken: jest.fn(),
     requestAndroidPermissionsIfNeeded: jest.fn(),
     MapView: ({ children, onPress, onDidFinishRenderingMapFully, ...props }: any) => {
-      return React.createElement('MapView', {
-        testID: 'mock-mapview',
-        onPress,
-        onDidFinishRenderingMapFully,
-        ...props,
-      }, children);
+      return React.createElement(
+        'MapView',
+        {
+          testID: 'mock-mapview',
+          onPress,
+          onDidFinishRenderingMapFully,
+          ...props,
+        },
+        children,
+      );
     },
     Camera: (props: any) => React.createElement('Camera', { testID: 'mock-camera', ...props }),
     ShapeSource: ({ children, onPress, ...props }: any) => {
-      return React.createElement('ShapeSource', {
-        testID: `mock-shapesource-${props.id}`,
-        onPress,
-        ...props,
-      }, children);
+      return React.createElement(
+        'ShapeSource',
+        {
+          testID: `mock-shapesource-${props.id}`,
+          onPress,
+          ...props,
+        },
+        children,
+      );
     },
-    LineLayer: (props: any) => React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) => React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
+    LineLayer: (props: any) =>
+      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
+    CircleLayer: (props: any) =>
+      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
   },
 }));
 
@@ -106,7 +116,7 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={mockRouteGeoJSON}
-      />
+      />,
     );
 
     expect(rendered.toJSON()).toBeTruthy();
@@ -114,29 +124,18 @@ describe('MapLibreRouteView', () => {
 
   it('should render origin and destination markers', () => {
     const rendered = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-      />
+      <MapLibreRouteView origin={mockOrigin} destination={mockDestination} />,
     );
     expect(rendered.toJSON()).toBeTruthy();
   });
 
   it('should render transit stations when enabled', () => {
-    const rendered = render(
-      <MapLibreRouteView
-        showTransitStations={true}
-      />
-    );
+    const rendered = render(<MapLibreRouteView showTransitStations={true} />);
     expect(rendered.toJSON()).toBeTruthy();
   });
 
   it('should not render transit stations when disabled', () => {
-    const { queryByTestId } = render(
-      <MapLibreRouteView
-        showTransitStations={false}
-      />
-    );
+    const { queryByTestId } = render(<MapLibreRouteView showTransitStations={false} />);
 
     expect(queryByTestId('mock-shapesource-stations')).toBeNull();
     expect(queryByTestId('mock-circlelayer-stations-layer')).toBeNull();
@@ -144,21 +143,13 @@ describe('MapLibreRouteView', () => {
 
   it('should create fallback route when no route data provided', () => {
     const rendered = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-        routeGeoJSON={null}
-      />
+      <MapLibreRouteView origin={mockOrigin} destination={mockDestination} routeGeoJSON={null} />,
     );
     expect(rendered.toJSON()).toBeTruthy();
   });
 
   it('should not render route when no origin or destination', () => {
-    const rendered = render(
-      <MapLibreRouteView
-        routeGeoJSON={null}
-      />
-    );
+    const rendered = render(<MapLibreRouteView routeGeoJSON={null} />);
     const { queryByTestId } = rendered;
     expect(queryByTestId('mock-shapesource-route')).toBeNull();
     expect(queryByTestId('mock-linelayer-route-line')).toBeNull();
@@ -166,12 +157,9 @@ describe('MapLibreRouteView', () => {
 
   it('should handle station press events', () => {
     const mockOnStationPress = jest.fn();
-    
+
     const rendered = render(
-      <MapLibreRouteView
-        onStationPress={mockOnStationPress}
-        showTransitStations={true}
-      />
+      <MapLibreRouteView onStationPress={mockOnStationPress} showTransitStations={true} />,
     );
     expect(rendered.toJSON()).toBeTruthy();
     // Simulate the behavior that would be triggered by a station press: call the
@@ -181,7 +169,10 @@ describe('MapLibreRouteView', () => {
     // Re-render with an immediate call to the onStationPress handler
     const { rerender } = rendered;
     rerender(
-      <MapLibreRouteView onStationPress={(id: string) => mockOnStationPress(id)} showTransitStations={true} />
+      <MapLibreRouteView
+        onStationPress={(id: string) => mockOnStationPress(id)}
+        showTransitStations={true}
+      />,
     );
     // Directly call the handler to simulate press
     mockOnStationPress(testId);
@@ -189,10 +180,8 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should use custom testID when provided', () => {
-    const rendered = render(
-      <MapLibreRouteView testID="custom-map-view" />
-    );
-  expect(rendered.toJSON()).toBeTruthy();
+    const rendered = render(<MapLibreRouteView testID="custom-map-view" />);
+    expect(rendered.toJSON()).toBeTruthy();
   });
 
   it('should compute center correctly with route data', () => {
@@ -201,9 +190,9 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={mockRouteGeoJSON}
-      />
+      />,
     );
-  expect(rendered.toJSON()).toBeTruthy();
+    expect(rendered.toJSON()).toBeTruthy();
   });
 
   it('should handle empty route features gracefully', () => {
@@ -217,7 +206,7 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={emptyRouteGeoJSON}
-      />
+      />,
     );
     // Should still render content: either stations or a route shapesource is acceptable
     expect(rendered.toJSON()).toBeTruthy();

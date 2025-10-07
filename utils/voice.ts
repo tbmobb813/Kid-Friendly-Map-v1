@@ -56,14 +56,14 @@ class VoiceManager {
     try {
       this.availableVoices = await Speech.getAvailableVoicesAsync();
       log.info(`Loaded ${this.availableVoices.length} available voices`);
-      
+
       // Find kid-friendly voices (prefer female voices with en-US)
       const kidFriendlyVoices = this.availableVoices.filter(
-        voice => 
+        (voice) =>
           voice.language.startsWith('en') &&
-          (voice.name.toLowerCase().includes('female') || 
-           voice.name.toLowerCase().includes('woman') ||
-           voice.quality === Speech.VoiceQuality.Enhanced)
+          (voice.name.toLowerCase().includes('female') ||
+            voice.name.toLowerCase().includes('woman') ||
+            voice.quality === Speech.VoiceQuality.Enhanced),
       );
 
       if (kidFriendlyVoices.length > 0 && !this.settings.voice) {
@@ -80,10 +80,18 @@ class VoiceManager {
    */
   private loadSettings(): VoiceSettings {
     return {
-      enabled: mainStorage.getBoolean(StorageKeys.VOICE_ENABLED, DEFAULT_SETTINGS.enabled) ?? DEFAULT_SETTINGS.enabled,
-      language: mainStorage.getString(StorageKeys.VOICE_LANGUAGE, DEFAULT_SETTINGS.language) ?? DEFAULT_SETTINGS.language,
-      rate: mainStorage.getNumber(StorageKeys.VOICE_RATE, DEFAULT_SETTINGS.rate) ?? DEFAULT_SETTINGS.rate,
-      pitch: mainStorage.getNumber(StorageKeys.VOICE_PITCH, DEFAULT_SETTINGS.pitch) ?? DEFAULT_SETTINGS.pitch,
+      enabled:
+        mainStorage.getBoolean(StorageKeys.VOICE_ENABLED, DEFAULT_SETTINGS.enabled) ??
+        DEFAULT_SETTINGS.enabled,
+      language:
+        mainStorage.getString(StorageKeys.VOICE_LANGUAGE, DEFAULT_SETTINGS.language) ??
+        DEFAULT_SETTINGS.language,
+      rate:
+        mainStorage.getNumber(StorageKeys.VOICE_RATE, DEFAULT_SETTINGS.rate) ??
+        DEFAULT_SETTINGS.rate,
+      pitch:
+        mainStorage.getNumber(StorageKeys.VOICE_PITCH, DEFAULT_SETTINGS.pitch) ??
+        DEFAULT_SETTINGS.pitch,
       volume: DEFAULT_SETTINGS.volume,
       voice: mainStorage.getString('voice_identifier') ?? undefined,
     };
@@ -283,12 +291,12 @@ class VoiceManager {
   toggle(): boolean {
     this.settings.enabled = !this.settings.enabled;
     this.saveSettings();
-    
+
     if (!this.settings.enabled) {
       this.stop();
       this.clearQueue();
     }
-    
+
     return this.settings.enabled;
   }
 }
@@ -302,54 +310,54 @@ export const voiceManager = new VoiceManager();
 export const KidFriendlyPhrases = {
   // Navigation
   nav: {
-    turnLeft: "Turn left up ahead",
-    turnRight: "Turn right at the next corner",
-    goStraight: "Keep going straight",
+    turnLeft: 'Turn left up ahead',
+    turnRight: 'Turn right at the next corner',
+    goStraight: 'Keep going straight',
     arrived: "You've arrived! Great job!",
     starting: "Let's start your journey!",
-    almostThere: "Almost there! Just a little more",
+    almostThere: 'Almost there! Just a little more',
   },
 
   // Safety
   safety: {
-    stayClose: "Remember to stay close to your grown-up",
-    lookBothWays: "Look both ways before crossing",
+    stayClose: 'Remember to stay close to your grown-up',
+    lookBothWays: 'Look both ways before crossing',
     holdHand: "Hold a grown-up's hand while crossing",
-    emergency: "Emergency contact has been notified",
+    emergency: 'Emergency contact has been notified',
     safeZone: "You're in a safe zone!",
   },
 
   // Transit
   transit: {
-    boarding: "Time to get on the train! Stay together",
-    exiting: "Almost at your stop. Get ready to exit",
-    transfer: "Time to switch to another train",
-    holdOn: "Hold on tight while the train is moving",
-    nextStop: "Next stop is coming up",
+    boarding: 'Time to get on the train! Stay together',
+    exiting: 'Almost at your stop. Get ready to exit',
+    transfer: 'Time to switch to another train',
+    holdOn: 'Hold on tight while the train is moving',
+    nextStop: 'Next stop is coming up',
   },
 
   // Achievements
   achievements: {
-    newBadge: "Wow! You earned a new badge!",
-    firstJourney: "Congratulations on your first journey!",
+    newBadge: 'Wow! You earned a new badge!',
+    firstJourney: 'Congratulations on your first journey!',
     safetyChampion: "You're a safety champion!",
-    explorer: "Great job exploring!",
+    explorer: 'Great job exploring!',
   },
 
   // General encouragement
   encouragement: {
-    goodJob: "Good job!",
+    goodJob: 'Good job!',
     keepGoing: "You're doing great! Keep going",
     almostDone: "Almost done, you've got this!",
-    wellDone: "Well done!",
+    wellDone: 'Well done!',
   },
 
   // Errors (kid-friendly)
   errors: {
-    noInternet: "Oops! We need internet to continue",
+    noInternet: 'Oops! We need internet to continue',
     locationError: "Can't find your location right now",
     tryAgain: "Let's try that again",
-    askGrownup: "Ask a grown-up for help with this",
+    askGrownup: 'Ask a grown-up for help with this',
   },
 };
 
@@ -358,7 +366,7 @@ export const KidFriendlyPhrases = {
  */
 export async function speakNavigation(instruction: string, distance?: number): Promise<void> {
   let message = instruction;
-  
+
   if (distance) {
     if (distance < 50) {
       message = `In a few steps, ${instruction}`;

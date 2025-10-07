@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 let Constants: any;
 try {
   // Prefer using require so this will work under CommonJS test runner.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+
   Constants = require('expo-constants');
 } catch (e) {
   // Fallback shape used by the app; kept small and stable for tests.
@@ -41,10 +41,7 @@ const ensureNumber = (value: unknown, fallback: number): number => {
   return fallback;
 };
 
-const ensureCoordinate = (
-  value: unknown,
-  fallback: { latitude: number; longitude: number },
-) => {
+const ensureCoordinate = (value: unknown, fallback: { latitude: number; longitude: number }) => {
   if (
     value &&
     typeof value === 'object' &&
@@ -76,9 +73,7 @@ const mapDefaults = {
   maxZoom: ensureNumber(mapsExtra.maxZoom, 20),
   animationDuration: ensureNumber(mapsExtra.animationDuration, 1000),
   accessToken:
-    typeof mapsExtra.token === 'string' && mapsExtra.token.length > 0
-      ? mapsExtra.token
-      : null,
+    typeof mapsExtra.token === 'string' && mapsExtra.token.length > 0 ? mapsExtra.token : null,
 };
 
 const routingSettings = {
@@ -86,19 +81,13 @@ const routingSettings = {
     typeof routingExtra.baseUrl === 'string' && routingExtra.baseUrl.length > 0
       ? routingExtra.baseUrl
       : 'https://api.openrouteservice.org',
-  ORS_API_KEY:
-    typeof routingExtra.orsApiKey === 'string'
-      ? routingExtra.orsApiKey
-      : '',
+  ORS_API_KEY: typeof routingExtra.orsApiKey === 'string' ? routingExtra.orsApiKey : '',
   DEFAULT_PROFILE:
     typeof routingExtra.defaultProfile === 'string' && routingExtra.defaultProfile.length > 0
       ? routingExtra.defaultProfile
       : 'foot-walking',
   REQUEST_TIMEOUT: ensureNumber(routingExtra.requestTimeout, 15000),
-  INCLUDE_ETA:
-    typeof routingExtra.includeEta === 'boolean'
-      ? routingExtra.includeEta
-      : true,
+  INCLUDE_ETA: typeof routingExtra.includeEta === 'boolean' ? routingExtra.includeEta : true,
 };
 
 const monitoringSettings = {
@@ -111,29 +100,20 @@ const monitoringSettings = {
         ? 'development'
         : 'production',
   tracesSampleRate:
-    typeof monitoringExtra.tracesSampleRate === 'number'
-      ? monitoringExtra.tracesSampleRate
-      : 0.2,
+    typeof monitoringExtra.tracesSampleRate === 'number' ? monitoringExtra.tracesSampleRate : 0.2,
   autoSessionTracking:
     typeof monitoringExtra.autoSessionTracking === 'boolean'
       ? monitoringExtra.autoSessionTracking
       : true,
   profileSampleRate:
-    typeof monitoringExtra.profileSampleRate === 'number'
-      ? monitoringExtra.profileSampleRate
-      : 0,
+    typeof monitoringExtra.profileSampleRate === 'number' ? monitoringExtra.profileSampleRate : 0,
 };
 
 const analyticsSettings = {
   enabled: typeof analyticsExtra.enabled === 'boolean' ? analyticsExtra.enabled : !__DEV__,
-  batchSize:
-    typeof analyticsExtra.batchSize === 'number'
-      ? analyticsExtra.batchSize
-      : 10,
+  batchSize: typeof analyticsExtra.batchSize === 'number' ? analyticsExtra.batchSize : 10,
   flushInterval:
-    typeof analyticsExtra.flushInterval === 'number'
-      ? analyticsExtra.flushInterval
-      : 30000,
+    typeof analyticsExtra.flushInterval === 'number' ? analyticsExtra.flushInterval : 30000,
   plausible: {
     enabled: typeof plausibleExtra.enabled === 'boolean' ? plausibleExtra.enabled : !__DEV__,
     endpoint: typeof plausibleExtra.endpoint === 'string' ? plausibleExtra.endpoint : '',
@@ -147,27 +127,23 @@ const analyticsSettings = {
   },
   privacy: {
     defaultOptIn:
-      typeof privacyExtra.defaultOptIn === 'boolean'
-        ? privacyExtra.defaultOptIn
-        : false,
+      typeof privacyExtra.defaultOptIn === 'boolean' ? privacyExtra.defaultOptIn : false,
   },
 };
 export const Config = {
   // Environment
   isDev: __DEV__,
   isProduction: !__DEV__,
-  
+
   // API Configuration
-  API_BASE_URL: __DEV__ 
-    ? 'http://localhost:3000/api' 
-    : 'https://your-production-api.com/api',
-  
+  API_BASE_URL: __DEV__ ? 'http://localhost:3000/api' : 'https://your-production-api.com/api',
+
   API_TIMEOUT: 10000,
-  
+
   // App Configuration
   APP_VERSION: Constants.expoConfig?.version || '1.0.0',
   APP_NAME: Constants.expoConfig?.name || 'Transit Navigator',
-  
+
   // Feature Flags
   FEATURES: {
     VOICE_NAVIGATION: true,
@@ -179,7 +155,7 @@ export const Config = {
     PUSH_NOTIFICATIONS: true,
     GEOFENCING: Platform.OS !== 'web',
   },
-  
+
   // Cache Configuration
   CACHE: {
     DEFAULT_TTL: 5 * 60 * 1000, // 5 minutes
@@ -187,7 +163,7 @@ export const Config = {
     ROUTES_TTL: 2 * 60 * 1000, // 2 minutes
     USER_DATA_TTL: 60 * 60 * 1000, // 1 hour
   },
-  
+
   // Location Configuration
   LOCATION: {
     ACCURACY: 'high' as const,
@@ -195,7 +171,7 @@ export const Config = {
     MAX_AGE: 60000,
     DISTANCE_FILTER: 10, // meters
   },
-  
+
   // Map Configuration
   MAP: {
     DEFAULT_ZOOM: mapDefaults.defaultZoom,
@@ -209,7 +185,7 @@ export const Config = {
   },
 
   ROUTING: routingSettings,
-  
+
   // Analytics
   ANALYTICS: {
     ENABLED: analyticsSettings.enabled,
@@ -236,14 +212,14 @@ export const Config = {
     AUTO_SESSION_TRACKING: monitoringSettings.autoSessionTracking,
     PROFILE_SAMPLE_RATE: monitoringSettings.profileSampleRate,
   },
-  
+
   // Performance
   PERFORMANCE: {
     ENABLE_FLIPPER: __DEV__,
     LOG_SLOW_RENDERS: __DEV__,
     RENDER_TIMEOUT: 16, // 60fps = 16ms per frame
   },
-  
+
   // Platform-specific
   PLATFORM: {
     IS_IOS: Platform.OS === 'ios',
@@ -251,20 +227,20 @@ export const Config = {
     IS_WEB: Platform.OS === 'web',
     HAS_NOTCH: Constants.statusBarHeight > 20,
   },
-  
+
   // Regional Configuration
   REGIONS: {
     DEFAULT: 'new-york',
     SUPPORTED: ['new-york', 'london', 'tokyo'],
   },
-  
+
   // Accessibility
   ACCESSIBILITY: {
     MINIMUM_TOUCH_SIZE: 44,
     FONT_SCALE_FACTOR: 1.2,
     HIGH_CONTRAST_THRESHOLD: 4.5,
   },
-  
+
   // Security
   SECURITY: {
     ENABLE_SSL_PINNING: !__DEV__,

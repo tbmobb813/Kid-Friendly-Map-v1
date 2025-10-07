@@ -1,7 +1,7 @@
-import React from "react";
-import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
-import Colors from "@/constants/colors";
-import { getAccessibilityLabel, getAccessibilityHint } from "@/utils/accessibility";
+import React from 'react';
+import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import Colors from '@/constants/colors';
+import { getAccessibilityLabel, getAccessibilityHint } from '@/utils/accessibility';
 
 type AccessibleButtonProps = {
   title: string;
@@ -11,7 +11,7 @@ type AccessibleButtonProps = {
   disabled?: boolean;
   accessibilityLabel?: string;
   accessibilityHint?: string;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: 'primary' | 'secondary' | 'outline';
 };
 
 const AccessibleButton: React.FC<AccessibleButtonProps> = ({
@@ -22,26 +22,26 @@ const AccessibleButton: React.FC<AccessibleButtonProps> = ({
   disabled = false,
   accessibilityLabel,
   accessibilityHint,
-  variant = "primary",
+  variant = 'primary',
 }) => {
   const getButtonStyle = () => {
     switch (variant) {
-      case "primary":
+      case 'primary':
         return styles.primaryButton;
-      case "secondary":
+      case 'secondary':
         return styles.secondaryButton;
-      case "outline":
+      case 'outline':
         return styles.outlineButton;
     }
   };
 
   const getTextStyle = () => {
     switch (variant) {
-      case "primary":
+      case 'primary':
         return styles.primaryText;
-      case "secondary":
+      case 'secondary':
         return styles.secondaryText;
-      case "outline":
+      case 'outline':
         return styles.outlineText;
     }
   };
@@ -60,12 +60,10 @@ const AccessibleButton: React.FC<AccessibleButtonProps> = ({
       accessible={true}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel || getAccessibilityLabel(title)}
-      accessibilityHint={accessibilityHint || getAccessibilityHint("activate")}
+      accessibilityHint={accessibilityHint || getAccessibilityHint('activate')}
       accessibilityState={{ disabled }}
     >
-      <Text style={[getTextStyle(), disabled && styles.disabledText, textStyle]}>
-        {title}
-      </Text>
+      <Text style={[getTextStyle(), disabled && styles.disabledText, textStyle]}>{title}</Text>
     </Pressable>
   );
 };
@@ -75,8 +73,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 44, // Minimum touch target size
   },
   primaryButton: {
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   outlineButton: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: Colors.primary,
   },
@@ -97,19 +95,19 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   primaryText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   secondaryText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   outlineText: {
     color: Colors.primary,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   disabledText: {
     color: Colors.textLight,

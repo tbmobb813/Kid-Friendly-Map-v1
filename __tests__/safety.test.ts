@@ -1,7 +1,20 @@
 /// <reference types="jest" />
 
-import { validateLocation, validateSafeZone, validateEmergencyContact, validatePhotoCheckIn, validatePIN, sanitizeInput, validateDistance } from '../utils/validation';
-import { SafeAsyncStorage, withRetry, handleLocationError, handleCameraError } from '../utils/errorHandling';
+import {
+  validateLocation,
+  validateSafeZone,
+  validateEmergencyContact,
+  validatePhotoCheckIn,
+  validatePIN,
+  sanitizeInput,
+  validateDistance,
+} from '../utils/validation';
+import {
+  SafeAsyncStorage,
+  withRetry,
+  handleLocationError,
+  handleCameraError,
+} from '../utils/errorHandling';
 
 // Mock AsyncStorage for testing
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -17,7 +30,7 @@ jest.mock('../utils/logger', () => ({
     info: jest.fn(),
     warn: jest.fn(),
     error: jest.fn(),
-  }
+  },
 }));
 
 describe('Validation Utils', () => {
@@ -25,9 +38,9 @@ describe('Validation Utils', () => {
     it('should validate correct location data', () => {
       const validLocation = {
         latitude: 40.7128,
-        longitude: -74.0060,
+        longitude: -74.006,
         accuracy: 10,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       const result = validateLocation(validLocation);
@@ -38,7 +51,7 @@ describe('Validation Utils', () => {
     it('should reject invalid latitude', () => {
       const invalidLocation = {
         latitude: 91, // Invalid: > 90
-        longitude: -74.0060
+        longitude: -74.006,
       };
 
       const result = validateLocation(invalidLocation as any);
@@ -49,7 +62,7 @@ describe('Validation Utils', () => {
     it('should reject invalid longitude', () => {
       const invalidLocation = {
         latitude: 40.7128,
-        longitude: 181 // Invalid: > 180
+        longitude: 181, // Invalid: > 180
       };
 
       const result = validateLocation(invalidLocation as any);
@@ -60,20 +73,22 @@ describe('Validation Utils', () => {
     it('should warn about low accuracy', () => {
       const lowAccuracyLocation = {
         latitude: 40.7128,
-        longitude: -74.0060,
-        accuracy: 150 // Low accuracy
+        longitude: -74.006,
+        accuracy: 150, // Low accuracy
       };
 
       const result = validateLocation(lowAccuracyLocation as any);
       expect(result.isValid).toBe(true);
-      expect(result.warnings).toContain('Location accuracy is low (>100m), results may be unreliable');
+      expect(result.warnings).toContain(
+        'Location accuracy is low (>100m), results may be unreliable',
+      );
     });
 
     it('should warn about old timestamp', () => {
       const oldLocation = {
         latitude: 40.7128,
-        longitude: -74.0060,
-        timestamp: Date.now() - 600000 // 10 minutes ago
+        longitude: -74.006,
+        timestamp: Date.now() - 600000, // 10 minutes ago
       };
 
       const result = validateLocation(oldLocation as any);
@@ -93,9 +108,9 @@ describe('Validation Utils', () => {
       const validSafeZone = {
         id: 'zone1',
         name: 'Home',
-        center: { latitude: 40.7128, longitude: -74.0060 },
+        center: { latitude: 40.7128, longitude: -74.006 },
         radius: 100,
-        isActive: true
+        isActive: true,
       };
 
       const result = validateSafeZone(validSafeZone as any);
@@ -106,9 +121,9 @@ describe('Validation Utils', () => {
     it('should reject safe zone without ID', () => {
       const invalidSafeZone = {
         name: 'Home',
-        center: { latitude: 40.7128, longitude: -74.0060 },
+        center: { latitude: 40.7128, longitude: -74.006 },
         radius: 100,
-        isActive: true
+        isActive: true,
       };
 
       const result = validateSafeZone(invalidSafeZone as any);
@@ -120,9 +135,9 @@ describe('Validation Utils', () => {
       const invalidSafeZone = {
         id: 'zone1',
         name: 'Home',
-        center: { latitude: 40.7128, longitude: -74.0060 },
+        center: { latitude: 40.7128, longitude: -74.006 },
         radius: -50, // Invalid: negative
-        isActive: true
+        isActive: true,
       };
 
       const result = validateSafeZone(invalidSafeZone as any);
@@ -134,9 +149,9 @@ describe('Validation Utils', () => {
       const smallRadiusSafeZone = {
         id: 'zone1',
         name: 'Home',
-        center: { latitude: 40.7128, longitude: -74.0060 },
+        center: { latitude: 40.7128, longitude: -74.006 },
         radius: 5, // Very small
-        isActive: true
+        isActive: true,
       };
 
       const result = validateSafeZone(smallRadiusSafeZone as any);
@@ -152,7 +167,7 @@ describe('Validation Utils', () => {
         name: 'Mom',
         phone: '+1234567890',
         relationship: 'Parent',
-        isPrimary: true
+        isPrimary: true,
       };
 
       const result = validateEmergencyContact(validContact as any);
@@ -165,7 +180,7 @@ describe('Validation Utils', () => {
         id: 'contact1',
         name: 'Mom',
         relationship: 'Parent',
-        isPrimary: true
+        isPrimary: true,
       };
 
       const result = validateEmergencyContact(invalidContact as any);
@@ -179,7 +194,7 @@ describe('Validation Utils', () => {
         name: 'Mom',
         phone: '123', // Too short
         relationship: 'Parent',
-        isPrimary: true
+        isPrimary: true,
       };
 
       const result = validateEmergencyContact(invalidContact as any);
@@ -195,8 +210,8 @@ describe('Validation Utils', () => {
         placeName: 'School',
         photoUrl: 'https://example.com/photo.jpg',
         timestamp: Date.now(),
-        location: { latitude: 40.7128, longitude: -74.0060 },
-        notes: 'Arrived safely'
+        location: { latitude: 40.7128, longitude: -74.006 },
+        notes: 'Arrived safely',
       };
 
       const result = validatePhotoCheckIn(validCheckIn as any);
@@ -208,7 +223,7 @@ describe('Validation Utils', () => {
       const invalidCheckIn = {
         placeName: 'School',
         photoUrl: 'https://example.com/photo.jpg',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       const result = validatePhotoCheckIn(invalidCheckIn as any);
@@ -221,7 +236,7 @@ describe('Validation Utils', () => {
         placeId: 'place1',
         placeName: 'School',
         photoUrl: 'file:///path/to/photo.jpg',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       const result = validatePhotoCheckIn(mobileCheckIn as any);
@@ -233,7 +248,7 @@ describe('Validation Utils', () => {
         placeId: 'place1',
         placeName: 'School',
         photoUrl: 'https://example.com/photo.jpg',
-        timestamp: Date.now() - 86400000 - 1000 // More than 24 hours ago
+        timestamp: Date.now() - 86400000 - 1000, // More than 24 hours ago
       };
 
       const result = validatePhotoCheckIn(oldCheckIn as any);
@@ -264,13 +279,17 @@ describe('Validation Utils', () => {
     it('should warn about weak PIN', () => {
       const result = validatePIN('1111');
       expect(result.isValid).toBe(true);
-      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');
+      expect(result.warnings).toContain(
+        'PIN is easily guessable, consider using a stronger combination',
+      );
     });
 
     it('should warn about sequential PIN', () => {
       const result = validatePIN('1234');
       expect(result.isValid).toBe(true);
-      expect(result.warnings).toContain('PIN is easily guessable, consider using a stronger combination');
+      expect(result.warnings).toContain(
+        'PIN is easily guessable, consider using a stronger combination',
+      );
     });
   });
 
@@ -345,7 +364,8 @@ describe('Error Handling Utils', () => {
     });
 
     it('should retry on failure and eventually succeed', async () => {
-      const operation = jest.fn()
+      const operation = jest
+        .fn()
         .mockRejectedValueOnce(new Error('fail1'))
         .mockRejectedValueOnce(new Error('fail2'))
         .mockResolvedValue('success');
@@ -362,7 +382,9 @@ describe('Error Handling Utils', () => {
       const operation = jest.fn().mockRejectedValue(new Error('persistent failure'));
       const options = { maxAttempts: 2, delayMs: 10 };
 
-      await expect(withRetry(operation as any, options as any)).rejects.toThrow('persistent failure');
+      await expect(withRetry(operation as any, options as any)).rejects.toThrow(
+        'persistent failure',
+      );
       expect(operation).toHaveBeenCalledTimes(2);
     });
 
@@ -371,7 +393,7 @@ describe('Error Handling Utils', () => {
       const options = {
         maxAttempts: 3,
         delayMs: 10,
-        shouldRetry: (error: Error) => !error.message.includes('non-retryable')
+        shouldRetry: (error: Error) => !error.message.includes('non-retryable'),
       };
 
       await expect(withRetry(operation as any, options as any)).rejects.toThrow('non-retryable');
@@ -458,7 +480,7 @@ describe('Safety Integration Tests', () => {
   describe('Photo Check-in Workflow', () => {
     it('should validate complete photo check-in flow', () => {
       // Test location validation
-      const location = { latitude: 40.7128, longitude: -74.0060, accuracy: 15 } as any;
+      const location = { latitude: 40.7128, longitude: -74.006, accuracy: 15 } as any;
       const locationResult = validateLocation(location);
       expect(locationResult.isValid).toBe(true);
 
@@ -469,7 +491,7 @@ describe('Safety Integration Tests', () => {
         photoUrl: 'file:///path/to/photo.jpg',
         timestamp: Date.now(),
         location,
-        notes: 'Arrived safely at school'
+        notes: 'Arrived safely at school',
       } as any;
 
       const checkInResult = validatePhotoCheckIn(checkIn);
@@ -494,7 +516,7 @@ describe('Safety Integration Tests', () => {
         name: 'Home Safe Zone',
         center,
         radius: 200,
-        isActive: true
+        isActive: true,
       } as any;
 
       const safeZoneResult = validateSafeZone(safeZone);
@@ -509,7 +531,7 @@ describe('Safety Integration Tests', () => {
         name: 'Sarah Johnson',
         phone: '+1-555-123-4567',
         relationship: 'Mother',
-        isPrimary: true
+        isPrimary: true,
       } as any;
 
       const result = validateEmergencyContact(contact);

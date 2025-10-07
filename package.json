@@ -2,6 +2,7 @@
   "name": "expo-app",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" expo start",
     "start:clean": "rimraf node_modules/.cache .expo && expo start --clear",
@@ -24,7 +25,11 @@
     "demo:offline": "node demo-offline-monitoring.js",
     "demo:integration": "node demo-integration.js",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "typescript": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -82,21 +87,16 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.4",
-    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-typescript": "^7.27.1",
-    "@expo/ngrok": "^4.1.0",
-    "@react-native-community/cli": "latest",
-    "@types/jest": "^30.0.0",
-    "@types/react": "~19.1.10",
-    "babel-jest": "^30.2.0",
-    "cross-env": "^10.1.0",
-    "react-test-renderer": "^19.1.0",
-    "rimraf": "^6.0.1",
-    "ts-jest": "^29.4.4",
-    "tsx": "^4.20.6",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "eslint": "8.56.0",
+    "eslint-config-airbnb-typescript": "18.0.0",
+    "@typescript-eslint/parser": "7.18.0",
+    "@typescript-eslint/eslint-plugin": "7.18.0",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "prettier": "2.8.8"
   },
   "private": true
 }

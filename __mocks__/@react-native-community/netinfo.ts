@@ -5,7 +5,7 @@ export default {
       isInternetReachable: true,
       type: 'wifi',
       details: {},
-    })
+    }),
   ),
   addEventListener: jest.fn(() => jest.fn()),
   useNetInfo: jest.fn(() => ({

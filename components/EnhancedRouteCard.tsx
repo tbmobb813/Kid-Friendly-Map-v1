@@ -3,22 +3,22 @@
  * Shows safety scores, kid-friendly ratings, and service source
  */
 
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { Route } from "@/types/navigation";
-import { UnifiedRoute } from "@/utils/unifiedRoutingService";
-import Colors from "@/constants/colors";
-import { 
-  Clock, 
-  ArrowRight, 
-  Shield, 
-  Heart, 
-  Accessibility, 
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Route } from '@/types/navigation';
+import { UnifiedRoute } from '@/utils/unifiedRoutingService';
+import Colors from '@/constants/colors';
+import {
+  Clock,
+  ArrowRight,
+  Shield,
+  Heart,
+  Accessibility,
   AlertTriangle,
   MapPin,
-  Zap
-} from "lucide-react-native";
-import TransitStepIndicator from "./TransitStepIndicator";
+  Zap,
+} from 'lucide-react-native';
+import TransitStepIndicator from './TransitStepIndicator';
 
 type EnhancedRouteCardProps = {
   route: Route;
@@ -35,9 +35,7 @@ const ScoreIndicator: React.FC<{
   color: string;
 }> = ({ icon, score, label, color }) => (
   <View style={styles.scoreContainer}>
-    <View style={[styles.scoreIcon, { backgroundColor: color + '15' }]}>
-      {icon}
-    </View>
+    <View style={[styles.scoreIcon, { backgroundColor: color + '15' }]}>{icon}</View>
     <Text style={[styles.scoreText, { color }]}>{score}</Text>
     <Text style={styles.scoreLabel}>{label}</Text>
   </View>
@@ -45,11 +43,13 @@ const ScoreIndicator: React.FC<{
 
 const AlertBadge: React.FC<{ alerts: string[] }> = ({ alerts }) => {
   if (!alerts.length) return null;
-  
+
   return (
     <View style={styles.alertBadge}>
       <AlertTriangle size={12} color={Colors.warning} />
-      <Text style={styles.alertText}>{alerts.length} alert{alerts.length > 1 ? 's' : ''}</Text>
+      <Text style={styles.alertText}>
+        {alerts.length} alert{alerts.length > 1 ? 's' : ''}
+      </Text>
     </View>
   );
 };
@@ -62,10 +62,14 @@ const ServiceBadge: React.FC<{ source: string }> = ({ source }) => (
 
 const getServiceColor = (source: string): string => {
   switch (source) {
-    case 'ORS': return '#4CAF50';
-    case 'OTP2': return '#2196F3';
-    case 'AI': return '#9C27B0';
-    default: return '#757575';
+    case 'ORS':
+      return '#4CAF50';
+    case 'OTP2':
+      return '#2196F3';
+    case 'AI':
+      return '#9C27B0';
+    default:
+      return '#757575';
   }
 };
 
@@ -75,10 +79,10 @@ const getScoreColor = (score: number): string => {
   return '#F44336'; // Red
 };
 
-const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({ 
-  route, 
+const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({
+  route,
   unifiedRoute,
-  onPress, 
+  onPress,
   isSelected = false,
   showDetailedScores = false,
 }) => {
@@ -113,11 +117,11 @@ const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({
           )}
           {unifiedRoute && (
             <Text style={styles.distanceText}>
-              {Math.round(unifiedRoute.summary.distance / 1000 * 10) / 10} km
+              {Math.round((unifiedRoute.summary.distance / 1000) * 10) / 10} km
             </Text>
           )}
         </View>
-        
+
         <View style={styles.badgeContainer}>
           <ServiceBadge source={source} />
           <AlertBadge alerts={alerts} />
@@ -196,7 +200,9 @@ const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({
         <View style={styles.transferInfo}>
           <MapPin size={14} color={Colors.textLight} />
           <Text style={styles.transferText}>
-            {unifiedRoute.summary.transfers === 0 ? 'Direct route' : `${unifiedRoute.summary.transfers} transfer${unifiedRoute.summary.transfers > 1 ? 's' : ''}`}
+            {unifiedRoute.summary.transfers === 0
+              ? 'Direct route'
+              : `${unifiedRoute.summary.transfers} transfer${unifiedRoute.summary.transfers > 1 ? 's' : ''}`}
           </Text>
         </View>
       )}
@@ -240,7 +246,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -257,12 +263,12 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.8,
-    backgroundColor: "#EAEAEA",
+    backgroundColor: '#EAEAEA',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   timeContainer: {
@@ -270,13 +276,13 @@ const styles = StyleSheet.create({
   },
   duration: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 4,
   },
   timeRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 2,
   },
   clockIcon: {
@@ -292,7 +298,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   badgeContainer: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     gap: 4,
   },
   serviceBadge: {
@@ -302,12 +308,12 @@ const styles = StyleSheet.create({
   },
   serviceText: {
     fontSize: 10,
-    fontWeight: "600",
-    color: "white",
+    fontWeight: '600',
+    color: 'white',
   },
   alertBadge: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.warning + '15',
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -317,31 +323,31 @@ const styles = StyleSheet.create({
   alertText: {
     fontSize: 10,
     color: Colors.warning,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   scoresSection: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginBottom: 12,
     paddingVertical: 8,
     backgroundColor: Colors.background,
     borderRadius: 8,
   },
   scoreContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     flex: 1,
   },
   scoreIcon: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 4,
   },
   scoreText: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
     marginBottom: 2,
   },
   scoreLabel: {
@@ -349,18 +355,18 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
   },
   quickScoresRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginBottom: 8,
   },
   quickScore: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
   },
   quickScoreText: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   description: {
     fontSize: 14,
@@ -369,8 +375,8 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   transferInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
     gap: 4,
   },
@@ -379,22 +385,22 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
   },
   stepsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   stepRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: 4,
   },
   arrowIcon: {
     marginHorizontal: 4,
   },
   performanceBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
     backgroundColor: Colors.success + '15',
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -405,7 +411,7 @@ const styles = StyleSheet.create({
   performanceText: {
     fontSize: 10,
     color: Colors.success,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   alertsPreview: {
     marginTop: 8,
@@ -417,7 +423,7 @@ const styles = StyleSheet.create({
   },
   alertsTitle: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.warning,
     marginBottom: 2,
   },

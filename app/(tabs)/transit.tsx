@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from "react-native";
-import Colors from "@/constants/colors";
-import { subwayLines } from "@/mocks/transit";
-import SearchBar from "@/components/SearchBar";
-import { Clock, MapPin, AlertCircle, Bell } from "lucide-react-native";
-import LiveArrivalsCard from "@/components/LiveArrivalsCard";
-import { mockLiveArrivals, nearbyStations } from "@/mocks/liveArrivals";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from 'react-native';
+import Colors from '@/constants/colors';
+import { subwayLines } from '@/mocks/transit';
+import SearchBar from '@/components/SearchBar';
+import { Clock, MapPin, AlertCircle, Bell } from 'lucide-react-native';
+import LiveArrivalsCard from '@/components/LiveArrivalsCard';
+import { mockLiveArrivals, nearbyStations } from '@/mocks/liveArrivals';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -17,9 +17,9 @@ type SubwayStatus = {
 };
 
 export default function TransitScreen() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedLine, setSelectedLine] = useState<string | null>(null);
-  const [selectedStation, setSelectedStation] = useState<string | null>("main-st-station");
+  const [selectedStation, setSelectedStation] = useState<string | null>('main-st-station');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
@@ -35,7 +35,7 @@ export default function TransitScreen() {
   const handleRefreshArrivals = () => {
     setIsRefreshing(true);
     setLastRefresh(new Date());
-    
+
     // Simulate API call delay
     setTimeout(() => {
       setIsRefreshing(false);
@@ -51,60 +51,65 @@ export default function TransitScreen() {
 
   // Mock subway status data
   const subwayStatus: SubwayStatus[] = [
-    { id: "a", name: "A", status: "normal", message: "Good service" },
-    { id: "b", name: "B", status: "delayed", message: "Delays of 10-15 minutes" },
-    { id: "c", name: "C", status: "normal", message: "Good service" },
-    { id: "d", name: "D", status: "normal", message: "Good service" },
-    { id: "e", name: "E", status: "alert", message: "Service changes this weekend" },
-    { id: "f", name: "F", status: "normal", message: "Good service" },
-    { id: "g", name: "G", status: "normal", message: "Good service" },
+    { id: 'a', name: 'A', status: 'normal', message: 'Good service' },
+    { id: 'b', name: 'B', status: 'delayed', message: 'Delays of 10-15 minutes' },
+    { id: 'c', name: 'C', status: 'normal', message: 'Good service' },
+    { id: 'd', name: 'D', status: 'normal', message: 'Good service' },
+    { id: 'e', name: 'E', status: 'alert', message: 'Service changes this weekend' },
+    { id: 'f', name: 'F', status: 'normal', message: 'Good service' },
+    { id: 'g', name: 'G', status: 'normal', message: 'Good service' },
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "normal": return Colors.success;
-      case "delayed": return Colors.warning;
-      case "alert": return Colors.error;
-      default: return Colors.textLight;
+      case 'normal':
+        return Colors.success;
+      case 'delayed':
+        return Colors.warning;
+      case 'alert':
+        return Colors.error;
+      default:
+        return Colors.textLight;
     }
   };
 
-  const renderStationButton = (station: typeof nearbyStations[0]) => (
+  const renderStationButton = (station: (typeof nearbyStations)[0]) => (
     <Pressable
       key={station.id}
-      style={[
-        styles.stationButton,
-        selectedStation === station.id && styles.selectedStationButton
-      ]}
+      style={[styles.stationButton, selectedStation === station.id && styles.selectedStationButton]}
       onPress={() => setSelectedStation(station.id)}
     >
-      <Text style={[
-        styles.stationButtonText,
-        selectedStation === station.id && styles.selectedStationButtonText
-      ]}>
+      <Text
+        style={[
+          styles.stationButtonText,
+          selectedStation === station.id && styles.selectedStationButtonText,
+        ]}
+      >
         {station.name}
       </Text>
       <Text style={styles.stationDistance}>{station.distance}</Text>
     </Pressable>
   );
 
-  const renderLineItem = (item: typeof subwayLines[0]) => {
-    const status = subwayStatus.find(s => s.id === item.id);
-    
+  const renderLineItem = (item: (typeof subwayLines)[0]) => {
+    const status = subwayStatus.find((s) => s.id === item.id);
+
     return (
       <Pressable
         key={item.id}
-        style={[
-          styles.lineItem,
-          selectedLine === item.id && styles.selectedLine
-        ]}
+        style={[styles.lineItem, selectedLine === item.id && styles.selectedLine]}
         onPress={() => setSelectedLine(item.id)}
       >
         <View style={[styles.lineCircle, { backgroundColor: item.color }]}>
           <Text style={styles.lineText}>{item.name}</Text>
         </View>
         <View style={styles.statusContainer}>
-          <View style={[styles.statusDot, { backgroundColor: getStatusColor(status?.status || 'normal') }]} />
+          <View
+            style={[
+              styles.statusDot,
+              { backgroundColor: getStatusColor(status?.status || 'normal') },
+            ]}
+          />
           <Text style={styles.statusText}>{status?.message || 'No information available'}</Text>
         </View>
       </Pressable>
@@ -112,7 +117,7 @@ export default function TransitScreen() {
   };
 
   return (
-    <ScrollView 
+    <ScrollView
       style={styles.container}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
@@ -122,14 +127,14 @@ export default function TransitScreen() {
         <SearchBar
           value={searchQuery}
           onChangeText={setSearchQuery}
-          onClear={() => setSearchQuery("")}
+          onClear={() => setSearchQuery('')}
           placeholder="Search for subway or train lines"
         />
       </View>
 
       <Text style={styles.sectionTitle}>Live Arrivals</Text>
-      <ScrollView 
-        horizontal 
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.stationsScroll}
         contentContainerStyle={styles.stationsContainer}
@@ -139,7 +144,7 @@ export default function TransitScreen() {
 
       {selectedStation && (
         <LiveArrivalsCard
-          stationName={nearbyStations.find(s => s.id === selectedStation)?.name || "Station"}
+          stationName={nearbyStations.find((s) => s.id === selectedStation)?.name || 'Station'}
           stationId={selectedStation}
           arrivals={mockLiveArrivals[selectedStation] || []}
           lastUpdated={getTimeAgo(lastRefresh)}
@@ -184,14 +189,12 @@ export default function TransitScreen() {
       </View>
 
       <Text style={styles.sectionTitle}>Subway Lines</Text>
-      <View style={styles.linesContainer}>
-        {subwayLines.map(renderLineItem)}
-      </View>
+      <View style={styles.linesContainer}>{subwayLines.map(renderLineItem)}</View>
 
       {selectedLine && (
         <View style={styles.lineDetailsContainer}>
           <Text style={styles.detailsTitle}>
-            Line {subwayLines.find(l => l.id === selectedLine)?.name} Details
+            Line {subwayLines.find((l) => l.id === selectedLine)?.name} Details
           </Text>
           <View style={styles.nextTrainsContainer}>
             <Text style={styles.nextTrainsTitle}>Next trains:</Text>
@@ -236,14 +239,14 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   statusHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 12,
   },
   timeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   timeText: {
     fontSize: 12,
@@ -251,9 +254,9 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   alertContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF9E6",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF9E6',
     borderRadius: 8,
     padding: 12,
   },
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
@@ -276,8 +279,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   lineItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
@@ -291,19 +294,19 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
   },
   lineText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   statusContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statusDot: {
     width: 10,
@@ -323,7 +326,7 @@ const styles = StyleSheet.create({
   },
   detailsTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 12,
   },
@@ -337,19 +340,19 @@ const styles = StyleSheet.create({
   },
   trainTimesContainer: {
     flexDirection: Platform.select({
-      web: screenWidth > 600 ? "row" : "column",
-      default: "row",
+      web: screenWidth > 600 ? 'row' : 'column',
+      default: 'row',
     }),
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     gap: 8,
   },
   trainTime: {
-    alignItems: "center",
-    backgroundColor: "#F0F4FF",
+    alignItems: 'center',
+    backgroundColor: '#F0F4FF',
     borderRadius: 8,
     padding: 12,
     minWidth: Platform.select({
-      web: screenWidth > 600 ? 80 : "100%",
+      web: screenWidth > 600 ? 80 : '100%',
       default: 80,
     }),
     flex: Platform.select({
@@ -359,7 +362,7 @@ const styles = StyleSheet.create({
   },
   trainTimeText: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.primary,
     marginBottom: 4,
   },
@@ -389,12 +392,12 @@ const styles = StyleSheet.create({
   },
   stationButtonText: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
   selectedStationButtonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   stationDistance: {
     fontSize: 12,
@@ -405,10 +408,10 @@ const styles = StyleSheet.create({
   },
   quickActions: {
     flexDirection: Platform.select({
-      web: screenWidth > 768 ? "row" : "column",
-      default: "row",
+      web: screenWidth > 768 ? 'row' : 'column',
+      default: 'row',
     }),
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     gap: 12,
   },
   quickActionButton: {
@@ -419,14 +422,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     gap: 8,
     minHeight: 80,
   },
   quickActionText: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

@@ -1,8 +1,8 @@
-import React from "react";
-import { Tabs } from "expo-router";
-import Colors from "@/constants/colors";
-import { Home, Map, Train, Settings, Trophy } from "lucide-react-native";
-import { Platform } from "react-native";
+import React from 'react';
+import { Tabs } from 'expo-router';
+import Colors from '@/constants/colors';
+import { Home, Map, Train, Settings, Trophy } from 'lucide-react-native';
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -12,7 +12,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: Colors.textLight,
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: "500",
+          fontWeight: '500',
         },
         tabBarStyle: {
           height: Platform.OS === 'android' ? 65 : 60,
@@ -35,36 +35,36 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: 'Home',
           tabBarIcon: ({ color }) => <Home size={24} color={color} />,
-          headerTitle: "KidMap",
+          headerTitle: 'KidMap',
         }}
       />
       <Tabs.Screen
         name="map"
         options={{
-          title: "Map",
+          title: 'Map',
           tabBarIcon: ({ color }) => <Map size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="transit"
         options={{
-          title: "Transit",
+          title: 'Transit',
           tabBarIcon: ({ color }) => <Train size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="achievements"
         options={{
-          title: "Achievements",
+          title: 'Achievements',
           tabBarIcon: ({ color }) => <Trophy size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Settings",
+          title: 'Settings',
           tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />

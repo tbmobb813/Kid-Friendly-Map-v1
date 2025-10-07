@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, Text, View, Animated, Platform } from "react-native";
-import Colors from "@/constants/colors";
-import { CheckCircle, AlertCircle, Info, X } from "lucide-react-native";
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, Animated, Platform } from 'react-native';
+import Colors from '@/constants/colors';
+import { CheckCircle, AlertCircle, Info, X } from 'lucide-react-native';
 
-type ToastType = "success" | "error" | "info" | "warning";
+type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 type ToastProps = {
   message: string;
@@ -13,13 +13,7 @@ type ToastProps = {
   duration?: number;
 };
 
-const Toast: React.FC<ToastProps> = ({
-  message,
-  type,
-  visible,
-  onHide,
-  duration = 3000,
-}) => {
+const Toast: React.FC<ToastProps> = ({ message, type, visible, onHide, duration = 3000 }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(-100)).current;
 
@@ -65,19 +59,27 @@ const Toast: React.FC<ToastProps> = ({
 
   const getIcon = () => {
     switch (type) {
-      case "success": return <CheckCircle size={20} color={Colors.success} />;
-      case "error": return <X size={20} color={Colors.error} />;
-      case "warning": return <AlertCircle size={20} color={Colors.warning} />;
-      case "info": return <Info size={20} color={Colors.primary} />;
+      case 'success':
+        return <CheckCircle size={20} color={Colors.success} />;
+      case 'error':
+        return <X size={20} color={Colors.error} />;
+      case 'warning':
+        return <AlertCircle size={20} color={Colors.warning} />;
+      case 'info':
+        return <Info size={20} color={Colors.primary} />;
     }
   };
 
   const getBackgroundColor = () => {
     switch (type) {
-      case "success": return "#F0FFF4";
-      case "error": return "#FFF5F5";
-      case "warning": return "#FFFBF0";
-      case "info": return "#F0F4FF";
+      case 'success':
+        return '#F0FFF4';
+      case 'error':
+        return '#FFF5F5';
+      case 'warning':
+        return '#FFFBF0';
+      case 'info':
+        return '#F0F4FF';
     }
   };
 
@@ -102,15 +104,15 @@ const Toast: React.FC<ToastProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: 'absolute',
     top: 60,
     left: 16,
     right: 16,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderRadius: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 

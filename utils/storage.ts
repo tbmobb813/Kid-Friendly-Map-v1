@@ -1,7 +1,7 @@
 /**
  * Enhanced Storage Utility using MMKV
  * High-performance, synchronous key-value storage
- * 
+ *
  * Benefits over AsyncStorage:
  * - 10x faster
  * - Synchronous operations
@@ -15,7 +15,14 @@ import { log } from './logger';
 
 type StorageInstance = Pick<
   MMKV,
-  'set' | 'getString' | 'getNumber' | 'getBoolean' | 'delete' | 'clearAll' | 'getAllKeys' | 'contains'
+  | 'set'
+  | 'getString'
+  | 'getNumber'
+  | 'getBoolean'
+  | 'delete'
+  | 'clearAll'
+  | 'getAllKeys'
+  | 'contains'
 >;
 
 class MemoryStorage implements StorageInstance {
@@ -166,7 +173,7 @@ export class StorageManager {
       }
 
       const type = typeof value;
-      
+
       if (type === 'string') {
         this.instance.set(key, value as string);
       } else if (type === 'number') {
@@ -177,7 +184,7 @@ export class StorageManager {
         // For objects, arrays, etc.
         this.instance.set(key, JSON.stringify(value));
       }
-      
+
       return true;
     } catch (error) {
       log.error(`Failed to set storage key: ${key}`, error as Error);
@@ -191,7 +198,7 @@ export class StorageManager {
   get<T>(key: string, defaultValue?: T): T | undefined {
     try {
       const value = this.instance.getString(key);
-      
+
       if (value === undefined) {
         return defaultValue;
       }
@@ -316,7 +323,7 @@ export class StorageManager {
    */
   getBatch<T>(keys: string[]): Record<string, T | undefined> {
     const result: Record<string, T | undefined> = {};
-    keys.forEach(key => {
+    keys.forEach((key) => {
       result[key] = this.get<T>(key);
     });
     return result;
@@ -337,12 +344,12 @@ export const StorageKeys = {
   REFRESH_TOKEN: 'refresh_token',
   THEME: 'theme',
   LANGUAGE: 'language',
-  
+
   // Safety features
   EMERGENCY_CONTACTS: 'emergency_contacts',
   SAFE_ZONES: 'safe_zones',
   PARENT_PIN: 'parent_pin',
-  
+
   // App settings
   VOICE_ENABLED: 'voice_enabled',
   VOICE_RATE: 'voice_rate',
@@ -350,17 +357,17 @@ export const StorageKeys = {
   VOICE_LANGUAGE: 'voice_language',
   NOTIFICATIONS_ENABLED: 'notifications_enabled',
   LOCATION_TRACKING: 'location_tracking',
-  
+
   // Journey data
   RECENT_SEARCHES: 'recent_searches',
   FAVORITE_PLACES: 'favorite_places',
   JOURNEY_HISTORY: 'journey_history',
-  
+
   // Achievements
   ACHIEVEMENTS: 'achievements',
   BADGES: 'badges',
   POINTS: 'points',
-  
+
   // Cache keys (in cacheStorage)
   TRANSIT_DATA: 'transit_data',
   WEATHER_DATA: 'weather_data',
@@ -368,7 +375,7 @@ export const StorageKeys = {
   LAST_SYNC: 'last_sync',
 } as const;
 
-export type StorageKey = typeof StorageKeys[keyof typeof StorageKeys];
+export type StorageKey = (typeof StorageKeys)[keyof typeof StorageKeys];
 
 /**
  * Migration helper to move data from AsyncStorage to MMKV
@@ -376,7 +383,7 @@ export type StorageKey = typeof StorageKeys[keyof typeof StorageKeys];
 export async function migrateFromAsyncStorage(): Promise<void> {
   try {
     const AsyncStorage = await import('@react-native-async-storage/async-storage').then(
-      m => m.default
+      (m) => m.default,
     );
 
     const keys = await AsyncStorage.getAllKeys();
@@ -387,13 +394,14 @@ export async function migrateFromAsyncStorage(): Promise<void> {
         const value = await AsyncStorage.getItem(key);
         if (value !== null) {
           // Determine if it should go to cache or main storage
-          const isCacheKey = key.startsWith('cache_') || 
-                           key.includes('temp_') || 
-                           key.includes('weather_') ||
-                           key.includes('transit_');
-          
+          const isCacheKey =
+            key.startsWith('cache_') ||
+            key.includes('temp_') ||
+            key.includes('weather_') ||
+            key.includes('transit_');
+
           const storageInstance = isCacheKey ? cache : mainStorage;
-          
+
           // Try to parse as JSON
           try {
             const parsed = JSON.parse(value);
@@ -436,7 +444,7 @@ export const StorageUtils = {
    */
   getWithExpiry<T>(key: string): T | undefined {
     const item = cache.get<{ value: T; expiry: number }>(key);
-    
+
     if (!item) {
       return undefined;
     }
@@ -456,7 +464,7 @@ export const StorageUtils = {
     const keys = cache.getAllKeys();
     let cleared = 0;
 
-    keys.forEach(key => {
+    keys.forEach((key) => {
       const item = cache.get<{ value: any; expiry: number }>(key);
       if (item && item.expiry && Date.now() > item.expiry) {
         cache.delete(key);

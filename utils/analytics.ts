@@ -23,9 +23,7 @@ const sanitizeValue = (value: any): any => {
   }
 
   if (Array.isArray(value)) {
-    return value
-      .map((item) => sanitizeValue(item))
-      .filter((item) => item !== undefined);
+    return value.map((item) => sanitizeValue(item)).filter((item) => item !== undefined);
   }
 
   if (valueType === 'object') {
@@ -51,7 +49,11 @@ class Analytics {
   private readonly flushInterval = Config.ANALYTICS.FLUSH_INTERVAL;
 
   private get plausibleEnabled(): boolean {
-    return Config.ANALYTICS.PLAUSIBLE.ENABLED && !!Config.ANALYTICS.PLAUSIBLE.ENDPOINT && !!Config.ANALYTICS.PLAUSIBLE.SITE_ID;
+    return (
+      Config.ANALYTICS.PLAUSIBLE.ENABLED &&
+      !!Config.ANALYTICS.PLAUSIBLE.ENDPOINT &&
+      !!Config.ANALYTICS.PLAUSIBLE.SITE_ID
+    );
   }
 
   track(name: string, properties?: Record<string, any>) {
@@ -187,13 +189,11 @@ class Analytics {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...(config.SHARED_KEY
-              ? { Authorization: `Bearer ${config.SHARED_KEY}` }
-              : {}),
+            ...(config.SHARED_KEY ? { Authorization: `Bearer ${config.SHARED_KEY}` } : {}),
           },
           body: JSON.stringify(payload),
-        })
-      )
+        }),
+      ),
     );
   }
 }

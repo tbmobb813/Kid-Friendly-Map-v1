@@ -12,10 +12,7 @@ const ensureNumber = (value: unknown, fallback: number): number => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
-const ensureCoordinate = (
-  value: unknown,
-  fallback: { latitude: number; longitude: number },
-) => {
+const ensureCoordinate = (value: unknown, fallback: { latitude: number; longitude: number }) => {
   if (
     value &&
     typeof value === 'object' &&
@@ -45,10 +42,7 @@ const orsBaseUrlFromEnv = process.env.EXPO_PUBLIC_ORS_BASE_URL;
 const orsProfileFromEnv = process.env.EXPO_PUBLIC_ORS_PROFILE;
 const orsTimeoutFromEnv = process.env.EXPO_PUBLIC_ORS_TIMEOUT;
 
-const baseCenter = ensureCoordinate(
-  (baseConfig.extra as any)?.maps?.defaultCenter,
-  DEFAULT_CENTER,
-);
+const baseCenter = ensureCoordinate((baseConfig.extra as any)?.maps?.defaultCenter, DEFAULT_CENTER);
 
 const overrideCenter = {
   latitude: ensureNumber(process.env.EXPO_PUBLIC_MAP_DEFAULT_LAT, baseCenter.latitude),
@@ -84,22 +78,23 @@ const routingExtras = {
   baseUrl:
     typeof orsBaseUrlFromEnv === 'string' && orsBaseUrlFromEnv.length > 0
       ? orsBaseUrlFromEnv
-      : (baseConfig.extra as any)?.routing?.baseUrl ?? 'https://api.openrouteservice.org',
+      : ((baseConfig.extra as any)?.routing?.baseUrl ?? 'https://api.openrouteservice.org'),
   orsApiKey:
     typeof orsApiKeyFromEnv === 'string' && orsApiKeyFromEnv.length > 0
       ? orsApiKeyFromEnv
-      : (baseConfig.extra as any)?.routing?.orsApiKey ?? '',
+      : ((baseConfig.extra as any)?.routing?.orsApiKey ?? ''),
   defaultProfile:
     typeof orsProfileFromEnv === 'string' && orsProfileFromEnv.length > 0
       ? orsProfileFromEnv
-      : (baseConfig.extra as any)?.routing?.defaultProfile ?? 'foot-walking',
+      : ((baseConfig.extra as any)?.routing?.defaultProfile ?? 'foot-walking'),
   requestTimeout: ensureNumber(
     (baseConfig.extra as any)?.routing?.requestTimeout,
     ensureNumber(orsTimeoutFromEnv, 15000),
   ),
-  includeEta: typeof (baseConfig.extra as any)?.routing?.includeEta === 'boolean'
-    ? (baseConfig.extra as any)?.routing?.includeEta
-    : true,
+  includeEta:
+    typeof (baseConfig.extra as any)?.routing?.includeEta === 'boolean'
+      ? (baseConfig.extra as any)?.routing?.includeEta
+      : true,
 };
 
 const iosInfoPlist = {

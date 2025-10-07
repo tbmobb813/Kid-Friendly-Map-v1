@@ -58,7 +58,12 @@ const computeCenter = (coordinates: Position[]): [number, number] => {
     }
   });
 
-  if (!Number.isFinite(minLng) || !Number.isFinite(maxLng) || !Number.isFinite(minLat) || !Number.isFinite(maxLat)) {
+  if (
+    !Number.isFinite(minLng) ||
+    !Number.isFinite(maxLng) ||
+    !Number.isFinite(minLat) ||
+    !Number.isFinite(maxLat)
+  ) {
     return [Config.MAP.DEFAULT_CENTER.longitude, Config.MAP.DEFAULT_CENTER.latitude];
   }
 
@@ -163,12 +168,16 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   // mocks still render. Only bail out when the module explicitly indicates MapLibre is
   // unavailable or when we can't find the MapLibreGL API surface.
   const resolvedModule: any = (MapLibreMap as any) || {};
-  const resolvedMapLibreGL = (MapLibreGL as any)
-    || resolvedModule.MapLibreGL
-    || (resolvedModule.default && resolvedModule.default.MapLibreGL);
-  const resolvedIsAvailable = typeof isMapLibreAvailable !== 'undefined'
-    ? isMapLibreAvailable
-    : (resolvedModule.isMapLibreAvailable ?? (resolvedModule.default && resolvedModule.default.isMapLibreAvailable) ?? true);
+  const resolvedMapLibreGL =
+    (MapLibreGL as any) ||
+    resolvedModule.MapLibreGL ||
+    (resolvedModule.default && resolvedModule.default.MapLibreGL);
+  const resolvedIsAvailable =
+    typeof isMapLibreAvailable !== 'undefined'
+      ? isMapLibreAvailable
+      : (resolvedModule.isMapLibreAvailable ??
+        (resolvedModule.default && resolvedModule.default.isMapLibreAvailable) ??
+        true);
 
   // If the module explicitly indicates MapLibre is unavailable, bail out.
   // Otherwise continue — tests provide mocks that may not expose the full
@@ -178,8 +187,14 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   }
 
   const MapLibre = resolvedMapLibreGL as any;
-  const originCoord = useMemo(() => asLngLat(origin), [origin?.coordinates.latitude, origin?.coordinates.longitude]);
-  const destinationCoord = useMemo(() => asLngLat(destination), [destination?.coordinates.latitude, destination?.coordinates.longitude]);
+  const originCoord = useMemo(
+    () => asLngLat(origin),
+    [origin?.coordinates.latitude, origin?.coordinates.longitude],
+  );
+  const destinationCoord = useMemo(
+    () => asLngLat(destination),
+    [destination?.coordinates.latitude, destination?.coordinates.longitude],
+  );
 
   const routeShape = useMemo(() => {
     if (routeGeoJSON && routeGeoJSON.features?.length) {
@@ -205,7 +220,10 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
     [originCoord, destinationCoord, origin?.name, destination?.name],
   );
 
-  const stationFeatures = useMemo(() => (showTransitStations ? buildStationFeatures() : null), [showTransitStations]);
+  const stationFeatures = useMemo(
+    () => (showTransitStations ? buildStationFeatures() : null),
+    [showTransitStations],
+  );
 
   const handleStationPress = useCallback(
     (event: any) => {

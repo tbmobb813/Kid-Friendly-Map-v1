@@ -21,7 +21,7 @@ describe('Offline Validation Tests', () => {
   describe('Network State Detection', () => {
     it('should detect when device goes offline', async () => {
       const mockNetInfo = NetInfo as jest.Mocked<typeof NetInfo>;
-      
+
       // Simulate online state
       mockNetInfo.fetch.mockResolvedValue({
         isConnected: true,
@@ -36,7 +36,7 @@ describe('Offline Validation Tests', () => {
 
     it('should detect when device comes back online', async () => {
       const mockNetInfo = NetInfo as jest.Mocked<typeof NetInfo>;
-      
+
       // Start offline
       mockNetInfo.fetch.mockResolvedValue({
         isConnected: false,
@@ -74,7 +74,7 @@ describe('Offline Validation Tests', () => {
     it('should queue actions when offline', async () => {
       const actionId = await offlineManager.queueAction('PHOTO_CHECKIN', {
         photoUrl: 'test.jpg',
-        location: { lat: 40.7128, lng: -74.0060 },
+        location: { lat: 40.7128, lng: -74.006 },
       });
 
       expect(actionId).toBeDefined();
@@ -91,7 +91,7 @@ describe('Offline Validation Tests', () => {
 
     it('should track pending actions count', async () => {
       await offlineManager.clearPendingActions();
-      
+
       await offlineManager.queueAction('SAVE_ROUTE', { routeId: '123' });
       await offlineManager.queueAction('SAVE_ROUTE', { routeId: '456' });
 
@@ -116,7 +116,7 @@ describe('Offline Validation Tests', () => {
       const actionId = await offlineManager.queueAction(
         'PHOTO_CHECKIN',
         { photoUrl: 'test.jpg' },
-        5 // maxRetries
+        5, // maxRetries
       );
 
       expect(actionId).toBeDefined();
@@ -130,7 +130,7 @@ describe('Offline Validation Tests', () => {
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith(
         'cache_test-key',
-        expect.stringContaining('"id":"123"')
+        expect.stringContaining('"id":"123"'),
       );
     });
 
@@ -141,9 +141,7 @@ describe('Offline Validation Tests', () => {
         timestamp: Date.now() - 1000, // 1 second ago
       };
 
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
-        JSON.stringify(cacheEntry)
-      );
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(cacheEntry));
 
       const cached = await offlineStorage.getCachedResponse('test-key', 5000);
       expect(cached).toEqual(testData);
@@ -156,9 +154,7 @@ describe('Offline Validation Tests', () => {
         timestamp: Date.now() - 10000, // 10 seconds ago
       };
 
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
-        JSON.stringify(cacheEntry)
-      );
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(cacheEntry));
 
       const cached = await offlineStorage.getCachedResponse('test-key', 5000);
       expect(cached).toBeNull();
@@ -173,10 +169,7 @@ describe('Offline Validation Tests', () => {
 
       await offlineStorage.clearCache();
 
-      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith([
-        'cache_key1',
-        'cache_key2',
-      ]);
+      expect(AsyncStorage.multiRemove).toHaveBeenCalledWith(['cache_key1', 'cache_key2']);
     });
 
     it('should handle cache corruption gracefully', async () => {
@@ -201,7 +194,7 @@ describe('Offline Validation Tests', () => {
       } as any);
 
       await offlineManager.syncOfflineActions();
-      
+
       // Verify sync was attempted
       expect(AsyncStorage.setItem).toHaveBeenCalled();
     });
@@ -224,7 +217,7 @@ describe('Offline Validation Tests', () => {
 
       // First sync attempt (will fail in mock)
       await offlineManager.syncOfflineActions();
-      
+
       // Action should still be in queue with incremented retry count
       const pendingCount = offlineManager.getPendingActionsCount();
       expect(pendingCount).toBeGreaterThanOrEqual(0);
@@ -234,7 +227,7 @@ describe('Offline Validation Tests', () => {
       const actionId = await offlineManager.queueAction(
         'SAVE_ROUTE',
         { routeId: '123' },
-        1 // Only 1 retry
+        1, // Only 1 retry
       );
 
       // Attempt sync multiple times (will fail in mock)
@@ -256,7 +249,7 @@ describe('Offline Validation Tests', () => {
       ];
 
       await Promise.all(syncPromises);
-      
+
       // Should handle gracefully without errors
     });
 
@@ -269,7 +262,7 @@ describe('Offline Validation Tests', () => {
       } as any);
 
       await offlineManager.queueAction('SAVE_ROUTE', { routeId: '123' });
-      
+
       // Force sync should work when online
       await expect(offlineManager.forcSync()).resolves.not.toThrow();
     });
@@ -290,13 +283,11 @@ describe('Offline Validation Tests', () => {
     });
 
     it('should handle storage failures gracefully', async () => {
-      (AsyncStorage.setItem as jest.Mock).mockRejectedValue(
-        new Error('Storage full')
-      );
+      (AsyncStorage.setItem as jest.Mock).mockRejectedValue(new Error('Storage full'));
 
       // Should not throw
       await expect(
-        offlineManager.queueAction('SAVE_ROUTE', { routeId: '123' })
+        offlineManager.queueAction('SAVE_ROUTE', { routeId: '123' }),
       ).resolves.toBeDefined();
     });
 
@@ -306,9 +297,7 @@ describe('Offline Validation Tests', () => {
         timestamp: Date.now(),
       };
 
-      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
-        JSON.stringify(validCache)
-      );
+      (AsyncStorage.getItem as jest.Mock).mockResolvedValue(JSON.stringify(validCache));
 
       const cached = await offlineStorage.getCachedResponse('test-key');
       expect(cached).toBeDefined();
@@ -326,8 +315,8 @@ describe('Offline Validation Tests', () => {
           isInternetReachable: i % 2 === 0,
           type: i % 2 === 0 ? 'wifi' : 'none',
         } as any);
-        
-        await new Promise(resolve => setTimeout(resolve, 10));
+
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
       // Should handle gracefully
@@ -337,9 +326,9 @@ describe('Offline Validation Tests', () => {
 
     it('should handle empty action queues', async () => {
       await offlineManager.clearPendingActions();
-      
+
       await offlineManager.syncOfflineActions();
-      
+
       expect(offlineManager.getPendingActionsCount()).toBe(0);
     });
 
@@ -361,10 +350,7 @@ describe('Offline Validation Tests', () => {
         array: new Array(1000).fill({ id: '123', name: 'test' }),
       };
 
-      const actionId = await offlineManager.queueAction(
-        'SAVE_ROUTE',
-        largePayload
-      );
+      const actionId = await offlineManager.queueAction('SAVE_ROUTE', largePayload);
       expect(actionId).toBeDefined();
     });
   });
@@ -372,16 +358,14 @@ describe('Offline Validation Tests', () => {
   describe('Performance', () => {
     it('should handle high-frequency action queuing', async () => {
       const startTime = Date.now();
-      
+
       const promises: Promise<string>[] = [];
       for (let i = 0; i < 100; i++) {
-        promises.push(
-          offlineManager.queueAction('SAVE_ROUTE', { routeId: `${i}` })
-        );
+        promises.push(offlineManager.queueAction('SAVE_ROUTE', { routeId: `${i}` }));
       }
 
       await Promise.all(promises);
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
 

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable, Platform, Alert } from "react-native";
-import Colors from "@/constants/colors";
-import { Clock, X, MapPin, Bell, Shield, Trophy } from "lucide-react-native";
-import * as Notifications from "expo-notifications";
-import { useToast } from "@/hooks/useToast";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Platform, Alert } from 'react-native';
+import Colors from '@/constants/colors';
+import { Clock, X, MapPin, Bell, Shield, Trophy } from 'lucide-react-native';
+import * as Notifications from 'expo-notifications';
+import { useToast } from '@/hooks/useToast';
 
 export type NotificationData = {
   id: string;
   title: string;
   message: string;
-  type: "reminder" | "weather" | "safety" | "achievement";
+  type: 'reminder' | 'weather' | 'safety' | 'achievement';
   actionText?: string;
   actionData?: any;
   scheduledFor?: Date;
@@ -25,35 +25,40 @@ type SmartNotificationProps = {
 
 // Configure notification behavior
 Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    // Include web/modern fields required by NotificationBehavior
-    shouldShowBanner: true,
-    shouldShowList: true,
-  } as any),
+  handleNotification: async () =>
+    ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      // Include web/modern fields required by NotificationBehavior
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }) as any,
 });
 
 const SmartNotification: React.FC<SmartNotificationProps> = ({
   notification,
   onDismiss,
   onAction,
-  isInApp = true
+  isInApp = true,
 }) => {
   const { showToast } = useToast();
   const [isScheduling, setIsScheduling] = useState<boolean>(false);
-  
+
   const { id, title, message, type, actionText, scheduledFor, priority = 'normal' } = notification;
   const getIcon = () => {
     switch (type) {
-      case "reminder": return <Clock size={20} color={Colors.primary} />;
-      case "weather": return <MapPin size={20} color={Colors.warning} />;
-      case "safety": return <Shield size={20} color={Colors.error} />;
-      case "achievement": return <Trophy size={20} color={Colors.secondary} />;
+      case 'reminder':
+        return <Clock size={20} color={Colors.primary} />;
+      case 'weather':
+        return <MapPin size={20} color={Colors.warning} />;
+      case 'safety':
+        return <Shield size={20} color={Colors.error} />;
+      case 'achievement':
+        return <Trophy size={20} color={Colors.secondary} />;
     }
   };
-  
+
   const scheduleNotification = async () => {
     if (Platform.OS === 'web') {
       // Web notifications fallback
@@ -74,28 +79,28 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
       }
       return;
     }
-    
+
     if (__DEV__) {
       // Expo Go limitations
       Alert.alert(
         'Notification Scheduled',
         `In a development build, this would schedule: "${title}"`,
-        [{ text: 'OK' }]
+        [{ text: 'OK' }],
       );
       showToast('Notification scheduled (dev mode)', 'success');
       return;
     }
-    
+
     try {
       setIsScheduling(true);
-      
+
       // Request permissions
       const { status } = await Notifications.requestPermissionsAsync();
       if (status !== 'granted') {
         showToast('Notification permission denied', 'warning');
         return;
       }
-      
+
       // Schedule notification
       const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
@@ -103,13 +108,15 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
           body: message,
           data: { type, id, actionData: notification.actionData },
           // Android priority enum is typed in expo; cast to any to be safe
-          priority: (priority === 'high' ? (Notifications as any).AndroidNotificationPriority.HIGH : 
-                   priority === 'low' ? (Notifications as any).AndroidNotificationPriority.LOW : 
-                   (Notifications as any).AndroidNotificationPriority.DEFAULT) as any,
+          priority: (priority === 'high'
+            ? (Notifications as any).AndroidNotificationPriority.HIGH
+            : priority === 'low'
+              ? (Notifications as any).AndroidNotificationPriority.LOW
+              : (Notifications as any).AndroidNotificationPriority.DEFAULT) as any,
         },
-        trigger: scheduledFor ? { type: 'date', date: scheduledFor } as any : null,
+        trigger: scheduledFor ? ({ type: 'date', date: scheduledFor } as any) : null,
       });
-      
+
       showToast('Notification scheduled successfully', 'success');
       console.log('Scheduled notification:', notificationId);
     } catch (error) {
@@ -119,7 +126,7 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
       setIsScheduling(false);
     }
   };
-  
+
   const handleAction = () => {
     if (actionText === 'Schedule Notification') {
       scheduleNotification();
@@ -127,37 +134,47 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
       onAction?.(notification);
     }
   };
-  
+
   const handleDismiss = () => {
     onDismiss(id);
   };
 
   const getBackgroundColor = () => {
     switch (type) {
-      case "reminder": return "#F0F4FF";
-      case "weather": return "#FFF9E6";
-      case "safety": return "#FFE6E6";
-      case "achievement": return "#F0FFF4";
+      case 'reminder':
+        return '#F0F4FF';
+      case 'weather':
+        return '#FFF9E6';
+      case 'safety':
+        return '#FFE6E6';
+      case 'achievement':
+        return '#F0FFF4';
     }
   };
 
   const getBorderColor = () => {
     switch (type) {
-      case "reminder": return Colors.primary;
-      case "weather": return Colors.warning;
-      case "safety": return Colors.error;
-      case "achievement": return Colors.secondary;
+      case 'reminder':
+        return Colors.primary;
+      case 'weather':
+        return Colors.warning;
+      case 'safety':
+        return Colors.error;
+      case 'achievement':
+        return Colors.secondary;
     }
   };
 
   return (
-    <View style={[
-      styles.container, 
-      { 
-        backgroundColor: getBackgroundColor(),
-        borderLeftColor: getBorderColor()
-      }
-    ]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: getBackgroundColor(),
+          borderLeftColor: getBorderColor(),
+        },
+      ]}
+    >
       <View style={styles.content}>
         <View style={styles.header}>
           {getIcon()}
@@ -166,31 +183,27 @@ const SmartNotification: React.FC<SmartNotificationProps> = ({
             <X size={16} color={Colors.textLight} />
           </Pressable>
         </View>
-        
+
         <Text style={styles.message}>{message}</Text>
-        
+
         {actionText && (
-          <Pressable 
-            style={[styles.actionButton, isScheduling && styles.actionButtonDisabled]} 
+          <Pressable
+            style={[styles.actionButton, isScheduling && styles.actionButtonDisabled]}
             onPress={handleAction}
             disabled={isScheduling}
           >
             {actionText === 'Schedule Notification' && <Bell size={14} color={Colors.primary} />}
-            <Text style={styles.actionText}>
-              {isScheduling ? 'Scheduling...' : actionText}
-            </Text>
+            <Text style={styles.actionText}>{isScheduling ? 'Scheduling...' : actionText}</Text>
           </Pressable>
         )}
-        
+
         {scheduledFor && (
           <View style={styles.scheduleInfo}>
             <Clock size={12} color={Colors.textLight} />
-            <Text style={styles.scheduleText}>
-              Scheduled for {scheduledFor.toLocaleString()}
-            </Text>
+            <Text style={styles.scheduleText}>Scheduled for {scheduledFor.toLocaleString()}</Text>
           </View>
         )}
-        
+
         {priority === 'high' && (
           <View style={styles.priorityBadge}>
             <Text style={styles.priorityText}>HIGH PRIORITY</Text>
@@ -207,7 +220,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 8,
     borderLeftWidth: 4,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -217,14 +230,14 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   title: {
     flex: 1,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginLeft: 8,
   },
@@ -242,9 +255,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    alignItems: "center",
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
   },
   actionButtonDisabled: {
@@ -252,33 +265,33 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   actionText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   scheduleInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 8,
     gap: 4,
   },
   scheduleText: {
     fontSize: 12,
     color: Colors.textLight,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
   priorityBadge: {
     backgroundColor: Colors.error,
     borderRadius: 4,
     paddingHorizontal: 8,
     paddingVertical: 2,
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginTop: 8,
   },
   priorityText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });
 

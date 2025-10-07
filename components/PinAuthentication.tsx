@@ -46,11 +46,11 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
     }
 
     setIsLoading(true);
-    
+
     try {
       // In a real app, this would validate against stored PIN
       // For now, we'll simulate authentication
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       onAuthenticated();
     } catch (error) {
       Alert.alert('Authentication Failed', 'Invalid PIN. Please try again.');
@@ -65,20 +65,20 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
   const handleNumberPress = (number: string) => {
     if (step === 'enter') {
       if (pin.length < 6) {
-        setPin(prev => prev + number);
+        setPin((prev) => prev + number);
       }
     } else {
       if (confirmPin.length < 6) {
-        setConfirmPin(prev => prev + number);
+        setConfirmPin((prev) => prev + number);
       }
     }
   };
 
   const handleBackspace = () => {
     if (step === 'enter') {
-      setPin(prev => prev.slice(0, -1));
+      setPin((prev) => prev.slice(0, -1));
     } else {
-      setConfirmPin(prev => prev.slice(0, -1));
+      setConfirmPin((prev) => prev.slice(0, -1));
     }
   };
 
@@ -108,10 +108,7 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
             maxLength={6}
             textAlign="center"
           />
-          <Pressable
-            style={styles.eyeButton}
-            onPress={() => setShowPin(!showPin)}
-          >
+          <Pressable style={styles.eyeButton} onPress={() => setShowPin(!showPin)}>
             {showPin ? (
               <EyeOff size={20} color={Colors.textLight} />
             ) : (
@@ -124,10 +121,7 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
           {Array.from({ length: 6 }).map((_, index) => (
             <View
               key={index}
-              style={[
-                styles.pinDot,
-                index < currentPin.length && styles.pinDotFilled,
-              ]}
+              style={[styles.pinDot, index < currentPin.length && styles.pinDotFilled]}
             />
           ))}
         </View>
@@ -144,10 +138,7 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
             {row.map((key, keyIndex) => (
               <Pressable
                 key={keyIndex}
-                style={[
-                  styles.keypadButton,
-                  key === '' && styles.keypadButtonEmpty,
-                ]}
+                style={[styles.keypadButton, key === '' && styles.keypadButtonEmpty]}
                 onPress={() => {
                   if (key === '⌫') {
                     handleBackspace();
@@ -175,10 +166,7 @@ const PinAuthentication: React.FC<PinAuthenticationProps> = ({
           </Text>
         </Pressable>
 
-        <Pressable
-          style={[styles.actionButton, styles.cancelButton]}
-          onPress={onCancel}
-        >
+        <Pressable style={[styles.actionButton, styles.cancelButton]} onPress={onCancel}>
           <Text style={styles.cancelButtonText}>Cancel</Text>
         </Pressable>
       </View>

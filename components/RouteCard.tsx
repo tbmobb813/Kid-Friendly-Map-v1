@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { Route } from "@/types/navigation";
-import Colors from "@/constants/colors";
-import { Clock, ArrowRight } from "lucide-react-native";
-import TransitStepIndicator from "./TransitStepIndicator";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Route } from '@/types/navigation';
+import Colors from '@/constants/colors';
+import { Clock, ArrowRight } from 'lucide-react-native';
+import TransitStepIndicator from './TransitStepIndicator';
 
 type RouteCardProps = {
   route: Route;
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -63,20 +63,20 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.8,
-    backgroundColor: "#EAEAEA",
+    backgroundColor: '#EAEAEA',
   },
   timeContainer: {
     marginBottom: 12,
   },
   duration: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 4,
   },
   timeRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   clockIcon: {
     marginRight: 4,
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
   },
   stepsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   stepRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: 4,
   },
   arrowIcon: {

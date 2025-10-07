@@ -34,9 +34,9 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
     energy: 90,
     experience: userStats.totalPoints % 100,
     lastFed: new Date(),
-    evolutionStage: Math.floor(userStats.totalPoints / 500)
+    evolutionStage: Math.floor(userStats.totalPoints / 500),
   });
-  
+
   const [bounceAnim] = useState(new Animated.Value(1));
   const [glowAnim] = useState(new Animated.Value(0));
 
@@ -48,11 +48,11 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
 
   useEffect(() => {
     // Update pet based on user progress
-    setPet(prev => ({
+    setPet((prev) => ({
       ...prev,
       level: Math.floor(userStats.totalPoints / 100) + 1,
       experience: userStats.totalPoints % 100,
-      evolutionStage: Math.floor(userStats.totalPoints / 500)
+      evolutionStage: Math.floor(userStats.totalPoints / 500),
     }));
   }, [userStats.totalPoints]);
 
@@ -70,7 +70,7 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
           duration: 1500,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
 
     // Glow animation
@@ -86,7 +86,7 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
           duration: 2000,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
   };
 
@@ -95,7 +95,7 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
     switch (pet.type) {
       case 'dragon':
         if (stage >= 3) return '🐲'; // Ancient Dragon
-        if (stage >= 2) return '🐉'; // Mature Dragon  
+        if (stage >= 2) return '🐉'; // Mature Dragon
         if (stage >= 1) return '🦎'; // Young Dragon
         return '🥚'; // Dragon Egg
       case 'unicorn':
@@ -127,20 +127,20 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
   };
 
   const feedPet = () => {
-    setPet(prev => ({
+    setPet((prev) => ({
       ...prev,
       happiness: Math.min(100, prev.happiness + 10),
       energy: Math.min(100, prev.energy + 15),
-      lastFed: new Date()
+      lastFed: new Date(),
     }));
     addPoints(5);
   };
 
   const playWithPet = () => {
-    setPet(prev => ({
+    setPet((prev) => ({
       ...prev,
       happiness: Math.min(100, prev.happiness + 15),
-      energy: Math.max(0, prev.energy - 10)
+      energy: Math.max(0, prev.energy - 10),
     }));
     addPoints(10);
   };
@@ -170,24 +170,26 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
         </View>
 
         <View style={styles.petContainer}>
-          <Animated.View 
+          <Animated.View
             style={[
               styles.petAvatar,
-              { 
+              {
                 transform: [{ scale: bounceAnim }],
                 opacity: glowAnim.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0.8, 1]
-                })
-              }
+                  outputRange: [0.8, 1],
+                }),
+              },
             ]}
           >
             <Text style={styles.petEmoji}>{getPetEmoji()}</Text>
           </Animated.View>
-          
+
           <View style={styles.petInfo}>
             <Text style={styles.petName}>{pet.name}</Text>
-            <Text style={styles.petStage}>{getPetStage()} {pet.type}</Text>
+            <Text style={styles.petStage}>
+              {getPetStage()} {pet.type}
+            </Text>
             <Text style={styles.petLevel}>Level {pet.level}</Text>
           </View>
         </View>
@@ -200,14 +202,14 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
               <Text style={styles.statValue}>{pet.happiness}%</Text>
             </View>
             <View style={styles.progressBar}>
-              <View 
+              <View
                 style={[
-                  styles.progressFill, 
-                  { 
+                  styles.progressFill,
+                  {
                     width: `${pet.happiness}%`,
-                    backgroundColor: getHappinessColor()
-                  }
-                ]} 
+                    backgroundColor: getHappinessColor(),
+                  },
+                ]}
               />
             </View>
           </View>
@@ -219,14 +221,14 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
               <Text style={styles.statValue}>{pet.energy}%</Text>
             </View>
             <View style={styles.progressBar}>
-              <View 
+              <View
                 style={[
-                  styles.progressFill, 
-                  { 
+                  styles.progressFill,
+                  {
                     width: `${pet.energy}%`,
-                    backgroundColor: getEnergyColor()
-                  }
-                ]} 
+                    backgroundColor: getEnergyColor(),
+                  },
+                ]}
               />
             </View>
           </View>
@@ -238,14 +240,14 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
               <Text style={styles.statValue}>{pet.experience}/100</Text>
             </View>
             <View style={styles.progressBar}>
-              <View 
+              <View
                 style={[
-                  styles.progressFill, 
-                  { 
+                  styles.progressFill,
+                  {
                     width: `${pet.experience}%`,
-                    backgroundColor: Colors.secondary
-                  }
-                ]} 
+                    backgroundColor: Colors.secondary,
+                  },
+                ]}
               />
             </View>
           </View>
@@ -256,12 +258,12 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
             <Text style={styles.actionEmoji}>🍎</Text>
             <Text style={styles.actionText}>Feed</Text>
           </Pressable>
-          
+
           <Pressable style={styles.actionButton} onPress={playWithPet}>
             <Text style={styles.actionEmoji}>🎾</Text>
             <Text style={styles.actionText}>Play</Text>
           </Pressable>
-          
+
           <Pressable style={styles.actionButton}>
             <MapPin size={16} color={Colors.primary} />
             <Text style={styles.actionText}>Adventure</Text>
@@ -270,10 +272,9 @@ const VirtualPetCompanion: React.FC<VirtualPetCompanionProps> = ({ visible, onCl
 
         <View style={styles.evolutionHint}>
           <Text style={styles.hintText}>
-            {pet.evolutionStage < 3 
+            {pet.evolutionStage < 3
               ? `${500 - (userStats.totalPoints % 500)} more points to evolve!`
-              : 'Your pet has reached maximum evolution! 🌟'
-            }
+              : 'Your pet has reached maximum evolution! 🌟'}
           </Text>
         </View>
       </View>

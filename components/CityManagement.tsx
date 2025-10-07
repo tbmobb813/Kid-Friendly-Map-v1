@@ -1,83 +1,75 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable, TextInput, Alert } from "react-native";
-import Colors from "@/constants/colors";
-import { Search, Plus, MapPin, Trash2, Edit3, Globe, Clock, Phone } from "lucide-react-native";
-import { useRegionStore } from "@/stores/regionStore";
-import { RegionConfig } from "@/types/region";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Pressable, TextInput, Alert } from 'react-native';
+import Colors from '@/constants/colors';
+import { Search, Plus, MapPin, Trash2, Edit3, Globe, Clock, Phone } from 'lucide-react-native';
+import { useRegionStore } from '@/stores/regionStore';
+import { RegionConfig } from '@/types/region';
 
 type CityManagementProps = {
   onBack: () => void;
 };
 
 export default function CityManagement({ onBack }: CityManagementProps) {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [editingRegion, setEditingRegion] = useState<RegionConfig | null>(null);
-  
-  const { 
-    availableRegions, 
-    currentRegion, 
-    setRegion, 
-    addCustomRegion, 
-    removeRegion, 
+
+  const {
+    availableRegions,
+    currentRegion,
+    setRegion,
+    addCustomRegion,
+    removeRegion,
     updateRegionTransitData,
     searchRegions,
-    getRegionsByCountry 
+    getRegionsByCountry,
   } = useRegionStore();
 
-  const filteredRegions = searchQuery 
-    ? searchRegions(searchQuery)
-    : availableRegions;
+  const filteredRegions = searchQuery ? searchRegions(searchQuery) : availableRegions;
 
-  const usRegions = getRegionsByCountry("United States");
-  const internationalRegions = availableRegions.filter(r => r.country !== "United States");
+  const usRegions = getRegionsByCountry('United States');
+  const internationalRegions = availableRegions.filter((r) => r.country !== 'United States');
 
   const handleDeleteRegion = (regionId: string) => {
     if (regionId === currentRegion.id) {
-      Alert.alert("Cannot Delete", "You cannot delete the currently selected region.");
+      Alert.alert('Cannot Delete', 'You cannot delete the currently selected region.');
       return;
     }
-    
+
     Alert.alert(
-      "Delete Region",
-      "Are you sure you want to delete this region? This action cannot be undone.",
+      'Delete Region',
+      'Are you sure you want to delete this region? This action cannot be undone.',
       [
-        { text: "Cancel", style: "cancel" },
-        { 
-          text: "Delete", 
-          style: "destructive",
-          onPress: () => removeRegion(regionId)
-        }
-      ]
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => removeRegion(regionId),
+        },
+      ],
     );
   };
 
   const handleUpdateTransitData = (regionId: string) => {
     Alert.alert(
-      "Update Transit Data",
+      'Update Transit Data',
       "This would typically connect to the region's transit API to fetch the latest schedules and route information.",
       [
-        { text: "Cancel", style: "cancel" },
-        { 
-          text: "Update", 
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Update',
           onPress: () => {
             // In a real app, this would make API calls to update transit data
-            Alert.alert("Success", "Transit data updated successfully!");
-          }
-        }
-      ]
+            Alert.alert('Success', 'Transit data updated successfully!');
+          },
+        },
+      ],
     );
   };
 
   const RegionCard = ({ region }: { region: RegionConfig }) => (
-    <View style={[
-      styles.regionCard,
-      region.id === currentRegion.id && styles.currentRegionCard
-    ]}>
-      <Pressable
-        style={styles.regionHeader}
-        onPress={() => setRegion(region.id)}
-      >
+    <View style={[styles.regionCard, region.id === currentRegion.id && styles.currentRegionCard]}>
+      <Pressable style={styles.regionHeader} onPress={() => setRegion(region.id)}>
         <View style={styles.regionInfo}>
           <View style={styles.regionTitleRow}>
             <MapPin size={20} color={Colors.primary} />
@@ -103,22 +95,17 @@ export default function CityManagement({ onBack }: CityManagementProps) {
             </View>
           </View>
           <Text style={styles.transitCount}>
-            {region.transitSystems.length} transit system{region.transitSystems.length !== 1 ? 's' : ''}
+            {region.transitSystems.length} transit system
+            {region.transitSystems.length !== 1 ? 's' : ''}
           </Text>
         </View>
       </Pressable>
-      
+
       <View style={styles.regionActions}>
-        <Pressable
-          style={styles.actionButton}
-          onPress={() => handleUpdateTransitData(region.id)}
-        >
+        <Pressable style={styles.actionButton} onPress={() => handleUpdateTransitData(region.id)}>
           <Text style={styles.actionButtonText}>Update Transit</Text>
         </Pressable>
-        <Pressable
-          style={styles.actionButton}
-          onPress={() => setEditingRegion(region)}
-        >
+        <Pressable style={styles.actionButton} onPress={() => setEditingRegion(region)}>
           <Edit3 size={16} color={Colors.primary} />
         </Pressable>
         <Pressable
@@ -159,10 +146,7 @@ export default function CityManagement({ onBack }: CityManagementProps) {
           <Text style={styles.backButtonText}>← Back</Text>
         </Pressable>
         <Text style={styles.title}>City Management</Text>
-        <Pressable
-          style={styles.addButton}
-          onPress={() => setShowAddForm(true)}
-        >
+        <Pressable style={styles.addButton} onPress={() => setShowAddForm(true)}>
           <Plus size={20} color="#FFFFFF" />
           <Text style={styles.addButtonText}>Add City</Text>
         </Pressable>
@@ -181,14 +165,20 @@ export default function CityManagement({ onBack }: CityManagementProps) {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>United States ({usRegions.length})</Text>
-        {(searchQuery ? filteredRegions.filter(r => r.country === "United States") : usRegions).map((region) => (
+        {(searchQuery
+          ? filteredRegions.filter((r) => r.country === 'United States')
+          : usRegions
+        ).map((region) => (
           <RegionCard key={region.id} region={region} />
         ))}
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>International ({internationalRegions.length})</Text>
-        {(searchQuery ? filteredRegions.filter(r => r.country !== "United States") : internationalRegions).map((region) => (
+        {(searchQuery
+          ? filteredRegions.filter((r) => r.country !== 'United States')
+          : internationalRegions
+        ).map((region) => (
           <RegionCard key={region.id} region={region} />
         ))}
       </View>
@@ -196,11 +186,12 @@ export default function CityManagement({ onBack }: CityManagementProps) {
       <View style={styles.infoSection}>
         <Text style={styles.infoTitle}>Transit Data Updates</Text>
         <Text style={styles.infoText}>
-          Transit schedules and route information are automatically updated when available. 
-          You can manually refresh data for any city by tapping "Update Transit".
+          Transit schedules and route information are automatically updated when available. You can
+          manually refresh data for any city by tapping "Update Transit".
         </Text>
         <Text style={styles.infoText}>
-          Custom cities can be added with their own transit API endpoints for real-time data integration.
+          Custom cities can be added with their own transit API endpoints for real-time data
+          integration.
         </Text>
       </View>
     </ScrollView>
@@ -215,25 +206,25 @@ type AddEditRegionFormProps = {
 
 function AddEditRegionForm({ region, onSave, onCancel }: AddEditRegionFormProps) {
   const [formData, setFormData] = useState<Partial<RegionConfig>>({
-    id: region?.id || "",
-    name: region?.name || "",
-    country: region?.country || "United States",
-    timezone: region?.timezone || "America/New_York",
-    currency: region?.currency || "USD",
-    language: region?.language || "en",
+    id: region?.id || '',
+    name: region?.name || '',
+    country: region?.country || 'United States',
+    timezone: region?.timezone || 'America/New_York',
+    currency: region?.currency || 'USD',
+    language: region?.language || 'en',
     coordinates: region?.coordinates || { latitude: 0, longitude: 0 },
-    emergencyNumber: region?.emergencyNumber || "911",
-    transitApiEndpoint: region?.transitApiEndpoint || "",
-    mapStyle: region?.mapStyle || "standard",
+    emergencyNumber: region?.emergencyNumber || '911',
+    transitApiEndpoint: region?.transitApiEndpoint || '',
+    mapStyle: region?.mapStyle || 'standard',
     transitSystems: region?.transitSystems || [],
     safetyTips: region?.safetyTips || [],
     funFacts: region?.funFacts || [],
-    popularPlaces: region?.popularPlaces || []
+    popularPlaces: region?.popularPlaces || [],
   });
 
   const handleSave = () => {
     if (!formData.id || !formData.name || !formData.country) {
-      Alert.alert("Error", "Please fill in all required fields.");
+      Alert.alert('Error', 'Please fill in all required fields.');
       return;
     }
 
@@ -246,7 +237,7 @@ function AddEditRegionForm({ region, onSave, onCancel }: AddEditRegionFormProps)
         <Pressable style={styles.backButton} onPress={onCancel}>
           <Text style={styles.backButtonText}>Cancel</Text>
         </Pressable>
-        <Text style={styles.title}>{region ? "Edit" : "Add"} City</Text>
+        <Text style={styles.title}>{region ? 'Edit' : 'Add'} City</Text>
         <Pressable style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
         </Pressable>
@@ -304,7 +295,7 @@ function AddEditRegionForm({ region, onSave, onCancel }: AddEditRegionFormProps)
       </View>
 
       <Text style={styles.infoText}>
-        Additional configuration options like transit systems, coordinates, and local information 
+        Additional configuration options like transit systems, coordinates, and local information
         can be added through the advanced settings or by importing from a configuration file.
       </Text>
     </ScrollView>
@@ -317,9 +308,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
@@ -330,16 +321,16 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 16,
     color: Colors.primary,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   title: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   addButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.primary,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -347,8 +338,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   addButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
+    color: '#FFFFFF',
+    fontWeight: '600',
     fontSize: 14,
   },
   saveButton: {
@@ -358,12 +349,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   saveButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "600",
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
   searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     margin: 16,
     paddingHorizontal: 16,
@@ -381,7 +372,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
@@ -389,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.card,
     borderRadius: 12,
     marginBottom: 12,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   currentRegionCard: {
     borderWidth: 2,
@@ -402,13 +393,13 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   regionTitleRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   regionName: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     flex: 1,
   },
@@ -419,18 +410,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   currentBadgeText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   regionDetails: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 16,
   },
   detailItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
   },
   detailText: {
@@ -440,31 +431,31 @@ const styles = StyleSheet.create({
   transitCount: {
     fontSize: 14,
     color: Colors.textLight,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
   regionActions: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: Colors.border,
     padding: 12,
     gap: 8,
   },
   actionButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
     gap: 4,
   },
   actionButtonText: {
     fontSize: 14,
     color: Colors.primary,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   deleteButton: {
-    backgroundColor: "#FFF0F0",
+    backgroundColor: '#FFF0F0',
   },
   infoSection: {
     padding: 16,
@@ -474,7 +465,7 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
   },
@@ -489,7 +480,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
   },

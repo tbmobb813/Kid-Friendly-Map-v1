@@ -1,6 +1,7 @@
 # ⚠️ URGENT: Your Android Device is NOT Detected by USB
 
 ## Current Status
+
 Your phone is **NOT showing up in `lsusb`**, which means Linux doesn't even see it as a USB device.
 
 ---
@@ -12,11 +13,13 @@ Your phone is **NOT showing up in `lsusb`**, which means Linux doesn't even see 
 **When you plug in your phone, pull down the notification shade:**
 
 You'll see something like:
+
 - "USB charging this device"
 - "Charging only"
 - "USB for charging"
 
 **Tap on that notification and change it to:**
+
 - **"File Transfer"** (or "MTP" - Media Transfer Protocol)
 - OR **"USB tethering"**
 - NOT "Charging only"!
@@ -49,7 +52,7 @@ You'll see something like:
 
 ---
 
-## After Each Change, Run This Command:
+## After Each Change, Run This Command
 
 ```bash
 # This will show if Linux sees your device
@@ -66,12 +69,14 @@ adb devices
 ### Step 1: `lsusb` should show your device
 
 Before (what you have now):
+
 ```
 Bus 001 Device 005: ID 0bda:b023 Realtek Semiconductor Corp.
 Bus 001 Device 004: ID 05e3:0610 Genesys Logic, Inc. Hub
 ```
 
 After (what you should see):
+
 ```
 Bus 001 Device 006: ID 04e8:6860 Samsung Electronics Co., Ltd Galaxy (MTP)
                     ^^^^^^ This is a new device! (ID will vary)
@@ -80,18 +85,21 @@ Bus 001 Device 006: ID 04e8:6860 Samsung Electronics Co., Ltd Galaxy (MTP)
 ### Step 2: `adb devices` should show your device
 
 Before (what you have now):
+
 ```
 List of devices attached
 [empty]
 ```
 
 After (what you should see):
+
 ```
 List of devices attached
 R58M4XXXXXX    unauthorized    ← First time, needs authorization
 ```
 
 Then after tapping "Allow" on your phone:
+
 ```
 List of devices attached
 R58M4XXXXXX    device    ← Ready to use!
@@ -99,18 +107,20 @@ R58M4XXXXXX    device    ← Ready to use!
 
 ---
 
-## Can't Get It Working? Use Emulator Instead!
+## Can't Get It Working? Use Emulator Instead
 
 If after trying everything your device won't connect, let's use an Android emulator:
 
 ### Quick Emulator Start
 
 1. **Check if you have emulators installed:**
+
    ```bash
    emulator -list-avds
    ```
 
 2. **If you have an emulator, start it:**
+
    ```bash
    # List available
    emulator -list-avds
@@ -120,17 +130,19 @@ If after trying everything your device won't connect, let's use an Android emula
    ```
 
 3. **Check emulator shows up:**
+
    ```bash
    adb devices
    # Should show: emulator-5554    device
    ```
 
 4. **Build to emulator:**
+
    ```bash
    npx expo run:android
    ```
 
-### Don't Have an Emulator? Create One:
+### Don't Have an Emulator? Create One
 
 ```bash
 # Option 1: Via Android Studio GUI (easiest)
@@ -158,6 +170,7 @@ If USB just won't work, you can use WiFi!
    - Note the IP address, port, and pairing code
 
 2. **On your computer:**
+
    ```bash
    adb pair <IP>:<PORT>
    # Enter the pairing code when prompted
@@ -191,6 +204,7 @@ This won't solve the native module issues, but will confirm the navigation conte
 **Most Likely Cause:** Phone set to "Charging only" mode OR bad USB cable  
 
 **Next Steps:**
+
 1. Change USB mode on phone to "File Transfer"
 2. Try different USB cable
 3. Enable USB debugging in Developer options
