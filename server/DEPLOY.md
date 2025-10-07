@@ -118,6 +118,12 @@ node tools/import-to-postgres.js # set DATABASE_URL env if needed
 node index.js
 ```
 
+## Reverse proxy and TLS
+
+We include a sample `server/nginx/nginx.conf.sample` that demonstrates a simple reverse proxy. In production you should terminate TLS at the proxy and forward traffic to the adapter over private network. Use your certificate provider (Let's Encrypt, ACM, etc.) and point the proxy to the adapter process.
+
+To require a client key for the adapter endpoints, set `API_AUTH_KEY` in the adapter environment and clients must include it as `x-adapter-key` header or `_key` query param.
+
 
 ---
 If you want, I can also scaffold the GitHub Actions workflow file in the repo (disabled by default) and a simple systemd unit file for a VM. Which do you prefer next?
