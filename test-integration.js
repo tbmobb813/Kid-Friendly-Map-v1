@@ -43,8 +43,8 @@ try {
 // Test 4: Component Structure
 console.log("\nTest 4: Component Structure Check");
 console.log("---------------------------------");
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const files = [
   'config/transit/nyc-stations.ts',
