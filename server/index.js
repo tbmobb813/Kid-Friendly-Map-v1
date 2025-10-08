@@ -17,13 +17,25 @@ const fs = require('fs');
 const path = require('path');
 const promClient = require('prom-client');
 const { normalizeFeedMessage, normalizeFeedMessageAsync, fetchGtfsRt } = require('./adapter');
+let staticStore = null;
+try { staticStore = require('./lib/gtfsStore'); } catch (e) { staticStore = null; }
+let pgStore = null;
+try { if (process.env.DATABASE_URL) pgStore = require('./lib/gtfsStore-pg'); } catch (e) { pgStore = null; }
+function reloadStaticStore() {
+  try {
+    delete require.cache[require.resolve('./lib/gtfsStore')];
+    staticStore = require('./lib/gtfsStore');
+  } catch (e) {
+    staticStore = null;
+  }
+}
 
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Simple API key middleware: set API_AUTH_KEY to require this key in 'x-adapter-key' header
-const apiAuthKey = process.env.API_AUTH_KEY;
+// Simple API key middleware: reads API_AUTH_KEY dynamically so tests can toggle after startup
 function requireApiKey(req, res, next) {
+  const apiAuthKey = process.env.API_AUTH_KEY; // dynamic lookup
   if (!apiAuthKey) return next();
   const v = req.headers['x-adapter-key'] || req.query._key;
   if (!v || v !== apiAuthKey) return res.status(401).json({ error: 'unauthorized' });
@@ -108,8 +120,8 @@ function listFeedEntries() {
   return out;
 }
 
-// GET /feeds/:region/:system.json
-app.get('/feeds/:region/:system.json', requireApiKey, async (req, res) => {
+// Internal handler used by versioned + unversioned endpoints
+async function handleFeedRequest(req, res) {
   try {
     const { region, system } = req.params;
     const regionMap = feedMap[region];
@@ -176,10 +188,65 @@ app.get('/feeds/:region/:system.json', requireApiKey, async (req, res) => {
       // non-fatal logging error
     }
 
-    return res.json({ routes: normalized.routes, alerts: normalized.alerts, lastModified: new Date().toISOString() });
+    // Optional shape polyline if static store has trip->shape relation
+    if (staticStore && normalized.routes) {
+      for (const r of normalized.routes) {
+        try {
+          const trip = staticStore.getTrip && staticStore.getTrip(r.tripId);
+          if (trip && trip.shape_id && !r.shape) {
+            const poly = staticStore.getPolylineForShape && staticStore.getPolylineForShape(trip.shape_id);
+            if (poly && poly.length) {
+              // keep it small: first + every Nth + last point (sampling)
+              const step = Math.max(1, Math.floor(poly.length / 50));
+              r.shape = poly.filter((_, idx) => idx === 0 || idx === poly.length -1 || idx % step === 0);
+            }
+          }
+        } catch (e) { /* ignore shape errors */ }
+      }
+    }
+
+    return res.json({ routes: normalized.routes, alerts: normalized.alerts, lastModified: new Date().toISOString(), version: 'v1' });
   } catch (err) {
     console.error('Adapter error:', err);
     return res.status(500).json({ error: String(err) });
+  }
+}
+
+// GET /feeds/:region/:system.json (legacy, no version path)
+app.get('/feeds/:region/:system.json', requireApiKey, handleFeedRequest);
+// Versioned path
+app.get('/v1/feeds/:region/:system.json', requireApiKey, handleFeedRequest);
+
+// Shape lookup endpoint (raw polyline points) /v1/shapes/:shapeId
+app.get('/v1/shapes/:shapeId', requireApiKey, async (req, res) => {
+  const { shapeId } = req.params;
+  // ensure store loaded
+  if (!staticStore) { try { reloadStaticStore(); } catch (e) {} }
+  try {
+    let pts = [];
+    if (staticStore && staticStore.getPolylineForShape) {
+      pts = staticStore.getPolylineForShape(shapeId);
+    }
+    if ((!pts || !pts.length) && pgStore && typeof pgStore.getPolylineForShape === 'function') {
+  pts = await pgStore.getPolylineForShape(shapeId);
+    }
+    if ((!pts || !pts.length)) {
+      // final fallback: read file directly
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const shapesPath = path.join(__dirname, 'data', 'shape_points_by_shape.json');
+        if (fs.existsSync(shapesPath)) {
+          const data = JSON.parse(fs.readFileSync(shapesPath, 'utf8'));
+          const raw = data[shapeId] || [];
+          pts = raw.map(p => [Number(p.shape_pt_lat), Number(p.shape_pt_lon)]);
+        }
+      } catch (_) { /* ignore */ }
+    }
+    if (!pts || !pts.length) return res.status(404).json({ error: 'shape not found' });
+    return res.json({ shapeId, points: pts, count: pts.length, source: staticStore && pts ? 'static' : (pgStore ? 'postgres' : 'file') });
+  } catch (e) {
+    return res.status(500).json({ error: String(e) });
   }
 });
 
@@ -199,7 +266,7 @@ app.get('/metrics', async (req, res) => {
 function startServer() {
   const server = app.listen(port, () => {
     console.log(`Transit adapter listening on port ${port}`);
-    if (feedRefreshEnabled && process.env.NODE_ENV !== 'test') {
+    if (feedRefreshEnabled && (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')) {
       startBackgroundRefresh();
     } else if (!feedRefreshEnabled) {
       console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
@@ -212,55 +279,64 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { app, startServer };
+module.exports = { app, startServer, _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore } };
 
 // Background refresh worker ---------------------------------------------
 let refreshLoopActive = false;
+let refreshIntervalHandle = null;
 function startBackgroundRefresh() {
+  if (refreshIntervalHandle) return; // already started
   console.log(`Starting background feed refresh loop every ${feedRefreshIntervalSec}s`);
-  setInterval(async () => {
-    if (refreshLoopActive) return; // skip overlapping interval
-    refreshLoopActive = true;
-    try {
-      const feeds = listFeedEntries();
-      for (const f of feeds) {
-        const { system, region, url, apiKeyEnv, apiKeyHeader } = f;
-        const apiKey = apiKeyEnv ? process.env[apiKeyEnv] : undefined;
-        if (!url) continue;
-        const endTimer = refreshDuration.labels(system).startTimer();
-        const started = Date.now();
-        try {
-          // Direct fetch (do not reuse cache here to force freshness)
-          const feed = await fetchGtfsRt(url, apiKeyHeader || 'x-api-key', apiKey);
-          const durationMs = Date.now() - started;
-          // Structured log for refresh event
-          console.info(JSON.stringify({
-            ts: new Date().toISOString(),
-            msg: 'transit_adapter.refresh',
-            system,
-            region,
-            url,
-            duration_ms: durationMs,
-            entity_count: Array.isArray(feed?.entity) ? feed.entity.length : 0
-          }));
-        } catch (err) {
-          refreshFailures.labels(system).inc();
-          console.warn(JSON.stringify({
-            ts: new Date().toISOString(),
-            level: 'warn',
-            msg: 'transit_adapter.refresh_error',
-            system,
-            region,
-            error: String(err)
-          }));
-        } finally {
-          endTimer();
+  refreshIntervalHandle = setInterval(async () => {
+      if (refreshLoopActive) return; // skip overlapping interval
+      refreshLoopActive = true;
+      try {
+        const feeds = listFeedEntries();
+        for (const f of feeds) {
+          const { system, region, url, apiKeyEnv, apiKeyHeader } = f;
+          const apiKey = apiKeyEnv ? process.env[apiKeyEnv] : undefined;
+          if (!url) continue;
+          const endTimer = refreshDuration.labels(system).startTimer();
+          const started = Date.now();
+          try {
+            // Direct fetch (do not reuse cache here to force freshness)
+            const feed = await fetchGtfsRt(url, apiKeyHeader || 'x-api-key', apiKey);
+            const durationMs = Date.now() - started;
+            // Structured log for refresh event
+            console.info(JSON.stringify({
+              ts: new Date().toISOString(),
+              msg: 'transit_adapter.refresh',
+              system,
+              region,
+              url,
+              duration_ms: durationMs,
+              entity_count: Array.isArray(feed?.entity) ? feed.entity.length : 0
+            }));
+          } catch (err) {
+            refreshFailures.labels(system).inc();
+            console.warn(JSON.stringify({
+              ts: new Date().toISOString(),
+              level: 'warn',
+              msg: 'transit_adapter.refresh_error',
+              system,
+              region,
+              error: String(err)
+            }));
+          } finally {
+            endTimer();
+          }
         }
+      } catch (e) {
+        console.error('Background refresh loop error', e);
+      } finally {
+        refreshLoopActive = false;
       }
-    } catch (e) {
-      console.error('Background refresh loop error', e);
-    } finally {
-      refreshLoopActive = false;
-    }
-  }, feedRefreshIntervalSec * 1000);
+    }, feedRefreshIntervalSec * 1000);
+}
+
+function stopBackgroundRefresh() {
+  if (refreshIntervalHandle) {
+    clearInterval(refreshIntervalHandle);
+    refreshIntervalHandle = null;
+  }
 }

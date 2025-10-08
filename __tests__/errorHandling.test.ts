@@ -63,11 +63,13 @@ describe('Error Handling Utils', () => {
     });
 
     it('should fail after max attempts', async () => {
-      const mockOperation = jest.fn<() => Promise<any>>().mockRejectedValue(new Error('Persistent failure'));
+      const mockOperation = jest
+        .fn<() => Promise<any>>()
+        .mockRejectedValue(new Error('Persistent failure'));
 
-      await expect(withRetry(() => mockOperation(), { maxAttempts: 2, delayMs: 10 })).rejects.toThrow(
-        'Persistent failure',
-      );
+      await expect(
+        withRetry(() => mockOperation(), { maxAttempts: 2, delayMs: 10 }),
+      ).rejects.toThrow('Persistent failure');
 
       expect(mockOperation).toHaveBeenCalledTimes(2);
     });

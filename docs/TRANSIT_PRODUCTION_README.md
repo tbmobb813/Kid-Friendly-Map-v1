@@ -14,11 +14,40 @@ Coverage goals:
 
 ## Shape/Geometry Import (Polylines)
 
-To support map polylines, import `shapes.txt` from GTFS and expose shape data in enriched route output.
+Status: IMPLEMENTED (JSON static import + API enrichment)
 
-- Extend importers to parse shapes and associate with trips/routes.
-- Update API response to include `polyline` or `shape` field per route.
-- Document client usage for rendering polylines.
+The static GTFS importer now parses `shapes.txt` and writes `shape_points_by_shape.json`. The adapter:
+
+- Samples the polyline for each route (≤ ~50 points) and attaches it as `shape` to each route in `/v1/feeds/...` responses when a `trip.shape_id` exists.
+- Exposes a raw shape lookup endpoint: `GET /v1/shapes/:shapeId` returning all points `{ lat, lon }`.
+
+Client guidance:
+
+- Use the sampled `route.shape` for map rendering; fetch full shape via `/v1/shapes/:shapeId` only when higher fidelity is needed (progressive enhancement).
+- Cache shapes aggressively client-side; they change only when static GTFS is refreshed.
+
+Future enhancements:
+
+- Polyline simplification (Douglas-Peucker) server-side for adaptive detail levels.
+- Conditional inclusion via query flag (e.g. `?includeShape=1`) if payload size becomes an issue.
+
+Postgres note: Add a `shapes` table if server-side DB-based shape queries become necessary:
+
+```sql
+CREATE TABLE IF NOT EXISTS shapes (
+   shape_id TEXT NOT NULL,
+   shape_pt_lat DOUBLE PRECISION NOT NULL,
+   shape_pt_lon DOUBLE PRECISION NOT NULL,
+   shape_pt_sequence INTEGER NOT NULL,
+   PRIMARY KEY(shape_id, shape_pt_sequence)
+);
+CREATE INDEX IF NOT EXISTS idx_shapes_id ON shapes(shape_id);
+```
+
+Importer extension IMPLEMENTED (basic incremental insert):
+`import-to-postgres.js` now loads `shape_points_by_shape.json` rows into `shapes` with
+`ON CONFLICT DO NOTHING`.
+Future optimization: switch to COPY for batch performance.
 
 ## Advanced Alerting & Dashboarding
 
@@ -34,9 +63,23 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
 
 ## API Versioning & Backward Compatibility
 
-- Version API endpoints (e.g., `/feeds/v1/:region/:system.json`).
-- Document schema changes and migration strategy.
-- Maintain backward compatibility for clients.
+Status: IMPLEMENTED
+
+- Legacy endpoint: `GET /feeds/:region/:system.json` (will remain for one deprecation window).
+- Versioned endpoint: `GET /v1/feeds/:region/:system.json` (adds `version` field, optional `shape` array on routes, future-safe for new fields).
+- New endpoint: `GET /v1/shapes/:shapeId` for raw polyline retrieval.
+
+Deprecation plan:
+
+1. Announce target removal date for legacy unversioned path (e.g., 90 days) after clients migrate.
+2. Add server log + `Deprecation` response header on legacy requests.
+3. Eventually 301 or 410 legacy path, depending on product decision.
+
+Change management:
+
+- All new response fields MUST first ship on versioned endpoint.
+- Breaking schema changes require a new version (`/v2/feeds/...`).
+- Maintain previous N versions concurrently (policy recommendation: support current and previous version only).
 
 ## Security Hardening
 
@@ -441,15 +484,16 @@ groups:
 
 ### Short-term
 
-- Convert integration logs to structured JSON and emit `enriched_routes` metric.
+- Convert integration logs to structured JSON and emit `enriched_routes` metric. (Partial: enrichment log JSON already present; metric emitted via gauge.)
 
-- Configure CI to run the COPY-based importer within a container (or install `psql` in runner).
+- Configure CI to run the COPY-based importer within a container (or install `psql` in runner). (In progress)
 
-- Add shape/geometry import (if you need polylines on the map).
+- Add Postgres-backed shapes ingestion and sampling (static JSON version complete; DB ingestion planned).
 
 ### Medium-term
 
-- Add distributed caching (Redis) if running multiple adapter instances.
+- Add distributed caching (Redis) if running multiple adapter instances. (Implemented with auto-detect `REDIS_URL`.)
+- Implement shape DB importer + server-side simplification pipeline.
 
 ### Long-term
 

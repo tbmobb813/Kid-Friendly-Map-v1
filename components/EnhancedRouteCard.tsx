@@ -20,6 +20,15 @@ import {
 } from 'lucide-react-native';
 import TransitStepIndicator from './TransitStepIndicator';
 
+// Local utility – formats meters to km with one decimal place. If distance is
+// already in km just returns fixed precision. (Added to satisfy TS error where
+// formatDistanceKm was previously referenced but not defined.)
+function formatDistanceKm(distanceMeters: number | undefined): string {
+  if (distanceMeters == null || isNaN(distanceMeters as number)) return '0';
+  const km = distanceMeters / 1000;
+  return km.toFixed(km < 10 ? 1 : 0);
+}
+
 type EnhancedRouteCardProps = {
   route: Route;
   unifiedRoute?: UnifiedRoute;
@@ -117,7 +126,7 @@ const EnhancedRouteCard: React.FC<EnhancedRouteCardProps> = ({
           )}
           {unifiedRoute && (
             <Text style={styles.distanceText}>
-              {Math.round((unifiedRoute.summary.distance / 1000) * 10) / 10} km
+              {formatDistanceKm(unifiedRoute.summary.distance)} km
             </Text>
           )}
         </View>

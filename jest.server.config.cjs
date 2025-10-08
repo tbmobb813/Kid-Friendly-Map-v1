@@ -8,4 +8,12 @@ module.exports = {
   },
   moduleFileExtensions: ['js','json','node'],
   verbose: true,
+  coverageThreshold: {
+    global: {
+      statements: 50,
+      branches: 40,
+      functions: 50,
+      lines: 50
+    }
+  }
 };

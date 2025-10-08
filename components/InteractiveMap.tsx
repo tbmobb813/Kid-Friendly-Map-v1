@@ -113,7 +113,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const generateLeafletHTML = useCallback(
     (layout?: { width: number; height: number }) => {
       const centerLat = origin?.coordinates?.latitude ?? 40.7128;
-      const centerLng = origin?.coordinates?.longitude ?? -74.006;
+      const NYC_DEFAULT_LONGITUDE = -74.006;
+      const centerLng = origin?.coordinates?.longitude ?? NYC_DEFAULT_LONGITUDE;
       const widthPx = layout?.width ? `${layout.width}px` : '100%';
       const heightPx = layout?.height ? `${layout.height}px` : '100%';
 

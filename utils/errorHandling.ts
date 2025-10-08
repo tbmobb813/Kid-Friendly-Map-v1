@@ -58,7 +58,7 @@ export const DEFAULT_RETRY_CONFIG: Record<string, RetryOptions> = {
 
 // Generic retry mechanism with exponential backoff
 export async function withRetry<T>(
-  operation: () => Promise<T>,
+  operation: () => Promise<T> | T,
   options: RetryOptions,
   context: string = 'operation',
 ): Promise<T> {
@@ -68,7 +68,7 @@ export async function withRetry<T>(
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
     try {
       log.debug(`Attempting ${context} (attempt ${attempt}/${options.maxAttempts})`);
-      const result = await operation();
+  const result = await Promise.resolve(operation());
 
       if (attempt > 1) {
         log.info(`${context} succeeded after ${attempt} attempts`);

@@ -1,5 +1,5 @@
 // Pure logic tests that don't need React Native mocks
-import { test, expect, describe } from "bun:test";
+import { test, expect, describe } from 'bun:test';
 
 // Test your utility functions with Bun for speed
 describe("Validation Utils (Pure Logic)", () => {

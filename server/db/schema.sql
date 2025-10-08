@@ -1,4 +1,3 @@
--- Minimal GTFS schema for Postgres
 CREATE TABLE IF NOT EXISTS routes (
   route_id TEXT PRIMARY KEY,
   route_short_name TEXT,
@@ -30,6 +29,16 @@ CREATE TABLE IF NOT EXISTS stop_times (
 );
 CREATE INDEX IF NOT EXISTS idx_stop_times_trip ON stop_times(trip_id);
 CREATE INDEX IF NOT EXISTS idx_stop_times_trip_seq ON stop_times(trip_id, stop_sequence);
+
+-- Shapes table for polylines
+CREATE TABLE IF NOT EXISTS shapes (
+  shape_id TEXT NOT NULL,
+  shape_pt_lat DOUBLE PRECISION NOT NULL,
+  shape_pt_lon DOUBLE PRECISION NOT NULL,
+  shape_pt_sequence INTEGER NOT NULL,
+  PRIMARY KEY(shape_id, shape_pt_sequence)
+);
+CREATE INDEX IF NOT EXISTS idx_shapes_id ON shapes(shape_id);
 -- server/db/schema.sql
 CREATE TABLE IF NOT EXISTS routes (
   route_id TEXT PRIMARY KEY,

@@ -6,12 +6,14 @@ const routesFile = path.join(dataDir, 'routes.json');
 const tripsFile = path.join(dataDir, 'trips.json');
 const stopsFile = path.join(dataDir, 'stops.json');
 const stopTimesFile = path.join(dataDir, 'stop_times_by_trip.json');
+const shapesFile = path.join(dataDir, 'shape_points_by_shape.json');
 
-let routes = {}, trips = {}, stops = {}, stopTimes = {};
+let routes = {}, trips = {}, stops = {}, stopTimes = {}, shapes = {};
 if (fs.existsSync(routesFile)) routes = JSON.parse(fs.readFileSync(routesFile, 'utf8'));
 if (fs.existsSync(tripsFile)) trips = JSON.parse(fs.readFileSync(tripsFile, 'utf8'));
 if (fs.existsSync(stopsFile)) stops = JSON.parse(fs.readFileSync(stopsFile, 'utf8'));
 if (fs.existsSync(stopTimesFile)) stopTimes = JSON.parse(fs.readFileSync(stopTimesFile, 'utf8'));
+if (fs.existsSync(shapesFile)) shapes = JSON.parse(fs.readFileSync(shapesFile, 'utf8'));
 
 function ensureData() {
   if (!Object.keys(routes).length) throw new Error('GTFS JSON data not found; run tools/import-static-gtfs.js first');
@@ -41,4 +43,13 @@ function getNextStopsForTrip(tripId, count = 3) {
   return seq.slice(0, count).map(s => stops[s.stop_id] || s);
 }
 
-module.exports = { getRoute, getTrip, getStop, getNextStopsForTrip, dataDir };
+function getShapePoints(shapeId) {
+  ensureData();
+  return shapes[shapeId] || [];
+}
+
+function getPolylineForShape(shapeId) {
+  const pts = getShapePoints(shapeId);
+  return pts.map(p => [Number(p.shape_pt_lat), Number(p.shape_pt_lon)]);
+}
+module.exports = { getRoute, getTrip, getStop, getNextStopsForTrip, getShapePoints, getPolylineForShape, dataDir };
