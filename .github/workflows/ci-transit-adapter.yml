@@ -1,0 +1,32 @@
+name: CI - transit adapter
+
+on:
+  pull_request:
+    branches: [ feat/transit ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install deps
+        run: |
+          cd server
+          npm ci
+      - name: Import sample GTFS
+        run: |
+          cd server
+          node tools/prepare-sample-gtfs.js
+          node tools/import-static-gtfs.js static-gtfs
+      - name: Start server in background
+        run: |
+          cd server
+          node index.js &
+          sleep 2
+      - name: Smoke test endpoint
+        run: |
+          curl 'http://localhost:3001/feeds/nyc/mta-subway.json?mock=1' | jq '.'

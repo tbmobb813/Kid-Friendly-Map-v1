@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { Trophy, MapPin, Zap, Target } from "lucide-react-native";
-import { UserStats } from "@/types/gamification";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { Trophy, MapPin, Zap, Target } from 'lucide-react-native';
+import { UserStats } from '@/types/gamification';
 
 type UserStatsCardProps = {
   stats: UserStats;
@@ -13,7 +13,8 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({ stats, onPetClick }) => {
   const getProgressToNextLevel = () => {
     const pointsForCurrentLevel = (stats.level - 1) * 200;
     const pointsForNextLevel = stats.level * 200;
-    const progress = (stats.totalPoints - pointsForCurrentLevel) / (pointsForNextLevel - pointsForCurrentLevel);
+    const progress =
+      (stats.totalPoints - pointsForCurrentLevel) / (pointsForNextLevel - pointsForCurrentLevel);
     return Math.max(0, Math.min(1, progress));
   };
 
@@ -24,7 +25,7 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({ stats, onPetClick }) => {
           <Trophy size={24} color={Colors.primary} />
           <Text style={styles.levelText}>Level {stats.level}</Text>
         </View>
-        
+
         <View style={styles.headerRight}>
           <Text style={styles.pointsText}>{stats.totalPoints} points</Text>
           {onPetClick && (
@@ -38,12 +39,7 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({ stats, onPetClick }) => {
 
       <View style={styles.progressContainer}>
         <View style={styles.progressBar}>
-          <View 
-            style={[
-              styles.progressFill, 
-              { width: `${getProgressToNextLevel() * 100}%` }
-            ]} 
-          />
+          <View style={[styles.progressFill, { width: `${getProgressToNextLevel() * 100}%` }]} />
         </View>
         <Text style={styles.progressText}>
           {Math.round(getProgressToNextLevel() * 100)}% to Level {stats.level + 1}
@@ -79,26 +75,26 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 20,
     margin: 16,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
   },
   levelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   levelText: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   headerRight: {
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
   },
   pointsText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
   },
   petButton: {
@@ -134,36 +130,36 @@ const styles = StyleSheet.create({
     height: 8,
     backgroundColor: Colors.border,
     borderRadius: 4,
-    overflow: "hidden",
+    overflow: 'hidden',
     marginBottom: 8,
   },
   progressFill: {
-    height: "100%",
+    height: '100%',
     backgroundColor: Colors.primary,
     borderRadius: 4,
   },
   progressText: {
     fontSize: 12,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
   },
   statsGrid: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   statItem: {
-    alignItems: "center",
+    alignItems: 'center',
     gap: 4,
   },
   statNumber: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   statLabel: {
     fontSize: 12,
     color: Colors.textLight,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 

@@ -10,16 +10,16 @@ export type Place = {
   isFavorite?: boolean;
 };
 
-export type PlaceCategory = 
-  | "home" 
-  | "school" 
-  | "park" 
-  | "library" 
-  | "store" 
-  | "restaurant" 
-  | "friend" 
-  | "family" 
-  | "other";
+export type PlaceCategory =
+  | 'home'
+  | 'school'
+  | 'park'
+  | 'library'
+  | 'store'
+  | 'restaurant'
+  | 'friend'
+  | 'family'
+  | 'other';
 
 export type CustomCategory = {
   id: string;
@@ -38,7 +38,7 @@ export type CategoryManagementSettings = {
   maxCustomCategories: number;
 };
 
-export type TransitMode = "subway" | "train" | "bus" | "walk" | "bike" | "car";
+export type TransitMode = 'subway' | 'train' | 'bus' | 'walk' | 'bike' | 'car';
 
 export type TransitStep = {
   id: string;
@@ -60,6 +60,19 @@ export type Route = {
   totalDuration: number;
   departureTime: string;
   arrivalTime: string;
+  // Optional legacy compatibility fields used by enhanced routing
+  origin?: string;
+  destination?: string;
+  mode?: TravelMode;
+  // Optional metadata injected by enhanced routing services
+  metadata?: {
+    safetyScore?: number;
+    kidFriendlyScore?: number;
+    accessibilityScore?: number;
+    source?: string;
+    geometry?: any;
+    alerts?: string[];
+  };
 };
 
 export type AccessibilitySettings = {
@@ -90,7 +103,7 @@ export type PhotoCheckIn = {
   distanceFromPlace?: number; // in meters
 };
 
-export type TravelMode = "transit" | "walking" | "biking" | "driving";
+export type TravelMode = 'transit' | 'walking' | 'biking' | 'driving';
 
 export type RouteOptions = {
   travelMode: TravelMode;

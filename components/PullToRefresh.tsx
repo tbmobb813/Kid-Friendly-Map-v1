@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { ScrollView, RefreshControl, Platform } from "react-native";
-import Colors from "@/constants/colors";
+import React, { useState } from 'react';
+import { ScrollView, RefreshControl, Platform } from 'react-native';
+import Colors from '@/constants/colors';
 
 type PullToRefreshProps = {
   children: React.ReactNode;

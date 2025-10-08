@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = __DEV__ 
-  ? 'http://localhost:3000/api' 
-  : 'https://your-production-api.com/api';
+const API_BASE_URL = __DEV__ ? 'http://localhost:3000/api' : 'https://your-production-api.com/api';
 
 const API_TIMEOUT = 10000; // 10 seconds
 
@@ -31,12 +29,9 @@ class ApiClient {
     }
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       ...(options.headers as Record<string, string>),
@@ -66,14 +61,14 @@ class ApiClient {
       return data;
     } catch (error) {
       clearTimeout(timeoutId);
-      
+
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
           throw new Error('Request timeout');
         }
         throw error;
       }
-      
+
       throw new Error('Unknown error occurred');
     }
   }
@@ -115,24 +110,26 @@ export const apiClient = new ApiClient(API_BASE_URL);
 
 // Specific API functions
 export const transitApi = {
-  getRoutes: (from: string, to: string) => 
+  getRoutes: (from: string, to: string) =>
     apiClient.get(`/transit/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`),
-  
-  getLiveArrivals: (stopId: string) => 
-    apiClient.get(`/transit/arrivals/${stopId}`),
-  
-  getStops: (lat: number, lng: number, radius: number = 500) => 
+
+  getLiveArrivals: (stopId: string) => apiClient.get(`/transit/arrivals/${stopId}`),
+
+  getStops: (lat: number, lng: number, radius: number = 500) =>
     apiClient.get(`/transit/stops?lat=${lat}&lng=${lng}&radius=${radius}`),
 };
 
 export const placesApi = {
-  search: (query: string, location?: { lat: number; lng: number }) => 
-    apiClient.get(`/places/search?q=${encodeURIComponent(query)}${location ? `&lat=${location.lat}&lng=${location.lng}` : ''}`),
-  
-  getDetails: (placeId: string) => 
-    apiClient.get(`/places/${placeId}`),
-  
-  getNearby: (lat: number, lng: number, type?: string) => 
+  search: (query: string, location?: { lat: number; lng: number }) =>
+    apiClient.get(
+      `/places/search?q=${encodeURIComponent(query)}${
+        location ? `&lat=${location.lat}&lng=${location.lng}` : ''
+      }`,
+    ),
+
+  getDetails: (placeId: string) => apiClient.get(`/places/${placeId}`),
+
+  getNearby: (lat: number, lng: number, type?: string) =>
     apiClient.get(`/places/nearby?lat=${lat}&lng=${lng}${type ? `&type=${type}` : ''}`),
 };
 
@@ -140,8 +137,7 @@ export const userApi = {
   getProfile: () => apiClient.get('/user/profile'),
   updateProfile: (data: any) => apiClient.put('/user/profile', data),
   getAchievements: () => apiClient.get('/user/achievements'),
-  checkIn: (placeId: string, photo?: string) => 
-    apiClient.post('/user/checkin', { placeId, photo }),
+  checkIn: (placeId: string, photo?: string) => apiClient.post('/user/checkin', { placeId, photo }),
 };
 
 export type SmartSuggestionDTO = {
@@ -164,9 +160,14 @@ export const smartRoutesApi = {
     curLng: number;
     weather?: string;
     timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
-  }) => apiClient.get<SmartSuggestionDTO[]>(
-    `/routes/smart?destId=${encodeURIComponent(params.destId ?? '')}&destLat=${params.destLat}&destLng=${params.destLng}&curLat=${params.curLat}&curLng=${params.curLng}&weather=${encodeURIComponent(params.weather ?? '')}&timeOfDay=${params.timeOfDay}`
-  ),
+  }) =>
+    apiClient.get<SmartSuggestionDTO[]>(
+      `/routes/smart?destId=${encodeURIComponent(params.destId ?? '')}&destLat=${
+        params.destLat
+      }&destLng=${params.destLng}&curLat=${params.curLat}&curLng=${
+        params.curLng
+      }&weather=${encodeURIComponent(params.weather ?? '')}&timeOfDay=${params.timeOfDay}`,
+    ),
   likeSuggestion: (id: string, liked: boolean) =>
     apiClient.post<{ id: string; liked: boolean }>(`/routes/suggestions/${id}/like`, { liked }),
 };
@@ -175,10 +176,13 @@ export const smartRoutesApi = {
 export const offlineStorage = {
   async cacheResponse<T>(key: string, data: T): Promise<void> {
     try {
-      await AsyncStorage.setItem(`cache_${key}`, JSON.stringify({
-        data,
-        timestamp: Date.now(),
-      }));
+      await AsyncStorage.setItem(
+        `cache_${key}`,
+        JSON.stringify({
+          data,
+          timestamp: Date.now(),
+        }),
+      );
     } catch (error) {
       console.warn('Failed to cache response:', error);
     }
@@ -205,7 +209,7 @@ export const offlineStorage = {
   async clearCache(): Promise<void> {
     try {
       const keys = await AsyncStorage.getAllKeys();
-      const cacheKeys = keys.filter(key => key.startsWith('cache_'));
+      const cacheKeys = keys.filter((key) => key.startsWith('cache_'));
       await AsyncStorage.multiRemove(cacheKeys);
     } catch (error) {
       console.warn('Failed to clear cache:', error);
@@ -214,66 +218,68 @@ export const offlineStorage = {
 };
 
 // Enhanced error handling for API responses
-export const handleApiError = (error: any): { message: string; code?: string; isNetworkError: boolean } => {
+export const handleApiError = (
+  error: any,
+): { message: string; code?: string; isNetworkError: boolean } => {
   if (error instanceof Error) {
     if (error.name === 'AbortError') {
       return {
         message: 'Request timed out. Please check your connection and try again.',
         code: 'TIMEOUT',
-        isNetworkError: true
+        isNetworkError: true,
       };
     }
-    
+
     if (error.message.includes('Network request failed') || error.message.includes('fetch')) {
       return {
         message: 'Unable to connect to server. Please check your internet connection.',
         code: 'NETWORK_ERROR',
-        isNetworkError: true
+        isNetworkError: true,
       };
     }
-    
+
     if (error.message.includes('HTTP 401')) {
       return {
         message: 'Your session has expired. Please sign in again.',
         code: 'UNAUTHORIZED',
-        isNetworkError: false
+        isNetworkError: false,
       };
     }
-    
+
     if (error.message.includes('HTTP 403')) {
       return {
         message: 'You do not have permission to access this feature.',
         code: 'FORBIDDEN',
-        isNetworkError: false
+        isNetworkError: false,
       };
     }
-    
+
     if (error.message.includes('HTTP 404')) {
       return {
         message: 'The requested information could not be found.',
         code: 'NOT_FOUND',
-        isNetworkError: false
+        isNetworkError: false,
       };
     }
-    
+
     if (error.message.includes('HTTP 500')) {
       return {
         message: 'Server error. Please try again later.',
         code: 'SERVER_ERROR',
-        isNetworkError: false
+        isNetworkError: false,
       };
     }
-    
+
     return {
       message: error.message,
-      isNetworkError: false
+      isNetworkError: false,
     };
   }
-  
+
   return {
     message: 'An unexpected error occurred. Please try again.',
     code: 'UNKNOWN_ERROR',
-    isNetworkError: false
+    isNetworkError: false,
   };
 };
 
@@ -284,20 +290,20 @@ export class BackendHealthMonitor {
   private lastHealthCheck = 0;
   private healthCheckInterval = 30000; // 30 seconds
   private listeners: ((status: 'healthy' | 'degraded' | 'down') => void)[] = [];
-  
+
   static getInstance(): BackendHealthMonitor {
     if (!BackendHealthMonitor.instance) {
       BackendHealthMonitor.instance = new BackendHealthMonitor();
     }
     return BackendHealthMonitor.instance;
   }
-  
+
   async checkHealth(): Promise<'healthy' | 'degraded' | 'down'> {
     try {
       const startTime = Date.now();
       const response = await apiClient.get('/health');
       const responseTime = Date.now() - startTime;
-      
+
       if (response.success) {
         if (responseTime > 5000) {
           this.setHealthStatus('degraded');
@@ -311,20 +317,20 @@ export class BackendHealthMonitor {
       console.warn('Health check failed:', error);
       this.setHealthStatus('down');
     }
-    
+
     this.lastHealthCheck = Date.now();
     return this.healthStatus;
   }
-  
+
   private setHealthStatus(status: 'healthy' | 'degraded' | 'down') {
     if (this.healthStatus !== status) {
       this.healthStatus = status;
       this.notifyListeners(status);
     }
   }
-  
+
   private notifyListeners(status: 'healthy' | 'degraded' | 'down') {
-    this.listeners.forEach(listener => {
+    this.listeners.forEach((listener) => {
       try {
         listener(status);
       } catch (error) {
@@ -332,7 +338,7 @@ export class BackendHealthMonitor {
       }
     });
   }
-  
+
   addListener(callback: (status: 'healthy' | 'degraded' | 'down') => void): () => void {
     this.listeners.push(callback);
     return () => {
@@ -342,11 +348,11 @@ export class BackendHealthMonitor {
       }
     };
   }
-  
+
   getHealthStatus(): 'healthy' | 'degraded' | 'down' {
     return this.healthStatus;
   }
-  
+
   shouldCheckHealth(): boolean {
     return Date.now() - this.lastHealthCheck > this.healthCheckInterval;
   }
@@ -358,7 +364,7 @@ export const backendHealthMonitor = BackendHealthMonitor.getInstance();
 export const createNetworkAwareApi = <T extends any[], R>(
   apiFunction: (...args: T) => Promise<ApiResponse<R>>,
   cacheKey: string,
-  maxAge?: number
+  maxAge?: number,
 ) => {
   return async (...args: T): Promise<ApiResponse<R>> => {
     try {
@@ -366,20 +372,20 @@ export const createNetworkAwareApi = <T extends any[], R>(
       if (backendHealthMonitor.shouldCheckHealth()) {
         backendHealthMonitor.checkHealth();
       }
-      
+
       // Try network request first
       const response = await apiFunction(...args);
-      
+
       // Cache successful response
       if (response.success) {
         await offlineStorage.cacheResponse(cacheKey, response);
       }
-      
+
       return response;
     } catch (error) {
       const errorInfo = handleApiError(error);
       console.warn('Network request failed, trying cache:', errorInfo.message);
-      
+
       // Try cache fallback for network errors
       if (errorInfo.isNetworkError) {
         const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
@@ -390,7 +396,7 @@ export const createNetworkAwareApi = <T extends any[], R>(
           };
         }
       }
-      
+
       // Return user-friendly error
       throw new Error(errorInfo.message);
     }

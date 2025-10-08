@@ -33,7 +33,11 @@ const WeatherWidget: React.FC<{ testId?: string }> = ({ testId }) => {
         <View style={styles.error} testID={testId ? `${testId}-error` : undefined}>
           <AlertCircle size={18} color={Colors.error} />
           <Text style={styles.errorText}>Unable to load weather</Text>
-          <Pressable style={styles.retry} onPress={() => refetch()} testID={testId ? `${testId}-retry` : undefined}>
+          <Pressable
+            style={styles.retry}
+            onPress={() => refetch()}
+            testID={testId ? `${testId}-retry` : undefined}
+          >
             <RefreshCw size={14} color={'#FFFFFF'} />
             <Text style={styles.retryText}>Retry</Text>
           </Pressable>
@@ -52,7 +56,11 @@ const WeatherWidget: React.FC<{ testId?: string }> = ({ testId }) => {
     );
   }, [loading, isLoading, isError, data, refetch, testId]);
 
-  return <View style={styles.container} testID={testId}>{content}</View>;
+  return (
+    <View style={styles.container} testID={testId}>
+      {content}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

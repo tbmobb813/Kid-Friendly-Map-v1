@@ -7,9 +7,9 @@ import { useParentalStore } from '@/stores/parentalStore';
 export const SafeZoneIndicator: React.FC = () => {
   const { isMonitoring, getCurrentSafeZoneStatus } = useSafeZoneMonitor();
   const { settings, safeZones } = useParentalStore();
-  
+
   const status = getCurrentSafeZoneStatus();
-  const activeSafeZones = safeZones.filter(zone => zone.isActive);
+  const activeSafeZones = safeZones.filter((zone) => zone.isActive);
 
   // Don't show if safe zone alerts are disabled or no safe zones exist
   if (!settings.safeZoneAlerts || activeSafeZones.length === 0) {
@@ -26,7 +26,9 @@ export const SafeZoneIndicator: React.FC = () => {
     if (!isMonitoring) return 'Safe zone monitoring inactive';
     if (!status) return 'Getting location...';
     if (status.inside.length > 0) {
-      return `Inside ${status.inside[0].name}${status.inside.length > 1 ? ` +${status.inside.length - 1} more` : ''}`;
+      return `Inside ${status.inside[0].name}${
+        status.inside.length > 1 ? ` +${status.inside.length - 1} more` : ''
+      }`;
     }
     return 'Outside safe zones';
   };

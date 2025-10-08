@@ -18,7 +18,7 @@ export const MODULES: Record<string, ModuleConfig> = {
     dependencies: [],
     exports: ['colors', 'types', 'utils/logger', 'utils/config'],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Safety module (high priority)
@@ -32,10 +32,10 @@ export const MODULES: Record<string, ModuleConfig> = {
       'components/SafeZoneManagement',
       'components/ParentDashboard',
       'stores/parentalStore',
-      'utils/errorHandling'
+      'utils/errorHandling',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Location services module
@@ -43,13 +43,9 @@ export const MODULES: Record<string, ModuleConfig> = {
     name: 'Location',
     version: '1.0.0',
     dependencies: ['core'],
-    exports: [
-      'hooks/useLocation',
-      'hooks/useSafeZoneMonitor',
-      'utils/locationUtils'
-    ],
+    exports: ['hooks/useLocation', 'hooks/useSafeZoneMonitor', 'utils/locationUtils'],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Navigation module
@@ -61,10 +57,10 @@ export const MODULES: Record<string, ModuleConfig> = {
       'stores/navigationStore',
       'components/RouteCard',
       'components/DirectionStep',
-      'components/SmartRouteSuggestions'
+      'components/SmartRouteSuggestions',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Regional content module
@@ -76,10 +72,10 @@ export const MODULES: Record<string, ModuleConfig> = {
       'stores/regionStore',
       'hooks/useRegionalData',
       'components/RegionSelector',
-      'config/regions/*'
+      'config/regions/*',
     ],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Gamification module (can be lazy loaded)
@@ -91,10 +87,10 @@ export const MODULES: Record<string, ModuleConfig> = {
       'stores/gamificationStore',
       'components/AchievementBadge',
       'components/UserStatsCard',
-      'components/VirtualPetCompanion'
+      'components/VirtualPetCompanion',
     ],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 
   // AI features module (lazy loaded)
@@ -102,12 +98,9 @@ export const MODULES: Record<string, ModuleConfig> = {
     name: 'AI',
     version: '1.0.0',
     dependencies: ['core', 'location'],
-    exports: [
-      'components/AIJourneyCompanion',
-      'components/SmartRouteSuggestions'
-    ],
+    exports: ['components/AIJourneyCompanion', 'components/SmartRouteSuggestions'],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 
   // UI components module
@@ -121,10 +114,10 @@ export const MODULES: Record<string, ModuleConfig> = {
       'components/CategoryButton',
       'components/EmptyState',
       'components/LoadingSpinner',
-      'components/Toast'
+      'components/Toast',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 
   // Platform-specific modules
@@ -134,7 +127,7 @@ export const MODULES: Record<string, ModuleConfig> = {
     dependencies: ['core'],
     exports: ['utils/ios-specific'],
     lazy: true,
-    platform: 'ios'
+    platform: 'ios',
   },
 
   android: {
@@ -143,7 +136,7 @@ export const MODULES: Record<string, ModuleConfig> = {
     dependencies: ['core'],
     exports: ['utils/android-specific'],
     lazy: true,
-    platform: 'android'
+    platform: 'android',
   },
 
   web: {
@@ -152,8 +145,8 @@ export const MODULES: Record<string, ModuleConfig> = {
     dependencies: ['core'],
     exports: ['utils/web-specific'],
     lazy: true,
-    platform: 'web'
-  }
+    platform: 'web',
+  },
 };
 
 // Module loading priorities
@@ -161,7 +154,7 @@ export const LOAD_PRIORITIES = {
   CRITICAL: ['core', 'safety', 'location'],
   HIGH: ['navigation', 'ui'],
   MEDIUM: ['regional', 'gamification'],
-  LOW: ['ai', 'ios', 'android', 'web']
+  LOW: ['ai', 'ios', 'android', 'web'],
 };
 
 // Dependency validation
@@ -180,7 +173,7 @@ export function validateModuleDependencies(): boolean {
 // Get modules for current platform
 export function getModulesForPlatform(platform: 'ios' | 'android' | 'web'): ModuleConfig[] {
   return Object.values(MODULES).filter(
-    module => module.platform === 'all' || module.platform === platform
+    (module) => module.platform === 'all' || module.platform === platform,
   );
 }
 
@@ -221,11 +214,11 @@ export class ModuleLoader {
     }
 
     console.log(`Loading module: ${moduleName}`);
-    
+
     // In a real implementation, this would dynamically import the module
     // For now, we'll just simulate the loading
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     console.log(`Module loaded: ${moduleName}`);
   }
 

@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View, Pressable, Platform } from "react-native";
-import Colors from "@/constants/colors";
-import { Mic, Volume2 } from "lucide-react-native";
-import * as Speech from "expo-speech";
-import { Audio } from "expo-av";
-import { useToast } from "@/hooks/useToast";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
+import Colors from '@/constants/colors';
+import { Mic, Volume2 } from 'lucide-react-native';
+import * as Speech from 'expo-speech';
+import { Audio } from 'expo-av';
+import { useToast } from '@/hooks/useToast';
 
 type VoiceNavigationProps = {
   currentStep?: string;
@@ -15,13 +15,13 @@ type VoiceNavigationProps = {
 type STTResponse = { text: string; language: string };
 
 const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
-  currentStep = "Walk to Main Street Station",
+  currentStep = 'Walk to Main Street Station',
   onVoiceCommand,
   testId,
 }) => {
   const [isListening, setIsListening] = useState<boolean>(false);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [transcript, setTranscript] = useState<string>("");
+  const [transcript, setTranscript] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const recordingRef = useRef<any | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -29,22 +29,25 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
   const chunksRef = useRef<BlobPart[]>([]);
   const { showToast } = useToast();
 
-  const speak = useCallback(async (text: string) => {
-    try {
-      setIsSpeaking(true);
-      Speech.stop();
-      await Speech.speak(text, {
-        language: "en-US",
-        rate: 1.0,
-        onDone: () => setIsSpeaking(false),
-        onStopped: () => setIsSpeaking(false),
-        onError: () => setIsSpeaking(false),
-      });
-    } catch {
-      setIsSpeaking(false);
-      showToast("Unable to speak right now", "warning");
-    }
-  }, [showToast]);
+  const speak = useCallback(
+    async (text: string) => {
+      try {
+        setIsSpeaking(true);
+        Speech.stop();
+        await Speech.speak(text, {
+          language: 'en-US',
+          rate: 1.0,
+          onDone: () => setIsSpeaking(false),
+          onStopped: () => setIsSpeaking(false),
+          onError: () => setIsSpeaking(false),
+        });
+      } catch {
+        setIsSpeaking(false);
+        showToast('Unable to speak right now', 'warning');
+      }
+    },
+    [showToast],
+  );
 
   const handleRepeat = useCallback(() => {
     speak(currentStep);
@@ -65,8 +68,8 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
       mediaRecorder.start();
       setIsListening(true);
     } catch {
-      setErrorMsg("Microphone access denied");
-      showToast("Mic permission denied", "error");
+      setErrorMsg('Microphone access denied');
+      showToast('Mic permission denied', 'error');
     }
   }, [showToast]);
 
@@ -79,14 +82,14 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
         return;
       }
       mr.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
         chunksRef.current = [];
         stream?.getTracks().forEach((t) => t.stop());
         mediaRecorderRef.current = null;
         mediaStreamRef.current = null;
         resolve(blob);
       };
-      if (mr.state !== "inactive") {
+      if (mr.state !== 'inactive') {
         mr.stop();
       } else {
         resolve(null);
@@ -99,17 +102,17 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
     try {
       await Audio.requestPermissionsAsync();
       await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-      const RecordingClass: any = (Audio as any).Recording || function() {};
+      const RecordingClass: any = (Audio as any).Recording || function () {};
       const recording = new RecordingClass();
       // Use broader any for options to avoid strict expo-av type mismatches
       const options: any = {
         android: {
-          extension: ".m4a",
+          extension: '.m4a',
           outputFormat: (Audio as any).RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
           audioEncoder: (Audio as any).RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
         },
         ios: {
-          extension: ".wav",
+          extension: '.wav',
           outputFormat: (Audio as any).RECORDING_OPTION_IOS_OUTPUT_FORMAT_LINEARPCM,
           audioQuality: (Audio as any).RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH,
         },
@@ -119,8 +122,8 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
       recordingRef.current = recording;
       setIsListening(true);
     } catch {
-      setErrorMsg("Could not start recording");
-      showToast("Recording failed to start", "error");
+      setErrorMsg('Could not start recording');
+      showToast('Recording failed to start', 'error');
     }
   }, [showToast]);
 
@@ -135,66 +138,69 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
       setIsListening(false);
       return uri ?? null;
     } catch {
-      setErrorMsg("Failed to stop recording");
+      setErrorMsg('Failed to stop recording');
       return null;
     }
   }, []);
 
   const startListening = useCallback(async () => {
     setErrorMsg(null);
-    if (Platform.OS === "web") {
+    if (Platform.OS === 'web') {
       await startRecordingWeb();
     } else {
       await startRecordingNative();
     }
   }, [startRecordingNative, startRecordingWeb]);
 
-  const transcribe = useCallback(async (payload: { blob?: Blob; uri?: string }) => {
-    const form = new FormData();
-    if (Platform.OS === "web") {
-      if (payload.blob) {
-        const file = new File([payload.blob], "recording.webm", { type: "audio/webm" });
-        form.append("audio", file);
-      }
-    } else if (payload.uri) {
-      const uri = payload.uri;
-      const ext = uri.split(".").pop() ?? "m4a";
-      // FormData typing in React Native differs; cast to any for now
-      (form as any).append("audio", {
-        uri,
-        name: `recording.${ext}`,
-        type: `audio/${ext}`,
-      });
-    }
-    let attempts = 0;
-    const max = 2;
-    while (attempts <= max) {
-      try {
-        const res = await fetch("https://toolkit.rork.com/stt/transcribe/", {
-          method: "POST",
-          body: form,
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as STTResponse;
-        setTranscript(json.text);
-        onVoiceCommand?.(json.text);
-        showToast("Heard: " + json.text, "success");
-        return;
-      } catch {
-        attempts += 1;
-        if (attempts > max) {
-          setErrorMsg("Transcription failed. Please try again.");
-          showToast("Transcription failed", "error");
-          return;
+  const transcribe = useCallback(
+    async (payload: { blob?: Blob; uri?: string }) => {
+      const form = new FormData();
+      if (Platform.OS === 'web') {
+        if (payload.blob) {
+          const file = new File([payload.blob], 'recording.webm', { type: 'audio/webm' });
+          form.append('audio', file);
         }
-        await new Promise((r) => setTimeout(r, 600 * attempts));
+      } else if (payload.uri) {
+        const uri = payload.uri;
+        const ext = uri.split('.').pop() ?? 'm4a';
+        // FormData typing in React Native differs; cast to any for now
+        (form as any).append('audio', {
+          uri,
+          name: `recording.${ext}`,
+          type: `audio/${ext}`,
+        });
       }
-    }
-  }, [onVoiceCommand, showToast]);
+      let attempts = 0;
+      const max = 2;
+      while (attempts <= max) {
+        try {
+          const res = await fetch('https://toolkit.rork.com/stt/transcribe/', {
+            method: 'POST',
+            body: form,
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = (await res.json()) as STTResponse;
+          setTranscript(json.text);
+          onVoiceCommand?.(json.text);
+          showToast('Heard: ' + json.text, 'success');
+          return;
+        } catch {
+          attempts += 1;
+          if (attempts > max) {
+            setErrorMsg('Transcription failed. Please try again.');
+            showToast('Transcription failed', 'error');
+            return;
+          }
+          await new Promise((r) => setTimeout(r, 600 * attempts));
+        }
+      }
+    },
+    [onVoiceCommand, showToast],
+  );
 
   const stopAndTranscribe = useCallback(async () => {
     try {
-      if (Platform.OS === "web") {
+      if (Platform.OS === 'web') {
         const blob = await stopRecordingWeb();
         if (blob) await transcribe({ blob });
       } else {
@@ -202,13 +208,13 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
         if (uri) await transcribe({ uri });
       }
     } catch {
-      setErrorMsg("Something went wrong processing audio");
+      setErrorMsg('Something went wrong processing audio');
     }
   }, [stopRecordingNative, stopRecordingWeb, transcribe]);
 
   useEffect(() => {
     return () => {
-      if (Platform.OS === "web") {
+      if (Platform.OS === 'web') {
         mediaStreamRef.current?.getTracks().forEach((t) => t.stop());
         try {
           mediaRecorderRef.current?.stop?.();
@@ -218,7 +224,7 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
   }, []);
 
   return (
-    <View style={styles.container} testID={testId ?? "voice-nav"}>
+    <View style={styles.container} testID={testId ?? 'voice-nav'}>
       <View style={styles.stepContainer}>
         <Text style={styles.stepText}>{currentStep}</Text>
         {transcript ? <Text style={styles.subtle}>You said: {transcript}</Text> : null}
@@ -233,7 +239,7 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
           onPressOut={stopAndTranscribe}
         >
           <Mic size={24} color="#FFFFFF" />
-          <Text style={styles.buttonText}>{isListening ? "Listening..." : "Push to talk"}</Text>
+          <Text style={styles.buttonText}>{isListening ? 'Listening...' : 'Push to talk'}</Text>
         </Pressable>
 
         <Pressable
@@ -242,7 +248,7 @@ const VoiceNavigation: React.FC<VoiceNavigationProps> = ({
           onPress={handleRepeat}
         >
           <Volume2 size={24} color="#FFFFFF" />
-          <Text style={styles.buttonText}>{isSpeaking ? "Speaking..." : "Repeat"}</Text>
+          <Text style={styles.buttonText}>{isSpeaking ? 'Speaking...' : 'Repeat'}</Text>
         </Pressable>
       </View>
 
@@ -267,32 +273,32 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   stepContainer: {
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
   },
   stepText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
-    textAlign: "center",
+    textAlign: 'center',
   },
   subtle: {
     marginTop: 6,
     fontSize: 12,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
   },
   errorText: {
     marginTop: 6,
     fontSize: 12,
     color: Colors.error,
-    textAlign: "center",
+    textAlign: 'center',
   },
   controlsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     gap: 16,
   },
   voiceButton: {
@@ -300,7 +306,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderRadius: 8,
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center',
     gap: 4,
   },
   listeningButton: {
@@ -311,26 +317,26 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
     borderRadius: 8,
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center',
     gap: 4,
   },
   speakingButton: {
     backgroundColor: Colors.warning,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   commandsContainer: {
     marginTop: 16,
-    backgroundColor: "#F9F9F9",
+    backgroundColor: '#F9F9F9',
     borderRadius: 8,
     padding: 12,
   },
   commandsTitle: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
   },

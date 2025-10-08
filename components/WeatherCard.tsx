@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Colors from "@/constants/colors";
-import { Cloud, Sun, CloudRain, Snowflake, Wind } from "lucide-react-native";
-import { WeatherInfo } from "@/types/navigation";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Colors from '@/constants/colors';
+import { Cloud, Sun, CloudRain, Snowflake, Wind } from 'lucide-react-native';
+import { WeatherInfo } from '@/types/navigation';
 
 type WeatherCardProps = {
   weather: WeatherInfo;
@@ -13,13 +13,13 @@ type WeatherCardProps = {
 const WeatherCard: React.FC<WeatherCardProps> = ({ weather, units = 'imperial', testId }) => {
   const getWeatherIcon = () => {
     switch (weather.condition.toLowerCase()) {
-      case "sunny":
+      case 'sunny':
         return <Sun size={24} color="#FFD700" />;
-      case "cloudy":
+      case 'cloudy':
         return <Cloud size={24} color="#87CEEB" />;
-      case "rainy":
+      case 'rainy':
         return <CloudRain size={24} color="#4682B4" />;
-      case "snowy":
+      case 'snowy':
         return <Snowflake size={24} color="#B0E0E6" />;
       default:
         return <Wind size={24} color={Colors.textLight} />;
@@ -28,11 +28,16 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weather, units = 'imperial', 
 
   const getBackgroundColor = () => {
     switch (weather.condition.toLowerCase()) {
-      case "sunny": return "#FFF8DC";
-      case "cloudy": return "#F0F8FF";
-      case "rainy": return "#E6F3FF";
-      case "snowy": return "#F0F8FF";
-      default: return Colors.card;
+      case 'sunny':
+        return '#FFF8DC';
+      case 'cloudy':
+        return '#F0F8FF';
+      case 'rainy':
+        return '#E6F3FF';
+      case 'snowy':
+        return '#F0F8FF';
+      default:
+        return Colors.card;
     }
   };
 
@@ -43,7 +48,10 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weather, units = 'imperial', 
       <View style={styles.weatherInfo}>
         {getWeatherIcon()}
         <View style={styles.textContainer}>
-          <Text style={styles.temperature}>{weather.temperature}{unitLabel}</Text>
+          <Text style={styles.temperature}>
+            {weather.temperature}
+            {unitLabel}
+          </Text>
           <Text style={styles.condition}>{weather.condition}</Text>
         </View>
       </View>
@@ -61,8 +69,8 @@ const styles = StyleSheet.create({
     borderLeftColor: Colors.primary,
   },
   weatherInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   textContainer: {
@@ -70,18 +78,18 @@ const styles = StyleSheet.create({
   },
   temperature: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   condition: {
     fontSize: 14,
     color: Colors.textLight,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
   recommendation: {
     fontSize: 14,
     color: Colors.text,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
 });
 

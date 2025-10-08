@@ -1,4 +1,4 @@
-import { RegionConfig } from "@/types/region";
+import { RegionConfig } from '@/types/region';
 
 export const formatCurrency = (amount: number, currency: string): string => {
   try {
@@ -11,8 +11,8 @@ export const formatCurrency = (amount: number, currency: string): string => {
   }
 };
 
-export const formatDistance = (meters: number, units: "metric" | "imperial"): string => {
-  if (units === "imperial") {
+export const formatDistance = (meters: number, units: 'metric' | 'imperial'): string => {
+  if (units === 'imperial') {
     const feet = meters * 3.28084;
     if (feet < 1000) {
       return `${Math.round(feet)} ft`;
@@ -28,9 +28,9 @@ export const formatDistance = (meters: number, units: "metric" | "imperial"): st
   }
 };
 
-export const formatTemperature = (celsius: number, units: "metric" | "imperial"): string => {
-  if (units === "imperial") {
-    const fahrenheit = (celsius * 9/5) + 32;
+export const formatTemperature = (celsius: number, units: 'metric' | 'imperial'): string => {
+  if (units === 'imperial') {
+    const fahrenheit = (celsius * 9) / 5 + 32;
     return `${Math.round(fahrenheit)}°F`;
   }
   return `${Math.round(celsius)}°C`;
@@ -50,9 +50,19 @@ export const getLocalizedTime = (date: Date, timezone: string): string => {
 };
 
 export const validateRegionConfig = (config: RegionConfig): boolean => {
-  const required = ['id', 'name', 'country', 'timezone', 'currency', 'language', 'coordinates', 'transitSystems', 'emergencyNumber'];
-  
-  return required.every(field => {
+  const required = [
+    'id',
+    'name',
+    'country',
+    'timezone',
+    'currency',
+    'language',
+    'coordinates',
+    'transitSystems',
+    'emergencyNumber',
+  ];
+
+  return required.every((field) => {
     const value = (config as any)[field];
     return value !== undefined && value !== null && value !== '';
   });
@@ -62,7 +72,7 @@ export const generateRegionFromTemplate = (
   name: string,
   country: string,
   coordinates: { latitude: number; longitude: number },
-  customizations: Partial<RegionConfig> = {}
+  customizations: Partial<RegionConfig> = {},
 ): RegionConfig => {
   const baseConfig: RegionConfig = {
     id: name.toLowerCase().replace(/\s+/g, '-'),
@@ -78,7 +88,7 @@ export const generateRegionFromTemplate = (
         name: 'Local Bus',
         type: 'bus',
         color: '#4285F4',
-      }
+      },
     ],
     emergencyNumber: '911',
     safetyTips: [

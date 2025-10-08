@@ -7,23 +7,37 @@ This guide explains the modular architecture implemented for the transit safety 
 ## Architecture Principles
 
 ### 1. **Separation of Concerns**
+
 Each module has a single, well-defined responsibility:
+
 - **Core**: Shared utilities and constants
+
 - **Safety**: Safety-critical features
+
 - **Location**: Location services and monitoring
+
 - **Navigation**: Route planning and directions
+
 - **UI**: Reusable interface components
 
 ### 2. **Dependency Management**
+
 - Clear dependency hierarchy
+
 - No circular dependencies
+
 - Lazy loading for non-critical modules
+
 - Platform-specific modules
 
 ### 3. **Performance Optimization**
+
 - Critical modules loaded immediately
+
 - Non-essential features lazy-loaded
+
 - Platform-specific optimizations
+
 - Memory leak prevention
 
 ## Module Structure
@@ -31,6 +45,7 @@ Each module has a single, well-defined responsibility:
 ### Core Modules (Always Loaded)
 
 #### `core`
+
 ```typescript
 // Essential utilities and constants
 exports: [
@@ -44,6 +59,7 @@ lazy: false
 ```
 
 #### `safety`
+
 ```typescript
 // Safety-critical components
 exports: [
@@ -57,6 +73,7 @@ lazy: false
 ```
 
 #### `location`
+
 ```typescript
 // Location services
 exports: [
@@ -71,6 +88,7 @@ lazy: false
 ### Feature Modules (Lazy Loaded)
 
 #### `gamification`
+
 ```typescript
 // Achievement and stats features
 exports: [
@@ -83,6 +101,7 @@ lazy: true
 ```
 
 #### `ai`
+
 ```typescript
 // AI-powered features
 exports: [
@@ -96,6 +115,7 @@ lazy: true
 ### Platform Modules
 
 #### `ios` / `android` / `web`
+
 ```typescript
 // Platform-specific implementations
 exports: ['utils/platform-specific']
@@ -109,9 +129,12 @@ platform: 'ios' | 'android' | 'web'
 ### Load Priorities
 
 1. **CRITICAL** (Immediate): `core`, `safety`, `location`
-2. **HIGH** (Early): `navigation`, `ui`
-3. **MEDIUM** (On-demand): `regional`, `gamification`
-4. **LOW** (Lazy): `ai`, platform-specific
+
+1. **HIGH** (Early): `navigation`, `ui`
+
+1. **MEDIUM** (On-demand): `regional`, `gamification`
+
+1. **LOW** (Lazy): `ai`, platform-specific
 
 ### Loading Implementation
 
@@ -135,6 +158,7 @@ const loadAI = () => moduleLoader.loadModule('ai');
 ### Adding New Modules
 
 1. **Define Module Config**
+
 ```typescript
 // In utils/moduleConfig.ts
 newModule: {
@@ -147,8 +171,9 @@ newModule: {
 }
 ```
 
-2. **Create Module Structure**
-```
+1. **Create Module Structure**
+
+``` text
 modules/newModule/
 ├── components/
 ├── hooks/
@@ -157,7 +182,8 @@ modules/newModule/
 └── index.ts
 ```
 
-3. **Export Module Interface**
+1. **Export Module Interface**
+
 ```typescript
 // modules/newModule/index.ts
 export { default as NewComponent } from './components/NewComponent';
@@ -167,12 +193,17 @@ export { useNewFeature } from './hooks/useNewFeature';
 ### Module Dependencies
 
 #### Rules
+
 - Core modules cannot depend on feature modules
+
 - Feature modules can depend on core modules
+
 - Platform modules should minimize dependencies
+
 - No circular dependencies allowed
 
 #### Validation
+
 ```typescript
 import { validateModuleDependencies } from '@/utils/moduleConfig';
 
@@ -185,16 +216,23 @@ if (!validateModuleDependencies()) {
 ## Performance Benefits
 
 ### Bundle Size Reduction
+
 - **Initial bundle**: Only critical modules (~600KB)
+
 - **Lazy modules**: Load on demand (~200KB each)
+
 - **Platform modules**: Load only for current platform
 
 ### Memory Management
+
 - Modules can be unloaded when not needed
+
 - Garbage collection optimization
+
 - Memory leak prevention
 
 ### Loading Performance
+
 ```typescript
 // Before: All modules loaded at startup (~2MB)
 // After: Critical modules only (~600KB)
@@ -204,6 +242,7 @@ if (!validateModuleDependencies()) {
 ## Testing Strategy
 
 ### Module-specific Tests
+
 ```typescript
 // __tests__/modules/safety.test.ts
 describe('Safety Module', () => {
@@ -215,6 +254,7 @@ describe('Safety Module', () => {
 ```
 
 ### Integration Tests
+
 ```typescript
 // __tests__/integration/moduleLoading.test.ts
 describe('Module Loading', () => {
@@ -231,62 +271,97 @@ describe('Module Loading', () => {
 ### From Monolithic to Modular
 
 1. **Identify Module Boundaries**
+
    - Group related components
+
    - Identify shared dependencies
+
    - Define clear interfaces
 
-2. **Create Module Structure**
+1. **Create Module Structure**
+
    - Move files to module directories
+
    - Update import paths
+
    - Create module index files
 
-3. **Update Build Process**
+1. **Update Build Process**
+
    - Configure lazy loading
+
    - Update bundler settings
+
    - Add module validation
 
-4. **Test Migration**
+1. **Test Migration**
+
    - Verify all imports work
+
    - Test lazy loading
+
    - Check performance metrics
 
 ## Monitoring and Maintenance
 
 ### Module Health Metrics
+
 - Load times per module
+
 - Memory usage per module
+
 - Error rates by module
+
 - Usage analytics
 
 ### Maintenance Tasks
+
 - Regular dependency audits
+
 - Performance monitoring
+
 - Module size tracking
+
 - Dead code elimination
 
 ## Best Practices
 
 ### Do's
+
 - ✅ Keep modules focused and cohesive
+
 - ✅ Use clear, descriptive module names
+
 - ✅ Document module interfaces
+
 - ✅ Test module boundaries
+
 - ✅ Monitor performance impact
 
 ### Don'ts
+
 - ❌ Create circular dependencies
+
 - ❌ Mix platform-specific code in core modules
+
 - ❌ Load all modules eagerly
+
 - ❌ Ignore module size limits
+
 - ❌ Skip dependency validation
 
 ## Conclusion
 
 The modular architecture provides:
+
 - **Better maintainability** through clear separation
+
 - **Improved performance** via lazy loading
+
 - **Enhanced scalability** for future features
+
 - **Platform optimization** for iOS/Android focus
+
 - **Developer productivity** through clear structure
 
 This architecture supports the app's growth while maintaining performance and code quality standards.

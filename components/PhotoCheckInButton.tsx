@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, Pressable, Alert, Platform, View, Image } from "react-native";
-import Colors from "@/constants/colors";
-import { Camera as CameraIcon, MapPin, Check, X } from "lucide-react-native";
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { useNavigationStore } from "@/stores/navigationStore";
-import useLocation from "@/hooks/useLocation";
-
+import React, { useState } from 'react';
+import { StyleSheet, Text, Pressable, Alert, Platform, View, Image } from 'react-native';
+import Colors from '@/constants/colors';
+import { Camera as CameraIcon, MapPin, Check, X } from 'lucide-react-native';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useNavigationStore } from '@/stores/navigationStore';
+import useLocation from '@/hooks/useLocation';
 
 type PhotoCheckInButtonProps = {
   placeName: string;
@@ -18,7 +17,12 @@ type PreviewState = {
   uri: string;
 } | null;
 
-const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({ placeName, placeId, placeLat, placeLng }) => {
+const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({
+  placeName,
+  placeId,
+  placeLat,
+  placeLng,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [preview, setPreview] = useState<PreviewState>(null);
   const [facing, setFacing] = useState<CameraType>('back');
@@ -32,7 +36,9 @@ const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({ placeName, plac
   };
 
   const onSnap = async () => {
-    Alert.alert('Photo', 'Snap is a placeholder in Expo Go. Use screenshot after tapping.', [{ text: 'OK' }]);
+    Alert.alert('Photo', 'Snap is a placeholder in Expo Go. Use screenshot after tapping.', [
+      { text: 'OK' },
+    ]);
   };
 
   const onConfirm = async () => {
@@ -60,7 +66,7 @@ const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({ placeName, plac
           notes: 'Safe arrival confirmed!',
         },
         { latitude: location.latitude, longitude: location.longitude },
-        { latitude: placeLat, longitude: placeLng }
+        { latitude: placeLat, longitude: placeLng },
       );
     } else {
       addPhotoCheckIn({
@@ -94,11 +100,7 @@ const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({ placeName, plac
 
   return (
     <>
-      <Pressable 
-        testID="photo-checkin-button"
-        style={styles.button}
-        onPress={onOpenCamera}
-      >
+      <Pressable testID="photo-checkin-button" style={styles.button} onPress={onOpenCamera}>
         <CameraIcon size={20} color="#FFFFFF" />
         <Text style={styles.text}>Photo Check-in</Text>
         <MapPin size={16} color="#FFFFFF" style={styles.locationIcon} />
@@ -129,7 +131,11 @@ const PhotoCheckInButton: React.FC<PhotoCheckInButtonProps> = ({ placeName, plac
             <Pressable style={[styles.footerBtn, styles.cancel]} onPress={close}>
               <Text style={styles.footerText}>Cancel</Text>
             </Pressable>
-            <Pressable style={[styles.footerBtn, styles.confirm]} onPress={onConfirm} testID="confirm-checkin">
+            <Pressable
+              style={[styles.footerBtn, styles.confirm]}
+              onPress={onConfirm}
+              testID="confirm-checkin"
+            >
               <Check size={16} color="#fff" />
               <Text style={styles.footerText}>Confirm</Text>
             </Pressable>
@@ -146,20 +152,20 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     margin: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 8,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   text: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   locationIcon: { marginLeft: 4 },
   modal: {
@@ -185,7 +191,12 @@ const styles = StyleSheet.create({
   snap: { width: 64, height: 64, borderRadius: 32, backgroundColor: '#ffffffcc' },
   preview: { width: '92%', height: 360, borderRadius: 16, alignSelf: 'center' },
   modalFooter: { flexDirection: 'row', gap: 12, padding: 16, justifyContent: 'flex-end' },
-  footerBtn: { paddingVertical: 12, paddingHorizontal: 16, borderRadius: 12, backgroundColor: '#222' },
+  footerBtn: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    backgroundColor: '#222',
+  },
   cancel: { backgroundColor: '#333' },
   confirm: { backgroundColor: Colors.primary, flexDirection: 'row', alignItems: 'center', gap: 6 },
   footerText: { color: '#fff', fontSize: 14, fontWeight: '600' },

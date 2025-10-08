@@ -1,12 +1,90 @@
+# Production Readiness Analysis
+
 Top-level summary (production readiness)
 
-Project is functionally rich and has tests, build script, and CI pipeline defined.
-But several production-critical artifacts and processes are missing or incomplete. Below is a prioritized checklist with concrete actions, files to add/update, and rationale.
-High-priority items (must-have before release)
+Project is functionally rich and has tests, build script, and CI piLocal checks (typLocal checks (typQuick verification commLocal checks (typecheck, tests, build script):
 
-App assets and store metadata
+```bash
+# Install dependencies (choose one and standardize)
+npm ci
+
+# TypeScript check
+npx tsc --noEmit
+
+# Run unit tests (single test or all)
+npm test
+
+# Or run a single test file:
+npm test -- __tests__/safety.test.ts -i
+
+# Run the repository production build script (it exists: scripts/build-production.js)
+node scripts/build-production.js
+```s (what I ran and recommend)
+
+Local checks (typecheck, tests, build script):
+
+```bash
+# Install dependencies (choose one and standardize)
+npm ci
+
+# TypeScript check
+npx tsc --noEmit
+
+# Run unit tests (single test or all)
+npm test
+
+# Or run a single test file:
+npm test -- __tests__/safety.test.ts -i
+
+# Run the repository production build script (it exists: scripts/build-production.js)
+node scripts/build-production.js
+```
+
+Quality gates (minimum before publishing), tests, build script):
+
+```bash
+# Install dependencies (choose one and standardize)
+npm ci
+
+# TypeScript check
+npx tsc --noEmit
+
+# Run unit tests (single test or all)
+npm test
+
+# Or run a single test file:
+npm test -- __tests__/safety.test.ts -i
+
+# Run the repository production build script (it exists: scripts/build-production.js)
+node scripts/build-production.js
+```
+
+Quality gates (minimum before publishing)ck, tests, build script):
+
+```bash
+# Install dependencies (choose one and standardize)
+npm ci
+
+# TypeScript check
+npx tsc --noEmit
+
+# Run unit tests (single test or all)
+npm test
+
+# Or run a single test file:
+npm test -- __tests__/safety.test.ts -i
+
+# Run the repository production build script (it exists: scripts/build-production.js)
+node scripts/build-production.js
+```ine defined.
+But several production-critical artifacts and processes are missing or incomplete. Below is a prioritized checklist with concrete actions, files to add/update, and rationale.
+
+## High-priority items (must-have before release)
+
+### App assets and store metadata
 
 Missing/unclear: app icons, adaptive icons, splash assets referenced in app.json (e.g., ./assets/images/icon.png). I could not find an assets/ folder.
+
 Action:
 Add assets: icons (iOS/Android), adaptive icons, splash images, notification icons, favicon.
 Add assets folder and ensure paths in app.json are correct.
@@ -96,7 +174,17 @@ Automate performance checks (bundle size, start time).
 Run accessibility (a11y) audits and fix high-impact issues.
 Why: Improve user experience and store acceptance; accessibility critical for families.
 Estimated effort: small → medium.
-Lower-priority / nice-to-have items 12) Documentation: README, CHANGELOG, CONTRIBUTING, LICENSE - Missing: top-level README and LICENSE (search found none). - Action: - Add README with quickstart, how to run tests, build, and deployment instructions. - Add CHANGELOG.md and choose a license (e.g., MIT). - Why: Developer onboarding and legal clarity. - Estimated effort: small.
+
+## Lower-priority / nice-to-have items
+
+### 12) Documentation: README, CHANGELOG, CONTRIBUTING, LICENSE
+
+- Missing: top-level README and LICENSE (search found none).
+- Action:
+  - Add README with quickstart, how to run tests, build, and deployment instructions.
+  - Add CHANGELOG.md and choose a license (e.g., MIT).
+- Why: Developer onboarding and legal clarity.
+- Estimated effort: small.
 
 Infrastructure and hosting for web
 
@@ -128,7 +216,16 @@ Quick verification commands (what I ran and recommend)
 
 Local checks (typecheck, tests, build script):
 
-# Install dependencies (choose one and standardize)npm ci# TypeScript checknpx tsc --noEmit# Run unit tests (single test or all)npm test# Or run a single test file:npm test -- __tests__/safety.test.ts -i# Run the repository production build script (it exists: scripts/build-production.js)node scripts/build-production.js
+# Install dependencies (choose one and standardize)
+npm ci
+# TypeScript check
+npx tsc --noEmit
+# Run unit tests (single test or all)
+npm test
+# Or run a single test file:
+npm test -- __tests__/safety.test.ts -i
+# Run the repository production build script (it exists: scripts/build-production.js)
+node scripts/build-production.js
 Quality gates (minimum before publishing)
 
 Typecheck: npx tsc --noEmit — must pass

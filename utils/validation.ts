@@ -76,7 +76,8 @@ export function validateLocation(location: any): ValidationResult {
       warnings.push('Invalid timestamp provided');
     } else {
       const age = Date.now() - location.timestamp;
-      if (age > 300000) { // 5 minutes
+      if (age > 300000) {
+        // 5 minutes
         warnings.push('Location data is more than 5 minutes old');
       }
     }
@@ -155,7 +156,11 @@ export function validateEmergencyContact(contact: any): ValidationResult {
     }
   }
 
-  if (!contact.relationship || typeof contact.relationship !== 'string' || contact.relationship.trim().length === 0) {
+  if (
+    !contact.relationship ||
+    typeof contact.relationship !== 'string' ||
+    contact.relationship.trim().length === 0
+  ) {
     errors.push('Contact relationship is required');
   }
 
@@ -176,15 +181,27 @@ export function validatePhotoCheckIn(checkIn: any): ValidationResult {
     return { isValid: false, errors, warnings };
   }
 
-  if (!checkIn.placeId || typeof checkIn.placeId !== 'string' || checkIn.placeId.trim().length === 0) {
+  if (
+    !checkIn.placeId ||
+    typeof checkIn.placeId !== 'string' ||
+    checkIn.placeId.trim().length === 0
+  ) {
     errors.push('Place ID is required');
   }
 
-  if (!checkIn.placeName || typeof checkIn.placeName !== 'string' || checkIn.placeName.trim().length === 0) {
+  if (
+    !checkIn.placeName ||
+    typeof checkIn.placeName !== 'string' ||
+    checkIn.placeName.trim().length === 0
+  ) {
     errors.push('Place name is required');
   }
 
-  if (!checkIn.photoUrl || typeof checkIn.photoUrl !== 'string' || checkIn.photoUrl.trim().length === 0) {
+  if (
+    !checkIn.photoUrl ||
+    typeof checkIn.photoUrl !== 'string' ||
+    checkIn.photoUrl.trim().length === 0
+  ) {
     errors.push('Photo URL is required');
   } else {
     // Basic URL validation
@@ -202,7 +219,8 @@ export function validatePhotoCheckIn(checkIn: any): ValidationResult {
     errors.push('Valid timestamp is required');
   } else {
     const age = Date.now() - checkIn.timestamp;
-    if (age > 86400000) { // 24 hours
+    if (age > 86400000) {
+      // 24 hours
       warnings.push('Check-in timestamp is more than 24 hours old');
     }
   }
@@ -246,8 +264,21 @@ export function validatePIN(pin: string): ValidationResult {
   // Check for weak PINs
   const weakPatterns = [
     /^(\d)\1+$/, // All same digits (1111, 2222, etc.)
-    /^1234$/, /^4321$/, /^0000$/, /^1111$/, /^2222$/, /^3333$/, /^4444$/, /^5555$/, /^6666$/, /^7777$/, /^8888$/, /^9999$/,
-    /^123456$/, /^654321$/, /^000000$/
+    /^1234$/,
+    /^4321$/,
+    /^0000$/,
+    /^1111$/,
+    /^2222$/,
+    /^3333$/,
+    /^4444$/,
+    /^5555$/,
+    /^6666$/,
+    /^7777$/,
+    /^8888$/,
+    /^9999$/,
+    /^123456$/,
+    /^654321$/,
+    /^000000$/,
   ];
 
   for (const pattern of weakPatterns) {
@@ -275,14 +306,17 @@ export function sanitizeInput(input: string, maxLength: number = 1000): string {
         '>': '&gt;',
         '"': '&quot;',
         "'": '&#x27;',
-        '&': '&amp;'
+        '&': '&amp;',
       };
       return entities[match] || match;
     });
 }
 
 // Validate and sanitize form data
-export function validateAndSanitizeFormData(data: Record<string, any>, schema: Record<string, any>): {
+export function validateAndSanitizeFormData(
+  data: Record<string, any>,
+  schema: Record<string, any>,
+): {
   isValid: boolean;
   sanitizedData: Record<string, any>;
   errors: string[];
@@ -294,7 +328,7 @@ export function validateAndSanitizeFormData(data: Record<string, any>, schema: R
 
   for (const [key, rules] of Object.entries(schema)) {
     const value = data[key];
-    
+
     // Check if required field is missing
     if (rules.required && (value === undefined || value === null || value === '')) {
       errors.push(`${key} is required`);
@@ -315,19 +349,19 @@ export function validateAndSanitizeFormData(data: Record<string, any>, schema: R
     // String validation and sanitization
     if (typeof value === 'string') {
       let sanitized = sanitizeInput(value, rules.maxLength);
-      
+
       if (rules.minLength && sanitized.length < rules.minLength) {
         errors.push(`${key} must be at least ${rules.minLength} characters`);
       }
-      
+
       if (rules.maxLength && sanitized.length > rules.maxLength) {
         warnings.push(`${key} was truncated to ${rules.maxLength} characters`);
       }
-      
+
       if (rules.pattern && !rules.pattern.test(sanitized)) {
         errors.push(`${key} format is invalid`);
       }
-      
+
       sanitizedData[key] = sanitized;
     } else {
       sanitizedData[key] = value;
@@ -338,7 +372,7 @@ export function validateAndSanitizeFormData(data: Record<string, any>, schema: R
     isValid: errors.length === 0,
     sanitizedData,
     errors,
-    warnings
+    warnings,
   };
 }
 
@@ -347,11 +381,11 @@ export function logValidationResult(context: string, result: ValidationResult): 
   if (!result.isValid) {
     log.warn(`Validation failed for ${context}`, { errors: result.errors });
   }
-  
+
   if (result.warnings && result.warnings.length > 0) {
     log.warn(`Validation warnings for ${context}`, { warnings: result.warnings });
   }
-  
+
   if (result.isValid && (!result.warnings || result.warnings.length === 0)) {
     log.debug(`Validation passed for ${context}`);
   }
@@ -366,9 +400,11 @@ export function validateDistance(distance: number, context: string = 'location')
     errors.push(`${context} distance must be a valid number`);
   } else if (distance < 0) {
     errors.push(`${context} distance cannot be negative`);
-  } else if (distance > 20000000) { // ~20,000 km (half Earth circumference)
+  } else if (distance > 20000000) {
+    // ~20,000 km (half Earth circumference)
     errors.push(`${context} distance is unrealistically large`);
-  } else if (distance > 1000000) { // 1000 km
+  } else if (distance > 1000000) {
+    // 1000 km
     warnings.push(`${context} distance is very large (>1000km)`);
   }
 
@@ -384,5 +420,5 @@ export default {
   sanitizeInput,
   validateAndSanitizeFormData,
   logValidationResult,
-  validateDistance
+  validateDistance,
 };

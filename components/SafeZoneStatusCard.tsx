@@ -5,11 +5,12 @@ import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';
 import { useParentalStore } from '@/stores/parentalStore';
 
 export const SafeZoneStatusCard: React.FC = () => {
-  const { isMonitoring, getCurrentSafeZoneStatus, startMonitoring, stopMonitoring } = useSafeZoneMonitor();
+  const { isMonitoring, getCurrentSafeZoneStatus, startMonitoring, stopMonitoring } =
+    useSafeZoneMonitor();
   const { settings, safeZones } = useParentalStore();
-  
+
   const status = getCurrentSafeZoneStatus();
-  const activeSafeZones = safeZones.filter(zone => zone.isActive);
+  const activeSafeZones = safeZones.filter((zone) => zone.isActive);
 
   if (!settings.safeZoneAlerts || activeSafeZones.length === 0) {
     return (
@@ -19,37 +20,30 @@ export const SafeZoneStatusCard: React.FC = () => {
           <Text style={styles.title}>Safe Zones</Text>
         </View>
         <Text style={styles.subtitle}>
-          {activeSafeZones.length === 0 
-            ? 'No safe zones configured' 
-            : 'Safe zone alerts are disabled'
-          }
+          {activeSafeZones.length === 0
+            ? 'No safe zones configured'
+            : 'Safe zone alerts are disabled'}
         </Text>
       </View>
     );
   }
 
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Shield 
-          size={24} 
-          color={isMonitoring ? '#10B981' : '#F59E0B'} 
-        />
+        <Shield size={24} color={isMonitoring ? '#10B981' : '#F59E0B'} />
         <Text style={styles.title}>Safe Zone Status</Text>
-        <View style={[
-          styles.statusBadge,
-          { backgroundColor: isMonitoring ? '#10B981' : '#F59E0B' }
-        ]}>
-          <Text style={styles.statusText}>
-            {isMonitoring ? 'Active' : 'Inactive'}
-          </Text>
+        <View
+          style={[styles.statusBadge, { backgroundColor: isMonitoring ? '#10B981' : '#F59E0B' }]}
+        >
+          <Text style={styles.statusText}>{isMonitoring ? 'Active' : 'Inactive'}</Text>
         </View>
       </View>
 
@@ -57,13 +51,9 @@ export const SafeZoneStatusCard: React.FC = () => {
         <View style={styles.content}>
           <View style={styles.locationInfo}>
             <MapPin size={16} color="#6B7280" />
-            <Text style={styles.locationText}>
-              Current location tracked
-            </Text>
+            <Text style={styles.locationText}>Current location tracked</Text>
             <Clock size={16} color="#6B7280" />
-            <Text style={styles.timeText}>
-              {formatTime(status.currentLocation.timestamp)}
-            </Text>
+            <Text style={styles.timeText}>{formatTime(status.currentLocation.timestamp)}</Text>
           </View>
 
           <View style={styles.zoneStats}>
@@ -84,7 +74,7 @@ export const SafeZoneStatusCard: React.FC = () => {
           {status.inside.length > 0 && (
             <View style={styles.insideZones}>
               <Text style={styles.sectionTitle}>Currently Inside:</Text>
-              {status.inside.map(zone => (
+              {status.inside.map((zone) => (
                 <View key={zone.id} style={styles.zoneItem}>
                   <View style={[styles.zoneDot, { backgroundColor: '#10B981' }]} />
                   <Text style={styles.zoneName}>{zone.name}</Text>
@@ -96,9 +86,7 @@ export const SafeZoneStatusCard: React.FC = () => {
           {status.outside.length > 0 && status.inside.length === 0 && (
             <View style={styles.outsideWarning}>
               <AlertTriangle size={16} color="#F59E0B" />
-              <Text style={styles.warningText}>
-                Not currently in any safe zone
-              </Text>
+              <Text style={styles.warningText}>Not currently in any safe zone</Text>
             </View>
           )}
         </View>
@@ -106,10 +94,7 @@ export const SafeZoneStatusCard: React.FC = () => {
 
       <View style={styles.controls}>
         <TouchableOpacity
-          style={[
-            styles.controlButton,
-            { backgroundColor: isMonitoring ? '#EF4444' : '#10B981' }
-          ]}
+          style={[styles.controlButton, { backgroundColor: isMonitoring ? '#EF4444' : '#10B981' }]}
           onPress={isMonitoring ? stopMonitoring : startMonitoring}
         >
           <Text style={styles.controlButtonText}>

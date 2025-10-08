@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { Lightbulb, X } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { Lightbulb, X } from 'lucide-react-native';
 
 type FunFactCardProps = {
   fact: string;
@@ -17,7 +17,7 @@ const FunFactCard: React.FC<FunFactCardProps> = ({ fact, location, onDismiss }) 
           <Lightbulb size={20} color={Colors.secondary} />
         </View>
         <Text style={styles.title}>
-          {location ? `Fun Fact about ${location}` : "Did You Know?"}
+          {location ? `Fun Fact about ${location}` : 'Did You Know?'}
         </Text>
         {onDismiss && (
           <Pressable style={styles.dismissButton} onPress={onDismiss}>
@@ -25,7 +25,7 @@ const FunFactCard: React.FC<FunFactCardProps> = ({ fact, location, onDismiss }) 
           </Pressable>
         )}
       </View>
-      
+
       <Text style={styles.factText}>{fact}</Text>
     </View>
   );
@@ -33,21 +33,21 @@ const FunFactCard: React.FC<FunFactCardProps> = ({ fact, location, onDismiss }) 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F0FFF4",
+    backgroundColor: '#F0FFF4',
     borderRadius: 12,
     padding: 16,
     margin: 16,
     borderLeftWidth: 4,
     borderLeftColor: Colors.secondary,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   iconContainer: {
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
   },
   dismissButton: {

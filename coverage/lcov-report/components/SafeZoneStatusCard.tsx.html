@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -307,29 +307,12 @@
 <a name='L242'></a><a href='#L242'>242</a>
 <a name='L243'></a><a href='#L243'>243</a>
 <a name='L244'></a><a href='#L244'>244</a>
-<a name='L245'></a><a href='#L245'>245</a>
-<a name='L246'></a><a href='#L246'>246</a>
-<a name='L247'></a><a href='#L247'>247</a>
-<a name='L248'></a><a href='#L248'>248</a>
-<a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a>
-<a name='L253'></a><a href='#L253'>253</a>
-<a name='L254'></a><a href='#L254'>254</a>
-<a name='L255'></a><a href='#L255'>255</a>
-<a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a>
-<a name='L258'></a><a href='#L258'>258</a>
-<a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L245'></a><a href='#L245'>245</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -338,6 +321,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -399,22 +384,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -582,17 +552,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-<span class="cstat-no" title="statement not covered" >import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';</span>
-<span class="cstat-no" title="statement not covered" >import { Shield, MapPin, Clock, AlertTriangle } from 'lucide-react-native';</span>
-<span class="cstat-no" title="statement not covered" >import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';</span>
-<span class="cstat-no" title="statement not covered" >import { useParentalStore } from '@/stores/parentalStore';</span>
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Shield, MapPin, Clock, AlertTriangle } from 'lucide-react-native';
+import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';
+import { useParentalStore } from '@/stores/parentalStore';
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >SafeZoneStatusCard: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
-  const { isMonitoring, getCurrentSafeZoneStatus, startMonitoring, stopMonitoring } = <span class="cstat-no" title="statement not covered" >useSafeZoneMonitor();</span>
+export const SafeZoneStatusCard: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const { isMonitoring, getCurrentSafeZoneStatus, startMonitoring, stopMonitoring } =
+<span class="cstat-no" title="statement not covered" >    useSafeZoneMonitor();</span>
   const { settings, safeZones } = <span class="cstat-no" title="statement not covered" >useParentalStore();</span>
-  
+&nbsp;
   const status = <span class="cstat-no" title="statement not covered" >getCurrentSafeZoneStatus();</span>
-  const activeSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >zone </span>=&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span>;</span>
+  const activeSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span>;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (!settings.safeZoneAlerts || activeSafeZones.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
@@ -602,37 +573,30 @@ export const <span class="cstat-no" title="statement not covered" >SafeZoneStatu
           &lt;Text style={styles.title}&gt;Safe Zones&lt;/Text&gt;
         &lt;/View&gt;
         &lt;Text style={styles.subtitle}&gt;
-          {activeSafeZones.length === 0 
-            ? 'No safe zones configured' 
-            : 'Safe zone alerts are disabled'
-          }
+          {activeSafeZones.length === 0
+            ? 'No safe zones configured'
+            : 'Safe zone alerts are disabled'}
         &lt;/Text&gt;
       &lt;/View&gt;
     );
   }
 &nbsp;
   const formatTime = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>imestamp: number) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return new Date(timestamp).toLocaleTimeString([], { </span>
-      hour: '2-digit', 
-      minute: '2-digit' 
+<span class="cstat-no" title="statement not covered" >    return new Date(timestamp).toLocaleTimeString([], {</span>
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.card}&gt;
       &lt;View style={styles.header}&gt;
-        &lt;Shield 
-          size={24} 
-          color={isMonitoring ? '#10B981' : '#F59E0B'} 
-        /&gt;
+        &lt;Shield size={24} color={isMonitoring ? '#10B981' : '#F59E0B'} /&gt;
         &lt;Text style={styles.title}&gt;Safe Zone Status&lt;/Text&gt;
-        &lt;View style={[
-          styles.statusBadge,
-          { backgroundColor: isMonitoring ? '#10B981' : '#F59E0B' }
-        ]}&gt;
-          &lt;Text style={styles.statusText}&gt;
-            {isMonitoring ? 'Active' : 'Inactive'}
-          &lt;/Text&gt;
+        &lt;View
+          style={[styles.statusBadge, { backgroundColor: isMonitoring ? '#10B981' : '#F59E0B' }]}
+        &gt;
+          &lt;Text style={styles.statusText}&gt;{isMonitoring ? 'Active' : 'Inactive'}&lt;/Text&gt;
         &lt;/View&gt;
       &lt;/View&gt;
 &nbsp;
@@ -640,13 +604,9 @@ export const <span class="cstat-no" title="statement not covered" >SafeZoneStatu
         &lt;View style={styles.content}&gt;
           &lt;View style={styles.locationInfo}&gt;
             &lt;MapPin size={16} color="#6B7280" /&gt;
-            &lt;Text style={styles.locationText}&gt;
-              Current location tracked
-            &lt;/Text&gt;
+            &lt;Text style={styles.locationText}&gt;Current location tracked&lt;/Text&gt;
             &lt;Clock size={16} color="#6B7280" /&gt;
-            &lt;Text style={styles.timeText}&gt;
-              {formatTime(status.currentLocation.timestamp)}
-            &lt;/Text&gt;
+            &lt;Text style={styles.timeText}&gt;{formatTime(status.currentLocation.timestamp)}&lt;/Text&gt;
           &lt;/View&gt;
 &nbsp;
           &lt;View style={styles.zoneStats}&gt;
@@ -667,8 +627,8 @@ export const <span class="cstat-no" title="statement not covered" >SafeZoneStatu
           {status.inside.length &gt; 0 &amp;&amp; (
             &lt;View style={styles.insideZones}&gt;
               &lt;Text style={styles.sectionTitle}&gt;Currently Inside:&lt;/Text&gt;
-              {status.inside.map(<span class="fstat-no" title="function not covered" >zone </span>=&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;View key={zone.id} s</span>tyle={styles.zoneItem}&gt;
+              {status.inside.map(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;View key={zone.id} style={styles.zoneItem}&gt;</span>
                   &lt;View style={[styles.zoneDot, { backgroundColor: '#10B981' }]} /&gt;
                   &lt;Text style={styles.zoneName}&gt;{zone.name}&lt;/Text&gt;
                 &lt;/View&gt;
@@ -679,9 +639,7 @@ export const <span class="cstat-no" title="statement not covered" >SafeZoneStatu
           {status.outside.length &gt; 0 &amp;&amp; status.inside.length === 0 &amp;&amp; (
             &lt;View style={styles.outsideWarning}&gt;
               &lt;AlertTriangle size={16} color="#F59E0B" /&gt;
-              &lt;Text style={styles.warningText}&gt;
-                Not currently in any safe zone
-              &lt;/Text&gt;
+              &lt;Text style={styles.warningText}&gt;Not currently in any safe zone&lt;/Text&gt;
             &lt;/View&gt;
           )}
         &lt;/View&gt;
@@ -689,10 +647,7 @@ export const <span class="cstat-no" title="statement not covered" >SafeZoneStatu
 &nbsp;
       &lt;View style={styles.controls}&gt;
         &lt;TouchableOpacity
-          style={[
-            styles.controlButton,
-            { backgroundColor: isMonitoring ? '#EF4444' : '#10B981' }
-          ]}
+          style={[styles.controlButton, { backgroundColor: isMonitoring ? '#EF4444' : '#10B981' }]}
           onPress={isMonitoring ? stopMonitoring : startMonitoring}
         &gt;
           &lt;Text style={styles.controlButtonText}&gt;
@@ -847,7 +802,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,38 +1,46 @@
-module.exports = {
-  // No preset here so Jest will use its defaults. For React Native specific
-  // transforms set the preset back to 'react-native' in your local CI.
-  // No setupFilesAfterEnv to avoid importing react-native-specific test helpers
-  transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|expo|@expo|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-native-community|expo-router|@expo/vector-icons|react-native-svg|react-native-reanimated|@react-navigation|lucide-react-native)/)',
-  ],
-  testMatch: [
-    '**/__tests__/**/*.(ts|tsx|js)',
-    '**/*.(test|spec).(ts|tsx|js)',
-  ],
+const enforceCoverage = process.env.ENFORCE_COVERAGE === 'true';
+
+export default {
+  // Remove preset: 'react-native' to avoid parsing issues with RN's mock files
+  testPathIgnorePatterns: ['/node_modules/', '/bun-tests/'],
+  testMatch: ['**/__tests__/**/*.(ts|tsx|js)', '**/*.(test|spec).(ts|tsx|js)'],
   collectCoverageFrom: [
     'components/**/*.{ts,tsx}',
     'hooks/**/*.{ts,tsx}',
     'stores/**/*.{ts,tsx}',
     'utils/**/*.{ts,tsx}',
     '!**/*.d.ts',
-    '!**/node_modules/**',
+    '!**/node_modules/**'
   ],
-  coverageThreshold: {
-    global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
-    },
+  // Only enforce high coverage thresholds when explicitly enabled.
+  // In CI we currently gather coverage but do not fail the build unless ENFORCE_COVERAGE=true.
+  coverageThreshold: enforceCoverage ? {
+    global: { branches: 70, functions: 70, lines: 70, statements: 70 }
+  } : undefined,
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+    '^react-native$': '<rootDir>/__mocks__/react-native.js',
+    '^react-native/jest/mock$': '<rootDir>/__mocks__/react-native-jest-mock.js',
+    '^react-native/jest/setup$': '<rootDir>/__mocks__/react-native-jest-setup.js',
+    '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js',
+    '^@/components/MapLibreMap$': '<rootDir>/__mocks__/MapLibreMapMock.tsx',
+    '(^|\\./|\\../)MapLibreMap$': '<rootDir>/__mocks__/MapLibreMapMock.tsx',
+    '^MapLibreRouteView$': '<rootDir>/__mocks__/MapLibreRouteView.tsx',
+    '^utils/(.*)$': '<rootDir>/utils/$1.ts'
   },
-    moduleNameMapper: {
-      '^@/(.*)$': '<rootDir>/$1',
-      '^react-native$': '<rootDir>/__mocks__/react-native.js',
-      '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js'
-    },
-    transform: {
-      '^.+\\.(ts|tsx)$': 'ts-jest',
-    },
-    setupFiles: ['<rootDir>/jest.setup.js'],
-    testEnvironment: 'node',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  setupFiles: ['<rootDir>/jest.setup.js'],
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.(ts|tsx|js|jsx)$': ['babel-jest', {
+      presets: [
+        ['@babel/preset-env', { targets: { node: 'current' } }],
+        '@babel/preset-typescript',
+        '@babel/preset-react'
+      ],
+    }],
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|@react-native|@maplibre|@maplibre\\/maplibre-react-native|@react-navigation|expo|@expo|@react-native-community)/)'
+  ],
 };

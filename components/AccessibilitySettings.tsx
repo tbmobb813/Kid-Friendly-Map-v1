@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, Switch, ScrollView, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { Eye, Volume2, Zap, Settings, ArrowLeft } from "lucide-react-native";
-import { useNavigationStore } from "@/stores/navigationStore";
+import React from 'react';
+import { StyleSheet, Text, View, Switch, ScrollView, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { Eye, Volume2, Zap, Settings, ArrowLeft } from 'lucide-react-native';
+import { useNavigationStore } from '@/stores/navigationStore';
 
 type AccessibilitySettingsProps = {
   onBack?: () => void;
@@ -11,12 +11,12 @@ type AccessibilitySettingsProps = {
 const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack }) => {
   const { accessibilitySettings, updateAccessibilitySettings } = useNavigationStore();
 
-  const SettingItem = ({ 
-    icon, 
-    title, 
-    description, 
-    value, 
-    onValueChange 
+  const SettingItem = ({
+    icon,
+    title,
+    description,
+    value,
+    onValueChange,
   }: {
     icon: React.ReactNode;
     title: string;
@@ -30,14 +30,19 @@ const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack })
         <Text style={[styles.settingTitle, accessibilitySettings.largeText && styles.largeText]}>
           {title}
         </Text>
-        <Text style={[styles.settingDescription, accessibilitySettings.largeText && styles.largeDescription]}>
+        <Text
+          style={[
+            styles.settingDescription,
+            accessibilitySettings.largeText && styles.largeDescription,
+          ]}
+        >
           {description}
         </Text>
       </View>
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{ false: "#E0E0E0", true: Colors.primary }}
+        trackColor={{ false: '#E0E0E0', true: Colors.primary }}
         thumbColor="#FFFFFF"
       />
     </View>
@@ -51,11 +56,13 @@ const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack })
           <Text style={styles.backText}>Back to Settings</Text>
         </Pressable>
       )}
-      
-      <Text style={[styles.sectionTitle, accessibilitySettings.largeText && styles.largeSectionTitle]}>
+
+      <Text
+        style={[styles.sectionTitle, accessibilitySettings.largeText && styles.largeSectionTitle]}
+      >
         Accessibility Settings
       </Text>
-      
+
       <SettingItem
         icon={<Eye size={24} color={Colors.primary} />}
         title="Large Text"
@@ -63,7 +70,7 @@ const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack })
         value={accessibilitySettings.largeText}
         onValueChange={(value) => updateAccessibilitySettings({ largeText: value })}
       />
-      
+
       <SettingItem
         icon={<Settings size={24} color={Colors.primary} />}
         title="High Contrast"
@@ -71,7 +78,7 @@ const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack })
         value={accessibilitySettings.highContrast}
         onValueChange={(value) => updateAccessibilitySettings({ highContrast: value })}
       />
-      
+
       <SettingItem
         icon={<Volume2 size={24} color={Colors.primary} />}
         title="Voice Descriptions"
@@ -79,7 +86,7 @@ const AccessibilitySettings: React.FC<AccessibilitySettingsProps> = ({ onBack })
         value={accessibilitySettings.voiceDescriptions}
         onValueChange={(value) => updateAccessibilitySettings({ voiceDescriptions: value })}
       />
-      
+
       <SettingItem
         icon={<Zap size={24} color={Colors.primary} />}
         title="Simplified Mode"
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
@@ -107,8 +114,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   settingItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
@@ -118,9 +125,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F0F4FF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F0F4FF',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
   },
   settingContent: {
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
   },
   settingTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
@@ -143,8 +150,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   backButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 4,
     marginBottom: 16,
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
   backText: {
     fontSize: 16,
     color: Colors.primary,
-    fontWeight: "600",
+    fontWeight: '600',
     marginLeft: 8,
   },
 });
