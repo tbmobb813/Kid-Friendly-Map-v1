@@ -19,7 +19,7 @@ export default function VoiceSettingsComponent() {
 
   const loadVoices = async () => {
     const availableVoices = voiceManager.getAvailableVoices();
-    setVoices(availableVoices.filter(v => v.language.startsWith('en')));
+    setVoices(availableVoices.filter((v) => v.language.startsWith('en')));
   };
 
   const handleSettingChange = (key: keyof VoiceSettings, value: any) => {
