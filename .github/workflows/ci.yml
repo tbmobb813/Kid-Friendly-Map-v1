@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Run tests with coverage
-        run: npx -y jest --ci --colors --coverage
+        run: npx -y jest --ci --colors --coverage --runInBand
         env:
           PLATFORM: ${{ matrix.platform }}
       - name: Upload coverage reports
@@ -87,9 +87,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Run safety-specific tests
-        run: npx -y jest __tests__/safety.test.ts --coverage --ci --colors
+        run: npx -y jest __tests__/safety.test.ts --coverage --ci --colors --runInBand
       - name: Validate error handling
-        run: npx -y jest __tests__/errorHandling.test.ts --coverage --ci --colors
+        run: npx -y jest __tests__/errorHandling.test.ts --coverage --ci --colors --runInBand
 
   performance:
     name: Performance Tests
@@ -111,9 +111,9 @@ jobs:
       - name: Bundle size analysis
         run: |
           echo "Analyzing bundle size..."
-          node scripts/build-production.js
+          node scripts/build-production-simple.js
       - name: Performance benchmarks
-        run: npx -y jest __tests__/performance.test.ts --ci --colors
+        run: npx -y jest __tests__/performance.test.ts --ci --colors --runInBand
 
   # Security and Compliance
   security:
