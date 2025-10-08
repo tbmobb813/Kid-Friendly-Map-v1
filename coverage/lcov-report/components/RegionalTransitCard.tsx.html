@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -193,14 +193,12 @@
 <a name='L128'></a><a href='#L128'>128</a>
 <a name='L129'></a><a href='#L129'>129</a>
 <a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L131'></a><a href='#L131'>131</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -248,8 +246,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -326,35 +322,35 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, FlatList } from "react-native";</span>
-<span class="cstat-no" title="statement not covered" >import Colors from "@/constants/colors";</span>
-<span class="cstat-no" title="statement not covered" >import { useRegionStore } from "@/stores/regionStore";</span>
-import TransitStepIndicator from "./TransitStepIndicator";
-<span class="cstat-no" title="statement not covered" >import { Train, Bus, Navigation, Ship } from "lucide-react-native";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import Colors from '@/constants/colors';
+import { useRegionStore } from '@/stores/regionStore';
+import TransitStepIndicator from './TransitStepIndicator';
+import { Train, Bus, Navigation, Ship } from 'lucide-react-native';
 &nbsp;
-const RegionalTransitCard: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+const RegionalTransitCard: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
   const { currentRegion, getCurrentTransitSystems } = <span class="cstat-no" title="statement not covered" >useRegionStore();</span>
   const transitSystems = <span class="cstat-no" title="statement not covered" >getCurrentTransitSystems();</span>
 &nbsp;
   const getTransitIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>ype: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
-      case "subway":
-      case "train":
+      case 'subway':
+      case 'train':
 <span class="cstat-no" title="statement not covered" >        return &lt;Train size={20} color="#FFFFFF" /&gt;;</span>
-      case "bus":
+      case 'bus':
 <span class="cstat-no" title="statement not covered" >        return &lt;Bus size={20} color="#FFFFFF" /&gt;;</span>
-      case "tram":
+      case 'tram':
 <span class="cstat-no" title="statement not covered" >        return &lt;Navigation size={20} color="#FFFFFF" /&gt;;</span>
-      case "ferry":
+      case 'ferry':
 <span class="cstat-no" title="statement not covered" >        return &lt;Ship size={20} color="#FFFFFF" /&gt;;</span>
       default:
 <span class="cstat-no" title="statement not covered" >        return &lt;Train size={20} color="#FFFFFF" /&gt;;</span>
     }
   };
 &nbsp;
-  const renderTransitSystem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item }: { item: typeof transitSystems[0] }) =&gt; (</span>
+  const renderTransitSystem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item }: { item: (typeof transitSystems)[0] }) =&gt; (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;View style={styles.transitItem}&gt;</span>
       &lt;View style={[styles.transitIcon, { backgroundColor: item.color }]}&gt;
         {getTransitIcon(item.type)}
@@ -385,9 +381,7 @@ const RegionalTransitCard: React.FC = <span class="cstat-no" title="statement no
       /&gt;
 &nbsp;
       &lt;View style={styles.footer}&gt;
-        &lt;Text style={styles.footerText}&gt;
-          Emergency: {currentRegion.emergencyNumber}
-        &lt;/Text&gt;
+        &lt;Text style={styles.footerText}&gt;Emergency: {currentRegion.emergencyNumber}&lt;/Text&gt;
       &lt;/View&gt;
     &lt;/View&gt;
   );
@@ -408,7 +402,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
   title: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
@@ -420,15 +414,15 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     gap: 12,
   },
   transitItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   transitIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   transitInfo: {
@@ -436,7 +430,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
   transitName: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 2,
   },
@@ -453,12 +447,12 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   footerText: {
     fontSize: 14,
     color: Colors.error,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default RegionalTransitCard;</span>
+export default RegionalTransitCard;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -466,7 +460,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

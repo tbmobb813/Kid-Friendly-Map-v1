@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
 import { Bell, AlertTriangle, ExternalLink, CheckCircle } from 'lucide-react-native';
 import Colors from '@/constants/colors';
-import { showDevelopmentBuildRecommendation, requestNotificationPermission } from '@/utils/notifications';
+import {
+  showDevelopmentBuildRecommendation,
+  requestNotificationPermission,
+} from '@/utils/notifications';
 
 type NotificationStatusCardProps = {
   testId?: string;
@@ -11,7 +14,7 @@ type NotificationStatusCardProps = {
 const NotificationStatusCard: React.FC<NotificationStatusCardProps> = ({ testId }) => {
   const isExpoGo = __DEV__ && Platform.OS !== 'web';
   const isWeb = Platform.OS === 'web';
-  
+
   const getStatusInfo = () => {
     if (isWeb) {
       return {
@@ -23,7 +26,7 @@ const NotificationStatusCard: React.FC<NotificationStatusCardProps> = ({ testId 
         actionText: 'Enable Notifications',
       };
     }
-    
+
     if (isExpoGo) {
       return {
         icon: <AlertTriangle size={20} color={Colors.warning} />,
@@ -34,7 +37,7 @@ const NotificationStatusCard: React.FC<NotificationStatusCardProps> = ({ testId 
         actionText: 'Why Limited?',
       };
     }
-    
+
     return {
       icon: <CheckCircle size={20} color={Colors.success} />,
       title: 'Full Notifications Available',
@@ -44,9 +47,9 @@ const NotificationStatusCard: React.FC<NotificationStatusCardProps> = ({ testId 
       actionText: 'Request Permission',
     };
   };
-  
+
   const statusInfo = getStatusInfo();
-  
+
   const handleAction = async () => {
     if (isExpoGo) {
       showDevelopmentBuildRecommendation();
@@ -54,26 +57,24 @@ const NotificationStatusCard: React.FC<NotificationStatusCardProps> = ({ testId 
     }
     await requestNotificationPermission();
   };
-  
+
   return (
     <View style={[styles.card, styles[statusInfo.status]]} testID={testId}>
       <View style={styles.header}>
-        <View style={styles.iconContainer}>
-          {statusInfo.icon}
-        </View>
+        <View style={styles.iconContainer}>{statusInfo.icon}</View>
         <View style={styles.content}>
           <Text style={styles.title}>{statusInfo.title}</Text>
           <Text style={styles.description}>{statusInfo.description}</Text>
         </View>
       </View>
-      
+
       {statusInfo.showAction && (
         <Pressable style={styles.actionButton} onPress={handleAction}>
           <ExternalLink size={16} color={Colors.primary} />
           <Text style={styles.actionText}>{statusInfo.actionText}</Text>
         </Pressable>
       )}
-      
+
       {isExpoGo && (
         <View style={styles.infoBox}>
           <Text style={styles.infoText}>

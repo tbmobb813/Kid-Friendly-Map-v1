@@ -53,7 +53,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           duration: 1000,
           useNativeDriver: true,
         }),
-      ])
+      ]),
     ).start();
   };
 
@@ -93,15 +93,15 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
       });
 
       const data = await response.json();
-      
+
       const newMessage: CompanionMessage = {
         id: Date.now().toString(),
         text: data.completion,
         type: 'story',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, newMessage]);
+      setMessages((prev) => [...prev, newMessage]);
       setCurrentMessage(newMessage);
       setCompanionMood('excited');
       
@@ -122,7 +122,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
         id: Date.now().toString(),
         text: fallbackText,
         type: 'encouragement',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
       setCurrentMessage(fallbackMessage);
       
@@ -145,26 +145,27 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           messages: [
             {
               role: 'system',
-              content: 'Create a simple, fun quiz question for kids about the area they\'re visiting. Make it educational but easy to understand. Include the answer.'
+              content:
+                "Create a simple, fun quiz question for kids about the area they're visiting. Make it educational but easy to understand. Include the answer.",
             },
             {
               role: 'user',
-              content: `Create a quiz question about ${destination.name} or the ${destination.category} category in general.`
-            }
-          ]
-        })
+              content: `Create a quiz question about ${destination.name} or the ${destination.category} category in general.`,
+            },
+          ],
+        }),
       });
 
       const data = await response.json();
-      
+
       const quizMessage: CompanionMessage = {
         id: Date.now().toString(),
         text: `🧠 Quiz Time! ${data.completion}`,
         type: 'quiz',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, quizMessage]);
+      setMessages((prev) => [...prev, quizMessage]);
       setCurrentMessage(quizMessage);
       setCompanionMood('curious');
       
@@ -234,9 +235,12 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
 
   const getMoodEmoji = () => {
     switch (companionMood) {
-      case 'excited': return '🤩';
-      case 'curious': return '🤔';
-      default: return '😊';
+      case 'excited':
+        return '🤩';
+      case 'curious':
+        return '🤔';
+      default:
+        return '😊';
     }
   };
 
@@ -246,17 +250,12 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
 
   return (
     <View style={styles.container}>
-      <Pressable 
-        style={styles.companionButton}
-        onPress={() => setIsExpanded(!isExpanded)}
-      >
-        <Animated.View 
-          style={[styles.avatar, { transform: [{ scale: pulseAnim }] }]}
-        >
+      <Pressable style={styles.companionButton} onPress={() => setIsExpanded(!isExpanded)}>
+        <Animated.View style={[styles.avatar, { transform: [{ scale: pulseAnim }] }]}>
           <Text style={styles.avatarEmoji}>{getMoodEmoji()}</Text>
           <Bot size={16} color={Colors.white} style={styles.botIcon} />
         </Animated.View>
-        
+
         <View style={styles.messagePreview}>
           <Text style={styles.companionName}>Buddy</Text>
           <Text style={styles.messageText} numberOfLines={1}>
@@ -264,10 +263,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           </Text>
         </View>
 
-        <Pressable 
-          style={styles.voiceButton}
-          onPress={() => setVoiceEnabled(!voiceEnabled)}
-        >
+        <Pressable style={styles.voiceButton} onPress={() => setVoiceEnabled(!voiceEnabled)}>
           {voiceEnabled ? (
             <Volume2 size={16} color={Colors.primary} />
           ) : (
@@ -279,7 +275,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
       {isExpanded && (
         <View style={styles.expandedContent}>
           <Text style={styles.fullMessage}>{currentMessage.text}</Text>
-          
+
           <View style={styles.actionButtons}>
             <Pressable style={styles.actionButton} onPress={generateQuiz}>
               <Sparkles size={16} color={Colors.primary} />

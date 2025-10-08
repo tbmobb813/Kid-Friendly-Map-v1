@@ -1,5 +1,5 @@
-import { Platform } from "react-native";
-import React from "react";
+import { Platform } from 'react-native';
+import React from 'react';
 
 type PerformanceMetric = {
   name: string;
@@ -32,7 +32,7 @@ class PerformanceMonitor {
       value,
       timestamp: Date.now(),
     };
-    
+
     this.metrics.push(metric);
     console.log(`Performance: ${name} = ${value}ms`);
   }
@@ -67,7 +67,7 @@ export const performanceMonitor = new PerformanceMonitor();
 // HOC for measuring component render time
 export function withPerformanceTracking<T extends object>(
   Component: React.ComponentType<T>,
-  componentName: string
+  componentName: string,
 ) {
   return function PerformanceTrackedComponent(props: T) {
     React.useEffect(() => {

@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { LucideIcon } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { LucideIcon } from 'lucide-react-native';
 
 type EmptyStateProps = {
   icon: LucideIcon;
@@ -37,8 +37,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 32,
   },
   iconContainer: {
@@ -46,21 +46,21 @@ const styles = StyleSheet.create({
     height: 96,
     borderRadius: 48,
     backgroundColor: Colors.card,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 24,
   },
   title: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 24,
     marginBottom: 24,
   },
@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   actionText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 

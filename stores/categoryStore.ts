@@ -165,17 +165,17 @@ export const [CategoryProvider, useCategoryStoreInternal] = createContextHook(()
 
   // Update an existing category
   const updateCategory = async (id: string, updates: Partial<CustomCategory>) => {
-    const updatedCategories = categories.map(cat => 
-      cat.id === id ? { ...cat, ...updates } : cat
+    const updatedCategories = categories.map((cat) =>
+      cat.id === id ? { ...cat, ...updates } : cat,
     );
     await saveCategories(updatedCategories);
   };
 
   // Delete a category (only custom ones)
   const deleteCategory = async (id: string) => {
-    const category = categories.find(cat => cat.id === id);
+    const category = categories.find((cat) => cat.id === id);
     if (category && !category.isDefault) {
-      const updatedCategories = categories.filter(cat => cat.id !== id);
+      const updatedCategories = categories.filter((cat) => cat.id !== id);
       await saveCategories(updatedCategories);
     }
   };
@@ -187,17 +187,17 @@ export const [CategoryProvider, useCategoryStoreInternal] = createContextHook(()
 
   // Get approved categories only
   const getApprovedCategories = (): CustomCategory[] => {
-    return categories.filter(cat => cat.isApproved);
+    return categories.filter((cat) => cat.isApproved);
   };
 
   // Get pending categories (waiting for approval)
   const getPendingCategories = (): CustomCategory[] => {
-    return categories.filter(cat => !cat.isApproved && cat.createdBy === 'child');
+    return categories.filter((cat) => !cat.isApproved && cat.createdBy === 'child');
   };
 
   // Convert custom category to place category for compatibility
   const getPlaceCategory = (customCategoryId: string): PlaceCategory => {
-    const category = categories.find(cat => cat.id === customCategoryId);
+    const category = categories.find((cat) => cat.id === customCategoryId);
     if (category && category.isDefault) {
       return customCategoryId as PlaceCategory;
     }
@@ -206,19 +206,66 @@ export const [CategoryProvider, useCategoryStoreInternal] = createContextHook(()
 
   // Get available icons for category creation
   const getAvailableIcons = () => [
-    'Home', 'GraduationCap', 'Trees', 'BookOpen', 'ShoppingBag', 'Pizza',
-    'Users', 'Heart', 'Car', 'Bike', 'Bus', 'Train', 'Plane', 'Hospital',
-    'Church', 'Building', 'Gamepad2', 'Music', 'Camera', 'Gift',
-    'Coffee', 'IceCream', 'Candy', 'Apple', 'Dumbbell', 'Palette',
-    'Star', 'Sun', 'Moon', 'Cloud', 'Umbrella', 'Flower'
+    'Home',
+    'GraduationCap',
+    'Trees',
+    'BookOpen',
+    'ShoppingBag',
+    'Pizza',
+    'Users',
+    'Heart',
+    'Car',
+    'Bike',
+    'Bus',
+    'Train',
+    'Plane',
+    'Hospital',
+    'Church',
+    'Building',
+    'Gamepad2',
+    'Music',
+    'Camera',
+    'Gift',
+    'Coffee',
+    'IceCream',
+    'Candy',
+    'Apple',
+    'Dumbbell',
+    'Palette',
+    'Star',
+    'Sun',
+    'Moon',
+    'Cloud',
+    'Umbrella',
+    'Flower',
   ];
 
   // Get available colors for category creation
   const getAvailableColors = () => [
-    '#007AFF', '#FF9500', '#34C759', '#9C27B0', '#4285F4', '#FF6B6B',
-    '#00BCD4', '#FF4081', '#FFC107', '#795548', '#607D8B', '#E91E63',
-    '#3F51B5', '#009688', '#8BC34A', '#CDDC39', '#FFEB3B', '#FF5722',
-    '#9E9E9E', '#673AB7', '#2196F3', '#03DAC6', '#FF1744', '#00E676'
+    '#007AFF',
+    '#FF9500',
+    '#34C759',
+    '#9C27B0',
+    '#4285F4',
+    '#FF6B6B',
+    '#00BCD4',
+    '#FF4081',
+    '#FFC107',
+    '#795548',
+    '#607D8B',
+    '#E91E63',
+    '#3F51B5',
+    '#009688',
+    '#8BC34A',
+    '#CDDC39',
+    '#FFEB3B',
+    '#FF5722',
+    '#9E9E9E',
+    '#673AB7',
+    '#2196F3',
+    '#03DAC6',
+    '#FF1744',
+    '#00E676',
   ];
 
   return {
@@ -265,14 +312,14 @@ export const useCategoryStore = () => {
 
 export const useCategoryManagement = () => {
   const store = useCategoryStore();
-  
+
   return {
     ...store,
     canCreateCategory: (createdBy: 'parent' | 'child') => {
       if (createdBy === 'parent') return true;
       if (!store.settings.allowChildToCreateCategories) return false;
-      
-      const customCategoriesCount = store.categories.filter(cat => !cat.isDefault).length;
+
+      const customCategoriesCount = store.categories.filter((cat) => !cat.isDefault).length;
       return customCategoriesCount < store.settings.maxCustomCategories;
     },
     needsApproval: (createdBy: 'parent' | 'child') => {

@@ -1,15 +1,15 @@
-import { RegionConfig } from "@/types/region";
+import { RegionConfig } from '@/types/region';
 
 export const newYorkConfig: RegionConfig = {
-  id: "nyc",
-  name: "New York City",
-  country: "United States",
-  timezone: "America/New_York",
-  currency: "USD",
-  language: "en",
+  id: 'nyc',
+  name: 'New York City',
+  country: 'United States',
+  timezone: 'America/New_York',
+  currency: 'USD',
+  language: 'en',
   coordinates: {
     latitude: 40.7128,
-    longitude: -74.0060
+    longitude: -74.006,
   },
   transitSystems: [
     {
@@ -170,7 +170,7 @@ export const newYorkConfig: RegionConfig = {
       }
     }
   ],
-  emergencyNumber: "911",
+  emergencyNumber: '911',
   safetyTips: [
     "Always stay with a trusted adult when using public transportation",
     "Keep your MetroCard or OMNY card in a safe place",
@@ -259,7 +259,7 @@ export const newYorkConfig: RegionConfig = {
       transitInfo: "Take the 1 train to 79th St, or B, C trains to 81st St-Museum of Natural History"
     }
   ],
-  transitApiEndpoint: "https://api.mta.info/",
+  transitApiEndpoint: 'https://api.mta.info/',
   transitApiKey: process.env.MTA_API_KEY,
-  mapStyle: "standard"
+  mapStyle: 'standard',
 };

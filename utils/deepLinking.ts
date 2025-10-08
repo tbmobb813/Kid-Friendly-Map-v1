@@ -1,5 +1,5 @@
-import { Linking } from "react-native";
-import { router } from "expo-router";
+import { Linking } from 'react-native';
+import { router } from 'expo-router';
 
 export type DeepLinkParams = {
   screen?: string;
@@ -39,13 +39,13 @@ export const createShareableLink = (screen: string, params?: Record<string, stri
   const baseUrl = 'https://kidmap.app'; // Replace with your actual domain
   const url = new URL(baseUrl);
   url.pathname = screen;
-  
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value);
     });
   }
-  
+
   return url.toString();
 };
 

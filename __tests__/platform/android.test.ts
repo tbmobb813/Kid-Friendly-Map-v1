@@ -5,8 +5,8 @@ jest.mock('react-native', () => ({
   Platform: {
     OS: 'android',
     Version: 33,
-    select: jest.fn((options) => options.android || options.default)
-  }
+    select: jest.fn((options) => options.android || options.default),
+  },
 }));
 
 describe('Android Platform Tests', () => {
@@ -22,7 +22,7 @@ describe('Android Platform Tests', () => {
         location: 'granted',
         camera: 'granted',
         notifications: 'granted',
-        storage: 'granted'
+        storage: 'granted',
       };
 
       expect(mockPermissions.location).toBe('granted');
@@ -32,7 +32,7 @@ describe('Android Platform Tests', () => {
     it('should use Android-specific UI components', () => {
       const androidComponent = Platform.select({
         android: 'AndroidSpecificComponent',
-        default: 'DefaultComponent'
+        default: 'DefaultComponent',
       });
 
       expect(androidComponent).toBe('AndroidSpecificComponent');
@@ -43,7 +43,7 @@ describe('Android Platform Tests', () => {
       const mockNavigationBar = {
         height: 48,
         translucent: true,
-        backgroundColor: '#000000'
+        backgroundColor: '#000000',
       };
 
       expect(mockNavigationBar.height).toBeGreaterThan(0);
@@ -55,7 +55,7 @@ describe('Android Platform Tests', () => {
       const mockBackHandler = {
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-        exitApp: jest.fn()
+        exitApp: jest.fn(),
       };
 
       expect(mockBackHandler.addEventListener).toBeDefined();
@@ -68,10 +68,10 @@ describe('Android Platform Tests', () => {
       const mockLocationService = {
         requestPermission: jest.fn().mockResolvedValue('granted'),
         getCurrentPosition: jest.fn().mockResolvedValue({
-          coords: { latitude: 37.7749, longitude: -122.4194 }
+          coords: { latitude: 37.7749, longitude: -122.4194 },
         }),
         watchPosition: jest.fn(),
-        backgroundLocation: true
+        backgroundLocation: true,
       };
 
       expect(mockLocationService.backgroundLocation).toBe(true);
@@ -83,7 +83,7 @@ describe('Android Platform Tests', () => {
         emergencyCall: jest.fn(),
         emergencyContacts: ['911', 'emergency-contact-1'],
         emergencyBroadcast: true,
-        panicButton: true
+        panicButton: true,
       };
 
       expect(mockEmergencyFeatures.emergencyBroadcast).toBe(true);
@@ -97,7 +97,7 @@ describe('Android Platform Tests', () => {
         animationDriver: 'js', // Android may use JS driver for compatibility
         imageOptimization: true,
         memoryManagement: 'manual',
-        hardwareAcceleration: true
+        hardwareAcceleration: true,
       };
 
       expect(mockPerformanceConfig.hardwareAcceleration).toBe(true);
@@ -108,7 +108,7 @@ describe('Android Platform Tests', () => {
       const mockMemoryManager = {
         lowMemoryWarning: jest.fn(),
         trimMemory: jest.fn(),
-        gcSuggest: jest.fn()
+        gcSuggest: jest.fn(),
       };
 
       expect(mockMemoryManager.lowMemoryWarning).toBeDefined();
@@ -122,7 +122,7 @@ describe('Android Platform Tests', () => {
         talkBack: true,
         selectToSpeak: false,
         highContrast: false,
-        largeText: true
+        largeText: true,
       };
 
       expect(mockAccessibility.talkBack).toBe(true);
@@ -138,15 +138,15 @@ describe('Android Platform Tests', () => {
           name: 'Safety Alerts',
           importance: 'high',
           sound: true,
-          vibration: true
+          vibration: true,
         },
         general: {
           id: 'general',
           name: 'General',
           importance: 'default',
           sound: false,
-          vibration: false
-        }
+          vibration: false,
+        },
       };
 
       expect(mockNotificationChannels.safety.importance).toBe('high');

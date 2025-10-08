@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
-type ToastType = "success" | "error" | "info" | "warning";
+type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 type ToastState = {
   message: string;
@@ -10,12 +10,12 @@ type ToastState = {
 
 export function useToast() {
   const [toast, setToast] = useState<ToastState>({
-    message: "",
-    type: "info",
+    message: '',
+    type: 'info',
     visible: false,
   });
 
-  const showToast = useCallback((message: string, type: ToastType = "info") => {
+  const showToast = useCallback((message: string, type: ToastType = 'info') => {
     setToast({
       message,
       type,
@@ -24,7 +24,7 @@ export function useToast() {
   }, []);
 
   const hideToast = useCallback(() => {
-    setToast(prev => ({ ...prev, visible: false }));
+    setToast((prev) => ({ ...prev, visible: false }));
   }, []);
 
   return {

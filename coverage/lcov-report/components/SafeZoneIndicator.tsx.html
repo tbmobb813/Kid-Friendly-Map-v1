@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
@@ -143,11 +143,13 @@
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -172,6 +174,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,34 +228,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-<span class="cstat-no" title="statement not covered" >import { View, Text, StyleSheet } from 'react-native';</span>
-<span class="cstat-no" title="statement not covered" >import { Shield } from 'lucide-react-native';</span>
-<span class="cstat-no" title="statement not covered" >import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';</span>
-<span class="cstat-no" title="statement not covered" >import { useParentalStore } from '@/stores/parentalStore';</span>
+import { View, Text, StyleSheet } from 'react-native';
+import { Shield } from 'lucide-react-native';
+import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';
+import { useParentalStore } from '@/stores/parentalStore';
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >SafeZoneIndicator: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
+export const SafeZoneIndicator: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
   const { isMonitoring, getCurrentSafeZoneStatus } = <span class="cstat-no" title="statement not covered" >useSafeZoneMonitor();</span>
   const { settings, safeZones } = <span class="cstat-no" title="statement not covered" >useParentalStore();</span>
-  
+&nbsp;
   const status = <span class="cstat-no" title="statement not covered" >getCurrentSafeZoneStatus();</span>
-  const activeSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >zone </span>=&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span>;</span>
+  const activeSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span>;</span>
 &nbsp;
   // Don't show if safe zone alerts are disabled or no safe zones exist
 <span class="cstat-no" title="statement not covered" >  if (!settings.safeZoneAlerts || activeSafeZones.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
   }
 &nbsp;
-  const getStatusColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+  const getStatusColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (!isMonitoring) <span class="cstat-no" title="statement not covered" >return '#F59E0B'; </span></span>// Orange for inactive
 <span class="cstat-no" title="statement not covered" >    if (status &amp;&amp; status.inside.length &gt; 0) <span class="cstat-no" title="statement not covered" >return '#10B981'; </span></span>// Green for inside safe zone
 <span class="cstat-no" title="statement not covered" >    return '#EF4444'; </span>// Red for outside safe zones
   };
 &nbsp;
-  const getStatusText = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+  const getStatusText = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (!isMonitoring) <span class="cstat-no" title="statement not covered" >return 'Safe zone monitoring inactive';</span></span>
 <span class="cstat-no" title="statement not covered" >    if (!status) <span class="cstat-no" title="statement not covered" >return 'Getting location...';</span></span>
 <span class="cstat-no" title="statement not covered" >    if (status.inside.length &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >      return `Inside ${status.inside[0].name}${status.inside.length &gt; 1 ? ` +${status.inside.length - 1} more` : ''}`;</span>
+<span class="cstat-no" title="statement not covered" >      return `Inside ${status.inside[0].name}${</span>
+        status.inside.length &gt; 1 ? ` +${status.inside.length - 1} more` : ''
+      }`;
     }
 <span class="cstat-no" title="statement not covered" >    return 'Outside safe zones';</span>
   };
@@ -310,7 +316,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -12,10 +12,14 @@ import { isMapLibreAvailable } from './MapLibreMap';
 
 type LatLng = { latitude: number; longitude: number };
 
-type InteractiveMapProps = {
+export interface InteractiveMapProps {
   origin?: Place;
   destination?: Place;
-  route?: Route & { geometry?: { coordinates: LatLng[] } };
+  route?: Route;
+  showTransitStations?: boolean;
+  // make mascot props optional so callers that don't use mascot can skip them
+  mascotHint?: string;
+  setMascotHint?: React.Dispatch<React.SetStateAction<string>>;
   onMapReady?: () => void;
   onSelectLocation?: (coords: LatLng) => void;
   onStationPress?: (stationId: string) => void;

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Colors from "@/constants/colors";
-import { WifiOff, Wifi } from "lucide-react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Colors from '@/constants/colors';
+import { WifiOff, Wifi } from 'lucide-react-native';
 
 const OfflineIndicator: React.FC = () => {
   const [isOnline, setIsOnline] = useState(true);
@@ -31,17 +31,17 @@ const OfflineIndicator: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.warning,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
     gap: 8,
   },
   text: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 

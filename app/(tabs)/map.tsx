@@ -208,14 +208,14 @@ export default function MapScreen() {
     if (location && (!origin || origin.id === "current-location")) {
       console.log('📍 Updating origin to current location:', location);
       setOrigin({
-        id: "current-location",
-        name: "Current Location",
-        address: "Your current position",
-        category: "other",
+        id: 'current-location',
+        name: 'Current Location',
+        address: 'Your current position',
+        category: 'other',
         coordinates: {
           latitude: location.latitude,
-          longitude: location.longitude
-        }
+          longitude: location.longitude,
+        },
       });
     }
   }, [location?.latitude, location?.longitude]);
@@ -456,22 +456,22 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   locationBar: {
-    flexDirection: "row",
+    flexDirection: 'row',
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
   },
   locationPins: {
-    alignItems: "center",
+    alignItems: 'center',
     marginRight: 16,
   },
   locationPin: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   originPin: {
     backgroundColor: Colors.primary,
@@ -489,7 +489,7 @@ const styles = StyleSheet.create({
   },
   locationButton: {
     paddingVertical: 8,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   locationText: {
     fontSize: 16,
@@ -499,18 +499,18 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
   },
   searchIcon: {
-    position: "absolute",
+    position: 'absolute',
     right: 0,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
   emptyStateContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 32,
     minHeight: 200,
   },
@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     fontSize: 16,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
   },
   searchButton: {
     backgroundColor: Colors.primary,
@@ -528,9 +528,140 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   searchButtonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  modalTitleContainer: {
+    flex: 1,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: Colors.text,
+  },
+  modalSubtitle: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 2,
+  },
+  closeButton: {
+    padding: 8,
+    borderRadius: 8,
+  },
+  controlsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  travelModeContainer: {
+    flex: 1,
+    marginRight: 12,
+  },
+  preferencesButton: {
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: Colors.primary + '15',
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+    backgroundColor: Colors.card,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: Colors.text,
+    marginTop: 12,
+    fontWeight: '600',
+  },
+  loadingSubtext: {
+    fontSize: 14,
+    color: Colors.textLight,
+    marginTop: 4,
+  },
+  errorContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: Colors.error + '10',
+    borderRadius: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: Colors.error + '30',
+  },
+  errorText: {
+    fontSize: 16,
+    color: Colors.error,
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  retryButton: {
+    backgroundColor: Colors.error,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginTop: 8,
+  },
+  retryButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  routesHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  advancedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.success + '15',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    gap: 4,
+  },
+  advancedBadgeText: {
+    fontSize: 12,
+    color: Colors.success,
+    fontWeight: '600',
+  },
+  insightsContainer: {
+    backgroundColor: Colors.primary + '10',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.primary,
+  },
+  insightsTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.primary,
+    marginBottom: 8,
+  },
+  insightText: {
+    fontSize: 14,
+    color: Colors.text,
+    marginBottom: 4,
+    lineHeight: 20,
   },
   modalContainer: {
     flex: 1,

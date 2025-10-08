@@ -53,7 +53,7 @@ class Logger {
     // Console output in development
     if (Config.isDev) {
       const formattedMessage = this.formatMessage(level, message, context);
-      
+
       switch (level) {
         case LogLevel.DEBUG:
           console.log(formattedMessage);
@@ -118,7 +118,7 @@ class Logger {
   // Get logs for debugging
   getLogs(level?: LogLevel): LogEntry[] {
     if (level !== undefined) {
-      return this.logs.filter(log => log.level >= level);
+      return this.logs.filter((log) => log.level >= level);
     }
     return [...this.logs];
   }
@@ -131,7 +131,7 @@ class Logger {
   // Export logs for support
   exportLogs(): string {
     return this.logs
-      .map(log => this.formatMessage(log.level, log.message, log.context))
+      .map((log) => this.formatMessage(log.level, log.message, log.context))
       .join('\n');
   }
 }
@@ -143,7 +143,8 @@ export const log = {
   debug: (message: string, context?: Record<string, any>) => logger.debug(message, context),
   info: (message: string, context?: Record<string, any>) => logger.info(message, context),
   warn: (message: string, context?: Record<string, any>) => logger.warn(message, context),
-  error: (message: string, error?: Error, context?: Record<string, any>) => logger.error(message, error, context),
+  error: (message: string, error?: Error, context?: Record<string, any>) =>
+    logger.error(message, error, context),
   time: (label: string) => logger.time(label),
   timeEnd: (label: string) => logger.timeEnd(label),
 };
@@ -151,14 +152,13 @@ export const log = {
 // Global error handler
 if (Platform.OS !== 'web') {
   const originalHandler = ErrorUtils.getGlobalHandler();
-  
+
   ErrorUtils.setGlobalHandler((error, isFatal) => {
-    logger.error(
-      `Global ${isFatal ? 'Fatal' : 'Non-Fatal'} Error`,
-      error,
-      { isFatal, stack: error.stack }
-    );
-    
+    logger.error(`Global ${isFatal ? 'Fatal' : 'Non-Fatal'} Error`, error, {
+      isFatal,
+      stack: error.stack,
+    });
+
     // Call original handler
     if (originalHandler) {
       originalHandler(error, isFatal);

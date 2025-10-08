@@ -21,7 +21,7 @@ module.exports = {
     'stores/**/*.{ts,tsx}',
     'utils/**/*.{ts,tsx}',
     '!**/*.d.ts',
-    '!**/node_modules/**',
+    '!**/node_modules/**'
   ],
   coverageThreshold: {
     global: {

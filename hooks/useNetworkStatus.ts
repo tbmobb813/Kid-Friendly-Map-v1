@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Platform } from "react-native";
+import { useState, useEffect } from 'react';
+import { Platform } from 'react-native';
 
 type NetworkStatus = {
   isConnected: boolean;
@@ -11,7 +11,7 @@ export function useNetworkStatus(): NetworkStatus {
   const [networkStatus, setNetworkStatus] = useState<NetworkStatus>({
     isConnected: true,
     isInternetReachable: true,
-    connectionType: "unknown",
+    connectionType: 'unknown',
   });
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function useNetworkStatus(): NetworkStatus {
         setNetworkStatus({
           isConnected: navigator.onLine,
           isInternetReachable: navigator.onLine,
-          connectionType: "unknown",
+          connectionType: 'unknown',
         });
       };
 
@@ -40,7 +40,7 @@ export function useNetworkStatus(): NetworkStatus {
       setNetworkStatus({
         isConnected: Math.random() > 0.05, // 95% chance of being connected
         isInternetReachable: Math.random() > 0.1, // 90% chance of internet
-        connectionType: "cellular",
+        connectionType: 'cellular',
       });
     };
 
