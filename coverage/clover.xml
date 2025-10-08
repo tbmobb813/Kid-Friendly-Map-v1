@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1759951064172" clover="3.2.0">
-  <project timestamp="1759951064172" name="All files">
-    <metrics statements="6050" coveredstatements="950" conditionals="4195" coveredconditionals="640" methods="1567" coveredmethods="193" elements="11812" coveredelements="1783" complexity="0" loc="6050" ncloc="6050" packages="4" files="119" classes="119"/>
+<coverage generated="1759954876322" clover="3.2.0">
+  <project timestamp="1759954876322" name="All files">
+    <metrics statements="6050" coveredstatements="947" conditionals="4195" coveredconditionals="638" methods="1567" coveredmethods="193" elements="11812" coveredelements="1778" complexity="0" loc="6050" ncloc="6050" packages="4" files="119" classes="119"/>
     <package name="components">
       <metrics statements="2657" coveredstatements="64" conditionals="2245" coveredconditionals="53" methods="761" coveredmethods="16"/>
       <file name="AIJourneyCompanion.tsx" path="/workspaces/Kid-Friendly-Map-v1/components/AIJourneyCompanion.tsx">
@@ -3804,7 +3804,7 @@
       </file>
     </package>
     <package name="utils">
-      <metrics statements="2537" coveredstatements="777" conditionals="1607" coveredconditionals="536" methods="494" coveredmethods="152"/>
+      <metrics statements="2537" coveredstatements="774" conditionals="1607" coveredconditionals="534" methods="494" coveredmethods="152"/>
       <file name="accessibility.ts" path="/workspaces/Kid-Friendly-Map-v1/utils/accessibility.ts">
         <metrics statements="15" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="3" count="0" type="stmt"/>
@@ -4021,7 +4021,7 @@
         <line num="216" count="0" type="stmt"/>
       </file>
       <file name="api.ts" path="/workspaces/Kid-Friendly-Map-v1/utils/api.ts">
-        <metrics statements="139" coveredstatements="42" conditionals="64" coveredconditionals="8" methods="38" coveredmethods="8"/>
+        <metrics statements="139" coveredstatements="41" conditionals="64" coveredconditionals="8" methods="38" coveredmethods="8"/>
         <line num="3" count="3" type="cond" truecount="1" falsecount="1"/>
         <line num="5" count="3" type="stmt"/>
         <line num="16" count="3" type="stmt"/>
@@ -4078,7 +4078,7 @@
         <line num="176" count="3" type="stmt"/>
         <line num="178" count="68" type="stmt"/>
         <line num="179" count="68" type="stmt"/>
-        <line num="187" count="50" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
         <line num="192" count="31" type="stmt"/>
         <line num="193" count="31" type="stmt"/>
         <line num="194" count="31" type="cond" truecount="2" falsecount="0"/>
@@ -4648,44 +4648,44 @@
         <line num="57" count="0" type="stmt"/>
       </file>
       <file name="errorHandling.ts" path="/workspaces/Kid-Friendly-Map-v1/utils/errorHandling.ts">
-        <metrics statements="102" coveredstatements="64" conditionals="86" coveredconditionals="51" methods="20" coveredmethods="12"/>
+        <metrics statements="102" coveredstatements="63" conditionals="86" coveredconditionals="49" methods="20" coveredmethods="12"/>
         <line num="30" count="6" type="stmt"/>
-        <line num="36" count="336" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
-        <line num="66" count="165" type="stmt"/>
-        <line num="68" count="165" type="stmt"/>
-        <line num="69" count="396" type="stmt"/>
-        <line num="70" count="396" type="stmt"/>
-        <line num="71" count="396" type="stmt"/>
-        <line num="73" count="46" type="cond" truecount="2" falsecount="0"/>
-        <line num="74" count="3" type="stmt"/>
-        <line num="77" count="46" type="stmt"/>
-        <line num="79" count="350" type="stmt"/>
-        <line num="81" count="350" type="stmt"/>
-        <line num="88" count="350" type="cond" truecount="4" falsecount="0"/>
+        <line num="66" count="164" type="stmt"/>
+        <line num="68" count="164" type="stmt"/>
+        <line num="69" count="176" type="stmt"/>
+        <line num="70" count="176" type="stmt"/>
+        <line num="71" count="176" type="stmt"/>
+        <line num="73" count="156" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="4" type="stmt"/>
+        <line num="77" count="156" type="stmt"/>
+        <line num="79" count="20" type="stmt"/>
+        <line num="81" count="20" type="stmt"/>
+        <line num="88" count="20" type="cond" truecount="4" falsecount="0"/>
         <line num="89" count="4" type="stmt"/>
         <line num="90" count="4" type="stmt"/>
-        <line num="94" count="346" type="cond" truecount="2" falsecount="0"/>
-        <line num="95" count="232" type="stmt"/>
-        <line num="96" count="232" type="stmt"/>
-        <line num="99" count="231" type="cond" truecount="2" falsecount="0"/>
-        <line num="100" count="224" type="stmt"/>
-        <line num="109" count="114" type="stmt"/>
-        <line num="110" count="114" type="stmt"/>
-        <line num="119" count="152" type="stmt"/>
-        <line num="121" count="152" type="stmt"/>
-        <line num="122" count="152" type="stmt"/>
-        <line num="124" count="374" type="cond" truecount="2" falsecount="2"/>
+        <line num="94" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="95" count="12" type="stmt"/>
+        <line num="96" count="12" type="stmt"/>
+        <line num="99" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="100" count="5" type="stmt"/>
+        <line num="109" count="4" type="stmt"/>
+        <line num="110" count="4" type="stmt"/>
+        <line num="119" count="151" type="stmt"/>
+        <line num="121" count="151" type="stmt"/>
+        <line num="122" count="151" type="stmt"/>
+        <line num="124" count="154" type="cond" truecount="2" falsecount="2"/>
         <line num="126" count="7" type="stmt"/>
         <line num="127" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="130" count="367" type="stmt"/>
-        <line num="131" count="36" type="stmt"/>
+        <line num="130" count="147" type="stmt"/>
+        <line num="131" count="146" type="stmt"/>
         <line num="134" count="0" type="stmt"/>
         <line num="135" count="0" type="stmt"/>
         <line num="138" count="0" type="stmt"/>
-        <line num="145" count="111" type="stmt"/>
-        <line num="146" count="111" type="stmt"/>
-        <line num="149" count="111" type="cond" truecount="3" falsecount="2"/>
+        <line num="145" count="1" type="stmt"/>
+        <line num="146" count="1" type="stmt"/>
+        <line num="149" count="1" type="cond" truecount="1" falsecount="4"/>
         <line num="151" count="1" type="stmt"/>
         <line num="152" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="155" count="0" type="stmt"/>
@@ -4693,9 +4693,9 @@
         <line num="159" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="160" count="0" type="stmt"/>
         <line num="162" count="0" type="stmt"/>
-        <line num="166" count="110" type="stmt"/>
+        <line num="166" count="0" type="stmt"/>
         <line num="176" count="4" type="stmt"/>
-        <line num="184" count="146" type="stmt"/>
+        <line num="184" count="145" type="stmt"/>
         <line num="191" count="0" type="stmt"/>
         <line num="199" count="1" type="stmt"/>
         <line num="200" count="1" type="stmt"/>
@@ -5185,7 +5185,7 @@
         <line num="146" count="0" type="stmt"/>
       </file>
       <file name="offlineManager.ts" path="/workspaces/Kid-Friendly-Map-v1/utils/offlineManager.ts">
-        <metrics statements="120" coveredstatements="99" conditionals="45" coveredconditionals="32" methods="24" coveredmethods="23"/>
+        <metrics statements="120" coveredstatements="98" conditionals="45" coveredconditionals="32" methods="24" coveredmethods="23"/>
         <line num="25" count="2" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
@@ -5221,9 +5221,9 @@
         <line num="108" count="2" type="stmt"/>
         <line num="110" count="0" type="stmt"/>
         <line num="111" count="0" type="stmt"/>
-        <line num="116" count="145" type="stmt"/>
-        <line num="117" count="145" type="stmt"/>
-        <line num="121" count="110" type="stmt"/>
+        <line num="116" count="144" type="stmt"/>
+        <line num="117" count="144" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
         <line num="126" count="120" type="stmt"/>
         <line num="135" count="120" type="stmt"/>
         <line num="136" count="120" type="stmt"/>
@@ -5239,11 +5239,11 @@
         <line num="160" count="22" type="stmt"/>
         <line num="161" count="22" type="stmt"/>
         <line num="163" count="22" type="stmt"/>
-        <line num="164" count="119" type="stmt"/>
-        <line num="165" count="119" type="stmt"/>
-        <line num="167" count="119" type="cond" truecount="2" falsecount="0"/>
-        <line num="168" count="116" type="stmt"/>
-        <line num="169" count="116" type="stmt"/>
+        <line num="164" count="104" type="stmt"/>
+        <line num="165" count="104" type="stmt"/>
+        <line num="167" count="103" type="cond" truecount="2" falsecount="0"/>
+        <line num="168" count="100" type="stmt"/>
+        <line num="169" count="100" type="stmt"/>
         <line num="174" count="3" type="stmt"/>
         <line num="175" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="176" count="2" type="stmt"/>
@@ -5253,14 +5253,14 @@
         <line num="200" count="0" type="stmt"/>
         <line num="201" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="202" count="0" type="stmt"/>
-        <line num="208" count="22" type="stmt"/>
-        <line num="209" count="22" type="stmt"/>
+        <line num="208" count="21" type="stmt"/>
+        <line num="209" count="21" type="stmt"/>
         <line num="211" count="21" type="stmt"/>
         <line num="217" count="21" type="stmt"/>
-        <line num="224" count="119" type="cond" truecount="4" falsecount="0"/>
+        <line num="224" count="104" type="cond" truecount="4" falsecount="0"/>
         <line num="226" count="3" type="stmt"/>
         <line num="228" count="1" type="stmt"/>
-        <line num="230" count="112" type="stmt"/>
+        <line num="230" count="97" type="stmt"/>
         <line num="232" count="3" type="stmt"/>
         <line num="233" count="3" type="stmt"/>
         <line num="238" count="3" type="stmt"/>
@@ -5273,9 +5273,9 @@
         <line num="252" count="1" type="stmt"/>
         <line num="254" count="0" type="stmt"/>
         <line num="255" count="0" type="stmt"/>
-        <line num="260" count="112" type="stmt"/>
-        <line num="262" count="112" type="stmt"/>
-        <line num="263" count="112" type="stmt"/>
+        <line num="260" count="97" type="stmt"/>
+        <line num="262" count="97" type="stmt"/>
+        <line num="263" count="97" type="stmt"/>
         <line num="265" count="0" type="stmt"/>
         <line num="266" count="0" type="stmt"/>
         <line num="272" count="3" type="stmt"/>

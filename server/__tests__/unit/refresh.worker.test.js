@@ -12,7 +12,10 @@ const { startServer, _internal } = require('../../index.js');
 
 describe('Background refresh worker', () => {
   let server;
-  beforeAll(() => { server = startServer(); });
+  beforeAll(() => {
+    process.env.PORT = '0'; // Use random available port
+    server = startServer();
+  });
   afterAll(() => { if (server) { _internal.stopBackgroundRefresh(); server.close(); } });
 
   test('invokes fetchGtfsRt on interval', async () => {
