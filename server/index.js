@@ -196,14 +196,23 @@ app.get('/metrics', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Transit adapter listening on port ${port}`);
-  if (feedRefreshEnabled) {
-    startBackgroundRefresh();
-  } else {
-    console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
-  }
-});
+function startServer() {
+  const server = app.listen(port, () => {
+    console.log(`Transit adapter listening on port ${port}`);
+    if (feedRefreshEnabled && process.env.NODE_ENV !== 'test') {
+      startBackgroundRefresh();
+    } else if (!feedRefreshEnabled) {
+      console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
+    }
+  });
+  return server;
+}
+
+if (require.main === module) {
+  startServer();
+}
+
+module.exports = { app, startServer };
 
 // Background refresh worker ---------------------------------------------
 let refreshLoopActive = false;

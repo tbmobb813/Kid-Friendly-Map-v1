@@ -1,3 +1,16 @@
+## Test Strategy & Coverage Goals
+
+Testing is critical for production reliability. The transit adapter test suite includes:
+
+- **Unit tests:** Validate enrichment logic, cache, and utility functions (`server/__tests__/unit`).
+- **Integration tests:** Cover API endpoints, importers, and database interactions (`server/__tests__/integration`).
+- **End-to-end tests:** Simulate real-world usage, including server startup, API calls, and failover (`server/__tests__/e2e`).
+
+Coverage goals:
+
+- 90%+ for core enrichment and API logic
+- 80%+ for importers and cache
+- Automated CI runs for all test types
 
 ## Shape/Geometry Import (Polylines)
 
@@ -7,15 +20,11 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
 - Update API response to include `polyline` or `shape` field per route.
 - Document client usage for rendering polylines.
 
-
-
 ## Advanced Alerting & Dashboarding
 
 - Set up Grafana dashboards for latency, error rate, cache hit ratio, and error budget burn.
 - Example panels: p99 latency, cache effectiveness, SLO compliance.
 - Export dashboard JSON for reproducibility.
-
-
 
 ## Staging/Blue-Green Deployment Guidance
 
@@ -23,15 +32,11 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
 - Apply schema migrations using staging tables and atomic swaps.
 - Document rollback and traffic shifting procedures.
 
-
-
 ## API Versioning & Backward Compatibility
 
 - Version API endpoints (e.g., `/feeds/v1/:region/:system.json`).
 - Document schema changes and migration strategy.
 - Maintain backward compatibility for clients.
-
-
 
 ## Security Hardening
 
@@ -40,29 +45,21 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
 - Add DDoS protection and audit logging.
 - Document incident response and key rotation procedures.
 
-
-
 ## Compliance & Privacy
 
 - Document data retention and deletion policies.
 - Note privacy requirements for user and transit data.
 - Reference regulatory standards (GDPR, CCPA, etc.) if applicable.
 
-
-
 ## Final Checklist Review
 
 - Review all must-have and nice-to-have items for completion.
 - Mark deferred or optional items for future work.
 
-
-
 ## Changelog & Governance
 
 - Update `DOCS_CHANGELOG.md` for every major production change.
 - Note documentation ownership and review process.
-
-
 
 ## Style Guide Reference
 
@@ -87,10 +84,10 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
 ### SLO Instrumentation
 
 - Key metrics:
-   - `transit_adapter_fetch_duration_seconds` (histogram)
-   - `transit_adapter_enriched_routes` (gauge)
-   - `transit_adapter_cache_hits_total` / `transit_adapter_cache_misses_total`
-   - `transit_adapter_fetch_failures_total`
+  - `transit_adapter_fetch_duration_seconds` (histogram)
+  - `transit_adapter_enriched_routes` (gauge)
+  - `transit_adapter_cache_hits_total` / `transit_adapter_cache_misses_total`
+  - `transit_adapter_fetch_failures_total`
 
 - Example Prometheus SLO rules:
 
@@ -112,6 +109,7 @@ To support map polylines, import `shapes.txt` from GTFS and expose shape data in
    ```
 
 - Review SLOs after load tests and adjust thresholds for production traffic.
+
 ### Cache Metrics & Redis Failover Testing
 
 - Prometheus metrics:
@@ -149,7 +147,6 @@ Enable Redis to share cache across multiple adapter instances for consistent, fa
 - Set up persistence (AOF or RDB) for cache durability if needed.
 - Use Redis Sentinel or cloud-managed Redis for HA in production.
 - Fallback to in-memory cache if Redis is unavailable (adapter logs warning).
-
 
 ### Monitoring & Failover
 
@@ -213,7 +210,6 @@ Regular backups are essential for production reliability and compliance. Use the
 - See `server/scripts/backup-postgres.sh` for a ready-to-use backup script.
 - Usage:
 
-
    ```bash
    DATABASE_URL="postgres://postgres:postgres@localhost:5432/transit" ./server/scripts/backup-postgres.sh /path/to/backup_dir
    ```
@@ -225,13 +221,11 @@ Regular backups are essential for production reliability and compliance. Use the
 1. Stop the adapter and ensure Postgres is running.
 2. Restore the backup:
 
-
     ```bash
     gunzip -c /path/to/backup_dir/transit_backup_YYYY-MM-DD_HH-MM-SS.sql.gz | psql "$DATABASE_URL"
     ```
 
 3. (Optional) Re-import static GTFS if needed:
-
 
     ```bash
     node server/tools/import-static-gtfs.js path/to/gtfs.zip
@@ -241,7 +235,6 @@ Regular backups are essential for production reliability and compliance. Use the
 ### Automation
 
 - Use a cron job or systemd timer to run the backup script nightly:
-
 
    ```cron
    0 3 * * * DATABASE_URL=... /path/to/backup-postgres.sh /path/to/backup_dir
@@ -255,7 +248,6 @@ Regular backups are essential for production reliability and compliance. Use the
 - Alert if backup fails or is missing for >24h (Prometheus node exporter or file checks).
 
 - Example Prometheus rule:
-
 
    ```yaml
    - alert: PostgresBackupMissing
@@ -387,7 +379,6 @@ To keep static GTFS data fresh for enrichment, automate nightly imports using ei
 - Reference secrets for `DATABASE_URL` and `GTFS_ZIP_URL`.
 - The job runs nightly, importing GTFS and updating Postgres atomically.
 
-
 ### Manual/VM Automation
 
 - Use a systemd timer or cron job to run:
@@ -398,7 +389,6 @@ To keep static GTFS data fresh for enrichment, automate nightly imports using ei
    DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
    DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"
    ```
-
 
 ### Notes
 
