@@ -42,8 +42,9 @@ describe('withRetry', () => {
       .fn<() => Promise<unknown>>()
       .mockRejectedValue(new Error('Non-retryable'));
 
-    // Make sure shouldRetry properly returns false and mock is verifiable
-    const shouldRetry = jest.fn().mockReturnValue(false);
+    // typed jest.fn so `attempt` is a number and returns boolean
+    const shouldRetry = jest.fn<(error: Error, attempt: number) => boolean>()
+      .mockReturnValue(false);
 
     await expect(
       withRetry(mockOperation, {
@@ -53,7 +54,6 @@ describe('withRetry', () => {
       }),
     ).rejects.toThrow('Non-retryable');
 
-    // The test expects shouldRetry to stop retries after first call
     expect(mockOperation).toHaveBeenCalledTimes(1);
     expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 1);
   });
