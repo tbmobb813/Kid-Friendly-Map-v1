@@ -42,11 +42,11 @@ describe('Error Handling Utils', () => {
 
   describe('withRetry', () => {
     it('should succeed on first attempt', async () => {
-      const mockOperation = jest.fn().mockResolvedValue('success');
-      const result = await withRetry(() => mockOperation(), DEFAULT_RETRY_CONFIG.storage);
+        const mockOperation = jest.fn<() => Promise<string>>().mockResolvedValue('success'); // Specify return type
+        const result = await withRetry(() => mockOperation(), DEFAULT_RETRY_CONFIG.storage);
 
-      expect(result).toBe('success');
-      expect(mockOperation).toHaveBeenCalledTimes(1);
+        expect(result).toBe('success');
+        expect(mockOperation).toHaveBeenCalledTimes(1);
     });
 
     it('should retry on failure and eventually succeed', async () => {
@@ -75,19 +75,19 @@ describe('Error Handling Utils', () => {
     });
 
     it('should respect shouldRetry function', async () => {
-      const mockOperation = jest.fn().mockRejectedValue(new Error('Non-retryable'));
-      const shouldRetry = jest.fn().mockReturnValue(false);
+        const mockOperation = jest.fn<() => Promise<Error>>().mockRejectedValue(new Error('Non-retryable')); // Specify return type
+        const shouldRetry = jest.fn().mockReturnValue(false);
 
-      await expect(
-        withRetry(() => mockOperation(), {
-          maxAttempts: 3,
-          delayMs: 10,
-          shouldRetry,
-        }),
-      ).rejects.toThrow('Non-retryable');
+        await expect(
+            withRetry(() => mockOperation(), {
+                maxAttempts: 3,
+                delayMs: 10,
+                shouldRetry,
+            }),
+        ).rejects.toThrow('Non-retryable');
 
-      expect(mockOperation).toHaveBeenCalledTimes(1);
-      expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 1);
+        expect(mockOperation).toHaveBeenCalledTimes(1);
+        expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 1);
     });
   });
 
