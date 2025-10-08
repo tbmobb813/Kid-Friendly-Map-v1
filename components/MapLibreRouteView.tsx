@@ -163,7 +163,12 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   showTransitStations = true,
   testID,
 }) => {
-  if (!isMapLibreAvailable || !MapLibreGL) {
+  if (
+    !isMapLibreAvailable ||
+    !MapLibreGL ||
+    typeof MapLibreGL !== 'object' ||
+    !('MapView' in MapLibreGL)
+  ) {
     return null;
   }
 
