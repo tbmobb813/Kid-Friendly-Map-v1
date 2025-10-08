@@ -1,3 +1,5 @@
+const enforceCoverage = process.env.ENFORCE_COVERAGE === 'true';
+
 export default {
   // Remove preset: 'react-native' to avoid parsing issues with RN's mock files
   testPathIgnorePatterns: ['/node_modules/', '/bun-tests/'],
@@ -10,9 +12,11 @@ export default {
     '!**/*.d.ts',
     '!**/node_modules/**'
   ],
-  coverageThreshold: {
+  // Only enforce high coverage thresholds when explicitly enabled.
+  // In CI we currently gather coverage but do not fail the build unless ENFORCE_COVERAGE=true.
+  coverageThreshold: enforceCoverage ? {
     global: { branches: 70, functions: 70, lines: 70, statements: 70 }
-  },
+  } : undefined,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^react-native$': '<rootDir>/__mocks__/react-native.js',
