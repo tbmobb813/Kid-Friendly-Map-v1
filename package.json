@@ -10,7 +10,7 @@
     "start:ios": "expo start --ios",
     "start:android": "expo start --android",
   "test": "jest",
-  "test:ci": "jest --ci --colors --coverage",
+  "test:ci": "jest --ci --colors --coverage --runInBand",
     "test:watch": "jest --watch",
     "test:logic": "bun test bun-tests/",
     "test:logic:watch": "bun test --watch bun-tests/",
