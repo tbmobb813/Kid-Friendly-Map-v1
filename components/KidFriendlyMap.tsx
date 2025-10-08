@@ -5,13 +5,13 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import MapView, { 
-  Marker, 
-  Polyline, 
-  Circle, 
+import MapView, {
+  Marker,
+  Polyline,
+  Circle,
   PROVIDER_GOOGLE,
   Region,
-  MapMarker
+  MapMarker,
 } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { voiceManager, speakNavigation, KidFriendlyPhrases } from '../utils/voice';
@@ -64,12 +64,14 @@ export default function KidFriendlyMap({
   const mapRef = useRef<MapView>(null);
   const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
   const [currentRegion, setCurrentRegion] = useState<Region | undefined>(
-    initialLocation ? {
-      latitude: initialLocation.latitude,
-      longitude: initialLocation.longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
-    } : undefined
+    initialLocation
+      ? {
+          latitude: initialLocation.latitude,
+          longitude: initialLocation.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }
+      : undefined,
   );
   const [insideSafeZones, setInsideSafeZones] = useState<Set<string>>(new Set());
 
@@ -86,7 +88,7 @@ export default function KidFriendlyMap({
   const setupLocationTracking = async () => {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      
+
       if (status !== 'granted') {
         log.warn('Location permission not granted');
         if (enableVoiceGuidance) {
@@ -99,7 +101,7 @@ export default function KidFriendlyMap({
       const location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Balanced,
       });
-      
+
       setUserLocation(location);
       onLocationChange?.(location);
 
@@ -123,7 +125,7 @@ export default function KidFriendlyMap({
         (newLocation) => {
           setUserLocation(newLocation);
           onLocationChange?.(newLocation);
-        }
+        },
       );
     } catch (error) {
       log.error('Failed to setup location tracking', error as Error);
@@ -138,22 +140,22 @@ export default function KidFriendlyMap({
       longitude: userLocation.coords.longitude,
     };
 
-    safeZones.forEach(zone => {
+    safeZones.forEach((zone) => {
       const distance = calculateDistance(currentLoc, zone.center);
       const isInside = distance <= zone.radius;
       const wasInside = insideSafeZones.has(zone.id);
 
       if (isInside && !wasInside) {
         // Entered safe zone
-        setInsideSafeZones(prev => new Set(prev).add(zone.id));
+        setInsideSafeZones((prev) => new Set(prev).add(zone.id));
         onSafeZoneEnter?.(zone);
-        
+
         if (enableVoiceGuidance) {
           voiceManager.speak(KidFriendlyPhrases.safety.safeZone);
         }
       } else if (!isInside && wasInside) {
         // Exited safe zone
-        setInsideSafeZones(prev => {
+        setInsideSafeZones((prev) => {
           const newSet = new Set(prev);
           newSet.delete(zone.id);
           return newSet;
@@ -213,7 +215,7 @@ export default function KidFriendlyMap({
         pitchEnabled={false}
       >
         {/* Safe Zones */}
-        {safeZones.map(zone => (
+        {safeZones.map((zone) => (
           <Circle
             key={zone.id}
             center={zone.center}
@@ -247,18 +249,12 @@ export default function KidFriendlyMap({
 
       {/* Control Buttons */}
       <View style={styles.controls}>
-        <Pressable
-          onPress={centerOnUser}
-          style={styles.controlButton}
-        >
+        <Pressable onPress={centerOnUser} style={styles.controlButton}>
           <Text style={styles.buttonText}>📍 My Location</Text>
         </Pressable>
 
         {route.length > 0 && (
-          <Pressable
-            onPress={fitToRoute}
-            style={styles.controlButton}
-          >
+          <Pressable onPress={fitToRoute} style={styles.controlButton}>
             <Text style={styles.buttonText}>🗺️ Show Route</Text>
           </Pressable>
         )}
@@ -267,9 +263,7 @@ export default function KidFriendlyMap({
       {/* Safe Zone Indicator */}
       {insideSafeZones.size > 0 && (
         <View style={styles.safeZoneIndicator}>
-          <Text style={styles.safeZoneText}>
-            ✅ You're in a safe zone!
-          </Text>
+          <Text style={styles.safeZoneText}>✅ You're in a safe zone!</Text>
         </View>
       )}
     </View>

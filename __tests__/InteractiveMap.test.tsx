@@ -14,9 +14,18 @@ jest.mock('react-native/Libraries/StyleSheet/StyleSheet', () => ({
 import React from 'react';
 // Mocks must be above all imports
 import { View } from 'react-native';
-jest.mock('../components/ExpoMapView', () => ({ __esModule: true, default: (props: any) => <View {...props} /> }));
-jest.mock('../components/MapLibreRouteView', () => ({ __esModule: true, default: (props: any) => <View {...props} /> }));
-jest.mock('../components/MapPlaceholder', () => ({ __esModule: true, default: (props: any) => <View {...props} /> }));
+jest.mock('../components/ExpoMapView', () => ({
+  __esModule: true,
+  default: (props: any) => <View {...props} />,
+}));
+jest.mock('../components/MapLibreRouteView', () => ({
+  __esModule: true,
+  default: (props: any) => <View {...props} />,
+}));
+jest.mock('../components/MapPlaceholder', () => ({
+  __esModule: true,
+  default: (props: any) => <View {...props} />,
+}));
 jest.mock('lucide-react-native', () => ({
   Crosshair: (props: any) => <View {...props} />,
   Train: (props: any) => <View {...props} />,
@@ -69,14 +78,14 @@ const route: Route = {
 describe('InteractiveMap', () => {
   it('renders without crashing', () => {
     const { getByTestId } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />
+      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />,
     );
     expect(getByTestId('test-map')).toBeTruthy();
   });
 
   it('shows recenter button and triggers recenter', () => {
     const { getByTestId } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />
+      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />,
     );
     const btn = getByTestId('recenter-button');
     expect(btn).toBeTruthy();
@@ -88,7 +97,12 @@ describe('InteractiveMap', () => {
 
   it('shows transit info when showTransitStations is true', () => {
     const { getByText } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} showTransitStations={true} />
+      <InteractiveMap
+        origin={origin}
+        destination={destination}
+        route={route}
+        showTransitStations={true}
+      />,
     );
     expect(getByText(/Transit stations shown/i)).toBeTruthy();
   });
@@ -96,7 +110,13 @@ describe('InteractiveMap', () => {
   it('calls onSelectLocation when map is tapped (web fallback)', () => {
     const onSelectLocation = jest.fn();
     const { getByTestId } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" onSelectLocation={onSelectLocation} />
+      <InteractiveMap
+        origin={origin}
+        destination={destination}
+        route={route}
+        testId="test-map"
+        onSelectLocation={onSelectLocation}
+      />,
     );
     // Simulate message from WebView
     act(() => {
@@ -111,14 +131,20 @@ describe('InteractiveMap', () => {
     // preferNative true, Platform not web, isMapLibreAvailable mocked true
     jest.mock('../components/MapLibreMap', () => ({ isMapLibreAvailable: () => true }));
     const { getByTestId } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" preferNative={true} />
+      <InteractiveMap
+        origin={origin}
+        destination={destination}
+        route={route}
+        testId="test-map"
+        preferNative={true}
+      />,
     );
     expect(getByTestId('test-map')).toBeTruthy();
   });
 
   it('bounds utility computes correct center', () => {
     const { getByTestId } = render(
-      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />
+      <InteractiveMap origin={origin} destination={destination} route={route} testId="test-map" />,
     );
     // Access internal allBounds via testId (not directly, but ensures no crash)
     expect(getByTestId('test-map')).toBeTruthy();

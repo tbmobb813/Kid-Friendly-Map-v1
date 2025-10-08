@@ -58,7 +58,12 @@ const computeCenter = (coordinates: Position[]): [number, number] => {
     }
   });
 
-  if (!Number.isFinite(minLng) || !Number.isFinite(maxLng) || !Number.isFinite(minLat) || !Number.isFinite(maxLat)) {
+  if (
+    !Number.isFinite(minLng) ||
+    !Number.isFinite(maxLng) ||
+    !Number.isFinite(minLat) ||
+    !Number.isFinite(maxLat)
+  ) {
     return [Config.MAP.DEFAULT_CENTER.longitude, Config.MAP.DEFAULT_CENTER.latitude];
   }
 
@@ -163,8 +168,14 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   }
 
   const MapLibre = MapLibreGL as any;
-  const originCoord = useMemo(() => asLngLat(origin), [origin?.coordinates.latitude, origin?.coordinates.longitude]);
-  const destinationCoord = useMemo(() => asLngLat(destination), [destination?.coordinates.latitude, destination?.coordinates.longitude]);
+  const originCoord = useMemo(
+    () => asLngLat(origin),
+    [origin?.coordinates.latitude, origin?.coordinates.longitude],
+  );
+  const destinationCoord = useMemo(
+    () => asLngLat(destination),
+    [destination?.coordinates.latitude, destination?.coordinates.longitude],
+  );
 
   const routeShape = useMemo(() => {
     if (routeGeoJSON && routeGeoJSON.features?.length) {
@@ -190,7 +201,10 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
     [originCoord, destinationCoord, origin?.name, destination?.name],
   );
 
-  const stationFeatures = useMemo(() => (showTransitStations ? buildStationFeatures() : null), [showTransitStations]);
+  const stationFeatures = useMemo(
+    () => (showTransitStations ? buildStationFeatures() : null),
+    [showTransitStations],
+  );
 
   const handleStationPress = useCallback(
     (event: any) => {

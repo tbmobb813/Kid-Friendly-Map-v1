@@ -1,1226 +1,1603 @@
-
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Code coverage report for components</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type='text/css'>
-        .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
-        }
+    <style type="text/css">
+      .coverage-summary .sorter {
+        background-image: url(../sort-arrow-sprite.png);
+      }
     </style>
-</head>
-    
-<body>
-<div class='wrapper'>
-    <div class='pad1'>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="pad1">
         <h1><a href="../index.html">All files</a> components</h1>
-        <div class='clearfix'>
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">2.4% </span>
-                <span class="quiet">Statements</span>
-                <span class='fraction'>68/2826</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">2.36% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>53/2245</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">2.1% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>16/761</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">2.4% </span>
-                <span class="quiet">Lines</span>
-                <span class='fraction'>64/2657</span>
-            </div>
-        
-            
+        <div class="clearfix">
+          <div class="fl pad1y space-right2">
+            <span class="strong">2.4% </span>
+            <span class="quiet">Statements</span>
+            <span class="fraction">68/2826</span>
+          </div>
+
+          <div class="fl pad1y space-right2">
+            <span class="strong">2.36% </span>
+            <span class="quiet">Branches</span>
+            <span class="fraction">53/2245</span>
+          </div>
+
+          <div class="fl pad1y space-right2">
+            <span class="strong">2.1% </span>
+            <span class="quiet">Functions</span>
+            <span class="fraction">16/761</span>
+          </div>
+
+          <div class="fl pad1y space-right2">
+            <span class="strong">2.4% </span>
+            <span class="quiet">Lines</span>
+            <span class="fraction">64/2657</span>
+          </div>
         </div>
         <p class="quiet">
-            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
+          <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-            <div class="quiet">
-                Filter:
-                <input type="search" id="fileSearch">
-            </div>
+          <div class="quiet">
+            Filter:
+            <input type="search" id="fileSearch" />
+          </div>
         </template>
+      </div>
+      <div class="status-line low"></div>
+      <div class="pad1">
+        <table class="coverage-summary">
+          <thead>
+            <tr>
+              <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>
+              <th
+                data-col="pic"
+                data-type="number"
+                data-fmt="html"
+                data-html="true"
+                class="pic"
+              ></th>
+              <th data-col="statements" data-type="number" data-fmt="pct" class="pct">
+                Statements
+              </th>
+              <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>
+              <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>
+              <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>
+              <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>
+              <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>
+              <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>
+              <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="file low" data-value="AIJourneyCompanion.tsx">
+                <a href="AIJourneyCompanion.tsx.html">AIJourneyCompanion.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="80" class="abs low">0/80</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="41" class="abs low">0/41</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="12" class="abs low">0/12</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="74" class="abs low">0/74</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="AIRouteSuggestions.tsx">
+                <a href="AIRouteSuggestions.tsx.html">AIRouteSuggestions.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="48" class="abs low">0/48</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="38" class="abs low">0/38</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="45" class="abs low">0/45</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="AccessibilitySettings.tsx">
+                <a href="AccessibilitySettings.tsx.html">AccessibilitySettings.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="AccessibleButton.tsx">
+                <a href="AccessibleButton.tsx.html">AccessibleButton.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="AchievementBadge.tsx">
+                <a href="AchievementBadge.tsx.html">AchievementBadge.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="ApiErrorBoundary.tsx">
+                <a href="ApiErrorBoundary.tsx.html">ApiErrorBoundary.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="54" class="abs low">0/54</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="57" class="abs low">0/57</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="54" class="abs low">0/54</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="ArrivalAlert.tsx">
+                <a href="ArrivalAlert.tsx.html">ArrivalAlert.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="BackendStatusIndicator.tsx">
+                <a href="BackendStatusIndicator.tsx.html">BackendStatusIndicator.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="19" class="abs low">0/19</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="19" class="abs low">0/19</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="CategoryButton.tsx">
+                <a href="CategoryButton.tsx.html">CategoryButton.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="70" class="abs low">0/70</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="76" class="abs low">0/76</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="70" class="abs low">0/70</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="CategoryManagement.tsx">
+                <a href="CategoryManagement.tsx.html">CategoryManagement.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="83" class="abs low">0/83</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="35" class="abs low">0/35</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="24" class="abs low">0/24</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="83" class="abs low">0/83</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="CityManagement.tsx">
+                <a href="CityManagement.tsx.html">CityManagement.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="51" class="abs low">0/51</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="55" class="abs low">0/55</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="50" class="abs low">0/50</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="DevicePingHandler.tsx">
+                <a href="DevicePingHandler.tsx.html">DevicePingHandler.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="71" class="abs low">0/71</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="46" class="abs low">0/46</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="70" class="abs low">0/70</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="DevicePingHistory.tsx">
+                <a href="DevicePingHistory.tsx.html">DevicePingHistory.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="45" class="abs low">0/45</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="34" class="abs low">0/34</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="9" class="abs low">0/9</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="44" class="abs low">0/44</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="DirectionStep.tsx">
+                <a href="DirectionStep.tsx.html">DirectionStep.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="11" class="abs low">0/11</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="EmptyState.tsx">
+                <a href="EmptyState.tsx.html">EmptyState.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="EnhancedFeaturesDemo.tsx">
+                <a href="EnhancedFeaturesDemo.tsx.html">EnhancedFeaturesDemo.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="53" class="abs low">0/53</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="30" class="abs low">0/30</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="19" class="abs low">0/19</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="53" class="abs low">0/53</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="EnhancedRouteCard.tsx">
+                <a href="EnhancedRouteCard.tsx.html">EnhancedRouteCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="36" class="abs low">0/36</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="77" class="abs low">0/77</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="32" class="abs low">0/32</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="ErrorBoundary.tsx">
+                <a href="ErrorBoundary.tsx.html">ErrorBoundary.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="ExpoMapView.tsx">
+                <a href="ExpoMapView.tsx.html">ExpoMapView.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="49" class="abs low">0/49</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="30" class="abs low">0/30</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="48" class="abs low">0/48</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="FunFactCard.tsx">
+                <a href="FunFactCard.tsx.html">FunFactCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="InAppNotificationHost.tsx">
+                <a href="InAppNotificationHost.tsx.html">InAppNotificationHost.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="50" class="abs low">0/50</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="24" class="abs low">0/24</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="20" class="abs low">0/20</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="40" class="abs low">0/40</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="InteractiveMap.tsx">
+                <a href="InteractiveMap.tsx.html">InteractiveMap.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="75" class="abs low">0/75</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="92" class="abs low">0/92</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="73" class="abs low">0/73</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="KidFriendlyMap.tsx">
+                <a href="KidFriendlyMap.tsx.html">KidFriendlyMap.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="65" class="abs low">0/65</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="56" class="abs low">0/56</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="63" class="abs low">0/63</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="KidTripPlanner.tsx">
+                <a href="KidTripPlanner.tsx.html">KidTripPlanner.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="53" class="abs low">0/53</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="50" class="abs low">0/50</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="LiveArrivalsCard.tsx">
+                <a href="LiveArrivalsCard.tsx.html">LiveArrivalsCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="44" class="abs low">0/44</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="51" class="abs low">0/51</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="39" class="abs low">0/39</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="LoadingSpinner.tsx">
+                <a href="LoadingSpinner.tsx.html">LoadingSpinner.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MTAEducation.tsx">
+                <a href="MTAEducation.tsx.html">MTAEducation.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="36" class="abs low">0/36</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="28" class="abs low">0/28</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="36" class="abs low">0/36</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MTALiveArrivals.tsx">
+                <a href="MTALiveArrivals.tsx.html">MTALiveArrivals.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="62" class="abs low">0/62</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="63" class="abs low">0/63</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="57" class="abs low">0/57</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MTAStationFinder.tsx">
+                <a href="MTAStationFinder.tsx.html">MTAStationFinder.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="63" class="abs low">0/63</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="78" class="abs low">0/78</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="24" class="abs low">0/24</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MapLibreMap.tsx">
+                <a href="MapLibreMap.tsx.html">MapLibreMap.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="54" class="abs low">0/54</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="59" class="abs low">0/59</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="54" class="abs low">0/54</td>
+            </tr>
+
+            <tr>
+              <td class="file high" data-value="MapLibreRouteView.tsx">
+                <a href="MapLibreRouteView.tsx.html">MapLibreRouteView.tsx</a>
+              </td>
+              <td data-value="82.92" class="pic high">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 82%"></div>
+                  <div class="cover-empty" style="width: 18%"></div>
+                </div>
+              </td>
+              <td data-value="82.92" class="pct high">82.92%</td>
+              <td data-value="82" class="abs high">68/82</td>
+              <td data-value="64.63" class="pct medium">64.63%</td>
+              <td data-value="82" class="abs medium">53/82</td>
+              <td data-value="94.11" class="pct high">94.11%</td>
+              <td data-value="17" class="abs high">16/17</td>
+              <td data-value="84.21" class="pct high">84.21%</td>
+              <td data-value="76" class="abs high">64/76</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MapPlaceholder.tsx">
+                <a href="MapPlaceholder.tsx.html">MapPlaceholder.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="MapWithInfoPanel.tsx">
+                <a href="MapWithInfoPanel.tsx.html">MapWithInfoPanel.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="9" class="abs low">0/9</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="NetworkStatusBar.tsx">
+                <a href="NetworkStatusBar.tsx.html">NetworkStatusBar.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="NotificationStatusCard.tsx">
+                <a href="NotificationStatusCard.tsx.html">NotificationStatusCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="12" class="abs low">0/12</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="17" class="abs low">0/17</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="OfflineIndicator.tsx">
+                <a href="OfflineIndicator.tsx.html">OfflineIndicator.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="12" class="abs low">0/12</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="OnboardingFlow.tsx">
+                <a href="OnboardingFlow.tsx.html">OnboardingFlow.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="37" class="abs low">0/37</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="21" class="abs low">0/21</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="16" class="abs low">0/16</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="37" class="abs low">0/37</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="OptimizedImage.tsx">
+                <a href="OptimizedImage.tsx.html">OptimizedImage.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="ParentDashboard.tsx">
+                <a href="ParentDashboard.tsx.html">ParentDashboard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="79" class="abs low">0/79</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="30" class="abs low">0/30</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="55" class="abs low">0/55</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="PhotoCheckInButton.tsx">
+                <a href="PhotoCheckInButton.tsx.html">PhotoCheckInButton.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="39" class="abs low">0/39</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="38" class="abs low">0/38</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="PhotoCheckInHistory.tsx">
+                <a href="PhotoCheckInHistory.tsx.html">PhotoCheckInHistory.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="16" class="abs low">0/16</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="PinAuthentication.tsx">
+                <a href="PinAuthentication.tsx.html">PinAuthentication.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="57" class="abs low">0/57</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="43" class="abs low">0/43</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="52" class="abs low">0/52</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="PlaceCard.tsx">
+                <a href="PlaceCard.tsx.html">PlaceCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="16" class="abs low">0/16</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="11" class="abs low">0/11</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="16" class="abs low">0/16</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="PullToRefresh.tsx">
+                <a href="PullToRefresh.tsx.html">PullToRefresh.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RegionSelector.tsx">
+                <a href="RegionSelector.tsx.html">RegionSelector.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RegionSwitcher.tsx">
+                <a href="RegionSwitcher.tsx.html">RegionSwitcher.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+              <td data-value="100" class="pct high">100%</td>
+              <td data-value="0" class="abs high">0/0</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="10" class="abs low">0/10</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RegionalFunFactCard.tsx">
+                <a href="RegionalFunFactCard.tsx.html">RegionalFunFactCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RegionalTransitCard.tsx">
+                <a href="RegionalTransitCard.tsx.html">RegionalTransitCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="15" class="abs low">0/15</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="15" class="abs low">0/15</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RouteCard.tsx">
+                <a href="RouteCard.tsx.html">RouteCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RoutingDemo.tsx">
+                <a href="RoutingDemo.tsx.html">RoutingDemo.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="91" class="abs low">0/91</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="57" class="abs low">0/57</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="29" class="abs low">0/29</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="82" class="abs low">0/82</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="RoutingPreferences.tsx">
+                <a href="RoutingPreferences.tsx.html">RoutingPreferences.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="49" class="abs low">0/49</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="47" class="abs low">0/47</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="22" class="abs low">0/22</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="41" class="abs low">0/41</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafeZoneActivityLog.tsx">
+                <a href="SafeZoneActivityLog.tsx.html">SafeZoneActivityLog.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="22" class="abs low">0/22</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="16" class="abs low">0/16</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="5" class="abs low">0/5</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="22" class="abs low">0/22</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafeZoneIndicator.tsx">
+                <a href="SafeZoneIndicator.tsx.html">SafeZoneIndicator.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="20" class="abs low">0/20</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafeZoneManagement.tsx">
+                <a href="SafeZoneManagement.tsx.html">SafeZoneManagement.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="65" class="abs low">0/65</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="35" class="abs low">0/35</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafeZoneStatusCard.tsx">
+                <a href="SafeZoneStatusCard.tsx.html">SafeZoneStatusCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="12" class="abs low">0/12</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafetyDashboard.tsx">
+                <a href="SafetyDashboard.tsx.html">SafetyDashboard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="35" class="abs low">0/35</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="30" class="abs low">0/30</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="33" class="abs low">0/33</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SafetyPanel.tsx">
+                <a href="SafetyPanel.tsx.html">SafetyPanel.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="172" class="abs low">0/172</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="70" class="abs low">0/70</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="169" class="abs low">0/169</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SearchBar.tsx">
+                <a href="SearchBar.tsx.html">SearchBar.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="1" class="abs low">0/1</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SearchWithSuggestions.tsx">
+                <a href="SearchWithSuggestions.tsx.html">SearchWithSuggestions.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="20" class="abs low">0/20</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="9" class="abs low">0/9</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="20" class="abs low">0/20</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SmartNavigationScreen.tsx">
+                <a href="SmartNavigationScreen.tsx.html">SmartNavigationScreen.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="70" class="abs low">0/70</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="53" class="abs low">0/53</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="23" class="abs low">0/23</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="69" class="abs low">0/69</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SmartNotification.tsx">
+                <a href="SmartNotification.tsx.html">SmartNotification.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="44" class="abs low">0/44</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="58" class="abs low">0/58</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SmartRouteSuggestions.tsx">
+                <a href="SmartRouteSuggestions.tsx.html">SmartRouteSuggestions.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="78" class="abs low">0/78</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="60" class="abs low">0/60</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="20" class="abs low">0/20</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="69" class="abs low">0/69</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="SystemHealthMonitor.tsx">
+                <a href="SystemHealthMonitor.tsx.html">SystemHealthMonitor.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="64" class="abs low">0/64</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="61" class="abs low">0/61</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="12" class="abs low">0/12</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="57" class="abs low">0/57</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="Toast.tsx">
+                <a href="Toast.tsx.html">Toast.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="29" class="abs low">0/29</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="TransitPreview.tsx">
+                <a href="TransitPreview.tsx.html">TransitPreview.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="6" class="abs low">0/6</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="TransitStepIndicator.tsx">
+                <a href="TransitStepIndicator.tsx.html">TransitStepIndicator.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="31" class="abs low">0/31</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="27" class="abs low">0/27</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="30" class="abs low">0/30</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="TransitWidget.tsx">
+                <a href="TransitWidget.tsx.html">TransitWidget.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="15" class="abs low">0/15</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="TravelModeSelector.tsx">
+                <a href="TravelModeSelector.tsx.html">TravelModeSelector.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="7" class="abs low">0/7</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="UserStatsCard.tsx">
+                <a href="UserStatsCard.tsx.html">UserStatsCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="2" class="abs low">0/2</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="8" class="abs low">0/8</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="VirtualPetCompanion.tsx">
+                <a href="VirtualPetCompanion.tsx.html">VirtualPetCompanion.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="79" class="abs low">0/79</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="49" class="abs low">0/49</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="56" class="abs low">0/56</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="VoiceNavigation.tsx">
+                <a href="VoiceNavigation.tsx.html">VoiceNavigation.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="134" class="abs low">0/134</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="53" class="abs low">0/53</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="22" class="abs low">0/22</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="127" class="abs low">0/127</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="VoiceSettings.tsx">
+                <a href="VoiceSettings.tsx.html">VoiceSettings.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="28" class="abs low">0/28</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="46" class="abs low">0/46</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="25" class="abs low">0/25</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="WeatherCard.tsx">
+                <a href="WeatherCard.tsx.html">WeatherCard.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="13" class="abs low">0/13</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="18" class="abs low">0/18</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="WeatherWidget.tsx">
+                <a href="WeatherWidget.tsx.html">WeatherWidget.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="3" class="abs low">0/3</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="14" class="abs low">0/14</td>
+            </tr>
+
+            <tr>
+              <td class="file low" data-value="useTransitFeed.tsx">
+                <a href="useTransitFeed.tsx.html">useTransitFeed.tsx</a>
+              </td>
+              <td data-value="0" class="pic low">
+                <div class="chart">
+                  <div class="cover-fill" style="width: 0%"></div>
+                  <div class="cover-empty" style="width: 100%"></div>
+                </div>
+              </td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="26" class="abs low">0/26</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="15" class="abs low">0/15</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="4" class="abs low">0/4</td>
+              <td data-value="0" class="pct low">0%</td>
+              <td data-value="22" class="abs low">0/22</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="push"></div>
+      <!-- for sticky footer -->
     </div>
-    <div class='status-line low'></div>
-    <div class="pad1">
-<table class="coverage-summary">
-<thead>
-<tr>
-   <th data-col="file" data-fmt="html" data-html="true" class="file">File</th>
-   <th data-col="pic" data-type="number" data-fmt="html" data-html="true" class="pic"></th>
-   <th data-col="statements" data-type="number" data-fmt="pct" class="pct">Statements</th>
-   <th data-col="statements_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="branches" data-type="number" data-fmt="pct" class="pct">Branches</th>
-   <th data-col="branches_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="functions" data-type="number" data-fmt="pct" class="pct">Functions</th>
-   <th data-col="functions_raw" data-type="number" data-fmt="html" class="abs"></th>
-   <th data-col="lines" data-type="number" data-fmt="pct" class="pct">Lines</th>
-   <th data-col="lines_raw" data-type="number" data-fmt="html" class="abs"></th>
-</tr>
-</thead>
-<tbody><tr>
-	<td class="file low" data-value="AIJourneyCompanion.tsx"><a href="AIJourneyCompanion.tsx.html">AIJourneyCompanion.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="80" class="abs low">0/80</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="41" class="abs low">0/41</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="74" class="abs low">0/74</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="AIRouteSuggestions.tsx"><a href="AIRouteSuggestions.tsx.html">AIRouteSuggestions.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="48" class="abs low">0/48</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="38" class="abs low">0/38</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="45" class="abs low">0/45</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="AccessibilitySettings.tsx"><a href="AccessibilitySettings.tsx.html">AccessibilitySettings.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="AccessibleButton.tsx"><a href="AccessibleButton.tsx.html">AccessibleButton.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="AchievementBadge.tsx"><a href="AchievementBadge.tsx.html">AchievementBadge.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="ApiErrorBoundary.tsx"><a href="ApiErrorBoundary.tsx.html">ApiErrorBoundary.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="54" class="abs low">0/54</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="57" class="abs low">0/57</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="54" class="abs low">0/54</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="ArrivalAlert.tsx"><a href="ArrivalAlert.tsx.html">ArrivalAlert.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="BackendStatusIndicator.tsx"><a href="BackendStatusIndicator.tsx.html">BackendStatusIndicator.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="19" class="abs low">0/19</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="19" class="abs low">0/19</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="CategoryButton.tsx"><a href="CategoryButton.tsx.html">CategoryButton.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="70" class="abs low">0/70</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="76" class="abs low">0/76</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="70" class="abs low">0/70</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="CategoryManagement.tsx"><a href="CategoryManagement.tsx.html">CategoryManagement.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="83" class="abs low">0/83</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="35" class="abs low">0/35</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="24" class="abs low">0/24</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="83" class="abs low">0/83</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="CityManagement.tsx"><a href="CityManagement.tsx.html">CityManagement.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="51" class="abs low">0/51</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="55" class="abs low">0/55</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="50" class="abs low">0/50</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="DevicePingHandler.tsx"><a href="DevicePingHandler.tsx.html">DevicePingHandler.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="71" class="abs low">0/71</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="46" class="abs low">0/46</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="70" class="abs low">0/70</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="DevicePingHistory.tsx"><a href="DevicePingHistory.tsx.html">DevicePingHistory.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="45" class="abs low">0/45</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="34" class="abs low">0/34</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="9" class="abs low">0/9</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="44" class="abs low">0/44</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="DirectionStep.tsx"><a href="DirectionStep.tsx.html">DirectionStep.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="EmptyState.tsx"><a href="EmptyState.tsx.html">EmptyState.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="EnhancedFeaturesDemo.tsx"><a href="EnhancedFeaturesDemo.tsx.html">EnhancedFeaturesDemo.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="53" class="abs low">0/53</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="19" class="abs low">0/19</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="53" class="abs low">0/53</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="EnhancedRouteCard.tsx"><a href="EnhancedRouteCard.tsx.html">EnhancedRouteCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="36" class="abs low">0/36</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="77" class="abs low">0/77</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="32" class="abs low">0/32</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="ErrorBoundary.tsx"><a href="ErrorBoundary.tsx.html">ErrorBoundary.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="ExpoMapView.tsx"><a href="ExpoMapView.tsx.html">ExpoMapView.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="49" class="abs low">0/49</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="48" class="abs low">0/48</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="FunFactCard.tsx"><a href="FunFactCard.tsx.html">FunFactCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="InAppNotificationHost.tsx"><a href="InAppNotificationHost.tsx.html">InAppNotificationHost.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="50" class="abs low">0/50</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="24" class="abs low">0/24</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="20" class="abs low">0/20</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="40" class="abs low">0/40</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="InteractiveMap.tsx"><a href="InteractiveMap.tsx.html">InteractiveMap.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="75" class="abs low">0/75</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="92" class="abs low">0/92</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="73" class="abs low">0/73</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="KidFriendlyMap.tsx"><a href="KidFriendlyMap.tsx.html">KidFriendlyMap.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="65" class="abs low">0/65</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="56" class="abs low">0/56</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="63" class="abs low">0/63</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="KidTripPlanner.tsx"><a href="KidTripPlanner.tsx.html">KidTripPlanner.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="53" class="abs low">0/53</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="50" class="abs low">0/50</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="LiveArrivalsCard.tsx"><a href="LiveArrivalsCard.tsx.html">LiveArrivalsCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="44" class="abs low">0/44</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="51" class="abs low">0/51</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="39" class="abs low">0/39</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="LoadingSpinner.tsx"><a href="LoadingSpinner.tsx.html">LoadingSpinner.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MTAEducation.tsx"><a href="MTAEducation.tsx.html">MTAEducation.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="36" class="abs low">0/36</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="28" class="abs low">0/28</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="36" class="abs low">0/36</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MTALiveArrivals.tsx"><a href="MTALiveArrivals.tsx.html">MTALiveArrivals.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="62" class="abs low">0/62</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="63" class="abs low">0/63</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="57" class="abs low">0/57</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MTAStationFinder.tsx"><a href="MTAStationFinder.tsx.html">MTAStationFinder.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="63" class="abs low">0/63</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="78" class="abs low">0/78</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="24" class="abs low">0/24</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MapLibreMap.tsx"><a href="MapLibreMap.tsx.html">MapLibreMap.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="54" class="abs low">0/54</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="59" class="abs low">0/59</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="54" class="abs low">0/54</td>
-	</tr>
-
-<tr>
-	<td class="file high" data-value="MapLibreRouteView.tsx"><a href="MapLibreRouteView.tsx.html">MapLibreRouteView.tsx</a></td>
-	<td data-value="82.92" class="pic high">
-	<div class="chart"><div class="cover-fill" style="width: 82%"></div><div class="cover-empty" style="width: 18%"></div></div>
-	</td>
-	<td data-value="82.92" class="pct high">82.92%</td>
-	<td data-value="82" class="abs high">68/82</td>
-	<td data-value="64.63" class="pct medium">64.63%</td>
-	<td data-value="82" class="abs medium">53/82</td>
-	<td data-value="94.11" class="pct high">94.11%</td>
-	<td data-value="17" class="abs high">16/17</td>
-	<td data-value="84.21" class="pct high">84.21%</td>
-	<td data-value="76" class="abs high">64/76</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MapPlaceholder.tsx"><a href="MapPlaceholder.tsx.html">MapPlaceholder.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="MapWithInfoPanel.tsx"><a href="MapWithInfoPanel.tsx.html">MapWithInfoPanel.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="9" class="abs low">0/9</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="NetworkStatusBar.tsx"><a href="NetworkStatusBar.tsx.html">NetworkStatusBar.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="NotificationStatusCard.tsx"><a href="NotificationStatusCard.tsx.html">NotificationStatusCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="17" class="abs low">0/17</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="OfflineIndicator.tsx"><a href="OfflineIndicator.tsx.html">OfflineIndicator.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="OnboardingFlow.tsx"><a href="OnboardingFlow.tsx.html">OnboardingFlow.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="37" class="abs low">0/37</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="21" class="abs low">0/21</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="37" class="abs low">0/37</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="OptimizedImage.tsx"><a href="OptimizedImage.tsx.html">OptimizedImage.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="ParentDashboard.tsx"><a href="ParentDashboard.tsx.html">ParentDashboard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="79" class="abs low">0/79</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="55" class="abs low">0/55</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="PhotoCheckInButton.tsx"><a href="PhotoCheckInButton.tsx.html">PhotoCheckInButton.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="39" class="abs low">0/39</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="38" class="abs low">0/38</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="PhotoCheckInHistory.tsx"><a href="PhotoCheckInHistory.tsx.html">PhotoCheckInHistory.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="PinAuthentication.tsx"><a href="PinAuthentication.tsx.html">PinAuthentication.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="57" class="abs low">0/57</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="43" class="abs low">0/43</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="52" class="abs low">0/52</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="PlaceCard.tsx"><a href="PlaceCard.tsx.html">PlaceCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="11" class="abs low">0/11</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="PullToRefresh.tsx"><a href="PullToRefresh.tsx.html">PullToRefresh.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RegionSelector.tsx"><a href="RegionSelector.tsx.html">RegionSelector.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RegionSwitcher.tsx"><a href="RegionSwitcher.tsx.html">RegionSwitcher.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	<td data-value="100" class="pct high">100%</td>
-	<td data-value="0" class="abs high">0/0</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="10" class="abs low">0/10</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RegionalFunFactCard.tsx"><a href="RegionalFunFactCard.tsx.html">RegionalFunFactCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RegionalTransitCard.tsx"><a href="RegionalTransitCard.tsx.html">RegionalTransitCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RouteCard.tsx"><a href="RouteCard.tsx.html">RouteCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RoutingDemo.tsx"><a href="RoutingDemo.tsx.html">RoutingDemo.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="91" class="abs low">0/91</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="57" class="abs low">0/57</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="29" class="abs low">0/29</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="82" class="abs low">0/82</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="RoutingPreferences.tsx"><a href="RoutingPreferences.tsx.html">RoutingPreferences.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="49" class="abs low">0/49</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="47" class="abs low">0/47</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="22" class="abs low">0/22</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="41" class="abs low">0/41</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafeZoneActivityLog.tsx"><a href="SafeZoneActivityLog.tsx.html">SafeZoneActivityLog.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="22" class="abs low">0/22</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="16" class="abs low">0/16</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="5" class="abs low">0/5</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="22" class="abs low">0/22</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafeZoneIndicator.tsx"><a href="SafeZoneIndicator.tsx.html">SafeZoneIndicator.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="20" class="abs low">0/20</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafeZoneManagement.tsx"><a href="SafeZoneManagement.tsx.html">SafeZoneManagement.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="65" class="abs low">0/65</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="35" class="abs low">0/35</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafeZoneStatusCard.tsx"><a href="SafeZoneStatusCard.tsx.html">SafeZoneStatusCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafetyDashboard.tsx"><a href="SafetyDashboard.tsx.html">SafetyDashboard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="35" class="abs low">0/35</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="33" class="abs low">0/33</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SafetyPanel.tsx"><a href="SafetyPanel.tsx.html">SafetyPanel.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="172" class="abs low">0/172</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="70" class="abs low">0/70</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="169" class="abs low">0/169</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SearchBar.tsx"><a href="SearchBar.tsx.html">SearchBar.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="1" class="abs low">0/1</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SearchWithSuggestions.tsx"><a href="SearchWithSuggestions.tsx.html">SearchWithSuggestions.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="20" class="abs low">0/20</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="9" class="abs low">0/9</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="20" class="abs low">0/20</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SmartNavigationScreen.tsx"><a href="SmartNavigationScreen.tsx.html">SmartNavigationScreen.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="70" class="abs low">0/70</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="53" class="abs low">0/53</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="23" class="abs low">0/23</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="69" class="abs low">0/69</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SmartNotification.tsx"><a href="SmartNotification.tsx.html">SmartNotification.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="44" class="abs low">0/44</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="58" class="abs low">0/58</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SmartRouteSuggestions.tsx"><a href="SmartRouteSuggestions.tsx.html">SmartRouteSuggestions.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="78" class="abs low">0/78</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="60" class="abs low">0/60</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="20" class="abs low">0/20</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="69" class="abs low">0/69</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="SystemHealthMonitor.tsx"><a href="SystemHealthMonitor.tsx.html">SystemHealthMonitor.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="64" class="abs low">0/64</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="61" class="abs low">0/61</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="12" class="abs low">0/12</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="57" class="abs low">0/57</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="Toast.tsx"><a href="Toast.tsx.html">Toast.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="29" class="abs low">0/29</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="TransitPreview.tsx"><a href="TransitPreview.tsx.html">TransitPreview.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="6" class="abs low">0/6</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="TransitStepIndicator.tsx"><a href="TransitStepIndicator.tsx.html">TransitStepIndicator.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="31" class="abs low">0/31</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="27" class="abs low">0/27</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="30" class="abs low">0/30</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="TransitWidget.tsx"><a href="TransitWidget.tsx.html">TransitWidget.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="TravelModeSelector.tsx"><a href="TravelModeSelector.tsx.html">TravelModeSelector.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="7" class="abs low">0/7</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="UserStatsCard.tsx"><a href="UserStatsCard.tsx.html">UserStatsCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="2" class="abs low">0/2</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="8" class="abs low">0/8</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="VirtualPetCompanion.tsx"><a href="VirtualPetCompanion.tsx.html">VirtualPetCompanion.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="79" class="abs low">0/79</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="49" class="abs low">0/49</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="56" class="abs low">0/56</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="VoiceNavigation.tsx"><a href="VoiceNavigation.tsx.html">VoiceNavigation.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="134" class="abs low">0/134</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="53" class="abs low">0/53</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="22" class="abs low">0/22</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="127" class="abs low">0/127</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="VoiceSettings.tsx"><a href="VoiceSettings.tsx.html">VoiceSettings.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="28" class="abs low">0/28</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="46" class="abs low">0/46</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="25" class="abs low">0/25</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="WeatherCard.tsx"><a href="WeatherCard.tsx.html">WeatherCard.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="13" class="abs low">0/13</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="18" class="abs low">0/18</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="WeatherWidget.tsx"><a href="WeatherWidget.tsx.html">WeatherWidget.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="3" class="abs low">0/3</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="14" class="abs low">0/14</td>
-	</tr>
-
-<tr>
-	<td class="file low" data-value="useTransitFeed.tsx"><a href="useTransitFeed.tsx.html">useTransitFeed.tsx</a></td>
-	<td data-value="0" class="pic low">
-	<div class="chart"><div class="cover-fill" style="width: 0%"></div><div class="cover-empty" style="width: 100%"></div></div>
-	</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="26" class="abs low">0/26</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="15" class="abs low">0/15</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="4" class="abs low">0/4</td>
-	<td data-value="0" class="pct low">0%</td>
-	<td data-value="22" class="abs low">0/22</td>
-	</tr>
-
-</tbody>
-</table>
-</div>
-                <div class='push'></div><!-- for sticky footer -->
-            </div><!-- /wrapper -->
-            <div class='footer quiet pad2 space-top1 center small'>
-                Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
-            </div>
-        <script src="../prettify.js"></script>
-        <script>
-            window.onload = function () {
-                prettyPrint();
-            };
-        </script>
-        <script src="../sorter.js"></script>
-        <script src="../block-navigation.js"></script>
-    </body>
+    <!-- /wrapper -->
+    <div class="footer quiet pad2 space-top1 center small">
+      Code coverage generated by
+      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+      at 2025-10-08T20:36:02.866Z
+    </div>
+    <script src="../prettify.js"></script>
+    <script>
+      window.onload = function () {
+        prettyPrint();
+      };
+    </script>
+    <script src="../sorter.js"></script>
+    <script src="../block-navigation.js"></script>
+  </body>
 </html>
-    

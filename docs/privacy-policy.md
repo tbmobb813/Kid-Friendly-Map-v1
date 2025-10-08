@@ -50,12 +50,12 @@ We do not knowingly collect or store persistent identifiers for children beyond 
 
 ## 5. Legal Bases for Processing (GDPR)
 
-| Purpose | Legal Basis |
-|---------|-------------|
-| Core app functionality | Performance of a contract (Art. 6(1)(b)) |
-| Parental consent records | Compliance with legal obligations (Art. 6(1)(c)) |
+| Purpose                        | Legal Basis                                         |
+| ------------------------------ | --------------------------------------------------- |
+| Core app functionality         | Performance of a contract (Art. 6(1)(b))            |
+| Parental consent records       | Compliance with legal obligations (Art. 6(1)(c))    |
 | Optional analytics (Plausible) | Legitimate interests with safeguards (Art. 6(1)(f)) |
-| AI companion personalization | Guardian consent (Art. 6(1)(a)) |
+| AI companion personalization   | Guardian consent (Art. 6(1)(a))                     |
 
 When legitimate interests are used, we conduct balancing tests to ensure the interests of children and guardians are protected.
 
@@ -68,14 +68,14 @@ When legitimate interests are used, we conduct balancing tests to ensure the int
 
 ## 7. Data Retention
 
-| Data Category | Retention Period | Notes |
-|---------------|-----------------|-------|
-| Guardian account data | Active account + 24 months | Purged after account closure unless legal hold |
-| Child profile settings | Active profile + 30 days | Deleted immediately upon guardian request |
-| Consent records | 5 years | Stored for compliance auditing |
-| Crash logs (Sentry) | 90 days | Aggregated metrics retained beyond 90 days |
-| Analytics aggregates (Plausible) | 12 months | No raw identifiers stored |
-| Offline tile metadata | Active device only | Stored locally; wiped upon uninstall or guardian action |
+| Data Category                    | Retention Period           | Notes                                                   |
+| -------------------------------- | -------------------------- | ------------------------------------------------------- |
+| Guardian account data            | Active account + 24 months | Purged after account closure unless legal hold          |
+| Child profile settings           | Active profile + 30 days   | Deleted immediately upon guardian request               |
+| Consent records                  | 5 years                    | Stored for compliance auditing                          |
+| Crash logs (Sentry)              | 90 days                    | Aggregated metrics retained beyond 90 days              |
+| Analytics aggregates (Plausible) | 12 months                  | No raw identifiers stored                               |
+| Offline tile metadata            | Active device only         | Stored locally; wiped upon uninstall or guardian action |
 
 ## 8. Sharing & Disclosure
 

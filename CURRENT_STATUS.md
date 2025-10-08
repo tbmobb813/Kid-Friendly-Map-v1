@@ -8,16 +8,19 @@
 ## ✅ SUCCESSES
 
 ### 1. **Navigation Error is FIXED!**
+
 - Downgraded `@react-navigation/native` from 7.1.17 → 7.1.8
 - No more "Couldn't find the prevent remove context" error
 - App renders successfully in Expo Go
 
 ### 2. **Expo Go is Working!**
+
 - App loads and runs in Expo Go
 - Can test on your phone via QR code scan
 - Navigation stack works properly
 
 ### 3. **CategoryStore Error FIXED!**
+
 - Added `<CategoryProvider>` back to `app/_layout.tsx`
 - Store now properly initialized
 - `getApprovedCategories()` should work now
@@ -27,15 +30,18 @@
 ## ❌ REMAINING ISSUES
 
 ### 1. **Native Build Failing (Gradle)**
+
 **Error:** `Process 'command 'node'' finished with non-zero exit value 1`  
 **Location:** `android/settings.gradle:29` during React Native autolinking  
 **Impact:** Cannot build APK locally via Gradle
 
 ### 2. **EAS Login Failed**
+
 **Error:** Wrong email/username or password  
 **Impact:** Cannot use cloud build service
 
 ### 3. **No Physical Device Connected**
+
 **Error:** USB not detecting phone  
 **Impact:** Cannot use `npx expo run:android` for native build
 
@@ -52,12 +58,14 @@ Your server is running! Test the app immediately:
 3. **Test your app!**
 
 **What Works:**
+
 - ✅ Navigation (the main fix we made!)
 - ✅ UI/UX flow
 - ✅ Most app features
 - ✅ CategoryStore (just fixed!)
 
 **What Doesn't Work:**
+
 - ❌ MapLibre (needs native modules)
 - ❌ MMKV persistence (needs native modules)
 
@@ -76,16 +84,18 @@ If you want MapLibre and full native features:
    - `adb devices` should show your phone
 
 2. **Once device appears:**
+
    ```bash
    cd /home/jason/Projects/Kid-Friendly-Map-v1
    npx expo run:android --variant release
    ```
 
 3. **Get your APK:**
+
    ```bash
    # APK will be at:
    android/app/build/outputs/apk/release/app-release.apk
-   
+
    # Copy to phone and install
    ```
 
@@ -101,6 +111,7 @@ If USB won't work:
    - Reset using your email (jsn.nix@gmail.com)
 
 2. **Login and Build:**
+
    ```bash
    eas login
    eas build --platform android --profile preview
@@ -126,12 +137,14 @@ QR Code: Available in terminal
 ## 🔧 FILES MODIFIED TODAY
 
 ### Fixed Files:
+
 1. ✅ `package.json` - @react-navigation/native@7.1.8
 2. ✅ `app/_layout.tsx` - Added CategoryProvider
 3. ✅ `eas.json` - Fixed iOS buildType error
 4. ✅ `node_modules` - Clean reinstall
 
 ### Generated Files:
+
 1. ✅ `android/` directory - Prebuild complete
 2. ✅ `dist/` - Android export bundle created
 
@@ -140,6 +153,7 @@ QR Code: Available in terminal
 ## 🐛 BUILD ERRORS EXPLAINED
 
 ### Gradle Build Error:
+
 ```
 A problem occurred evaluating settings 'android'.
 > Process 'command 'node'' finished with non-zero exit value 1
@@ -156,16 +170,19 @@ A problem occurred evaluating settings 'android'.
 **I recommend this order:**
 
 ### Step 1: Test in Expo Go (Immediate)
+
 ```bash
 # Server is already running!
 # Just open Expo Go app and scan QR code
 ```
 
 ### Step 2: If Expo Go works well:
+
 - You've confirmed the navigation fix works! ✅
 - Decide if you need native modules (MapLibre)
 
 ### Step 3: If you need native build:
+
 - **Option A:** Fix USB connection (fastest)
 - **Option B:** Use EAS cloud build (most reliable)
 
@@ -173,13 +190,13 @@ A problem occurred evaluating settings 'android'.
 
 ## 📊 COMPATIBILITY MATRIX
 
-| Feature | Expo Go | Native Build |
-|---------|---------|--------------|
-| Navigation | ✅ Works | ✅ Works |
-| UI/Components | ✅ Works | ✅ Works |
-| MapLibre | ❌ No | ✅ Yes |
-| MMKV Storage | ❌ No (in-memory) | ✅ Yes |
-| Testing Speed | ⚡ Instant | ⏱️ 5-15 min |
+| Feature       | Expo Go           | Native Build |
+| ------------- | ----------------- | ------------ |
+| Navigation    | ✅ Works          | ✅ Works     |
+| UI/Components | ✅ Works          | ✅ Works     |
+| MapLibre      | ❌ No             | ✅ Yes       |
+| MMKV Storage  | ❌ No (in-memory) | ✅ Yes       |
+| Testing Speed | ⚡ Instant        | ⏱️ 5-15 min  |
 
 ---
 
@@ -201,6 +218,7 @@ All guides available in your project:
 **Right now, open Expo Go app on your phone and scan the QR code in the terminal!**
 
 Let's verify that:
+
 1. ✅ App loads without errors
 2. ✅ Navigation works properly
 3. ✅ Categories load correctly
@@ -215,6 +233,7 @@ Then you can decide if you need the native build for MapLibre support.
 **Ready to test!** 📱
 
 What would you like to do?
+
 - **A)** Test in Expo Go now (scan QR code)
 - **B)** Fix USB and build native APK
 - **C)** Use EAS cloud build

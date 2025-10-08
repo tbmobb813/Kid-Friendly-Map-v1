@@ -4,7 +4,7 @@ Top-level summary (production readiness)
 
 Project is functionally rich and has tests, build script, and CI piLocal checks (typLocal checks (typQuick verification commLocal checks (typecheck, tests, build script):
 
-```bash
+````bash
 # Install dependencies (choose one and standardize)
 npm ci
 
@@ -38,7 +38,7 @@ npm test -- __tests__/safety.test.ts -i
 
 # Run the repository production build script (it exists: scripts/build-production.js)
 node scripts/build-production.js
-```
+````
 
 Quality gates (minimum before publishing), tests, build script):
 
@@ -61,7 +61,7 @@ node scripts/build-production.js
 
 Quality gates (minimum before publishing)ck, tests, build script):
 
-```bash
+````bash
 # Install dependencies (choose one and standardize)
 npm ci
 
@@ -250,3 +250,4 @@ Create eas.json example and document steps to add App Store / Play credentials t
 Add assets folder placeholders (icons/splash) and update app.json paths if necessary (small).
 Integrate Sentry skeleton (small).
 Standardize package manager (decide bun or npm) and update CI/workflow to match (small → medium).
+````

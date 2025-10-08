@@ -1,7 +1,7 @@
 # 📚 KidMap: Strategic Documentation Index
 
 **Last Updated:** October 1, 2025  
-**Purpose:** Central hub for all strategic planning and roadmap documentation  
+**Purpose:** Central hub for all strategic planning and roadmap documentation
 
 ---
 
@@ -31,17 +31,17 @@ Comprehensive 50+ page deep dive into roadmap, market gaps, and technical stack 
 
 ## 📋 Document Purpose Matrix
 
-| Document | Audience | Use Case | Format |
-|----------|----------|----------|--------|
-| **EXECUTIVE_SUMMARY.md** | Leadership, Investors | Decision making, funding | Narrative + tables |
-| **QUICK_REFERENCE_ACTION_PLAN.md** | Product, Engineering | Daily execution | Checklists + Q&A |
-| **90_DAY_ROADMAP.md** | Full team | Sprint planning | Visual timeline |
-| **STRATEGIC_ROADMAP_ALIGNMENT.md** | Strategy, Product | Detailed planning | Structured analysis |
-| **compliance-roadmap.md** | Product, Legal, Engineering | Cross-team COPPA/GDPR execution | Timeline + RACI |
-| **privacy-policy.md** | Legal, Marketing, Support | External policy drafting | Narrative + tables |
-| **terms-of-service.md** | Legal, Product | Guardian agreement drafting | Narrative |
-| **data-handling-checklist.md** | Engineering, Privacy PM | Release gating & audits | Tables + checkboxes |
-| **monitoring-runbook.md** | DevOps, On-call, Privacy | Incident response & observability | Runbook |
+| Document                           | Audience                    | Use Case                          | Format              |
+| ---------------------------------- | --------------------------- | --------------------------------- | ------------------- |
+| **EXECUTIVE_SUMMARY.md**           | Leadership, Investors       | Decision making, funding          | Narrative + tables  |
+| **QUICK_REFERENCE_ACTION_PLAN.md** | Product, Engineering        | Daily execution                   | Checklists + Q&A    |
+| **90_DAY_ROADMAP.md**              | Full team                   | Sprint planning                   | Visual timeline     |
+| **STRATEGIC_ROADMAP_ALIGNMENT.md** | Strategy, Product           | Detailed planning                 | Structured analysis |
+| **compliance-roadmap.md**          | Product, Legal, Engineering | Cross-team COPPA/GDPR execution   | Timeline + RACI     |
+| **privacy-policy.md**              | Legal, Marketing, Support   | External policy drafting          | Narrative + tables  |
+| **terms-of-service.md**            | Legal, Product              | Guardian agreement drafting       | Narrative           |
+| **data-handling-checklist.md**     | Engineering, Privacy PM     | Release gating & audits           | Tables + checkboxes |
+| **monitoring-runbook.md**          | DevOps, On-call, Privacy    | Incident response & observability | Runbook             |
 
 ---
 
@@ -267,22 +267,22 @@ Compliance Approved           ✓         [ ]
 
 ### 90-Day Investment Required
 
-| Category | Amount | Status |
-|----------|--------|--------|
-| User Research | $5K-10K | 🔴 Approval needed |
-| Legal/Compliance | $10K-20K | 🔴 Approval needed |
-| Infrastructure | $2K-5K | 🟡 Can defer to week 5 |
-| Beta Program | $3K-5K | 🟡 Can defer to week 9 |
-| **TOTAL** | **$20K-40K** | **Approval needed** |
+| Category         | Amount       | Status                 |
+| ---------------- | ------------ | ---------------------- |
+| User Research    | $5K-10K      | 🔴 Approval needed     |
+| Legal/Compliance | $10K-20K     | 🔴 Approval needed     |
+| Infrastructure   | $2K-5K       | 🟡 Can defer to week 5 |
+| Beta Program     | $3K-5K       | 🟡 Can defer to week 9 |
+| **TOTAL**        | **$20K-40K** | **Approval needed**    |
 
 ### Ongoing Costs (Post-Beta)
 
-| Category | Monthly | Status |
-|----------|---------|--------|
-| Infrastructure | $500-2K | 🟡 Future planning |
-| Monitoring/Tools | $200-500 | 🟡 Future planning |
-| Legal/Compliance | $500-1K | 🟡 Future planning |
-| **TOTAL** | **$1.2K-3.5K** | **For future consideration** |
+| Category         | Monthly        | Status                       |
+| ---------------- | -------------- | ---------------------------- |
+| Infrastructure   | $500-2K        | 🟡 Future planning           |
+| Monitoring/Tools | $200-500       | 🟡 Future planning           |
+| Legal/Compliance | $500-1K        | 🟡 Future planning           |
+| **TOTAL**        | **$1.2K-3.5K** | **For future consideration** |
 
 ---
 
@@ -347,7 +347,7 @@ Compliance Approved           ✓         [ ]
 
 ---
 
-*This index is a living document. Update as new documentation is created or priorities shift.*
+_This index is a living document. Update as new documentation is created or priorities shift._
 
 **Last Updated:** October 1, 2025  
 **Version:** 1.0  

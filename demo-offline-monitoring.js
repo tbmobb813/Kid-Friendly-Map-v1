@@ -6,7 +6,7 @@
 const chalk = require('chalk');
 
 console.log(chalk.blue.bold('\n🔍 Offline Validation & Monitoring System Demo\n'));
-console.log(chalk.gray('=' .repeat(60)));
+console.log(chalk.gray('='.repeat(60)));
 
 // Simulate features
 const features = {
@@ -30,18 +30,14 @@ const features = {
 console.log(chalk.yellow('\n📦 Offline Capabilities:\n'));
 Object.entries(features.offline).forEach(([feature, enabled]) => {
   const status = enabled ? chalk.green('✅') : chalk.red('❌');
-  const name = feature
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, str => str.toUpperCase());
+  const name = feature.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
   console.log(`  ${status} ${name}`);
 });
 
 console.log(chalk.yellow('\n📊 Monitoring Capabilities:\n'));
 Object.entries(features.monitoring).forEach(([feature, enabled]) => {
   const status = enabled ? chalk.green('✅') : chalk.red('❌');
-  const name = feature
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, str => str.toUpperCase());
+  const name = feature.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
   console.log(`  ${status} ${name}`);
 });
 
@@ -119,7 +115,8 @@ readiness.forEach(({ item, status }) => {
 });
 
 console.log(chalk.yellow('\n📋 Usage Examples:\n'));
-console.log(chalk.gray(`
+console.log(
+  chalk.gray(`
 // Offline Manager
 import { offlineManager } from './utils/offlineManager';
 
@@ -142,7 +139,8 @@ monitoring.captureError({
 const endTimer = monitoring.startPerformanceTimer('api_call');
 await fetchData();
 endTimer();
-`));
+`),
+);
 
 console.log(chalk.yellow('🎯 Target Metrics:\n'));
 const metrics = [
@@ -174,8 +172,8 @@ console.log(chalk.green.bold('\n✅ Implementation Complete!\n'));
 console.log(chalk.gray('Both offline validation and comprehensive monitoring are'));
 console.log(chalk.gray('production-ready with 65 tests and 650+ lines of documentation.\n'));
 
-console.log(chalk.gray('=' .repeat(60)));
+console.log(chalk.gray('='.repeat(60)));
 console.log(chalk.blue('For details, see:'));
 console.log(chalk.cyan('  • docs/OFFLINE_VALIDATION_AND_MONITORING.md'));
 console.log(chalk.cyan('  • OFFLINE_MONITORING_IMPLEMENTATION.md'));
-console.log(chalk.gray('=' .repeat(60) + '\n'));
+console.log(chalk.gray('='.repeat(60) + '\n'));

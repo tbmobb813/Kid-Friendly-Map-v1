@@ -1,14 +1,14 @@
 # 📅 KidMap: 90-Day Visual Roadmap
 
 **Timeline:** Weeks 1-12 (October - December 2025)  
-**Goal:** Beta launch with 100+ families  
+**Goal:** Beta launch with 100+ families
 
 ---
 
 ## 🗓️ Timeline Overview
 
-Week 1-4:  RESEARCH & VALIDATION SPRINT
-Week 5-8:  TECHNICAL FOUNDATIONS
+Week 1-4: RESEARCH & VALIDATION SPRINT
+Week 5-8: TECHNICAL FOUNDATIONS
 Week 9-12: INTEGRATION & BETA LAUNCH
 
 ---
@@ -16,85 +16,85 @@ Week 9-12: INTEGRATION & BETA LAUNCH
 ## 📊 Gantt-Style View
 
 ┌──────────────────────────────────────────────────────────────────┐
-│ WEEK 1-4: RESEARCH & VALIDATION                                  │
+│ WEEK 1-4: RESEARCH & VALIDATION │
 ├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│ ████████████ User Research Sprint                               │
-│   └─ Parent Interviews (15-20)                                  │
-│   └─ Child Usability Sessions (20+)                             │
-│   └─ Educator Consultations (5-7)                               │
-│   └─ Special Needs Specialists (3-5)                            │
-│                                                                  │
-│ ████████ Compliance Documentation                               │
-│   └─ COPPA Checklist                                            │
-│   └─ GDPR/CCPA Matrices                                         │
-│   └─ Privacy Lawyer Consultation                                │
-│                                                                  │
-│ ████ Strategic Documentation                                    │
-│   └─ UVP Document                                               │
-│   └─ Competitive Positioning                                    │
-│   └─ User Personas & Journey Maps                              │
-│                                                                  │
-│     ████ Voice Guidance Prototype                               │
-│       └─ Expo Speech API Research                               │
-│       └─ Initial Implementation                                 │
-│                                                                  │
-│     ███ Offline Validation                                      │
-│       └─ Test Scenario Creation                                 │
-│       └─ Documentation                                          │
-│                                                                  │
+│ │
+│ ████████████ User Research Sprint │
+│ └─ Parent Interviews (15-20) │
+│ └─ Child Usability Sessions (20+) │
+│ └─ Educator Consultations (5-7) │
+│ └─ Special Needs Specialists (3-5) │
+│ │
+│ ████████ Compliance Documentation │
+│ └─ COPPA Checklist │
+│ └─ GDPR/CCPA Matrices │
+│ └─ Privacy Lawyer Consultation │
+│ │
+│ ████ Strategic Documentation │
+│ └─ UVP Document │
+│ └─ Competitive Positioning │
+│ └─ User Personas & Journey Maps │
+│ │
+│ ████ Voice Guidance Prototype │
+│ └─ Expo Speech API Research │
+│ └─ Initial Implementation │
+│ │
+│ ███ Offline Validation │
+│ └─ Test Scenario Creation │
+│ └─ Documentation │
+│ │
 └──────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────┐
-│ WEEK 5-8: TECHNICAL FOUNDATIONS                                  │
+│ WEEK 5-8: TECHNICAL FOUNDATIONS │
 ├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│     ████████████████ Backend Service Development                │
-│       └─ Fastify + PostgreSQL Setup                             │
-│       └─ Prisma ORM Configuration                               │
-│       └─ Authentication Endpoints                               │
-│       └─ Safe Zone API                                          │
-│       └─ Socket.io Real-time Layer                              │
-│                                                                  │
-│     ████████ Voice Guidance Completion                          │
-│       └─ User Testing                                           │
-│       └─ Settings Integration                                   │
-│       └─ Accessibility Menu                                     │
-│                                                                  │
-│     ████████ Educational Content                                │
-│       └─ Navigation Lessons                                     │
-│       └─ Geography Modules                                      │
-│       └─ Safety Scenarios                                       │
-│                                                                  │
-│           ████ Partnership Outreach                             │
-│             └─ School/Program Contacts                          │
-│             └─ Pilot Design                                     │
-│                                                                  │
+│ │
+│ ████████████████ Backend Service Development │
+│ └─ Fastify + PostgreSQL Setup │
+│ └─ Prisma ORM Configuration │
+│ └─ Authentication Endpoints │
+│ └─ Safe Zone API │
+│ └─ Socket.io Real-time Layer │
+│ │
+│ ████████ Voice Guidance Completion │
+│ └─ User Testing │
+│ └─ Settings Integration │
+│ └─ Accessibility Menu │
+│ │
+│ ████████ Educational Content │
+│ └─ Navigation Lessons │
+│ └─ Geography Modules │
+│ └─ Safety Scenarios │
+│ │
+│ ████ Partnership Outreach │
+│ └─ School/Program Contacts │
+│ └─ Pilot Design │
+│ │
 └──────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────────────────────────────┐
-│ WEEK 9-12: INTEGRATION & BETA LAUNCH                             │
+│ WEEK 9-12: INTEGRATION & BETA LAUNCH │
 ├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│         ████████ Backend Deployment                             │
-│           └─ Railway Staging                                    │
-│           └─ Integration Testing                                │
-│           └─ Production Deployment                              │
-│                                                                  │
-│         ████████████ Progressive Independence                   │
-│           └─ Level System Implementation                        │
-│           └─ Progression UI                                     │
-│           └─ Parent Approval Workflows                          │
-│           └─ User Testing                                       │
-│                                                                  │
-│               ████████ Beta Preparation                         │
-│                 └─ Recruit 100+ Families                        │
-│                 └─ Onboarding Materials                         │
-│                 └─ Feedback Channels                            │
-│                                                                  │
-│                     ████ Beta Launch 🚀                         │
-│                       └─ Week 12 Target                         │
-│                                                                  │
+│ │
+│ ████████ Backend Deployment │
+│ └─ Railway Staging │
+│ └─ Integration Testing │
+│ └─ Production Deployment │
+│ │
+│ ████████████ Progressive Independence │
+│ └─ Level System Implementation │
+│ └─ Progression UI │
+│ └─ Parent Approval Workflows │
+│ └─ User Testing │
+│ │
+│ ████████ Beta Preparation │
+│ └─ Recruit 100+ Families │
+│ └─ Onboarding Materials │
+│ └─ Feedback Channels │
+│ │
+│ ████ Beta Launch 🚀 │
+│ └─ Week 12 Target │
+│ │
 └──────────────────────────────────────────────────────────────────┘
 
 ---
@@ -105,25 +105,25 @@ Week 9-12: INTEGRATION & BETA LAUNCH
 graph TD
     A[Week 1: Research Setup] --> B[Week 2-4: Execute Research]
     A --> C[Week 1: Compliance Docs Start]
-    
+
     B --> D[Week 4: Research Synthesis]
     C --> E[Week 3: Legal Consultation]
-    
+
     D --> F[Week 5: Backend Development Start]
     E --> F
-    
+
     F --> G[Week 6-7: Core API Development]
     G --> H[Week 8: Real-time Layer]
-    
+
     H --> I[Week 9: Backend Staging Deploy]
     I --> J[Week 10: Integration Testing]
-    
+
     J --> K[Week 11: Progressive Independence]
     K --> L[Week 12: Beta Launch]
-    
+
     A --> M[Week 3: Voice Guidance Start]
     M --> N[Week 5: Voice Guidance Complete]
-    
+
     B --> O[Week 6: Educational Content]
     O --> P[Week 8: Content Complete]
 ```
@@ -135,22 +135,22 @@ graph TD
 ### Team Distribution by Week
 
 RESEARCH PHASE (Weeks 1-4):
-├─ Product Manager:     100% Research coordination
-├─ UX Designer:         100% User testing & synthesis
-├─ Frontend Engineer:   50% Voice guidance, 50% offline tests
-└─ Backend Engineer:    25% Architecture planning
+├─ Product Manager: 100% Research coordination
+├─ UX Designer: 100% User testing & synthesis
+├─ Frontend Engineer: 50% Voice guidance, 50% offline tests
+└─ Backend Engineer: 25% Architecture planning
 
 TECHNICAL PHASE (Weeks 5-8):
-├─ Product Manager:     50% Partnership outreach, 50% content
-├─ UX Designer:         50% Educational content, 50% UI polish
-├─ Frontend Engineer:   75% Integration, 25% voice completion
-└─ Backend Engineer:    100% Backend development
+├─ Product Manager: 50% Partnership outreach, 50% content
+├─ UX Designer: 50% Educational content, 50% UI polish
+├─ Frontend Engineer: 75% Integration, 25% voice completion
+└─ Backend Engineer: 100% Backend development
 
 LAUNCH PHASE (Weeks 9-12):
-├─ Product Manager:     75% Beta recruitment, 25% launch prep
-├─ UX Designer:         50% Progressive independence UI, 50% support
-├─ Frontend Engineer:   100% Progressive independence & integration
-└─ Backend Engineer:    75% Deployment, 25% monitoring setup
+├─ Product Manager: 75% Beta recruitment, 25% launch prep
+├─ UX Designer: 50% Progressive independence UI, 50% support
+├─ Frontend Engineer: 100% Progressive independence & integration
+└─ Backend Engineer: 75% Deployment, 25% monitoring setup
 
 ---
 
@@ -252,19 +252,19 @@ LAUNCH PHASE (Weeks 9-12):
 - **Mitigation:** Early lawyer engagement, buffer time built in
 - **Contingency:** Extend timeline if needed, delay backend work
 
-### Week 8: Backend Completion**
+### Week 8: Backend Completion\*\*
 
 - **Risk:** Technical complexity causes delays
 - **Mitigation:** Experienced backend engineer, clear API spec
 - **Contingency:** Reduce scope, defer non-critical endpoints
 
-### Week 10: Integration Testing**
+### Week 10: Integration Testing\*\*
 
 - **Risk:** Mobile-backend integration issues
 - **Mitigation:** Early integration attempts, clear contracts
 - **Contingency:** Additional testing week, soft launch
 
-### Week 11: Beta Recruitment**
+### Week 11: Beta Recruitment\*\*
 
 - **Risk:** Not enough families sign up
 - **Mitigation:** Early outreach, partnership pipeline, incentives
@@ -278,34 +278,34 @@ LAUNCH PHASE (Weeks 9-12):
 
 Target vs. Actual
 ─────────────────
-Parent Interviews:        [15-20] [**  **]
-Child Sessions:           [20+]   [**  **]
-Educator Consults:        [5-7]   [**  **]
-Special Needs Consults:   [3-5]   [**  **]
-Compliance Docs:          [100%]  [**  **]
-Strategic Docs:           [100%]  [**  **]
+Parent Interviews: [15-20] [** **]
+Child Sessions: [20+] [** **]
+Educator Consults: [5-7] [** **]
+Special Needs Consults: [3-5] [** **]
+Compliance Docs: [100%] [** **]
+Strategic Docs: [100%] [** **]
 
 ### Phase 2: Technical (Week 8)
 
 Target vs. Actual
 ─────────────────
-Backend Endpoints:        [100%]  [**  **]
-Real-time Features:       [100%]  [**  **]
-Voice Guidance:           [100%]  [**  **]
-Educational Content:      [100%]  [**  **]
-Partnership Outreach:     [10+]   [**  **]
-Test Coverage:            [70%+]  [**  **]
+Backend Endpoints: [100%] [** **]
+Real-time Features: [100%] [** **]
+Voice Guidance: [100%] [** **]
+Educational Content: [100%] [** **]
+Partnership Outreach: [10+] [** **]
+Test Coverage: [70%+] [** **]
 
 ### Phase 3: Launch (Week 12)
 
 Target vs. Actual
 ─────────────────
-Beta Families:            [100+]  [**  **]
-Production Uptime:        [99%+]  [**  **]
-Crash Rate:               [<0.1%] [**  **]
-Support Response Time:    [<2hr]  [**  **]
-User Satisfaction:        [4.5+]  [**  **]
-Compliance Approved:      [✓]     [**  **]
+Beta Families: [100+] [** **]
+Production Uptime: [99%+] [** **]
+Crash Rate: [<0.1%] [** **]
+Support Response Time: [<2hr] [** **]
+User Satisfaction: [4.5+] [** **]
+Compliance Approved: [✓] [** **]
 
 ---
 
@@ -386,4 +386,4 @@ Compliance Approved:      [✓]     [**  **]
 
 ---
 
-*This roadmap is a living document. Update weekly based on progress and learnings.*
+_This roadmap is a living document. Update weekly based on progress and learnings._

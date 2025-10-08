@@ -44,23 +44,27 @@ beforeEach(async () => {
 
 describe('ORS Service Integration', () => {
   const testCoordinates: [number, number][] = [
-    [-74.0060, 40.7128], // NYC City Hall
+    [-74.006, 40.7128], // NYC City Hall
     [-73.9934, 40.7505], // Times Square
   ];
 
   describe('Basic Routing', () => {
     it('should get walking route successfully', async () => {
       const mockResponse = {
-        routes: [{
-          summary: { duration: 1200, distance: 1000 },
-          geometry: { coordinates: testCoordinates },
-          segments: [{
-            steps: [
-              { instruction: 'Head north', distance: 100, duration: 80 },
-              { instruction: 'Turn right', distance: 200, duration: 160 },
+        routes: [
+          {
+            summary: { duration: 1200, distance: 1000 },
+            geometry: { coordinates: testCoordinates },
+            segments: [
+              {
+                steps: [
+                  { instruction: 'Head north', distance: 100, duration: 80 },
+                  { instruction: 'Turn right', distance: 200, duration: 160 },
+                ],
+              },
             ],
-          }],
-        }],
+          },
+        ],
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -81,10 +85,10 @@ describe('ORS Service Integration', () => {
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({
-            'Authorization': expect.any(String),
+            Authorization: expect.any(String),
             'Content-Type': 'application/json',
           }),
-        })
+        }),
       );
     });
 
@@ -95,10 +99,12 @@ describe('ORS Service Integration', () => {
         text: () => Promise.resolve('Bad Request'),
       } as Response);
 
-      await expect(orsService.getRoute({
-        coordinates: testCoordinates,
-        profile: 'foot-walking',
-      })).rejects.toThrow('ORS API error');
+      await expect(
+        orsService.getRoute({
+          coordinates: testCoordinates,
+          profile: 'foot-walking',
+        }),
+      ).rejects.toThrow('ORS API error');
     });
 
     it('should retry on network failures', async () => {
@@ -107,12 +113,15 @@ describe('ORS Service Integration', () => {
         .mockRejectedValueOnce(new Error('Network error'))
         .mockResolvedValueOnce({
           ok: true,
-          json: () => Promise.resolve({
-            routes: [{
-              summary: { duration: 1200, distance: 1000 },
-              geometry: { coordinates: testCoordinates },
-            }],
-          }),
+          json: () =>
+            Promise.resolve({
+              routes: [
+                {
+                  summary: { duration: 1200, distance: 1000 },
+                  geometry: { coordinates: testCoordinates },
+                },
+              ],
+            }),
         } as Response);
 
       const result = await orsService.getRoute({
@@ -128,15 +137,17 @@ describe('ORS Service Integration', () => {
   describe('Kid-Friendly Features', () => {
     it('should apply kid-friendly modifications', async () => {
       const mockResponse = {
-        routes: [{
-          summary: { duration: 1200, distance: 1000 },
-          geometry: { coordinates: testCoordinates },
-          segments: [{
-            steps: [
-              { instruction: 'Head north', distance: 100, duration: 80 },
+        routes: [
+          {
+            summary: { duration: 1200, distance: 1000 },
+            geometry: { coordinates: testCoordinates },
+            segments: [
+              {
+                steps: [{ instruction: 'Head north', distance: 100, duration: 80 }],
+              },
             ],
-          }],
-        }],
+          },
+        ],
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -147,13 +158,13 @@ describe('ORS Service Integration', () => {
       const result = await orsService.getKidFriendlyRoute(testCoordinates, 8);
 
       expect(result).toEqual(mockResponse);
-      
+
       const callArgs = mockFetch.mock.calls[0];
       const requestBody = JSON.parse(callArgs[1]?.body as string);
-      
+
       // Should use foot-walking profile for kids
       expect(callArgs[0]).toContain('foot-walking');
-      
+
       // Should include kid-friendly options
       expect(requestBody.options).toMatchObject({
         avoid_features: expect.arrayContaining(['highways']),
@@ -168,16 +179,20 @@ describe('ORS Service Integration', () => {
 
     it('should calculate safety scores for kid routes', async () => {
       const mockResponse = {
-        routes: [{
-          summary: { duration: 1200, distance: 1000 },
-          geometry: { coordinates: testCoordinates },
-          segments: [{
-            steps: [
-              { instruction: 'Head north through park', distance: 500, duration: 400 },
-              { instruction: 'Cross at traffic light', distance: 100, duration: 80 },
+        routes: [
+          {
+            summary: { duration: 1200, distance: 1000 },
+            geometry: { coordinates: testCoordinates },
+            segments: [
+              {
+                steps: [
+                  { instruction: 'Head north through park', distance: 500, duration: 400 },
+                  { instruction: 'Cross at traffic light', distance: 100, duration: 80 },
+                ],
+              },
             ],
-          }],
-        }],
+          },
+        ],
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -186,7 +201,7 @@ describe('ORS Service Integration', () => {
       } as Response);
 
       const result = await orsService.getKidFriendlyRoute(testCoordinates, 6);
-      
+
       expect(result).toEqual(mockResponse);
       // Kid-friendly route should be requested with appropriate safety features
     });
@@ -195,10 +210,12 @@ describe('ORS Service Integration', () => {
   describe('Accessibility Features', () => {
     it('should request wheelchair accessible routes', async () => {
       const mockResponse = {
-        routes: [{
-          summary: { duration: 1400, distance: 1200 },
-          geometry: { coordinates: testCoordinates },
-        }],
+        routes: [
+          {
+            summary: { duration: 1400, distance: 1200 },
+            geometry: { coordinates: testCoordinates },
+          },
+        ],
       };
 
       mockFetch.mockResolvedValueOnce({
@@ -210,7 +227,7 @@ describe('ORS Service Integration', () => {
 
       const callArgs = mockFetch.mock.calls[0];
       const requestBody = JSON.parse(callArgs[1]?.body as string);
-      
+
       expect(callArgs[0]).toContain('wheelchair');
       expect(requestBody.options?.avoid_features).toContain('steps');
       expect(requestBody.options?.profile_params?.weightings?.steepness_difficulty).toBe(5);
@@ -223,35 +240,37 @@ describe('OTP2 Service Integration', () => {
     it('should plan transit trip successfully', async () => {
       const mockResponse = {
         plan: {
-          itineraries: [{
-            duration: 1800,
-            transfers: 1,
-            walkTime: 300,
-            transitTime: 1200,
-            legs: [
-              {
-                mode: 'WALK',
-                duration: 300,
-                distance: 400,
-                from: { name: 'Origin' },
-                to: { name: 'Station A' },
-              },
-              {
-                mode: 'SUBWAY',
-                duration: 1200,
-                from: { name: 'Station A' },
-                to: { name: 'Station B' },
-                route: { shortName: '6' },
-              },
-              {
-                mode: 'WALK',
-                duration: 300,
-                distance: 400,
-                from: { name: 'Station B' },
-                to: { name: 'Destination' },
-              },
-            ],
-          }],
+          itineraries: [
+            {
+              duration: 1800,
+              transfers: 1,
+              walkTime: 300,
+              transitTime: 1200,
+              legs: [
+                {
+                  mode: 'WALK',
+                  duration: 300,
+                  distance: 400,
+                  from: { name: 'Origin' },
+                  to: { name: 'Station A' },
+                },
+                {
+                  mode: 'SUBWAY',
+                  duration: 1200,
+                  from: { name: 'Station A' },
+                  to: { name: 'Station B' },
+                  route: { shortName: '6' },
+                },
+                {
+                  mode: 'WALK',
+                  duration: 300,
+                  distance: 400,
+                  from: { name: 'Station B' },
+                  to: { name: 'Destination' },
+                },
+              ],
+            },
+          ],
         },
       };
 
@@ -271,9 +290,9 @@ describe('OTP2 Service Integration', () => {
         expect.stringContaining('/plan'),
         expect.objectContaining({
           headers: expect.objectContaining({
-            'Accept': 'application/json',
+            Accept: 'application/json',
           }),
-        })
+        }),
       );
     });
 
@@ -306,15 +325,19 @@ describe('OTP2 Service Integration', () => {
     it('should apply kid-friendly transit options', async () => {
       const mockResponse = {
         plan: {
-          itineraries: [{
-            duration: 2100,
-            transfers: 0, // Prefer direct routes for kids
-            legs: [{
-              mode: 'BUS',
-              duration: 1800,
-              route: { shortName: 'M15' },
-            }],
-          }],
+          itineraries: [
+            {
+              duration: 2100,
+              transfers: 0, // Prefer direct routes for kids
+              legs: [
+                {
+                  mode: 'BUS',
+                  duration: 1800,
+                  route: { shortName: 'M15' },
+                },
+              ],
+            },
+          ],
         },
       };
 
@@ -326,11 +349,11 @@ describe('OTP2 Service Integration', () => {
       const result = await otp2Service.getKidFriendlyTrip(
         '40.7128,-74.0060',
         '40.7505,-73.9934',
-        7
+        7,
       );
 
       expect(result).toEqual(mockResponse);
-      
+
       const callUrl = mockFetch.mock.calls[0][0] as string;
       expect(callUrl).toContain('maxTransfers=1'); // Limited transfers for kids
       expect(callUrl).toContain('walkReluctance=3'); // Reduce walking for kids
@@ -364,9 +387,9 @@ describe('OTP2 Service Integration', () => {
         expect.stringContaining('/index/stops/MTA_123456'),
         expect.objectContaining({
           headers: expect.objectContaining({
-            'Accept': 'application/json',
+            Accept: 'application/json',
           }),
-        })
+        }),
       );
     });
 
@@ -397,7 +420,7 @@ describe('OTP2 Service Integration', () => {
 
 describe('Unified Routing Service Integration', () => {
   const testRequest = {
-    from: { lat: 40.7128, lng: -74.0060, name: 'NYC City Hall' },
+    from: { lat: 40.7128, lng: -74.006, name: 'NYC City Hall' },
     to: { lat: 40.7505, lng: -73.9934, name: 'Times Square' },
     preferences: {
       modes: ['WALK', 'TRANSIT'] as ('WALK' | 'BIKE' | 'TRANSIT' | 'CAR')[],
@@ -410,36 +433,45 @@ describe('Unified Routing Service Integration', () => {
   it('should combine ORS and OTP2 routes', async () => {
     // Mock ORS response
     const orsResponse = {
-      routes: [{
-        summary: { duration: 1200, distance: 1000 },
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-        segments: [{ steps: [{ instruction: 'Walk north', distance: 1000, duration: 1200 }] }],
-      }],
+      routes: [
+        {
+          summary: { duration: 1200, distance: 1000 },
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+          segments: [{ steps: [{ instruction: 'Walk north', distance: 1000, duration: 1200 }] }],
+        },
+      ],
     };
 
     // Mock OTP2 response
     const otp2Response = {
       plan: {
-        itineraries: [{
-          duration: 1800,
-          transfers: 1,
-          legs: [
-            {
-              mode: 'WALK',
-              duration: 300,
-              distance: 400,
-              from: { name: 'Origin' },
-              to: { name: 'Station' },
-            },
-            {
-              mode: 'SUBWAY',
-              duration: 1200,
-              from: { name: 'Station' },
-              to: { name: 'Destination' },
-              route: { shortName: '6' },
-            },
-          ],
-        }],
+        itineraries: [
+          {
+            duration: 1800,
+            transfers: 1,
+            legs: [
+              {
+                mode: 'WALK',
+                duration: 300,
+                distance: 400,
+                from: { name: 'Origin' },
+                to: { name: 'Station' },
+              },
+              {
+                mode: 'SUBWAY',
+                duration: 1200,
+                from: { name: 'Station' },
+                to: { name: 'Destination' },
+                route: { shortName: '6' },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -456,16 +488,16 @@ describe('Unified Routing Service Integration', () => {
     const result = await unifiedRoutingService.getRoutes(testRequest);
 
     expect(result).toHaveLength(2);
-    
+
     // Check walking route from ORS
-    const walkingRoute = result.find(r => r.type === 'walking');
+    const walkingRoute = result.find((r) => r.type === 'walking');
     expect(walkingRoute).toBeDefined();
     expect(walkingRoute?.source).toBe('ORS');
     expect(walkingRoute?.summary.duration).toBe(20); // 1200s / 60
     expect(walkingRoute?.summary.distance).toBe(1000);
 
     // Check transit route from OTP2
-    const transitRoute = result.find(r => r.type === 'transit');
+    const transitRoute = result.find((r) => r.type === 'transit');
     expect(transitRoute).toBeDefined();
     expect(transitRoute?.source).toBe('OTP2');
     expect(transitRoute?.summary.duration).toBe(30); // 1800s / 60
@@ -474,16 +506,25 @@ describe('Unified Routing Service Integration', () => {
 
   it('should calculate safety scores correctly', async () => {
     const orsResponse = {
-      routes: [{
-        summary: { duration: 1200, distance: 1000 },
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-        segments: [{
-          steps: [
-            { instruction: 'Walk through Central Park', distance: 500, duration: 600 },
-            { instruction: 'Cross at traffic light', distance: 500, duration: 600 },
+      routes: [
+        {
+          summary: { duration: 1200, distance: 1000 },
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+          segments: [
+            {
+              steps: [
+                { instruction: 'Walk through Central Park', distance: 500, duration: 600 },
+                { instruction: 'Cross at traffic light', distance: 500, duration: 600 },
+              ],
+            },
           ],
-        }],
-      }],
+        },
+      ],
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -508,11 +549,20 @@ describe('Unified Routing Service Integration', () => {
     };
 
     const orsResponse = {
-      routes: [{
-        summary: { duration: 1400, distance: 1200 },
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-        segments: [{ steps: [{ instruction: 'Accessible route', distance: 1200, duration: 1400 }] }],
-      }],
+      routes: [
+        {
+          summary: { duration: 1400, distance: 1200 },
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+          segments: [
+            { steps: [{ instruction: 'Accessible route', distance: 1200, duration: 1400 }] },
+          ],
+        },
+      ],
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -528,26 +578,39 @@ describe('Unified Routing Service Integration', () => {
 
   it('should sort routes by preference', async () => {
     const orsResponse = {
-      routes: [{
-        summary: { duration: 600, distance: 500 }, // Fast route
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-        segments: [{ steps: [{ instruction: 'Walk on busy street', distance: 500, duration: 600 }] }],
-      }],
+      routes: [
+        {
+          summary: { duration: 600, distance: 500 }, // Fast route
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+          segments: [
+            { steps: [{ instruction: 'Walk on busy street', distance: 500, duration: 600 }] },
+          ],
+        },
+      ],
     };
 
     const otp2Response = {
       plan: {
-        itineraries: [{
-          duration: 1800, // Slower but safer
-          transfers: 0,
-          legs: [{
-            mode: 'BUS',
-            duration: 1800,
-            from: { name: 'Origin' },
-            to: { name: 'Destination' },
-            route: { shortName: 'M15' },
-          }],
-        }],
+        itineraries: [
+          {
+            duration: 1800, // Slower but safer
+            transfers: 0,
+            legs: [
+              {
+                mode: 'BUS',
+                duration: 1800,
+                from: { name: 'Origin' },
+                to: { name: 'Destination' },
+                route: { shortName: 'M15' },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -574,28 +637,31 @@ describe('Unified Routing Service Integration', () => {
 
   it('should handle API failures gracefully', async () => {
     // ORS fails, OTP2 succeeds
-    mockFetch
-      .mockRejectedValueOnce(new Error('ORS API down'))
-      .mockResolvedValueOnce({
-        ok: true,
-        json: () => Promise.resolve({
+    mockFetch.mockRejectedValueOnce(new Error('ORS API down')).mockResolvedValueOnce({
+      ok: true,
+      json: () =>
+        Promise.resolve({
           plan: {
-            itineraries: [{
-              duration: 1800,
-              transfers: 1,
-              walkDistance: 200,
-              legs: [{
-                mode: 'SUBWAY',
+            itineraries: [
+              {
                 duration: 1800,
-                distance: 5000,
-                from: { name: 'Origin', lat: 40.7128, lon: -74.0060 },
-                to: { name: 'Destination', lat: 40.7505, lon: -73.9934 },
-                route: { shortName: '6' },
-              }],
-            }],
+                transfers: 1,
+                walkDistance: 200,
+                legs: [
+                  {
+                    mode: 'SUBWAY',
+                    duration: 1800,
+                    distance: 5000,
+                    from: { name: 'Origin', lat: 40.7128, lon: -74.006 },
+                    to: { name: 'Destination', lat: 40.7505, lon: -73.9934 },
+                    route: { shortName: '6' },
+                  },
+                ],
+              },
+            ],
           },
         }),
-      } as Response);
+    } as Response);
 
     const result = await unifiedRoutingService.getRoutes(testRequest);
 
@@ -617,10 +683,17 @@ describe('Unified Routing Service Integration', () => {
 describe('Performance and Caching', () => {
   it('should cache ORS route responses', async () => {
     const mockResponse = {
-      routes: [{
-        summary: { duration: 1200, distance: 1000 },
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-      }],
+      routes: [
+        {
+          summary: { duration: 1200, distance: 1000 },
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+        },
+      ],
     };
 
     mockFetch.mockResolvedValue({
@@ -629,7 +702,10 @@ describe('Performance and Caching', () => {
     } as Response);
 
     const request = {
-      coordinates: [[-74.0060, 40.7128], [-73.9934, 40.7505]] as [number, number][],
+      coordinates: [
+        [-74.006, 40.7128],
+        [-73.9934, 40.7505],
+      ] as [number, number][],
       profile: 'foot-walking' as const,
     };
 
@@ -647,10 +723,17 @@ describe('Performance and Caching', () => {
 
   it('should handle concurrent requests efficiently', async () => {
     const mockResponse = {
-      routes: [{
-        summary: { duration: 1200, distance: 1000 },
-        geometry: { coordinates: [[0, 0], [1, 1]] },
-      }],
+      routes: [
+        {
+          summary: { duration: 1200, distance: 1000 },
+          geometry: {
+            coordinates: [
+              [0, 0],
+              [1, 1],
+            ],
+          },
+        },
+      ],
     };
 
     mockFetch.mockResolvedValue({
@@ -659,16 +742,21 @@ describe('Performance and Caching', () => {
     } as Response);
 
     const request = {
-      coordinates: [[-74.0060, 40.7128], [-73.9934, 40.7505]] as [number, number][],
+      coordinates: [
+        [-74.006, 40.7128],
+        [-73.9934, 40.7505],
+      ] as [number, number][],
       profile: 'foot-walking' as const,
     };
 
     // Make multiple concurrent requests
-    const promises = Array(5).fill(null).map(() => orsService.getRoute(request));
+    const promises = Array(5)
+      .fill(null)
+      .map(() => orsService.getRoute(request));
     const results = await Promise.all(promises);
 
     // All should return the same result
-    results.forEach(result => expect(result).toEqual(mockResponse));
+    results.forEach((result) => expect(result).toEqual(mockResponse));
 
     // Should only make one API call due to request deduplication
     expect(mockFetch).toHaveBeenCalledTimes(1);

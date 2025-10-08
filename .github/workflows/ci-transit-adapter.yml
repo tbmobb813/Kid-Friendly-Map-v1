@@ -2,7 +2,7 @@ name: CI - transit adapter
 
 on:
   pull_request:
-    branches: [ feat/transit ]
+    branches: [feat/transit]
 
 jobs:
   test:

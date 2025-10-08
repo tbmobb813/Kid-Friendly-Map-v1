@@ -21,7 +21,7 @@ describe('Monitoring System Tests', () => {
   describe('Initialization', () => {
     it('should initialize with default config', async () => {
       await monitoring.initialize();
-      
+
       const stats = monitoring.getStatistics();
       expect(stats).toBeDefined();
       expect(stats.session).toBeDefined();
@@ -36,14 +36,14 @@ describe('Monitoring System Tests', () => {
       };
 
       await monitoring.initialize(config);
-      
+
       const stats = monitoring.getStatistics();
       expect(stats).toBeDefined();
     });
 
     it('should work without Sentry DSN', async () => {
       await monitoring.initialize({ sentryDsn: undefined });
-      
+
       expect(monitoring.getSentry()).toBeNull();
     });
   });
@@ -51,7 +51,7 @@ describe('Monitoring System Tests', () => {
   describe('Error Tracking', () => {
     it('should capture errors with context', () => {
       const error = new Error('Test error');
-      
+
       monitoring.captureError({
         error,
         context: 'Test Context',
@@ -63,7 +63,7 @@ describe('Monitoring System Tests', () => {
 
     it('should capture errors with metadata', () => {
       const error = new Error('Test error with metadata');
-      
+
       monitoring.captureError({
         error,
         context: 'Test Context',
@@ -79,7 +79,7 @@ describe('Monitoring System Tests', () => {
 
     it('should track different severity levels', () => {
       const error = new Error('Test error');
-      
+
       const severities: Array<'low' | 'medium' | 'high' | 'critical'> = [
         'low',
         'medium',
@@ -87,7 +87,7 @@ describe('Monitoring System Tests', () => {
         'critical',
       ];
 
-      severities.forEach(severity => {
+      severities.forEach((severity) => {
         monitoring.captureError({
           error,
           context: `Test ${severity}`,
@@ -100,7 +100,7 @@ describe('Monitoring System Tests', () => {
 
     it('should associate errors with user ID', () => {
       monitoring.setUser('user-123', { role: 'parent' });
-      
+
       const error = new Error('User-specific error');
       monitoring.captureError({
         error,
@@ -115,7 +115,7 @@ describe('Monitoring System Tests', () => {
     it('should clear user context', () => {
       monitoring.setUser('user-123');
       monitoring.clearUser();
-      
+
       // Should not throw
       expect(() => {
         monitoring.captureError({
@@ -153,14 +153,14 @@ describe('Monitoring System Tests', () => {
 
     it('should use performance timer', () => {
       const endTimer = monitoring.startPerformanceTimer('test_operation');
-      
+
       // Simulate some work
       for (let i = 0; i < 1000; i++) {
         Math.sqrt(i);
       }
-      
+
       endTimer();
-      
+
       const stats = monitoring.getStatistics();
       expect(stats.performance.metricsTracked).toBeGreaterThan(0);
     });
@@ -180,10 +180,7 @@ describe('Monitoring System Tests', () => {
         duration: 5000, // 5 seconds
       });
 
-      expect(log.warn).toHaveBeenCalledWith(
-        'Slow operation detected',
-        expect.any(Object)
-      );
+      expect(log.warn).toHaveBeenCalledWith('Slow operation detected', expect.any(Object));
     });
 
     it('should limit metrics in memory', () => {
@@ -253,7 +250,7 @@ describe('Monitoring System Tests', () => {
   describe('System Health Monitoring', () => {
     it('should report system health', () => {
       const health = monitoring.getSystemHealth();
-      
+
       expect(health).toHaveProperty('networkStatus');
       expect(health).toHaveProperty('backendStatus');
       expect(health).toHaveProperty('storageAvailable');
@@ -276,13 +273,13 @@ describe('Monitoring System Tests', () => {
 
     it('should report network status', () => {
       const health = monitoring.getSystemHealth();
-      
+
       expect(['online', 'offline', 'poor']).toContain(health.networkStatus);
     });
 
     it('should report backend status', () => {
       const health = monitoring.getSystemHealth();
-      
+
       expect(['healthy', 'degraded', 'down']).toContain(health.backendStatus);
     });
   });
@@ -290,7 +287,7 @@ describe('Monitoring System Tests', () => {
   describe('Statistics and Reporting', () => {
     it('should provide session statistics', () => {
       const stats = monitoring.getStatistics();
-      
+
       expect(stats.session).toBeDefined();
       expect(stats.session.duration).toBeGreaterThanOrEqual(0);
       expect(stats.session.startTime).toBeGreaterThan(0);
@@ -302,7 +299,7 @@ describe('Monitoring System Tests', () => {
         context: 'Test',
         severity: 'low',
       });
-      
+
       monitoring.captureError({
         error: new Error('Test 2'),
         context: 'Test',
@@ -316,7 +313,7 @@ describe('Monitoring System Tests', () => {
 
     it('should include health in statistics', () => {
       const stats = monitoring.getStatistics();
-      
+
       expect(stats.health).toBeDefined();
       expect(stats.health.networkStatus).toBeDefined();
       expect(stats.health.backendStatus).toBeDefined();
@@ -325,23 +322,18 @@ describe('Monitoring System Tests', () => {
 
   describe('Breadcrumbs', () => {
     it('should add custom breadcrumbs', () => {
-      monitoring.addBreadcrumb(
-        'User started navigation',
-        'navigation',
-        { destination: 'Central Park' }
-      );
+      monitoring.addBreadcrumb('User started navigation', 'navigation', {
+        destination: 'Central Park',
+      });
 
       expect(log.debug).toHaveBeenCalled();
     });
 
     it('should add breadcrumbs with different categories', () => {
       const categories = ['ui', 'network', 'state', 'custom'];
-      
-      categories.forEach(category => {
-        monitoring.addBreadcrumb(
-          `Test breadcrumb for ${category}`,
-          category
-        );
+
+      categories.forEach((category) => {
+        monitoring.addBreadcrumb(`Test breadcrumb for ${category}`, category);
       });
 
       expect(log.debug).toHaveBeenCalledTimes(4);
@@ -351,7 +343,7 @@ describe('Monitoring System Tests', () => {
   describe('Data Management', () => {
     it('should flush monitoring data', async () => {
       await monitoring.flush();
-      
+
       expect(log.info).toHaveBeenCalledWith('Monitoring data flushed');
     });
 
@@ -363,12 +355,9 @@ describe('Monitoring System Tests', () => {
       }
 
       const health = monitoring.getSystemHealth();
-      
+
       if (health.memoryPressure === 'high') {
-        expect(log.info).toHaveBeenCalledWith(
-          'Cleared old metrics',
-          expect.any(Object)
-        );
+        expect(log.info).toHaveBeenCalledWith('Cleared old metrics', expect.any(Object));
       }
     });
   });
@@ -391,7 +380,7 @@ describe('Monitoring System Tests', () => {
 
     it('should work without Sentry installed', async () => {
       await monitoring.initialize({ sentryDsn: undefined });
-      
+
       monitoring.captureError({
         error: new Error('Test'),
         context: 'Test',
@@ -403,7 +392,7 @@ describe('Monitoring System Tests', () => {
 
     it('should handle malformed error objects', () => {
       const malformedError = { message: 'Not a real error' } as Error;
-      
+
       expect(() => {
         monitoring.captureError({
           error: malformedError,
@@ -417,13 +406,13 @@ describe('Monitoring System Tests', () => {
   describe('Integration', () => {
     it('should integrate with offline manager', () => {
       const health = monitoring.getSystemHealth();
-      
+
       expect(health.pendingSyncActions).toBeGreaterThanOrEqual(0);
     });
 
     it('should integrate with backend health monitor', () => {
       const health = monitoring.getSystemHealth();
-      
+
       expect(health.backendStatus).toBeDefined();
     });
 

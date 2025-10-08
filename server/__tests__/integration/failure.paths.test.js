@@ -4,8 +4,16 @@ const request = require('supertest');
 
 describe('Failure paths', () => {
   let server;
-  beforeAll(() => { process.env.FEED_REFRESH_ENABLED='false'; server = startServer(); });
-  afterAll(() => { if (server) { _internal.stopBackgroundRefresh(); server.close(); } });
+  beforeAll(() => {
+    process.env.FEED_REFRESH_ENABLED = 'false';
+    server = startServer();
+  });
+  afterAll(() => {
+    if (server) {
+      _internal.stopBackgroundRefresh();
+      server.close();
+    }
+  });
 
   test('unknown region returns 404', async () => {
     const res = await request(require('../../index.js').app).get('/feeds/xx/unknown.json');

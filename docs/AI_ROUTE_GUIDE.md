@@ -7,22 +7,26 @@ The AI Route Engine is an intelligent navigation system that generates personali
 ## 🌟 Key Features
 
 ### 1. **Smart Route Generation**
+
 - **4 Route Types**: Safest, Fastest, Easiest, Scenic
 - **AI Scoring**: Each route gets a 0-100 score based on multiple factors
 - **Real-time Generation**: Routes created on-demand considering current context
 
 ### 2. **Learning Model**
+
 - **Adaptive**: Learns from your route choices
 - **Pattern Recognition**: Identifies time-based preferences
 - **Personalization**: Improves recommendations over time
 
 ### 3. **Context Awareness**
+
 - **Time of Day**: Morning, afternoon, evening considerations
 - **Weather**: Rain, temperature impact on route selection
 - **Day Type**: School day vs weekend vs holiday
 - **Traffic**: Real-time traffic pattern consideration
 
 ### 4. **Safety First**
+
 - **Safe Zones**: Prioritizes routes through safe areas
 - **Well-lit Paths**: Considers lighting for evening journeys
 - **Crowded Areas**: Factors in pedestrian density
@@ -38,10 +42,7 @@ Main AI engine for route generation and learning.
 import { aiRouteEngine } from '../utils/aiRouteEngine';
 
 // Generate smart routes
-const routes = await aiRouteEngine.generateSmartRoutes(
-  currentLocation,
-  destination
-);
+const routes = await aiRouteEngine.generateSmartRoutes(currentLocation, destination);
 
 // Update preferences
 aiRouteEngine.updatePreferences({
@@ -85,9 +86,11 @@ import SmartNavigationScreen from '../components/SmartNavigationScreen';
 ## 🎯 Route Types Explained
 
 ### 1. 🛡️ Safest Route
+
 **Best for**: Evening journeys, younger children, high-security needs
 
 **Characteristics**:
+
 - Maximum safe zone coverage (schools, libraries, police stations)
 - Well-lit streets prioritized
 - Avoids isolated areas
@@ -97,9 +100,11 @@ import SmartNavigationScreen from '../components/SmartNavigationScreen';
 **AI Scoring**: Safety weighted at 50%
 
 ### 2. ⚡ Fastest Route
+
 **Best for**: Time-sensitive trips, older children, familiar areas
 
 **Characteristics**:
+
 - Shortest travel time
 - Direct paths
 - Minimal transfers
@@ -109,9 +114,11 @@ import SmartNavigationScreen from '../components/SmartNavigationScreen';
 **AI Scoring**: Speed weighted at 45%
 
 ### 3. 😊 Easiest Route
+
 **Best for**: Strollers, tired kids, accessibility needs
 
 **Characteristics**:
+
 - Less walking distance
 - Elevator availability
 - Fewer transfers
@@ -121,9 +128,11 @@ import SmartNavigationScreen from '../components/SmartNavigationScreen';
 **AI Scoring**: Ease weighted at 45%
 
 ### 4. 🌳 Scenic Route
+
 **Best for**: Pleasant weather, educational trips, no time pressure
 
 **Characteristics**:
+
 - Parks and green spaces
 - Interesting landmarks
 - Educational stops
@@ -146,6 +155,7 @@ Total Score = (
 ```
 
 ### Safety Score Components
+
 - Safe zone coverage: 30%
 - Lighting quality: 25%
 - Pedestrian density: 20%
@@ -153,18 +163,21 @@ Total Score = (
 - Emergency access: 10%
 
 ### Speed Score Components
+
 - Travel time: 40%
 - Transfer count: 30%
 - Walking distance: 20%
 - Wait times: 10%
 
 ### Ease Score Components
+
 - Walking distance: 35%
 - Transfer complexity: 30%
 - Accessibility features: 25%
 - Rest availability: 10%
 
 ### Preference Alignment
+
 - Historical choices: 50%
 - Explicit preferences: 30%
 - Child age factors: 20%
@@ -175,10 +188,10 @@ Total Score = (
 
 ```typescript
 interface RoutePreferences {
-  childAge: number;                    // 0-18 years
+  childAge: number; // 0-18 years
   timePreference: 'safety' | 'speed' | 'comfort';
-  maxWalkingDistance: number;          // meters
-  maxTransferCount: number;            // number of transfers
+  maxWalkingDistance: number; // meters
+  maxTransferCount: number; // number of transfers
   avoidBusyStreets: boolean;
   preferIndoorRoutes: boolean;
   voiceEnabled: boolean;
@@ -213,6 +226,7 @@ const prefs = aiRouteEngine.getPreferences();
    - Patterns identified over time
 
 2. **Pattern Analysis**
+
    ```typescript
    // Example learned patterns
    {
@@ -236,7 +250,7 @@ interface JourneyHistory {
   routeType: 'safest' | 'fastest' | 'easiest' | 'scenic';
   timestamp: number;
   context: RouteContext;
-  satisfaction?: number;  // Optional user feedback
+  satisfaction?: number; // Optional user feedback
 }
 ```
 
@@ -245,6 +259,7 @@ interface JourneyHistory {
 ### Route Cards
 
 Each route card displays:
+
 - **Route Name & Description**
 - **AI Score Badge**: 0-100 score
 - **Stats**: Duration, walking distance, difficulty
@@ -281,7 +296,7 @@ challenging: red
 "You selected the Safest Route. This route has a 95 safety score!"
 
 // During navigation
-"Starting Safest Route. This journey will take about 15 minutes. 
+"Starting Safest Route. This journey will take about 15 minutes.
 Remember to look both ways before crossing!"
 ```
 
@@ -295,7 +310,7 @@ preferences.voiceEnabled = true;
 import { voiceManager, speakNavigation } from '../utils/voice';
 
 // Custom voice announcements
-await speakNavigation("Turn left at the safe zone ahead");
+await speakNavigation('Turn left at the safe zone ahead');
 ```
 
 ## 🗺️ Map Integration
@@ -304,7 +319,7 @@ await speakNavigation("Turn left at the safe zone ahead");
 
 ```typescript
 // Routes converted to map polylines
-const routePoints = smartRoute.steps.map(step => ({
+const routePoints = smartRoute.steps.map((step) => ({
   latitude: step.location.latitude,
   longitude: step.location.longitude,
   instruction: step.instruction,
@@ -312,8 +327,8 @@ const routePoints = smartRoute.steps.map(step => ({
 
 // Safe zones highlighted as circles
 const safeZones = smartRoute.steps
-  .filter(step => step.type === 'safe_zone')
-  .map(step => ({
+  .filter((step) => step.type === 'safe_zone')
+  .map((step) => ({
     center: step.location,
     radius: 100,
     color: '#00C800',
@@ -323,6 +338,7 @@ const safeZones = smartRoute.steps
 ### Navigation View
 
 The map displays:
+
 - **Route polyline**: Blue line showing the path
 - **Safe zones**: Green circles around safe areas
 - **Start marker**: Green pin at origin
@@ -381,13 +397,13 @@ function CustomNav() {
 const location = await Location.getCurrentPositionAsync();
 
 // Generate routes
-const routes = await aiRouteEngine.generateSmartRoutes(
-  location,
-  { latitude: 40.7589, longitude: -73.9851 }
-);
+const routes = await aiRouteEngine.generateSmartRoutes(location, {
+  latitude: 40.7589,
+  longitude: -73.9851,
+});
 
 // Filter by type
-const safestRoute = routes.find(r => r.type === 'safest');
+const safestRoute = routes.find((r) => r.type === 'safest');
 
 // Get insights
 const insights = aiRouteEngine.getRouteInsights(safestRoute);
@@ -404,17 +420,17 @@ console.log('Insights:', insights);
 ```typescript
 // In aiRouteEngine.ts, modify scoring weights:
 const baseScore =
-  safety * 0.40 +    // Safety: 40% (default)
-  speed * 0.25 +     // Speed: 25% (default)
-  ease * 0.20 +      // Ease: 20% (default)
+  safety * 0.4 + // Safety: 40% (default)
+  speed * 0.25 + // Speed: 25% (default)
+  ease * 0.2 + // Ease: 20% (default)
   preference * 0.15; // Preference: 15% (default)
 
 // Adjust for your needs:
 const customScore =
-  safety * 0.50 +    // Increase safety priority
-  speed * 0.20 +     // Decrease speed priority
-  ease * 0.20 +
-  preference * 0.10;
+  safety * 0.5 + // Increase safety priority
+  speed * 0.2 + // Decrease speed priority
+  ease * 0.2 +
+  preference * 0.1;
 ```
 
 ### Adding Custom Route Types
@@ -430,7 +446,7 @@ async generateSmartRoutes() {
     // Add custom route type:
     await this.generateCustomRoute(),
   ];
-  
+
   return routes.sort((a, b) => b.score - a.score);
 }
 
@@ -449,6 +465,7 @@ private async generateCustomRoute() {
 ## 🎯 Best Practices
 
 ### 1. **Permission Handling**
+
 ```typescript
 // Always request location permissions first
 const { status } = await Location.requestForegroundPermissionsAsync();
@@ -459,6 +476,7 @@ if (status !== 'granted') {
 ```
 
 ### 2. **Loading States**
+
 ```typescript
 // Show loading indicator while generating routes
 const [loading, setLoading] = useState(true);
@@ -469,6 +487,7 @@ useEffect(() => {
 ```
 
 ### 3. **Error Handling**
+
 ```typescript
 try {
   const routes = await aiRouteEngine.generateSmartRoutes(origin, destination);
@@ -480,6 +499,7 @@ try {
 ```
 
 ### 4. **Performance Optimization**
+
 ```typescript
 // Cache generated routes
 const cacheKey = `routes-${origin.lat}-${origin.lng}-${dest.lat}-${dest.lng}`;
@@ -497,24 +517,28 @@ cache.set(cacheKey, routes, 300); // 5 minute cache
 ## 🐛 Troubleshooting
 
 ### Routes Not Generating
+
 - Check location permissions
 - Verify origin and destination are valid
 - Check console for error messages
 - Ensure aiRouteEngine is properly imported
 
 ### AI Scores Seem Wrong
+
 - Verify preferences are set correctly
 - Check if learning model has enough data
 - Review route context (time, weather, etc.)
 - Adjust scoring weights if needed
 
 ### Voice Not Working
+
 - Check voice permissions
 - Verify voiceEnabled preference is true
 - Test voiceManager separately
 - Check device volume and TTS availability
 
 ### Map Not Displaying Routes
+
 - Verify route points have valid coordinates
 - Check if KidFriendlyMap is receiving route prop
 - Ensure map permissions are granted
@@ -523,6 +547,7 @@ cache.set(cacheKey, routes, 300); // 5 minute cache
 ## 📈 Future Enhancements
 
 ### Planned Features
+
 - **Live Traffic Integration**: Real-time traffic data
 - **Weather API**: Actual weather instead of mock data
 - **Public Transit API**: Real MTA/transit schedules
@@ -532,6 +557,7 @@ cache.set(cacheKey, routes, 300); // 5 minute cache
 - **AR Navigation**: Augmented reality directions
 
 ### API Integration Points
+
 ```typescript
 // Weather API (future)
 const weather = await fetchWeather(location);
@@ -565,6 +591,7 @@ To add new features:
 ## 📝 Summary
 
 The AI Route Suggestions system provides:
+
 - ✅ 4 intelligent route types
 - ✅ AI scoring algorithm (0-100)
 - ✅ Learning from user behavior

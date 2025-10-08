@@ -6,7 +6,7 @@ if (redisUrl) {
   try {
     const Redis = require('ioredis');
     redisClient = new Redis(redisUrl);
-    redisClient.on('error', err => console.error('Redis error:', err));
+    redisClient.on('error', (err) => console.error('Redis error:', err));
     console.log('Redis cache enabled:', redisUrl);
   } catch (e) {
     console.warn('Redis not available, falling back to in-memory cache:', e);
@@ -18,9 +18,17 @@ const path = require('path');
 const promClient = require('prom-client');
 const { normalizeFeedMessage, normalizeFeedMessageAsync, fetchGtfsRt } = require('./adapter');
 let staticStore = null;
-try { staticStore = require('./lib/gtfsStore'); } catch (e) { staticStore = null; }
+try {
+  staticStore = require('./lib/gtfsStore');
+} catch (e) {
+  staticStore = null;
+}
 let pgStore = null;
-try { if (process.env.DATABASE_URL) pgStore = require('./lib/gtfsStore-pg'); } catch (e) { pgStore = null; }
+try {
+  if (process.env.DATABASE_URL) pgStore = require('./lib/gtfsStore-pg');
+} catch (e) {
+  pgStore = null;
+}
 function reloadStaticStore() {
   try {
     delete require.cache[require.resolve('./lib/gtfsStore')];
@@ -54,7 +62,7 @@ const cache = redisClient
       },
       async has(key) {
         return (await redisClient.exists(key)) === 1;
-      }
+      },
     }
   : new LRUCache({ max: 100, ttl: 10000 }); // 10s default
 
@@ -65,31 +73,43 @@ collectDefaultMetrics();
 const fetchDuration = new promClient.Histogram({
   name: 'transit_adapter_fetch_duration_seconds',
   help: 'Duration of upstream feed fetches',
-  buckets: [0.1, 0.5, 1, 2, 5]
+  buckets: [0.1, 0.5, 1, 2, 5],
 });
-const fetchFailures = new promClient.Counter({ name: 'transit_adapter_fetch_failures_total', help: 'Number of failed fetch attempts' });
-const enrichedRoutesGauge = new promClient.Gauge({ name: 'transit_adapter_enriched_routes', help: 'Number of enriched routes returned per request' });
-const cacheHitCounter = new promClient.Counter({ name: 'transit_adapter_cache_hits_total', help: 'Number of cache hits', labelNames: ['type'] });
-const cacheMissCounter = new promClient.Counter({ name: 'transit_adapter_cache_misses_total', help: 'Number of cache misses', labelNames: ['type'] });
+const fetchFailures = new promClient.Counter({
+  name: 'transit_adapter_fetch_failures_total',
+  help: 'Number of failed fetch attempts',
+});
+const enrichedRoutesGauge = new promClient.Gauge({
+  name: 'transit_adapter_enriched_routes',
+  help: 'Number of enriched routes returned per request',
+});
+const cacheHitCounter = new promClient.Counter({
+  name: 'transit_adapter_cache_hits_total',
+  help: 'Number of cache hits',
+  labelNames: ['type'],
+});
+const cacheMissCounter = new promClient.Counter({
+  name: 'transit_adapter_cache_misses_total',
+  help: 'Number of cache misses',
+  labelNames: ['type'],
+});
 
 // Background refresh metrics
 const refreshDuration = new promClient.Histogram({
   name: 'transit_adapter_refresh_duration_seconds',
   help: 'Duration of background feed refresh fetches',
   labelNames: ['system'],
-  buckets: [0.1, 0.5, 1, 2, 5]
+  buckets: [0.1, 0.5, 1, 2, 5],
 });
 const refreshFailures = new promClient.Counter({
   name: 'transit_adapter_refresh_failures_total',
   help: 'Number of failed background refresh attempts',
-  labelNames: ['system']
+  labelNames: ['system'],
 });
 
 // Background refresh configuration
 const feedRefreshEnabled = process.env.FEED_REFRESH_ENABLED !== 'false'; // default ON
 const feedRefreshIntervalSec = parseInt(process.env.FEED_REFRESH_INTERVAL_SEC || '30', 10); // default 30s
-
-
 
 async function fetchAndCache(url, apiKeyHeader, apiKey) {
   const cacheKey = `${url}|${apiKeyHeader || ''}|${apiKey || ''}`;
@@ -143,13 +163,13 @@ async function handleFeedRequest(req, res) {
           const mock = JSON.parse(raw);
           const entities = (mock.routes || []).map((r, i) => {
             const id = r.id || `m${i}`;
-            const arrivalTime = Math.floor(Date.now() / 1000) + ((r.nextArrival || 3) * 60);
+            const arrivalTime = Math.floor(Date.now() / 1000) + (r.nextArrival || 3) * 60;
             return {
               id,
               trip_update: {
                 trip: { trip_id: r.id, route_id: r.name },
-                stop_time_update: [{ arrival: { time: arrivalTime } }]
-              }
+                stop_time_update: [{ arrival: { time: arrivalTime } }],
+              },
             };
           });
           feed = { entity: entities };
@@ -179,11 +199,25 @@ async function handleFeedRequest(req, res) {
 
     // Integration log: count how many routes were enriched (have a destination or nextStopName)
     try {
-      const enrichedCount = (normalized.routes || []).filter(r => (r.destination && String(r.destination).trim() !== '') || (r.nextStopName && String(r.nextStopName).trim() !== '')).length;
+      const enrichedCount = (normalized.routes || []).filter(
+        (r) =>
+          (r.destination && String(r.destination).trim() !== '') ||
+          (r.nextStopName && String(r.nextStopName).trim() !== ''),
+      ).length;
       // Structured JSON log for integration
-      const log = { ts: new Date().toISOString(), msg: 'transit_adapter.enriched', region, system, enrichedRoutes: enrichedCount };
+      const log = {
+        ts: new Date().toISOString(),
+        msg: 'transit_adapter.enriched',
+        region,
+        system,
+        enrichedRoutes: enrichedCount,
+      };
       console.info(JSON.stringify(log));
-      try { enrichedRoutesGauge.set(enrichedCount); } catch (e) { /* ignore */ }
+      try {
+        enrichedRoutesGauge.set(enrichedCount);
+      } catch (e) {
+        /* ignore */
+      }
     } catch (e) {
       // non-fatal logging error
     }
@@ -194,18 +228,28 @@ async function handleFeedRequest(req, res) {
         try {
           const trip = staticStore.getTrip && staticStore.getTrip(r.tripId);
           if (trip && trip.shape_id && !r.shape) {
-            const poly = staticStore.getPolylineForShape && staticStore.getPolylineForShape(trip.shape_id);
+            const poly =
+              staticStore.getPolylineForShape && staticStore.getPolylineForShape(trip.shape_id);
             if (poly && poly.length) {
               // keep it small: first + every Nth + last point (sampling)
               const step = Math.max(1, Math.floor(poly.length / 50));
-              r.shape = poly.filter((_, idx) => idx === 0 || idx === poly.length -1 || idx % step === 0);
+              r.shape = poly.filter(
+                (_, idx) => idx === 0 || idx === poly.length - 1 || idx % step === 0,
+              );
             }
           }
-        } catch (e) { /* ignore shape errors */ }
+        } catch (e) {
+          /* ignore shape errors */
+        }
       }
     }
 
-    return res.json({ routes: normalized.routes, alerts: normalized.alerts, lastModified: new Date().toISOString(), version: 'v1' });
+    return res.json({
+      routes: normalized.routes,
+      alerts: normalized.alerts,
+      lastModified: new Date().toISOString(),
+      version: 'v1',
+    });
   } catch (err) {
     console.error('Adapter error:', err);
     return res.status(500).json({ error: String(err) });
@@ -221,16 +265,20 @@ app.get('/v1/feeds/:region/:system.json', requireApiKey, handleFeedRequest);
 app.get('/v1/shapes/:shapeId', requireApiKey, async (req, res) => {
   const { shapeId } = req.params;
   // ensure store loaded
-  if (!staticStore) { try { reloadStaticStore(); } catch (e) {} }
+  if (!staticStore) {
+    try {
+      reloadStaticStore();
+    } catch (e) {}
+  }
   try {
     let pts = [];
     if (staticStore && staticStore.getPolylineForShape) {
       pts = staticStore.getPolylineForShape(shapeId);
     }
     if ((!pts || !pts.length) && pgStore && typeof pgStore.getPolylineForShape === 'function') {
-  pts = await pgStore.getPolylineForShape(shapeId);
+      pts = await pgStore.getPolylineForShape(shapeId);
     }
-    if ((!pts || !pts.length)) {
+    if (!pts || !pts.length) {
       // final fallback: read file directly
       try {
         const fs = require('fs');
@@ -239,12 +287,19 @@ app.get('/v1/shapes/:shapeId', requireApiKey, async (req, res) => {
         if (fs.existsSync(shapesPath)) {
           const data = JSON.parse(fs.readFileSync(shapesPath, 'utf8'));
           const raw = data[shapeId] || [];
-          pts = raw.map(p => [Number(p.shape_pt_lat), Number(p.shape_pt_lon)]);
+          pts = raw.map((p) => [Number(p.shape_pt_lat), Number(p.shape_pt_lon)]);
         }
-      } catch (_) { /* ignore */ }
+      } catch (_) {
+        /* ignore */
+      }
     }
     if (!pts || !pts.length) return res.status(404).json({ error: 'shape not found' });
-    return res.json({ shapeId, points: pts, count: pts.length, source: staticStore && pts ? 'static' : (pgStore ? 'postgres' : 'file') });
+    return res.json({
+      shapeId,
+      points: pts,
+      count: pts.length,
+      source: staticStore && pts ? 'static' : pgStore ? 'postgres' : 'file',
+    });
   } catch (e) {
     return res.status(500).json({ error: String(e) });
   }
@@ -266,7 +321,10 @@ app.get('/metrics', async (req, res) => {
 function startServer() {
   const server = app.listen(port, () => {
     console.log(`Transit adapter listening on port ${port}`);
-    if (feedRefreshEnabled && (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')) {
+    if (
+      feedRefreshEnabled &&
+      (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')
+    ) {
       startBackgroundRefresh();
     } else if (!feedRefreshEnabled) {
       console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
@@ -279,7 +337,11 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { app, startServer, _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore } };
+module.exports = {
+  app,
+  startServer,
+  _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore },
+};
 
 // Background refresh worker ---------------------------------------------
 let refreshLoopActive = false;
@@ -288,50 +350,54 @@ function startBackgroundRefresh() {
   if (refreshIntervalHandle) return; // already started
   console.log(`Starting background feed refresh loop every ${feedRefreshIntervalSec}s`);
   refreshIntervalHandle = setInterval(async () => {
-      if (refreshLoopActive) return; // skip overlapping interval
-      refreshLoopActive = true;
-      try {
-        const feeds = listFeedEntries();
-        for (const f of feeds) {
-          const { system, region, url, apiKeyEnv, apiKeyHeader } = f;
-          const apiKey = apiKeyEnv ? process.env[apiKeyEnv] : undefined;
-          if (!url) continue;
-          const endTimer = refreshDuration.labels(system).startTimer();
-          const started = Date.now();
-          try {
-            // Direct fetch (do not reuse cache here to force freshness)
-            const feed = await fetchGtfsRt(url, apiKeyHeader || 'x-api-key', apiKey);
-            const durationMs = Date.now() - started;
-            // Structured log for refresh event
-            console.info(JSON.stringify({
+    if (refreshLoopActive) return; // skip overlapping interval
+    refreshLoopActive = true;
+    try {
+      const feeds = listFeedEntries();
+      for (const f of feeds) {
+        const { system, region, url, apiKeyEnv, apiKeyHeader } = f;
+        const apiKey = apiKeyEnv ? process.env[apiKeyEnv] : undefined;
+        if (!url) continue;
+        const endTimer = refreshDuration.labels(system).startTimer();
+        const started = Date.now();
+        try {
+          // Direct fetch (do not reuse cache here to force freshness)
+          const feed = await fetchGtfsRt(url, apiKeyHeader || 'x-api-key', apiKey);
+          const durationMs = Date.now() - started;
+          // Structured log for refresh event
+          console.info(
+            JSON.stringify({
               ts: new Date().toISOString(),
               msg: 'transit_adapter.refresh',
               system,
               region,
               url,
               duration_ms: durationMs,
-              entity_count: Array.isArray(feed?.entity) ? feed.entity.length : 0
-            }));
-          } catch (err) {
-            refreshFailures.labels(system).inc();
-            console.warn(JSON.stringify({
+              entity_count: Array.isArray(feed?.entity) ? feed.entity.length : 0,
+            }),
+          );
+        } catch (err) {
+          refreshFailures.labels(system).inc();
+          console.warn(
+            JSON.stringify({
               ts: new Date().toISOString(),
               level: 'warn',
               msg: 'transit_adapter.refresh_error',
               system,
               region,
-              error: String(err)
-            }));
-          } finally {
-            endTimer();
-          }
+              error: String(err),
+            }),
+          );
+        } finally {
+          endTimer();
         }
-      } catch (e) {
-        console.error('Background refresh loop error', e);
-      } finally {
-        refreshLoopActive = false;
       }
-    }, feedRefreshIntervalSec * 1000);
+    } catch (e) {
+      console.error('Background refresh loop error', e);
+    } finally {
+      refreshLoopActive = false;
+    }
+  }, feedRefreshIntervalSec * 1000);
 }
 
 function stopBackgroundRefresh() {

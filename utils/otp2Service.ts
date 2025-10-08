@@ -15,7 +15,7 @@ export interface OTP2Config {
 }
 
 // Transit Modes
-export type TransitMode = 
+export type TransitMode =
   | 'RAIL'
   | 'SUBWAY'
   | 'TRAM'
@@ -227,7 +227,7 @@ class OpenTripPlanner2 {
     try {
       // Create cache key
       const cacheKey = this.createCacheKey(request);
-      
+
       // Check cache first (shorter cache for transit data)
       const cached = await this.getCachedPlan(cacheKey);
       if (cached) {
@@ -237,10 +237,10 @@ class OpenTripPlanner2 {
 
       // Make API request
       const response = await this.makePlanRequest(request);
-      
+
       // Cache response
       await this.cachePlan(cacheKey, response);
-      
+
       endTimer({ source: 'api', itineraries: response.plan?.itineraries?.length || 0 });
       return response;
     } catch (error) {
@@ -249,10 +249,10 @@ class OpenTripPlanner2 {
         error: error as Error,
         context: 'OTP2 Plan Request',
         severity: 'high',
-        metadata: { 
-          from: request.fromPlace, 
-          to: request.toPlace, 
-          mode: request.mode 
+        metadata: {
+          from: request.fromPlace,
+          to: request.toPlace,
+          mode: request.mode,
         },
       });
       throw error;
@@ -266,7 +266,7 @@ class OpenTripPlanner2 {
     fromPlace: string,
     toPlace: string,
     childAge: number,
-    options?: Partial<OTP2PlanRequest>
+    options?: Partial<OTP2PlanRequest>,
   ): Promise<OTP2PlanResponse> {
     const request: OTP2PlanRequest = {
       fromPlace,
@@ -294,7 +294,7 @@ class OpenTripPlanner2 {
     fromPlace: string,
     toPlace: string,
     requireWheelchair = true,
-    options?: Partial<OTP2PlanRequest>
+    options?: Partial<OTP2PlanRequest>,
   ): Promise<OTP2PlanResponse> {
     const request: OTP2PlanRequest = {
       fromPlace,
@@ -315,17 +315,13 @@ class OpenTripPlanner2 {
   /**
    * Get real-time trip updates
    */
-  async getTripUpdates(
-    fromPlace: string,
-    toPlace: string,
-    itineraryId?: string
-  ): Promise<any> {
+  async getTripUpdates(fromPlace: string, toPlace: string, itineraryId?: string): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('otp2_trip_updates');
 
     try {
       const routerId = this.config.routerId || 'default';
       const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/trips`;
-      
+
       const params = new URLSearchParams({
         fromPlace,
         toPlace,
@@ -337,7 +333,7 @@ class OpenTripPlanner2 {
 
       const response = await fetch(`${url}?${params}`, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -367,14 +363,14 @@ class OpenTripPlanner2 {
   async getNearbyStops(
     lat: number,
     lng: number,
-    radius = 500 // meters
+    radius = 500, // meters
   ): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('otp2_nearby_stops');
 
     try {
       const routerId = this.config.routerId || 'default';
       const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops`;
-      
+
       const params = new URLSearchParams({
         lat: lat.toString(),
         lon: lng.toString(),
@@ -383,7 +379,7 @@ class OpenTripPlanner2 {
 
       const response = await fetch(`${url}?${params}`, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -419,7 +415,7 @@ class OpenTripPlanner2 {
 
       const response = await fetch(url, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -450,7 +446,7 @@ class OpenTripPlanner2 {
     stopId: string,
     date?: string,
     startTime?: number,
-    timeRange = 3600 // seconds
+    timeRange = 3600, // seconds
   ): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('otp2_stop_times');
 
@@ -467,7 +463,7 @@ class OpenTripPlanner2 {
 
       const response = await fetch(`${url}?${params}`, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -494,11 +490,7 @@ class OpenTripPlanner2 {
   /**
    * Get service alerts
    */
-  async getAlerts(
-    routeId?: string,
-    stopId?: string,
-    agencyId?: string
-  ): Promise<any> {
+  async getAlerts(routeId?: string, stopId?: string, agencyId?: string): Promise<any> {
     const endTimer = monitoring.startPerformanceTimer('otp2_alerts');
 
     try {
@@ -512,7 +504,7 @@ class OpenTripPlanner2 {
 
       const response = await fetch(`${url}?${params}`, {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(this.config.timeout),
       });
@@ -542,21 +534,23 @@ class OpenTripPlanner2 {
   private async makePlanRequest(request: OTP2PlanRequest): Promise<OTP2PlanResponse> {
     const routerId = this.config.routerId || 'default';
     const url = `${this.config.baseUrl}/otp/routers/${routerId}/plan`;
-    
+
     const params = new URLSearchParams();
-    
+
     // Required parameters
     params.append('fromPlace', request.fromPlace);
     params.append('toPlace', request.toPlace);
-    
+
     // Optional parameters
     if (request.time) params.append('time', request.time);
     if (request.date) params.append('date', request.date);
     if (request.mode) params.append('mode', request.mode);
     if (request.arriveBy !== undefined) params.append('arriveBy', request.arriveBy.toString());
-    if (request.wheelchair !== undefined) params.append('wheelchair', request.wheelchair.toString());
+    if (request.wheelchair !== undefined)
+      params.append('wheelchair', request.wheelchair.toString());
     if (request.locale) params.append('locale', request.locale);
-    if (request.maxWalkDistance) params.append('maxWalkDistance', request.maxWalkDistance.toString());
+    if (request.maxWalkDistance)
+      params.append('maxWalkDistance', request.maxWalkDistance.toString());
     if (request.maxTransfers) params.append('maxTransfers', request.maxTransfers.toString());
     if (request.walkReluctance) params.append('walkReluctance', request.walkReluctance.toString());
     if (request.waitReluctance) params.append('waitReluctance', request.waitReluctance.toString());
@@ -564,28 +558,31 @@ class OpenTripPlanner2 {
     if (request.bikeSpeed) params.append('bikeSpeed', request.bikeSpeed.toString());
 
     // Triangle parameters
-    if (request.triangleWalkSafety) params.append('triangleWalkSafety', request.triangleWalkSafety.toString());
-    if (request.triangleWalkSlope) params.append('triangleWalkSlope', request.triangleWalkSlope.toString());
-    if (request.triangleWalkTime) params.append('triangleWalkTime', request.triangleWalkTime.toString());
+    if (request.triangleWalkSafety)
+      params.append('triangleWalkSafety', request.triangleWalkSafety.toString());
+    if (request.triangleWalkSlope)
+      params.append('triangleWalkSlope', request.triangleWalkSlope.toString());
+    if (request.triangleWalkTime)
+      params.append('triangleWalkTime', request.triangleWalkTime.toString());
 
     // Intermediate places
     if (request.intermediatePlaces) {
-      request.intermediatePlaces.forEach(place => {
+      request.intermediatePlaces.forEach((place) => {
         params.append('intermediatePlaces', place);
       });
     }
 
     // Banned/preferred routes, agencies, etc.
     if (request.banned?.routes) {
-      request.banned.routes.forEach(route => params.append('bannedRoutes', route));
+      request.banned.routes.forEach((route) => params.append('bannedRoutes', route));
     }
     if (request.preferred?.routes) {
-      request.preferred.routes.forEach(route => params.append('preferredRoutes', route));
+      request.preferred.routes.forEach((route) => params.append('preferredRoutes', route));
     }
 
     const response = await fetch(`${url}?${params}`, {
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       signal: AbortSignal.timeout(this.config.timeout),
     });

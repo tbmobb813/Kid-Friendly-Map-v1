@@ -1,40 +1,40 @@
 module.exports = [
   {
     ignores: [
-      "node_modules/**",
-      "android/**",
-      "ios/**",
-      ".expo/**",
-      ".build/**",
-      "dist/**",
-      "templates/**",
-      "bun-tests/**",
+      'node_modules/**',
+      'android/**',
+      'ios/**',
+      '.expo/**',
+      '.build/**',
+      'dist/**',
+      'templates/**',
+      'bun-tests/**',
     ],
   },
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      parser: require.resolve("@typescript-eslint/parser"),
+      parser: require.resolve('@typescript-eslint/parser'),
       parserOptions: {
-        project: "./tsconfig.json",
+        project: './tsconfig.json',
         ecmaVersion: 2020,
-        sourceType: "module",
+        sourceType: 'module',
         ecmaFeatures: { jsx: true },
       },
     },
     plugins: {
-      "@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
-      react: require("eslint-plugin-react"),
-      "react-hooks": require("eslint-plugin-react-hooks"),
-      prettier: require("eslint-plugin-prettier"),
+      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
+      react: require('eslint-plugin-react'),
+      'react-hooks': require('eslint-plugin-react-hooks'),
+      prettier: require('eslint-plugin-prettier'),
     },
     rules: {
-      "prettier/prettier": "error",
-      "react/jsx-filename-extension": ["warn", { extensions: [".tsx"] }],
-      "@typescript-eslint/explicit-function-return-type": "off"
+      'prettier/prettier': 'error',
+      'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
     },
     settings: {
-      react: { version: "detect" },
+      react: { version: 'detect' },
     },
   },
 ];

@@ -19,18 +19,14 @@ export default function MapWithInfoPanel() {
   // Sound effect on panel open
   const playPanelOpenSound = async () => {
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('@/assets/sounds/panel-open.mp3')
-      );
+      const { sound } = await Audio.Sound.createAsync(require('@/assets/sounds/panel-open.mp3'));
       await sound.playAsync();
     } catch {}
   };
   // Sound effect on completion (e.g., achievement unlock)
   const playCompletionSound = async () => {
     try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('@/assets/sounds/completion.mp3')
-      );
+      const { sound } = await Audio.Sound.createAsync(require('@/assets/sounds/completion.mp3'));
       await sound.playAsync();
     } catch {}
   };
@@ -102,13 +98,18 @@ export default function MapWithInfoPanel() {
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        backgroundStyle={styles.sheetBackground}
         onChange={handleSheetOpen}
       >
-        <Animated.View style={[styles.sheetContent, {
-          opacity: panelAnim,
-          transform: [{ scale: panelAnim.interpolate({ inputRange: [0, 1], outputRange: [0.98, 1] }) }],
-        }]}
+        <Animated.View
+          style={[
+            styles.sheetContent,
+            {
+              opacity: panelAnim,
+              transform: [
+                { scale: panelAnim.interpolate({ inputRange: [0, 1], outputRange: [0.98, 1] }) },
+              ],
+            },
+          ]}
         >
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.swipeBlocks}>
             {/* Safety Status Block */}
@@ -119,29 +120,27 @@ export default function MapWithInfoPanel() {
             <View style={styles.block}>
               {destination && !isLoadingRoutes && !routingError && (
                 <ScrollView style={styles.routesContainer}>
-                  {useAdvancedRouting ? (
-                    unifiedRoutes.map((unifiedRoute) => {
-                      const legacyRoute = availableRoutes.find(r => r.id === unifiedRoute.id);
-                      return legacyRoute ? (
-                        <EnhancedRouteCard
-                          key={unifiedRoute.id}
-                          route={legacyRoute}
-                          unifiedRoute={unifiedRoute}
-                          isSelected={selectedUnifiedRoute?.id === unifiedRoute.id}
+                  {useAdvancedRouting
+                    ? unifiedRoutes.map((unifiedRoute) => {
+                        const legacyRoute = availableRoutes.find((r) => r.id === unifiedRoute.id);
+                        return legacyRoute ? (
+                          <EnhancedRouteCard
+                            key={unifiedRoute.id}
+                            route={legacyRoute}
+                            unifiedRoute={unifiedRoute}
+                            isSelected={selectedUnifiedRoute?.id === unifiedRoute.id}
+                            onPress={playCompletionSound}
+                          />
+                        ) : null;
+                      })
+                    : availableRoutes.map((route) => (
+                        <RouteCard
+                          key={route.id}
+                          route={route}
+                          isSelected={selectedRoute?.id === route.id}
                           onPress={playCompletionSound}
                         />
-                      ) : null;
-                    })
-                  ) : (
-                    availableRoutes.map(route => (
-                      <RouteCard
-                        key={route.id}
-                        route={route}
-                        isSelected={selectedRoute?.id === route.id}
-                        onPress={playCompletionSound}
-                      />
-                    ))
-                  )}
+                      ))}
                 </ScrollView>
               )}
             </View>
@@ -151,8 +150,12 @@ export default function MapWithInfoPanel() {
             </View>
             {/* Achievements/Sticker Block */}
             <View style={styles.block}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.achievementsRow}>
-                {achievements.map(a => (
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.achievementsRow}
+              >
+                {achievements.map((a) => (
                   <View key={a.id} style={styles.achievementBadgeWrap}>
                     <AchievementBadge achievement={a} size="medium" onPress={playCompletionSound} />
                   </View>

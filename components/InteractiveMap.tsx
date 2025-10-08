@@ -23,14 +23,11 @@ export interface InteractiveMapProps {
   onMapReady?: () => void;
   onSelectLocation?: (coords: LatLng) => void;
   onStationPress?: (stationId: string) => void;
-  showTransitStations?: boolean;
   testId?: string;
   onTouchStateChange?: (active: boolean) => void;
   preferNative?: boolean;
   clusterRadiusMeters?: number;
-  mascotHint?: string;
-  setMascotHint?: React.Dispatch<React.SetStateAction<string>>;
-};
+}
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({
   origin,
@@ -59,7 +56,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   const handleMapReady = useCallback(() => {
     setMapReady(true);
     onMapReady?.();
-    
+
     Animated.timing(animatedValue, {
       toValue: 1,
       duration: 800,
@@ -68,41 +65,41 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
     }).start();
   }, [animatedValue, onMapReady]);
 
-  const handleLocationSelect = useCallback((coords: LatLng) => {
-    onSelectLocation?.(coords);
-    onTouchStateChange?.(false);
-  }, [onSelectLocation, onTouchStateChange]);
+  const handleLocationSelect = useCallback(
+    (coords: LatLng) => {
+      onSelectLocation?.(coords);
+      onTouchStateChange?.(false);
+    },
+    [onSelectLocation, onTouchStateChange],
+  );
 
-  const handleStationPress = useCallback((stationId: string) => {
-    onStationPress?.(stationId);
-    if (setMascotHint) {
-      const station = nycStations.find(s => s.id === stationId);
-      if (station) {
-        setMascotHint(`You selected ${station.name} station!`);
+  const handleStationPress = useCallback(
+    (stationId: string) => {
+      onStationPress?.(stationId);
+      if (setMascotHint) {
+        const station = nycStations.find((s) => s.id === stationId);
+        if (station) {
+          setMascotHint(`You selected ${station.name} station!`);
+        }
       }
-    }
-  }, [onStationPress, setMascotHint]);
+    },
+    [onStationPress, setMascotHint],
+  );
 
   const stations = useMemo(() => {
     if (!showTransitStations) return [];
-    return nycStations.filter(station => 
-      station.coordinates?.latitude && station.coordinates?.longitude
+    return nycStations.filter(
+      (station) => station.coordinates?.latitude && station.coordinates?.longitude,
     );
   }, [showTransitStations]);
 
   const routeCoords = useMemo(() => {
-    if (!route?.geometry?.coordinates) return [];
-    return route.geometry.coordinates;
+    if (!route?.metadata?.geometry?.coordinates) return [];
+    return route.metadata.geometry.coordinates;
   }, [route]);
 
   return (
-    <Animated.View 
-      style={[
-        styles.container,
-        { opacity: animatedValue }
-      ]}
-      testID={testId}
-    >
+    <Animated.View style={[styles.container, { opacity: animatedValue }]} testID={testId}>
       <ExpoMapView
         origin={origin}
         destination={destination}
@@ -112,7 +109,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         onStationPress={handleStationPress}
         showTransitStations={showTransitStations}
       />
-      
+
       <View style={styles.controlsOverlay}>
         {showTransitStations && (
           <Pressable style={styles.stationToggle}>
@@ -120,7 +117,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
             <Text style={styles.stationToggleText}>Stations</Text>
           </Pressable>
         )}
-        
+
         <Pressable style={styles.crosshairButton}>
           <Crosshair size={24} color={Colors.primary} />
         </Pressable>

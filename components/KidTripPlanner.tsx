@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, TextInput } from "react-native";
-import { 
-  MapPin, 
-  Navigation, 
-  Clock, 
-  Train, 
-  Bus, 
-  AlertTriangle, 
-  CheckCircle, 
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  TextInput,
+} from 'react-native';
+import {
+  MapPin,
+  Navigation,
+  Clock,
+  Train,
+  Bus,
+  AlertTriangle,
+  CheckCircle,
   Star,
   Users,
   Shield,
   Heart,
-  Play
-} from "lucide-react-native";
-import Colors from "@/constants/colors";
-import { subwayLineColors } from "@/config/transit-data/mta-subway-lines";
+  Play,
+} from 'lucide-react-native';
+import Colors from '@/constants/colors';
+import { subwayLineColors } from '@/config/transit-data/mta-subway-lines';
 
 type KidTripPlannerProps = {
   onTripReady?: (trip: TripPlan) => void;
@@ -24,7 +32,7 @@ type KidTripPlannerProps = {
 
 type TripSegment = {
   id: string;
-  type: "walk" | "subway" | "bus" | "transfer";
+  type: 'walk' | 'subway' | 'bus' | 'transfer';
   line?: string;
   from: string;
   to: string;
@@ -48,7 +56,7 @@ type TripPlan = {
   totalWalkingTime: number;
   segments: TripSegment[];
   kidFriendlyRating: number; // 1-5 stars
-  difficulty: "Easy" | "Medium" | "Hard";
+  difficulty: 'Easy' | 'Medium' | 'Hard';
   bestTimeToGo: string;
   thingsToRemember: string[];
   emergencyInfo: {
@@ -63,199 +71,220 @@ type TripPlan = {
   };
 };
 
-const KidTripPlanner: React.FC<KidTripPlannerProps> = ({ 
-  onTripReady,
-  userLocation 
-}) => {
-  const [fromLocation, setFromLocation] = useState(userLocation?.name || "");
-  const [toLocation, setToLocation] = useState("");
+const KidTripPlanner: React.FC<KidTripPlannerProps> = ({ onTripReady, userLocation }) => {
+  const [fromLocation, setFromLocation] = useState(userLocation?.name || '');
+  const [toLocation, setToLocation] = useState('');
   const [selectedTrip, setSelectedTrip] = useState<TripPlan | null>(null);
   const [tripOptions, setTripOptions] = useState<TripPlan[]>([]);
   const [isPlanning, setIsPlanning] = useState(false);
-  const [travelTime, setTravelTime] = useState<"now" | "later">("now");
+  const [travelTime, setTravelTime] = useState<'now' | 'later'>('now');
   const [groupSize, setGroupSize] = useState({ adults: 1, children: 1 });
   const [accessibilityNeeds, setAccessibilityNeeds] = useState({
     wheelchair: false,
     stroller: false,
-    elevatorOnly: false
+    elevatorOnly: false,
   });
 
   // Mock trip planning function with comprehensive kid-friendly routes
   const planTrip = async () => {
     if (!fromLocation.trim() || !toLocation.trim()) {
-      Alert.alert("Missing Information", "Please enter both starting point and destination!");
+      Alert.alert('Missing Information', 'Please enter both starting point and destination!');
       return;
     }
 
     setIsPlanning(true);
 
     // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const mockTripOptions: TripPlan[] = [
       {
-        id: "option-1",
+        id: 'option-1',
         from: fromLocation,
         to: toLocation,
         totalDuration: 35,
         totalWalkingTime: 12,
-        difficulty: "Easy",
+        difficulty: 'Easy',
         kidFriendlyRating: 5,
-        bestTimeToGo: "Weekday mornings (9-11 AM) or early afternoons (1-3 PM) are less crowded",
+        bestTimeToGo: 'Weekday mornings (9-11 AM) or early afternoons (1-3 PM) are less crowded',
         segments: [
           {
-            id: "walk-1",
-            type: "walk",
+            id: 'walk-1',
+            type: 'walk',
             from: fromLocation,
-            to: "Times Sq-42nd St Station",
+            to: 'Times Sq-42nd St Station',
             duration: 5,
-            instructions: "Walk 3 blocks north to Times Square station",
+            instructions: 'Walk 3 blocks north to Times Square station',
             kidFriendlyTip: "Look for the big red stairs and bright lights - that's your landmark!",
-            safetyNote: "Hold hands tight - Times Square is very busy with lots of people",
-            funThingsToSee: ["Street performers", "Costume characters", "Giant billboards", "Police horses"],
+            safetyNote: 'Hold hands tight - Times Square is very busy with lots of people',
+            funThingsToSee: [
+              'Street performers',
+              'Costume characters',
+              'Giant billboards',
+              'Police horses',
+            ],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: false
-            }
+              elevatorRequired: false,
+            },
           },
           {
-            id: "subway-1",
-            type: "subway",
-            line: "1",
-            from: "Times Sq-42nd St",
-            to: "59th St-Columbus Circle",
+            id: 'subway-1',
+            type: 'subway',
+            line: '1',
+            from: 'Times Sq-42nd St',
+            to: '59th St-Columbus Circle',
             duration: 8,
-            instructions: "Take the 1 train uptown (northbound) for 3 stops",
-            kidFriendlyTip: "The 1 train is red on the map - count the stops on your fingers: 50th, then 59th!",
-            safetyNote: "Stand clear of closing doors and hold the pole or sit down",
-            funThingsToSee: ["Underground musicians", "Colorful tile work", "People from all over the world"],
+            instructions: 'Take the 1 train uptown (northbound) for 3 stops',
+            kidFriendlyTip:
+              'The 1 train is red on the map - count the stops on your fingers: 50th, then 59th!',
+            safetyNote: 'Stand clear of closing doors and hold the pole or sit down',
+            funThingsToSee: [
+              'Underground musicians',
+              'Colorful tile work',
+              'People from all over the world',
+            ],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: true
-            }
+              elevatorRequired: true,
+            },
           },
           {
-            id: "walk-2",
-            type: "walk",
-            from: "59th St-Columbus Circle Station",
+            id: 'walk-2',
+            type: 'walk',
+            from: '59th St-Columbus Circle Station',
             to: toLocation,
             duration: 7,
-            instructions: "Exit at Central Park South and walk 2 blocks to destination",
-            kidFriendlyTip: "You'll see Central Park right outside the station - perfect for a quick playground stop!",
-            funThingsToSee: ["Central Park entrance", "Horse carriages", "Street vendors", "Columbus statue"],
+            instructions: 'Exit at Central Park South and walk 2 blocks to destination',
+            kidFriendlyTip:
+              "You'll see Central Park right outside the station - perfect for a quick playground stop!",
+            funThingsToSee: [
+              'Central Park entrance',
+              'Horse carriages',
+              'Street vendors',
+              'Columbus statue',
+            ],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: false
-            }
-          }
+              elevatorRequired: false,
+            },
+          },
         ],
         thingsToRemember: [
-          "Bring MetroCard or tap your phone/card",
-          "Keep your group together at all times",
-          "Emergency button is on every subway car",
+          'Bring MetroCard or tap your phone/card',
+          'Keep your group together at all times',
+          'Emergency button is on every subway car',
           "Ask MTA staff if you need help - they're there to help!",
-          "Have a backup plan if trains are delayed"
+          'Have a backup plan if trains are delayed',
         ],
         emergencyInfo: {
-          nearestHospital: "Mount Sinai West (59th St & 10th Ave)",
-          transitPolice: "Call 911 or find any MTA employee",
-          helpfulStaff: ["Station booth clerks", "Transit police", "Train conductors"]
+          nearestHospital: 'Mount Sinai West (59th St & 10th Ave)',
+          transitPolice: 'Call 911 or find any MTA employee',
+          helpfulStaff: ['Station booth clerks', 'Transit police', 'Train conductors'],
         },
         funAlongTheWay: [
-          "Count the number of different languages you hear",
-          "Look for subway art and murals",
-          "Spot different types of dogs in Central Park",
-          "Find the Columbus statue at Columbus Circle"
+          'Count the number of different languages you hear',
+          'Look for subway art and murals',
+          'Spot different types of dogs in Central Park',
+          'Find the Columbus statue at Columbus Circle',
         ],
         estimatedCost: {
-          adult: 2.90,
-          child: 0 // Children under 44 inches ride free
-        }
+          adult: 2.9,
+          child: 0, // Children under 44 inches ride free
+        },
       },
       {
-        id: "option-2", 
+        id: 'option-2',
         from: fromLocation,
         to: toLocation,
         totalDuration: 42,
         totalWalkingTime: 15,
-        difficulty: "Medium",
+        difficulty: 'Medium',
         kidFriendlyRating: 4,
         bestTimeToGo: "Afternoons (2-4 PM) when it's less crowded but still daylight",
         segments: [
           {
-            id: "walk-1",
-            type: "walk",
+            id: 'walk-1',
+            type: 'walk',
             from: fromLocation,
-            to: "42nd St-Port Authority",
+            to: '42nd St-Port Authority',
             duration: 8,
-            instructions: "Walk west to Port Authority Bus Terminal",
+            instructions: 'Walk west to Port Authority Bus Terminal',
             kidFriendlyTip: "The Port Authority is HUGE - it's like a train station for buses!",
-            safetyNote: "Very busy area - stay close to your adult",
-            funThingsToSee: ["Giant bus terminal", "Food court", "Lots of travelers with suitcases"],
+            safetyNote: 'Very busy area - stay close to your adult',
+            funThingsToSee: [
+              'Giant bus terminal',
+              'Food court',
+              'Lots of travelers with suitcases',
+            ],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: false
-            }
+              elevatorRequired: false,
+            },
           },
           {
-            id: "bus-1",
-            type: "bus",
-            line: "M11",
-            from: "42nd St-Port Authority",
-            to: "59th St & 9th Ave",
+            id: 'bus-1',
+            type: 'bus',
+            line: 'M11',
+            from: '42nd St-Port Authority',
+            to: '59th St & 9th Ave',
             duration: 18,
-            instructions: "Take M11 bus northbound for about 15 minutes",
-            kidFriendlyTip: "Buses let you see the city from above ground - look out the windows!",
-            safetyNote: "Hold on tight when the bus stops and starts",
-            funThingsToSee: ["Street level view of NYC", "Different neighborhoods", "Bike lanes and bike riders"],
+            instructions: 'Take M11 bus northbound for about 15 minutes',
+            kidFriendlyTip: 'Buses let you see the city from above ground - look out the windows!',
+            safetyNote: 'Hold on tight when the bus stops and starts',
+            funThingsToSee: [
+              'Street level view of NYC',
+              'Different neighborhoods',
+              'Bike lanes and bike riders',
+            ],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: false
-            }
+              elevatorRequired: false,
+            },
           },
           {
-            id: "walk-2",
-            type: "walk",
-            from: "59th St & 9th Ave",
+            id: 'walk-2',
+            type: 'walk',
+            from: '59th St & 9th Ave',
             to: toLocation,
             duration: 7,
-            instructions: "Walk east 3 blocks to Central Park",
-            kidFriendlyTip: "You can see the park getting closer - look for the trees!",
-            funThingsToSee: ["Tree-lined streets", "Brownstone buildings", "People walking dogs"],
+            instructions: 'Walk east 3 blocks to Central Park',
+            kidFriendlyTip: 'You can see the park getting closer - look for the trees!',
+            funThingsToSee: ['Tree-lined streets', 'Brownstone buildings', 'People walking dogs'],
             accessibility: {
               wheelchairAccessible: true,
               strollerFriendly: true,
-              elevatorRequired: false
-            }
-          }
+              elevatorRequired: false,
+            },
+          },
         ],
         thingsToRemember: [
-          "Have exact change or MetroCard for bus",
-          "Board at the front door, exit at the back",
-          "Buses stop at every stop unless you request",
-          "Press the stop button or pull the cord when you want to get off"
+          'Have exact change or MetroCard for bus',
+          'Board at the front door, exit at the back',
+          'Buses stop at every stop unless you request',
+          'Press the stop button or pull the cord when you want to get off',
         ],
         emergencyInfo: {
-          nearestHospital: "Mount Sinai West (59th St & 10th Ave)",
-          transitPolice: "Call 911 or ask bus driver for help",
-          helpfulStaff: ["Bus drivers", "Transit supervisors at major stops"]
+          nearestHospital: 'Mount Sinai West (59th St & 10th Ave)',
+          transitPolice: 'Call 911 or ask bus driver for help',
+          helpfulStaff: ['Bus drivers', 'Transit supervisors at major stops'],
         },
         funAlongTheWay: [
-          "Count how many yellow taxi cabs you see",
-          "Look for street art and murals",
-          "Spot different types of street food vendors",
-          "Find fire escapes on old buildings"
+          'Count how many yellow taxi cabs you see',
+          'Look for street art and murals',
+          'Spot different types of street food vendors',
+          'Find fire escapes on old buildings',
         ],
         estimatedCost: {
-          adult: 2.90,
-          child: 0
-        }
-      }
+          adult: 2.9,
+          child: 0,
+        },
+      },
     ];
 
     setTripOptions(mockTripOptions);
@@ -271,24 +300,24 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <Star 
-        key={i} 
-        size={16} 
-        color="#FFD700" 
-        fill={i < rating ? "#FFD700" : "none"} 
-      />
+      <Star key={i} size={16} color="#FFD700" fill={i < rating ? '#FFD700' : 'none'} />
     ));
   };
 
   const renderDifficultyBadge = (difficulty: string) => {
     const colors = {
-      Easy: "#4CAF50",
-      Medium: "#FF9800", 
-      Hard: "#F44336"
+      Easy: '#4CAF50',
+      Medium: '#FF9800',
+      Hard: '#F44336',
     };
-    
+
     return (
-      <View style={[styles.difficultyBadge, { backgroundColor: colors[difficulty as keyof typeof colors] }]}>
+      <View
+        style={[
+          styles.difficultyBadge,
+          { backgroundColor: colors[difficulty as keyof typeof colors] },
+        ]}
+      >
         <Text style={styles.difficultyText}>{difficulty}</Text>
       </View>
     );
@@ -297,11 +326,18 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
   const renderSegment = (segment: TripSegment, index: number) => {
     const getSegmentIcon = () => {
       switch (segment.type) {
-        case "walk":
+        case 'walk':
           return <Navigation size={20} color={Colors.primary} />;
-        case "subway":
-          return <Train size={20} color={segment.line ? subwayLineColors[segment.line] || Colors.primary : Colors.primary} />;
-        case "bus":
+        case 'subway':
+          return (
+            <Train
+              size={20}
+              color={
+                segment.line ? subwayLineColors[segment.line] || Colors.primary : Colors.primary
+              }
+            />
+          );
+        case 'bus':
           return <Bus size={20} color={Colors.primary} />;
         default:
           return <Navigation size={20} color={Colors.primary} />;
@@ -311,14 +347,14 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
     return (
       <View key={segment.id} style={styles.segmentCard}>
         <View style={styles.segmentHeader}>
-          <View style={styles.segmentIcon}>
-            {getSegmentIcon()}
-          </View>
+          <View style={styles.segmentIcon}>{getSegmentIcon()}</View>
           <View style={styles.segmentDetails}>
             <Text style={styles.segmentTitle}>
-              {segment.type === "walk" ? "Walk" : 
-               segment.type === "subway" ? `${segment.line} Train` : 
-               `${segment.line} Bus`}
+              {segment.type === 'walk'
+                ? 'Walk'
+                : segment.type === 'subway'
+                  ? `${segment.line} Train`
+                  : `${segment.line} Bus`}
             </Text>
             <Text style={styles.segmentRoute}>
               {segment.from} → {segment.to}
@@ -330,7 +366,7 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
         </View>
 
         <Text style={styles.segmentInstructions}>{segment.instructions}</Text>
-        
+
         <View style={styles.kidTipContainer}>
           <Text style={styles.kidTip}>👶 {segment.kidFriendlyTip}</Text>
         </View>
@@ -346,7 +382,9 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
           <View style={styles.funThingsContainer}>
             <Text style={styles.funThingsTitle}>👀 Look for:</Text>
             {segment.funThingsToSee.map((thing, idx) => (
-              <Text key={idx} style={styles.funThing}>• {thing}</Text>
+              <Text key={idx} style={styles.funThing}>
+                • {thing}
+              </Text>
             ))}
           </View>
         )}
@@ -354,14 +392,30 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
         {/* Accessibility Info */}
         <View style={styles.accessibilityContainer}>
           <View style={styles.accessibilityItem}>
-            <Shield size={12} color={segment.accessibility.wheelchairAccessible ? "#4CAF50" : "#CCCCCC"} />
-            <Text style={[styles.accessibilityText, { color: segment.accessibility.wheelchairAccessible ? "#4CAF50" : "#CCCCCC" }]}>
+            <Shield
+              size={12}
+              color={segment.accessibility.wheelchairAccessible ? '#4CAF50' : '#CCCCCC'}
+            />
+            <Text
+              style={[
+                styles.accessibilityText,
+                { color: segment.accessibility.wheelchairAccessible ? '#4CAF50' : '#CCCCCC' },
+              ]}
+            >
               Wheelchair
             </Text>
           </View>
           <View style={styles.accessibilityItem}>
-            <Heart size={12} color={segment.accessibility.strollerFriendly ? "#4CAF50" : "#CCCCCC"} />
-            <Text style={[styles.accessibilityText, { color: segment.accessibility.strollerFriendly ? "#4CAF50" : "#CCCCCC" }]}>
+            <Heart
+              size={12}
+              color={segment.accessibility.strollerFriendly ? '#4CAF50' : '#CCCCCC'}
+            />
+            <Text
+              style={[
+                styles.accessibilityText,
+                { color: segment.accessibility.strollerFriendly ? '#4CAF50' : '#CCCCCC' },
+              ]}
+            >
               Stroller
             </Text>
           </View>
@@ -371,36 +425,27 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
   };
 
   const renderTripOption = (trip: TripPlan) => (
-    <TouchableOpacity 
-      key={trip.id}
-      style={styles.tripCard}
-      onPress={() => selectTrip(trip)}
-    >
+    <TouchableOpacity key={trip.id} style={styles.tripCard} onPress={() => selectTrip(trip)}>
       <View style={styles.tripHeader}>
         <View style={styles.tripInfo}>
           <Text style={styles.tripDuration}>{trip.totalDuration} min total</Text>
           <Text style={styles.walkingTime}>{trip.totalWalkingTime} min walking</Text>
         </View>
         <View style={styles.tripRating}>
-          <View style={styles.starsContainer}>
-            {renderStars(trip.kidFriendlyRating)}
-          </View>
+          <View style={styles.starsContainer}>{renderStars(trip.kidFriendlyRating)}</View>
           {renderDifficultyBadge(trip.difficulty)}
         </View>
       </View>
 
       <Text style={styles.bestTime}>🕐 Best time: {trip.bestTimeToGo}</Text>
-      
+
       <View style={styles.costContainer}>
         <Text style={styles.costText}>
           💰 Adult: ${trip.estimatedCost.adult} • Child: Free (under 44 inches)
         </Text>
       </View>
 
-      <TouchableOpacity 
-        style={styles.selectTripButton}
-        onPress={() => selectTrip(trip)}
-      >
+      <TouchableOpacity style={styles.selectTripButton} onPress={() => selectTrip(trip)}>
         <Play size={16} color="#FFFFFF" />
         <Text style={styles.selectTripText}>Choose This Route</Text>
       </TouchableOpacity>
@@ -447,16 +492,18 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
               <View style={styles.groupItem}>
                 <Text style={styles.groupLabel}>Adults:</Text>
                 <View style={styles.counterContainer}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.counterButton}
-                    onPress={() => setGroupSize(prev => ({ ...prev, adults: Math.max(1, prev.adults - 1) }))}
+                    onPress={() =>
+                      setGroupSize((prev) => ({ ...prev, adults: Math.max(1, prev.adults - 1) }))
+                    }
                   >
                     <Text style={styles.counterButtonText}>-</Text>
                   </TouchableOpacity>
                   <Text style={styles.counterValue}>{groupSize.adults}</Text>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.counterButton}
-                    onPress={() => setGroupSize(prev => ({ ...prev, adults: prev.adults + 1 }))}
+                    onPress={() => setGroupSize((prev) => ({ ...prev, adults: prev.adults + 1 }))}
                   >
                     <Text style={styles.counterButtonText}>+</Text>
                   </TouchableOpacity>
@@ -466,16 +513,23 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
               <View style={styles.groupItem}>
                 <Text style={styles.groupLabel}>Children:</Text>
                 <View style={styles.counterContainer}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.counterButton}
-                    onPress={() => setGroupSize(prev => ({ ...prev, children: Math.max(0, prev.children - 1) }))}
+                    onPress={() =>
+                      setGroupSize((prev) => ({
+                        ...prev,
+                        children: Math.max(0, prev.children - 1),
+                      }))
+                    }
                   >
                     <Text style={styles.counterButtonText}>-</Text>
                   </TouchableOpacity>
                   <Text style={styles.counterValue}>{groupSize.children}</Text>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.counterButton}
-                    onPress={() => setGroupSize(prev => ({ ...prev, children: prev.children + 1 }))}
+                    onPress={() =>
+                      setGroupSize((prev) => ({ ...prev, children: prev.children + 1 }))
+                    }
                   >
                     <Text style={styles.counterButtonText}>+</Text>
                   </TouchableOpacity>
@@ -487,35 +541,54 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
           {/* Accessibility Options */}
           <View style={styles.accessibilityOptions}>
             <Text style={styles.inputLabel}>Accessibility Needs</Text>
-            <TouchableOpacity 
-              style={[styles.accessibilityOption, accessibilityNeeds.wheelchair && styles.accessibilityOptionActive]}
-              onPress={() => setAccessibilityNeeds(prev => ({ ...prev, wheelchair: !prev.wheelchair }))}
+            <TouchableOpacity
+              style={[
+                styles.accessibilityOption,
+                accessibilityNeeds.wheelchair && styles.accessibilityOptionActive,
+              ]}
+              onPress={() =>
+                setAccessibilityNeeds((prev) => ({ ...prev, wheelchair: !prev.wheelchair }))
+              }
             >
-              <Shield size={16} color={accessibilityNeeds.wheelchair ? "#FFFFFF" : Colors.primary} />
-              <Text style={[styles.accessibilityOptionText, accessibilityNeeds.wheelchair && styles.accessibilityOptionTextActive]}>
+              <Shield
+                size={16}
+                color={accessibilityNeeds.wheelchair ? '#FFFFFF' : Colors.primary}
+              />
+              <Text
+                style={[
+                  styles.accessibilityOptionText,
+                  accessibilityNeeds.wheelchair && styles.accessibilityOptionTextActive,
+                ]}
+              >
                 Wheelchair Access
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={[styles.accessibilityOption, accessibilityNeeds.stroller && styles.accessibilityOptionActive]}
-              onPress={() => setAccessibilityNeeds(prev => ({ ...prev, stroller: !prev.stroller }))}
+            <TouchableOpacity
+              style={[
+                styles.accessibilityOption,
+                accessibilityNeeds.stroller && styles.accessibilityOptionActive,
+              ]}
+              onPress={() =>
+                setAccessibilityNeeds((prev) => ({ ...prev, stroller: !prev.stroller }))
+              }
             >
-              <Heart size={16} color={accessibilityNeeds.stroller ? "#FFFFFF" : Colors.primary} />
-              <Text style={[styles.accessibilityOptionText, accessibilityNeeds.stroller && styles.accessibilityOptionTextActive]}>
+              <Heart size={16} color={accessibilityNeeds.stroller ? '#FFFFFF' : Colors.primary} />
+              <Text
+                style={[
+                  styles.accessibilityOptionText,
+                  accessibilityNeeds.stroller && styles.accessibilityOptionTextActive,
+                ]}
+              >
                 Stroller Friendly
               </Text>
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity 
-            style={styles.planButton}
-            onPress={planTrip}
-            disabled={isPlanning}
-          >
+          <TouchableOpacity style={styles.planButton} onPress={planTrip} disabled={isPlanning}>
             <MapPin size={20} color="#FFFFFF" />
             <Text style={styles.planButtonText}>
-              {isPlanning ? "Planning Your Trip..." : "Plan My Trip!"}
+              {isPlanning ? 'Planning Your Trip...' : 'Plan My Trip!'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -532,13 +605,15 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
         {selectedTrip && (
           <View style={styles.selectedTripContainer}>
             <Text style={styles.sectionTitle}>Your Selected Route</Text>
-            
+
             <View style={styles.selectedTripHeader}>
               <Text style={styles.selectedTripTitle}>
                 {selectedTrip.from} → {selectedTrip.to}
               </Text>
               <View style={styles.selectedTripMeta}>
-                <Text style={styles.selectedTripDuration}>{selectedTrip.totalDuration} minutes</Text>
+                <Text style={styles.selectedTripDuration}>
+                  {selectedTrip.totalDuration} minutes
+                </Text>
                 <View style={styles.starsContainer}>
                   {renderStars(selectedTrip.kidFriendlyRating)}
                 </View>
@@ -566,16 +641,24 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
             <View style={styles.funActivitiesContainer}>
               <Text style={styles.funActivitiesTitle}>🎉 Fun Things to Do Along the Way</Text>
               {selectedTrip.funAlongTheWay.map((activity, index) => (
-                <Text key={index} style={styles.funActivity}>• {activity}</Text>
+                <Text key={index} style={styles.funActivity}>
+                  • {activity}
+                </Text>
               ))}
             </View>
 
             {/* Emergency Information */}
             <View style={styles.emergencyContainer}>
               <Text style={styles.emergencyTitle}>🚨 Emergency Information</Text>
-              <Text style={styles.emergencyItem}>🏥 Hospital: {selectedTrip.emergencyInfo.nearestHospital}</Text>
-              <Text style={styles.emergencyItem}>👮 Transit Police: {selectedTrip.emergencyInfo.transitPolice}</Text>
-              <Text style={styles.emergencyItem}>👥 Helpful Staff: {selectedTrip.emergencyInfo.helpfulStaff.join(", ")}</Text>
+              <Text style={styles.emergencyItem}>
+                🏥 Hospital: {selectedTrip.emergencyInfo.nearestHospital}
+              </Text>
+              <Text style={styles.emergencyItem}>
+                👮 Transit Police: {selectedTrip.emergencyInfo.transitPolice}
+              </Text>
+              <Text style={styles.emergencyItem}>
+                👥 Helpful Staff: {selectedTrip.emergencyInfo.helpfulStaff.join(', ')}
+              </Text>
             </View>
           </View>
         )}
@@ -587,7 +670,7 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,
@@ -598,14 +681,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "800",
-    color: "#FFFFFF",
-    textAlign: "center",
+    fontWeight: '800',
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: "#FFFFFF",
-    textAlign: "center",
+    color: '#FFFFFF',
+    textAlign: 'center',
     marginTop: 4,
     opacity: 0.9,
   },
@@ -617,26 +700,26 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
     color: Colors.text,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
   },
   groupSizeContainer: {
     marginBottom: 16,
   },
   groupSizeControls: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   groupItem: {
     flex: 1,
@@ -648,10 +731,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   counterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F8F9FA",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F8F9FA',
     borderRadius: 8,
     padding: 8,
   },
@@ -660,35 +743,35 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: Colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   counterButtonText: {
     fontSize: 18,
-    fontWeight: "600",
-    color: "#FFFFFF",
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   counterValue: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginHorizontal: 16,
     minWidth: 24,
-    textAlign: "center",
+    textAlign: 'center',
   },
   accessibilityOptions: {
     marginBottom: 20,
   },
   accessibilityOption: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
     marginBottom: 8,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
   },
   accessibilityOptionActive: {
     backgroundColor: Colors.primary,
@@ -698,15 +781,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.primary,
     marginLeft: 8,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   accessibilityOptionTextActive: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   planButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.primary,
     paddingVertical: 16,
     borderRadius: 12,
@@ -714,8 +797,8 @@ const styles = StyleSheet.create({
   },
   planButtonText: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#FFFFFF",
+    fontWeight: '700',
+    color: '#FFFFFF',
     marginLeft: 8,
   },
   tripOptionsContainer: {
@@ -724,22 +807,22 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
   tripCard: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   tripHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   tripInfo: {
@@ -747,7 +830,7 @@ const styles = StyleSheet.create({
   },
   tripDuration: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   walkingTime: {
@@ -756,10 +839,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tripRating: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   starsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 4,
   },
   difficultyBadge: {
@@ -769,8 +852,8 @@ const styles = StyleSheet.create({
   },
   difficultyText: {
     fontSize: 12,
-    fontWeight: "600",
-    color: "#FFFFFF",
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   bestTime: {
     fontSize: 14,
@@ -783,21 +866,21 @@ const styles = StyleSheet.create({
   },
   costText: {
     fontSize: 14,
-    color: "#4CAF50",
-    fontWeight: "500",
+    color: '#4CAF50',
+    fontWeight: '500',
   },
   selectTripButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.primary,
     paddingVertical: 12,
     borderRadius: 8,
   },
   selectTripText: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#FFFFFF",
+    fontWeight: '600',
+    color: '#FFFFFF',
     marginLeft: 8,
   },
   selectedTripContainer: {
@@ -809,14 +892,14 @@ const styles = StyleSheet.create({
   },
   selectedTripTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 8,
   },
   selectedTripMeta: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   selectedTripDuration: {
     fontSize: 16,
@@ -827,30 +910,30 @@ const styles = StyleSheet.create({
   },
   segmentsTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 16,
   },
   segmentCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   segmentHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   segmentIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F8F9FA",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F8F9FA',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   segmentDetails: {
@@ -858,7 +941,7 @@ const styles = StyleSheet.create({
   },
   segmentTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 2,
   },
@@ -878,77 +961,77 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   kidTipContainer: {
-    backgroundColor: "#E3F2FD",
+    backgroundColor: '#E3F2FD',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   kidTip: {
     fontSize: 13,
-    color: "#1565C0",
+    color: '#1565C0',
     lineHeight: 18,
   },
   safetyContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#FFF3E0",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF3E0',
     padding: 10,
     borderRadius: 8,
     marginBottom: 8,
   },
   safetyNote: {
     fontSize: 12,
-    color: "#E65100",
+    color: '#E65100',
     marginLeft: 6,
     flex: 1,
     lineHeight: 16,
   },
   funThingsContainer: {
-    backgroundColor: "#F3E5F5",
+    backgroundColor: '#F3E5F5',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   funThingsTitle: {
     fontSize: 13,
-    fontWeight: "600",
-    color: "#7B1FA2",
+    fontWeight: '600',
+    color: '#7B1FA2',
     marginBottom: 6,
   },
   funThing: {
     fontSize: 12,
-    color: "#7B1FA2",
+    color: '#7B1FA2',
     lineHeight: 16,
   },
   accessibilityContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 8,
   },
   accessibilityItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: 16,
   },
   accessibilityText: {
     fontSize: 11,
     marginLeft: 4,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   remindersContainer: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
   },
   remindersTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 12,
   },
   reminderItem: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 8,
   },
   reminderText: {
@@ -959,38 +1042,38 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   funActivitiesContainer: {
-    backgroundColor: "#E8F5E8",
+    backgroundColor: '#E8F5E8',
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
   },
   funActivitiesTitle: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#2E7D32",
+    fontWeight: '600',
+    color: '#2E7D32',
     marginBottom: 12,
   },
   funActivity: {
     fontSize: 14,
-    color: "#2E7D32",
+    color: '#2E7D32',
     lineHeight: 20,
     marginBottom: 4,
   },
   emergencyContainer: {
-    backgroundColor: "#FFEBEE",
+    backgroundColor: '#FFEBEE',
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
   },
   emergencyTitle: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#C62828",
+    fontWeight: '600',
+    color: '#C62828',
     marginBottom: 12,
   },
   emergencyItem: {
     fontSize: 14,
-    color: "#C62828",
+    color: '#C62828',
     lineHeight: 20,
     marginBottom: 4,
   },

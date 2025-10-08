@@ -22,6 +22,7 @@ useEffect(() => {
 ### Manual Code Updates
 
 **Before (AsyncStorage):**
+
 ```typescript
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,6 +38,7 @@ await AsyncStorage.removeItem('key');
 ```
 
 **After (MMKV):**
+
 ```typescript
 import { mainStorage } from '../utils/storage';
 
@@ -62,6 +64,7 @@ mainStorage.delete('key');
 ### Navigation Updates
 
 **Before:**
+
 ```typescript
 const navigateToLocation = (destination) => {
   // Just visual navigation
@@ -70,6 +73,7 @@ const navigateToLocation = (destination) => {
 ```
 
 **After:**
+
 ```typescript
 import { speakNavigation } from '../utils/voice';
 
@@ -83,6 +87,7 @@ const navigateToLocation = async (destination) => {
 ### Safety Features
 
 **Before:**
+
 ```typescript
 const checkSafety = () => {
   if (isSafe) {
@@ -92,6 +97,7 @@ const checkSafety = () => {
 ```
 
 **After:**
+
 ```typescript
 import { speakSafety, KidFriendlyPhrases } from '../utils/voice';
 
@@ -105,6 +111,7 @@ const checkSafety = async () => {
 ### Achievement System
 
 **Before:**
+
 ```typescript
 const awardBadge = (badge) => {
   showNotification(`You earned: ${badge.name}`);
@@ -112,6 +119,7 @@ const awardBadge = (badge) => {
 ```
 
 **After:**
+
 ```typescript
 import { speakAchievement, KidFriendlyPhrases } from '../utils/voice';
 
@@ -126,6 +134,7 @@ const awardBadge = async (badge) => {
 ### From expo-maps to react-native-maps
 
 **Before (expo-maps):**
+
 ```typescript
 import MapView from 'expo-maps';
 
@@ -135,6 +144,7 @@ import MapView from 'expo-maps';
 ```
 
 **After (react-native-maps with enhancements):**
+
 ```typescript
 import KidFriendlyMap from '../components/KidFriendlyMap';
 
@@ -167,15 +177,15 @@ const safeZones = [
 
 ```typescript
 const route = [
-  { 
-    latitude: 40.7589, 
-    longitude: -73.9851, 
-    instruction: 'Start here' 
+  {
+    latitude: 40.7589,
+    longitude: -73.9851,
+    instruction: 'Start here',
   },
-  { 
-    latitude: 40.7614, 
-    longitude: -73.9776, 
-    instruction: 'Destination' 
+  {
+    latitude: 40.7614,
+    longitude: -73.9776,
+    instruction: 'Destination',
   },
 ];
 ```
@@ -185,12 +195,14 @@ const route = [
 ### Create Typed Keys
 
 **Before:**
+
 ```typescript
 await AsyncStorage.setItem('user_favorites', JSON.stringify(favorites));
 const stored = await AsyncStorage.getItem('user_favorites');
 ```
 
 **After:**
+
 ```typescript
 import { mainStorage, StorageKeys } from '../utils/storage';
 
@@ -201,14 +213,14 @@ const stored = mainStorage.get(StorageKeys.FAVORITE_PLACES);
 ### Available Keys
 
 ```typescript
-StorageKeys.USER_PROFILE
-StorageKeys.AUTH_TOKEN
-StorageKeys.EMERGENCY_CONTACTS
-StorageKeys.SAFE_ZONES
-StorageKeys.VOICE_ENABLED
-StorageKeys.RECENT_SEARCHES
-StorageKeys.FAVORITE_PLACES
-StorageKeys.ACHIEVEMENTS
+StorageKeys.USER_PROFILE;
+StorageKeys.AUTH_TOKEN;
+StorageKeys.EMERGENCY_CONTACTS;
+StorageKeys.SAFE_ZONES;
+StorageKeys.VOICE_ENABLED;
+StorageKeys.RECENT_SEARCHES;
+StorageKeys.FAVORITE_PLACES;
+StorageKeys.ACHIEVEMENTS;
 // ... and more
 ```
 
@@ -223,7 +235,7 @@ function SettingsScreen() {
   return (
     <ScrollView>
       {/* Your existing settings */}
-      
+
       {/* Add voice settings */}
       <VoiceSettings />
     </ScrollView>
@@ -236,12 +248,16 @@ function SettingsScreen() {
 ### Implement Cache Expiration
 
 **Before:**
+
 ```typescript
 const cacheData = async (key, data) => {
-  await AsyncStorage.setItem(key, JSON.stringify({
-    data,
-    timestamp: Date.now(),
-  }));
+  await AsyncStorage.setItem(
+    key,
+    JSON.stringify({
+      data,
+      timestamp: Date.now(),
+    }),
+  );
 };
 
 const getCachedData = async (key, maxAge) => {
@@ -257,6 +273,7 @@ const getCachedData = async (key, maxAge) => {
 ```
 
 **After:**
+
 ```typescript
 import { StorageUtils } from '../utils/storage';
 
@@ -277,6 +294,7 @@ StorageUtils.clearExpired();
 ### Update Location Handlers
 
 **Before:**
+
 ```typescript
 const trackLocation = async () => {
   const location = await Location.getCurrentPositionAsync();
@@ -285,13 +303,14 @@ const trackLocation = async () => {
 ```
 
 **After:**
+
 ```typescript
 import { mainStorage } from '../utils/storage';
 
 const trackLocation = async () => {
   const location = await Location.getCurrentPositionAsync();
   setCurrentLocation(location.coords);
-  
+
   // Store with MMKV
   mainStorage.set('last_location', {
     lat: location.coords.latitude,
@@ -313,11 +332,11 @@ import MapView from 'expo-maps';
 
 export default function JourneyScreen() {
   const [route, setRoute] = useState([]);
-  
+
   const saveJourney = async (journey) => {
     await AsyncStorage.setItem('journey', JSON.stringify(journey));
   };
-  
+
   return (
     <View>
       <MapView />
@@ -338,28 +357,28 @@ import KidFriendlyMap from '../components/KidFriendlyMap';
 export default function JourneyScreen() {
   const [route, setRoute] = useState([]);
   const [safeZones, setSafeZones] = useState([]);
-  
+
   useEffect(() => {
     // Load saved data (synchronous!)
     const savedRoute = mainStorage.get(StorageKeys.JOURNEY_HISTORY);
     const savedZones = mainStorage.get(StorageKeys.SAFE_ZONES);
-    
+
     if (savedRoute) setRoute(savedRoute);
     if (savedZones) setSafeZones(savedZones);
   }, []);
-  
+
   const saveJourney = (journey) => {
     // No await needed!
     mainStorage.set(StorageKeys.JOURNEY_HISTORY, journey);
   };
-  
+
   const handleLocationChange = (location) => {
     mainStorage.set('current_location', location.coords);
   };
-  
+
   const handleSafeZoneEnter = async (zone) => {
     await speakSafety(`You're in ${zone.name}!`);
-    
+
     // Log entry
     const history = mainStorage.get('zone_history', []);
     history.push({
@@ -368,7 +387,7 @@ export default function JourneyScreen() {
     });
     mainStorage.set('zone_history', history);
   };
-  
+
   return (
     <View style={{ flex: 1 }}>
       <KidFriendlyMap
@@ -398,15 +417,19 @@ export default function JourneyScreen() {
 ## 10. Common Issues
 
 ### Issue: Voice not working
+
 **Solution:** Test on physical device (simulators have limited voices)
 
 ### Issue: Map not showing
+
 **Solution:** Check location permissions and test on device
 
 ### Issue: Storage migration slow
+
 **Solution:** Run migration once, then remove the call
 
 ### Issue: TypeScript errors
+
 **Solution:** Ensure you're using typed keys and proper imports
 
 ## Resources

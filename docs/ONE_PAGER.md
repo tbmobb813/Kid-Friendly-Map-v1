@@ -66,22 +66,22 @@
 
 ## 💰 Investment Required
 
-| Phase | Amount | Purpose |
-|-------|--------|---------|
-| **Research** | $5K-10K | User validation (parents, children, experts) |
-| **Legal** | $10K-20K | Privacy lawyer, COPPA/GDPR compliance |
-| **Infrastructure** | $2K-5K | Backend hosting, monitoring |
-| **Beta** | $3K-5K | Family recruitment, support |
-| **TOTAL** | **$20K-40K** | **90-day runway to beta** |
+| Phase              | Amount       | Purpose                                      |
+| ------------------ | ------------ | -------------------------------------------- |
+| **Research**       | $5K-10K      | User validation (parents, children, experts) |
+| **Legal**          | $10K-20K     | Privacy lawyer, COPPA/GDPR compliance        |
+| **Infrastructure** | $2K-5K       | Backend hosting, monitoring                  |
+| **Beta**           | $3K-5K       | Family recruitment, support                  |
+| **TOTAL**          | **$20K-40K** | **90-day runway to beta**                    |
 
 ---
 
 ## 📈 Success Metrics
 
-| Week 4 | Week 8 | Week 12 |
-|--------|--------|---------|
-| ✅ 50+ interviews | ✅ Backend live | ✅ 100+ families |
-| ✅ Compliance docs | ✅ Voice guidance | ✅ 99%+ uptime |
+| Week 4                 | Week 8                 | Week 12             |
+| ---------------------- | ---------------------- | ------------------- |
+| ✅ 50+ interviews      | ✅ Backend live        | ✅ 100+ families    |
+| ✅ Compliance docs     | ✅ Voice guidance      | ✅ 99%+ uptime      |
 | ✅ Strategic materials | ✅ Educational content | ✅ <0.1% crash rate |
 
 ---
@@ -139,15 +139,15 @@ docs/
 
 ## 🏆 Competitive Advantages
 
-| KidMap | Competitors |
-|--------|-------------|
-| ✅ **Teaches independence** | ❌ Just tracks location |
-| ✅ **Privacy-first (local storage)** | ❌ Cloud-dependent |
-| ✅ **Child-designed UX** | ❌ Parent-centric only |
-| ✅ **Educational content** | ❌ No learning features |
-| ✅ **12+ cities** | ❌ Limited regions |
-| ✅ **Gamification** | ❌ No engagement |
-| ✅ **Offline-first** | ❌ Requires connectivity |
+| KidMap                               | Competitors              |
+| ------------------------------------ | ------------------------ |
+| ✅ **Teaches independence**          | ❌ Just tracks location  |
+| ✅ **Privacy-first (local storage)** | ❌ Cloud-dependent       |
+| ✅ **Child-designed UX**             | ❌ Parent-centric only   |
+| ✅ **Educational content**           | ❌ No learning features  |
+| ✅ **12+ cities**                    | ❌ Limited regions       |
+| ✅ **Gamification**                  | ❌ No engagement         |
+| ✅ **Offline-first**                 | ❌ Requires connectivity |
 
 **Positioning:** "The app that teaches kids to navigate safely while giving parents peace of mind."
 
@@ -155,12 +155,12 @@ docs/
 
 ## 🚦 Risk Assessment
 
-| Risk | Probability | Mitigation |
-|------|-------------|------------|
-| Research shows poor fit | 🟢 Low | Diverse participants, existing features strong |
-| Compliance issues | 🟡 Medium | Early lawyer, privacy-by-design architecture |
-| Backend delays | 🟡 Medium | Experienced engineer, reduce scope if needed |
-| Recruitment shortfall | 🟡 Medium | Partnership pipeline, incentives, early start |
+| Risk                    | Probability | Mitigation                                     |
+| ----------------------- | ----------- | ---------------------------------------------- |
+| Research shows poor fit | 🟢 Low      | Diverse participants, existing features strong |
+| Compliance issues       | 🟡 Medium   | Early lawyer, privacy-by-design architecture   |
+| Backend delays          | 🟡 Medium   | Experienced engineer, reduce scope if needed   |
+| Recruitment shortfall   | 🟡 Medium   | Partnership pipeline, incentives, early start  |
 
 ---
 
@@ -172,5 +172,5 @@ The gap is **validation & documentation**, not **product development**.
 
 ---
 
-*For details, see full documentation suite in `docs/` folder*  
-*Questions? Start with `EXECUTIVE_SUMMARY.md` or `INDEX.md`*
+_For details, see full documentation suite in `docs/` folder_  
+_Questions? Start with `EXECUTIVE_SUMMARY.md` or `INDEX.md`_

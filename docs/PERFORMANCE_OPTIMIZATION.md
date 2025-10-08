@@ -50,7 +50,7 @@ useEffect(() => {
 // OptimizedImage component with lazy loading
 const OptimizedImage = ({ uri, width, height, ...props }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  
+
   return (
     <View style={{ width, height }}>
       {!isLoaded && <LoadingPlaceholder />}
@@ -122,17 +122,14 @@ const HeavyComponent = lazy(() => import('./HeavyComponent'));
 // Using @nkzw/create-context-hook for optimized context
 export const [PlacesContext, usePlaces] = createContextHook(() => {
   const [places, setPlaces] = useState<Place[]>([]);
-  
+
   // Memoized selectors
-  const nearbyPlaces = useMemo(() => 
-    places.filter(place => place.distance < 1000),
-    [places]
-  );
-  
+  const nearbyPlaces = useMemo(() => places.filter((place) => place.distance < 1000), [places]);
+
   const addPlace = useCallback((place: Place) => {
-    setPlaces(prev => [...prev, place]);
+    setPlaces((prev) => [...prev, place]);
   }, []);
-  
+
   return { places, nearbyPlaces, addPlace };
 });
 ```
@@ -161,10 +158,10 @@ const usePlacesQuery = (location: Location) => {
 // Optimized location tracking
 const useOptimizedLocation = () => {
   const [location, setLocation] = useState<Location | null>(null);
-  
+
   useEffect(() => {
     let subscription: Location.LocationSubscription;
-    
+
     const startTracking = async () => {
       subscription = await Location.watchPositionAsync(
         {
@@ -172,14 +169,14 @@ const useOptimizedLocation = () => {
           timeInterval: 30000, // 30 seconds minimum
           distanceInterval: 50, // 50 meters minimum
         },
-        setLocation
+        setLocation,
       );
     };
-    
+
     startTracking();
     return () => subscription?.remove();
   }, []);
-  
+
   return location;
 };
 ```
@@ -191,9 +188,9 @@ const useOptimizedLocation = () => {
 const useSafeZoneMonitor = () => {
   const debouncedCheckSafeZones = useMemo(
     () => debounce(checkSafeZones, 1000), // 1 second debounce
-    []
+    [],
   );
-  
+
   useEffect(() => {
     if (location) {
       debouncedCheckSafeZones(location);
@@ -356,9 +353,9 @@ export const trackPerformance = (operation: string, fn: () => Promise<any>) => {
 describe('PlacesList Performance', () => {
   it('should render 1000 items in under 100ms', async () => {
     const startTime = performance.now();
-    
+
     render(<PlacesList places={generateMockPlaces(1000)} />);
-    
+
     const renderTime = performance.now() - startTime;
     expect(renderTime).toBeLessThan(100);
   });

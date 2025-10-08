@@ -172,7 +172,9 @@ export class TransitDataUpdater {
             if (typeof fetch === 'undefined') {
               throw new Error('fetch is not available in this environment');
             }
-            const headers: Record<string, string> | undefined = resolvedKey ? { [keyHeader]: resolvedKey } : undefined;
+            const headers: Record<string, string> | undefined = resolvedKey
+              ? { [keyHeader]: resolvedKey }
+              : undefined;
 
             const res = await fetch(system.feedUrl, { headers });
 

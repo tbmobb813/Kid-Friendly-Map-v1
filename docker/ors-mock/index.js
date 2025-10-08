@@ -23,12 +23,15 @@ app.post(['/ors/v2/directions/:profile', '/ors/v2/directions/:profile/'], (req, 
   if (Array.isArray(coordinates) && coordinates.length >= 2) {
     geometry = {
       type: 'LineString',
-      coordinates: coordinates
+      coordinates: coordinates,
     };
   } else {
     geometry = {
       type: 'LineString',
-      coordinates: [[0, 0], [0.001, 0.001]]
+      coordinates: [
+        [0, 0],
+        [0.001, 0.001],
+      ],
     };
   }
 
@@ -39,17 +42,17 @@ app.post(['/ors/v2/directions/:profile', '/ors/v2/directions/:profile/'], (req, 
         {
           distance: 1000,
           duration: 600,
-          steps: []
-        }
-      ]
+          steps: [],
+        },
+      ],
     },
-    geometry
+    geometry,
   };
 
   res.json({
     type: 'FeatureCollection',
     features: [feature],
-    info: { query: { profile } }
+    info: { query: { profile } },
   });
 });
 
