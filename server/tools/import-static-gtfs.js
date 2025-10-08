@@ -44,6 +44,7 @@ const routes = readCsv('routes.txt');
 const trips = readCsv('trips.txt');
 const stops = readCsv('stops.txt');
 const stop_times = readCsv('stop_times.txt');
+const shapes = readCsv('shapes.txt');
 
 // Index by id for quick lookups
 const routesById = {};
@@ -67,10 +68,22 @@ for (const k of Object.keys(stopTimesByTrip)) {
   stopTimesByTrip[k].sort((a, b) => (parseInt(a.stop_sequence || '0', 10) - parseInt(b.stop_sequence || '0', 10)));
 }
 
+// Shapes: grouped list of lat/lon points per shape_id sorted by sequence
+const shapePointsByShape = {};
+for (const sh of shapes) {
+  const sid = sh.shape_id;
+  if (!sid) continue;
+  if (!shapePointsByShape[sid]) shapePointsByShape[sid] = [];
+  shapePointsByShape[sid].push(sh);
+}
+for (const sid of Object.keys(shapePointsByShape)) {
+  shapePointsByShape[sid].sort((a,b)=> (parseInt(a.shape_pt_sequence||'0',10) - parseInt(b.shape_pt_sequence||'0',10)));
+}
 fs.writeFileSync(path.join(outDir, 'routes.json'), JSON.stringify(routesById));
 fs.writeFileSync(path.join(outDir, 'trips.json'), JSON.stringify(tripsById));
 fs.writeFileSync(path.join(outDir, 'stops.json'), JSON.stringify(stopsById));
 fs.writeFileSync(path.join(outDir, 'stop_times_by_trip.json'), JSON.stringify(stopTimesByTrip));
+fs.writeFileSync(path.join(outDir, 'shape_points_by_shape.json'), JSON.stringify(shapePointsByShape));
 
 console.log('GTFS import complete to', outDir);
 

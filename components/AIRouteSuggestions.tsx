@@ -23,9 +23,8 @@ export default function AIRouteSuggestions({
   const [routes, setRoutes] = useState<SmartRoute[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
-  const [preferences, setPreferences] = useState<RoutePreferences>(
-    aiRouteEngine['userPreferences'],
-  );
+  // Use the new public getter instead of touching private field
+  const [preferences, setPreferences] = useState<RoutePreferences>(aiRouteEngine.preferences);
 
   useEffect(() => {
     if (origin && destination) {

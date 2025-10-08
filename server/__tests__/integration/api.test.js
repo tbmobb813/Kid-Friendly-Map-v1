@@ -10,10 +10,7 @@ describe('Transit Adapter API', () => {
       server = startServer();
     });
 
-    afterAll(done => {
-      if (server) server.close(done);
-      else done();
-    });
+    afterAll(() => { if (server) server.close(); });
 
     it('GET /feeds/:region/:system.json should return routes array (mock)', async () => {
     const res = await request(app).get('/feeds/nyc/mta-subway.json?mock=1');

@@ -26,4 +26,14 @@ async function getNextStopsForTrip(tripId, count = 3) {
   return rows;
 }
 
-module.exports = { getTrip, getNextStopsForTrip, pool };
+async function getPolylineForShape(shapeId) {
+  const { rows } = await pool.query(
+    `SELECT shape_pt_lat, shape_pt_lon FROM shapes
+     WHERE shape_id = $1
+     ORDER BY shape_pt_sequence`,
+    [shapeId]
+  );
+  return rows.map(r => [Number(r.shape_pt_lat), Number(r.shape_pt_lon)]);
+}
+
+module.exports = { getTrip, getNextStopsForTrip, getPolylineForShape, pool };

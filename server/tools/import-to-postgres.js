@@ -55,6 +55,27 @@ async function copyFromJson(file, table, columns) {
   await copyFromJson('routes.json', 'routes', ['route_id', 'route_short_name', 'route_long_name', 'route_type']);
   await copyFromJson('trips.json', 'trips', ['trip_id', 'route_id', 'service_id', 'trip_headsign']);
   await copyFromJson('stops.json', 'stops', ['stop_id', 'stop_name', 'stop_lat', 'stop_lon']);
+  // Shapes: shape_points_by_shape.json is shape_id -> array of points; we insert incrementally (no staging swap due to volume & primary key uniqueness)
+  const shapesFile = path.join(dataDir, 'shape_points_by_shape.json');
+  if (fs.existsSync(shapesFile)) {
+    const shapeMap = JSON.parse(fs.readFileSync(shapesFile, 'utf8'));
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      for (const [shapeId, pts] of Object.entries(shapeMap)) {
+        for (const p of pts) {
+          await client.query(
+            'INSERT INTO shapes(shape_id, shape_pt_lat, shape_pt_lon, shape_pt_sequence) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',
+            [shapeId, Number(p.shape_pt_lat), Number(p.shape_pt_lon), parseInt(p.shape_pt_sequence || '0', 10)]
+          );
+        }
+      }
+      await client.query('COMMIT');
+      console.log('Imported shapes into shapes table');
+    } finally {
+      client.release();
+    }
+  }
   // stop_times_by_trip.json is a map from trip->array of stop times
   const stFile = path.join(dataDir, 'stop_times_by_trip.json');
   if (fs.existsSync(stFile)) {

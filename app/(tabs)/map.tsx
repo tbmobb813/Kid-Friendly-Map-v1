@@ -91,16 +91,11 @@ export default function MapScreen() {
       selectUnifiedRoute(matchingUnifiedRoute);
     }
 
-    router.push(`/(tabs)/transit` as any);
-  };
-
-  const handleAdvancedRouteSelect = (unifiedRoute: any) => {
-    selectUnifiedRoute(unifiedRoute);
-    router.push(`/(tabs)/transit` as any);
+    router.push('/(tabs)/transit');
   };
 
   const handleSearchPress = () => {
-    router.push('/(tabs)/search' as any);
+    router.push('/(tabs)/search');
   };
 
   const handlePreferencesPress = () => {

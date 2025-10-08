@@ -103,6 +103,16 @@ export class AIRouteEngine {
   }
 
   /**
+   * Public readonly accessor for current user preferences so that
+   * components can safely read them without reaching into a private field.
+   * (Previously tests/components were accessing a private property directly
+   * which causes a TS2341 error.)
+   */
+  get preferences(): RoutePreferences {
+    return this.userPreferences;
+  }
+
+  /**
    * Generate smart route suggestions using AI logic
    */
   async generateSmartRoutes(
