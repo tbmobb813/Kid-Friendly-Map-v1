@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -180,12 +180,10 @@
 <a name='L115'></a><a href='#L115'>115</a>
 <a name='L116'></a><a href='#L116'>116</a>
 <a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a>
-<a name='L120'></a><a href='#L120'>120</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,8 +250,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -300,11 +296,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-<span class="cstat-no" title="statement not covered" >import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";</span>
-<span class="cstat-no" title="statement not covered" >import Colors from "@/constants/colors";</span>
-<span class="cstat-no" title="statement not covered" >import { getAccessibilityLabel, getAccessibilityHint } from "@/utils/accessibility";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import Colors from '@/constants/colors';
+import { getAccessibilityLabel, getAccessibilityHint } from '@/utils/accessibility';
 &nbsp;
 type AccessibleButtonProps = {
   title: string;
@@ -314,7 +310,7 @@ type AccessibleButtonProps = {
   disabled?: boolean;
   accessibilityLabel?: string;
   accessibilityHint?: string;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: 'primary' | 'secondary' | 'outline';
 };
 &nbsp;
 const AccessibleButton: React.FC&lt;AccessibleButtonProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
@@ -325,26 +321,26 @@ const AccessibleButton: React.FC&lt;AccessibleButtonProps&gt; = <span class="cst
   disabled = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
   accessibilityLabel,
   accessibilityHint,
-  variant = <span class="branch-0 cbranch-no" title="branch not covered" >"primary",</span>
+  variant = <span class="branch-0 cbranch-no" title="branch not covered" >'primary',</span>
 }) =&gt; {
-  const getButtonStyle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+  const getButtonStyle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (variant) {</span>
-      case "primary":
+      case 'primary':
 <span class="cstat-no" title="statement not covered" >        return styles.primaryButton;</span>
-      case "secondary":
+      case 'secondary':
 <span class="cstat-no" title="statement not covered" >        return styles.secondaryButton;</span>
-      case "outline":
+      case 'outline':
 <span class="cstat-no" title="statement not covered" >        return styles.outlineButton;</span>
     }
   };
 &nbsp;
-  const getTextStyle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+  const getTextStyle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (variant) {</span>
-      case "primary":
+      case 'primary':
 <span class="cstat-no" title="statement not covered" >        return styles.primaryText;</span>
-      case "secondary":
+      case 'secondary':
 <span class="cstat-no" title="statement not covered" >        return styles.secondaryText;</span>
-      case "outline":
+      case 'outline':
 <span class="cstat-no" title="statement not covered" >        return styles.outlineText;</span>
     }
   };
@@ -363,12 +359,10 @@ const AccessibleButton: React.FC&lt;AccessibleButtonProps&gt; = <span class="cst
       accessible={true}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel || getAccessibilityLabel(title)}
-      accessibilityHint={accessibilityHint || getAccessibilityHint("activate")}
+      accessibilityHint={accessibilityHint || getAccessibilityHint('activate')}
       accessibilityState={{ disabled }}
     &gt;
-      &lt;Text style={[getTextStyle(), disabled &amp;&amp; styles.disabledText, textStyle]}&gt;
-        {title}
-      &lt;/Text&gt;
+      &lt;Text style={[getTextStyle(), disabled &amp;&amp; styles.disabledText, textStyle]}&gt;{title}&lt;/Text&gt;
     &lt;/Pressable&gt;
   );
 };
@@ -378,8 +372,8 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 44, // Minimum touch target size
   },
   primaryButton: {
@@ -389,7 +383,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     backgroundColor: Colors.secondary,
   },
   outlineButton: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderWidth: 2,
     borderColor: Colors.primary,
   },
@@ -400,26 +394,26 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     opacity: 0.5,
   },
   primaryText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   secondaryText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   outlineText: {
     color: Colors.primary,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   disabledText: {
     color: Colors.textLight,
   },
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default AccessibleButton;</span>
+export default AccessibleButton;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -427,7 +421,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

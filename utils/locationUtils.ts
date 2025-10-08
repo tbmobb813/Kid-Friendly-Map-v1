@@ -6,12 +6,7 @@
  * @param lon2 Longitude of second point
  * @returns Distance in meters
  */
-export function calculateDistance(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number {
+export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371e3; // Earth's radius in meters
   const φ1 = (lat1 * Math.PI) / 180;
   const φ2 = (lat2 * Math.PI) / 180;
@@ -40,13 +35,13 @@ export function verifyLocationProximity(
   currentLon: number,
   targetLat: number,
   targetLon: number,
-  radiusMeters: number = 100
+  radiusMeters: number = 100,
 ): { isWithinRadius: boolean; distance: number } {
   const distance = calculateDistance(currentLat, currentLon, targetLat, targetLon);
-  
+
   return {
     isWithinRadius: distance <= radiusMeters,
-    distance: Math.round(distance)
+    distance: Math.round(distance),
   };
 }
 
@@ -70,14 +65,14 @@ export function formatDistance(meters: number): string {
  */
 export function getLocationAccuracyDescription(distance: number): string {
   if (distance <= 50) {
-    return "Very close";
+    return 'Very close';
   } else if (distance <= 100) {
-    return "Close";
+    return 'Close';
   } else if (distance <= 200) {
-    return "Nearby";
+    return 'Nearby';
   } else if (distance <= 500) {
-    return "In the area";
+    return 'In the area';
   } else {
-    return "Far away";
+    return 'Far away';
   }
 }

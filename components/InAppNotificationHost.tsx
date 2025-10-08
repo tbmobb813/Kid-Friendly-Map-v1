@@ -19,7 +19,8 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
       {
         id: 'weather-1',
         title: 'Weather Alert',
-        message: 'Rain expected in 30 minutes. Consider taking an umbrella or finding covered routes.',
+        message:
+          'Rain expected in 30 minutes. Consider taking an umbrella or finding covered routes.',
         type: 'weather',
         actionText: 'View Covered Routes',
         priority: 'normal',
@@ -27,7 +28,7 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
       {
         id: 'safety-1',
         title: 'Safety Reminder',
-        message: 'You\'re approaching a busy intersection. Stay alert and follow traffic signals.',
+        message: "You're approaching a busy intersection. Stay alert and follow traffic signals.",
         type: 'safety',
         actionText: 'Got it',
         priority: 'high',
@@ -35,7 +36,7 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
       {
         id: 'achievement-1',
         title: 'Achievement Unlocked!',
-        message: 'Congratulations! You\'ve completed 10 safe journeys this week.',
+        message: "Congratulations! You've completed 10 safe journeys this week.",
         type: 'achievement',
         actionText: 'View Achievements',
         priority: 'normal',
@@ -43,14 +44,14 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
       {
         id: 'reminder-1',
         title: 'Journey Reminder',
-        message: 'Don\'t forget your appointment at 3 PM. Leave in 15 minutes for on-time arrival.',
+        message: "Don't forget your appointment at 3 PM. Leave in 15 minutes for on-time arrival.",
         type: 'reminder',
         actionText: 'Schedule Notification',
         scheduledFor: new Date(Date.now() + 15 * 60 * 1000), // 15 minutes from now
         priority: 'normal',
       },
     ];
-    
+
     const timer = setTimeout(() => {
       setNotifications(sampleNotifications);
     }, 2000); // Show after 2 seconds
@@ -68,7 +69,7 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
         type: banner.type,
         priority: 'normal',
       };
-      setNotifications(prev => [notification, ...prev].slice(0, 3));
+      setNotifications((prev) => [notification, ...prev].slice(0, 3));
     });
     return unsub;
   }, []);
@@ -77,9 +78,9 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
   useEffect(() => {
     if (Platform.OS === 'web') return;
 
-    const subscription = Notifications.addNotificationReceivedListener(notification => {
+    const subscription = Notifications.addNotificationReceivedListener((notification) => {
       const { title, body, data } = notification.request.content;
-      
+
       const newNotification: NotificationData = {
         id: notification.request.identifier,
         title: title || 'Notification',
@@ -90,7 +91,7 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
         priority: (data?.priority as 'low' | 'normal' | 'high') || 'normal',
       };
 
-      setNotifications(prev => [newNotification, ...prev].slice(0, 3));
+      setNotifications((prev) => [newNotification, ...prev].slice(0, 3));
     });
 
     return () => subscription.remove();
@@ -101,55 +102,62 @@ const InAppNotificationHost: React.FC<InAppNotificationHostProps> = ({ testId })
     if (notifications.length === 0) return;
 
     const timer = setTimeout(() => {
-      setNotifications(prev => prev.slice(0, -1)); // Remove oldest notification
+      setNotifications((prev) => prev.slice(0, -1)); // Remove oldest notification
     }, 10000);
 
     return () => clearTimeout(timer);
   }, [notifications]);
 
   const handleDismiss = useCallback((id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
-  const handleAction = useCallback((notification: NotificationData) => {
-    console.log('Notification action:', notification);
-    // Handle different notification actions here
-    switch (notification.type) {
-      case 'weather':
-        // Navigate to weather or covered routes
-        break;
-      case 'safety':
-        // Acknowledge safety alert
-        handleDismiss(notification.id);
-        break;
-      case 'achievement':
-        // Navigate to achievements screen
-        break;
-      case 'reminder':
-        // Handle reminder action
-        break;
-    }
-  }, [handleDismiss]);
+  const handleAction = useCallback(
+    (notification: NotificationData) => {
+      console.log('Notification action:', notification);
+      // Handle different notification actions here
+      switch (notification.type) {
+        case 'weather':
+          // Navigate to weather or covered routes
+          break;
+        case 'safety':
+          // Acknowledge safety alert
+          handleDismiss(notification.id);
+          break;
+        case 'achievement':
+          // Navigate to achievements screen
+          break;
+        case 'reminder':
+          // Handle reminder action
+          break;
+      }
+    },
+    [handleDismiss],
+  );
 
   if (notifications.length === 0) {
     return null;
   }
 
   return (
-    <View 
-      style={[styles.container, { paddingTop: insets.top }]} 
+    <View
+      style={[styles.container, { paddingTop: insets.top }]}
       testID={testId ?? 'notification-host'}
       pointerEvents="box-none"
     >
-      {notifications.slice(0, 3).map((notification) => ( // Show max 3 notifications
-        <SmartNotification
-          key={notification.id}
-          notification={notification}
-          onDismiss={handleDismiss}
-          onAction={handleAction}
-          isInApp={true}
-        />
-      ))}
+      {notifications.slice(0, 3).map(
+        (
+          notification, // Show max 3 notifications
+        ) => (
+          <SmartNotification
+            key={notification.id}
+            notification={notification}
+            onDismiss={handleDismiss}
+            onAction={handleAction}
+            isInApp={true}
+          />
+        ),
+      )}
     </View>
   );
 };

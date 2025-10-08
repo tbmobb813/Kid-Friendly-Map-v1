@@ -55,14 +55,14 @@ function buildRecommendation(condition: string, tempF: number): string {
   if (condition === 'rainy') return 'Bring a raincoat or umbrella.';
   if (condition === 'snowy') return 'Wear warm layers and watch your step.';
   if (tempF >= 90) return 'Stay hydrated and seek shade when possible.';
-  if (tempF <= 32) return 'Bundle up, it\'s quite cold outside.';
+  if (tempF <= 32) return "Bundle up, it's quite cold outside.";
   return 'Great time to head out!';
 }
 
 export async function fetchWeather(
   lat: number,
   lon: number,
-  units: WeatherUnits
+  units: WeatherUnits,
 ): Promise<NormalizedWeather> {
   const isMetric = units === 'metric';
   const temperature_unit = isMetric ? 'celsius' : 'fahrenheit';

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -144,16 +144,12 @@
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
 <a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -167,10 +163,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,15 +224,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState } from "react";</span>
-<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, Modal } from "react-native";</span>
-<span class="cstat-no" title="statement not covered" >import Colors from "@/constants/colors";</span>
-<span class="cstat-no" title="statement not covered" >import { useRegionStore } from "@/stores/regionStore";</span>
-<span class="cstat-no" title="statement not covered" >import RegionSelector from "./RegionSelector";</span>
-<span class="cstat-no" title="statement not covered" >import { Globe, X } from "lucide-react-native";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Modal } from 'react-native';
+import Colors from '@/constants/colors';
+import { useRegionStore } from '@/stores/regionStore';
+import RegionSelector from './RegionSelector';
+import { Globe, X } from 'lucide-react-native';
 &nbsp;
-const RegionSwitcher: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+const RegionSwitcher: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
   const [showModal, setShowModal] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const { currentRegion, availableRegions, userPreferences, setRegion } = <span class="cstat-no" title="statement not covered" >useRegionStore();</span>
 &nbsp;
@@ -251,24 +243,20 @@ const RegionSwitcher: React.FC = <span class="cstat-no" title="statement not cov
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
-      &lt;Pressable style={styles.trigger} onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowModal(true)}</span>&gt;
+      &lt;Pressable style={styles.trigger} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowModal(true)}</span>&gt;
         &lt;Globe size={20} color={Colors.primary} /&gt;
         &lt;Text style={styles.triggerText}&gt;{currentRegion.name}&lt;/Text&gt;
       &lt;/Pressable&gt;
 &nbsp;
-      &lt;Modal
-        visible={showModal}
-        animationType="slide"
-        presentationStyle="pageSheet"
-      &gt;
+      &lt;Modal visible={showModal} animationType="slide" presentationStyle="pageSheet"&gt;
         &lt;View style={styles.modalContainer}&gt;
           &lt;View style={styles.modalHeader}&gt;
             &lt;Text style={styles.modalTitle}&gt;Switch Region&lt;/Text&gt;
-            &lt;Pressable style={styles.closeButton} onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowModal(false)}</span>&gt;
+            &lt;Pressable style={styles.closeButton} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowModal(false)}</span>&gt;
               &lt;X size={24} color={Colors.text} /&gt;
             &lt;/Pressable&gt;
           &lt;/View&gt;
-          
+&nbsp;
           &lt;RegionSelector
             regions={availableRegions}
             selectedRegion={userPreferences.selectedRegion}
@@ -282,8 +270,8 @@ const RegionSwitcher: React.FC = <span class="cstat-no" title="statement not cov
 &nbsp;
 const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.create({</span>
   trigger: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 8,
     paddingVertical: 8,
@@ -292,7 +280,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
   triggerText: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Colors.text,
   },
   modalContainer: {
@@ -300,16 +288,16 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     backgroundColor: Colors.background,
   },
   modalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
   },
   closeButton: {
@@ -317,7 +305,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default RegionSwitcher;</span>
+export default RegionSwitcher;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -325,7 +313,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -18,19 +18,21 @@ export const SafeZoneActivityLog: React.FC = () => {
     } else if (diffInHours < 24) {
       return `${Math.floor(diffInHours)}h ago`;
     } else {
-      return date.toLocaleDateString([], { 
-        month: 'short', 
+      return date.toLocaleDateString([], {
+        month: 'short',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       });
     }
   };
 
   const getActivityIcon = (type: 'entry' | 'exit') => {
-    return type === 'entry' 
-      ? <ArrowRight size={16} color="#10B981" />
-      : <ArrowLeft size={16} color="#EF4444" />;
+    return type === 'entry' ? (
+      <ArrowRight size={16} color="#10B981" />
+    ) : (
+      <ArrowLeft size={16} color="#EF4444" />
+    );
   };
 
   const getActivityColor = (type: 'entry' | 'exit') => {
@@ -47,9 +49,7 @@ export const SafeZoneActivityLog: React.FC = () => {
         <View style={styles.emptyState}>
           <Clock size={48} color="#D1D5DB" />
           <Text style={styles.emptyText}>No recent activity</Text>
-          <Text style={styles.emptySubtext}>
-            Safe zone entries and exits will appear here
-          </Text>
+          <Text style={styles.emptySubtext}>Safe zone entries and exits will appear here</Text>
         </View>
       </View>
     );
@@ -66,42 +66,31 @@ export const SafeZoneActivityLog: React.FC = () => {
       <ScrollView style={styles.activityList} showsVerticalScrollIndicator={false}>
         {safeZoneActivity.map((activity, index) => (
           <View key={activity.id} style={styles.activityItem}>
-            <View style={styles.activityIcon}>
-              {getActivityIcon(activity.type)}
-            </View>
-            
+            <View style={styles.activityIcon}>{getActivityIcon(activity.type)}</View>
+
             <View style={styles.activityContent}>
               <View style={styles.activityHeader}>
                 <Text style={styles.activityType}>
                   {activity.type === 'entry' ? 'Entered' : 'Left'}
                 </Text>
-                <Text style={styles.activityTime}>
-                  {formatTime(activity.timestamp)}
-                </Text>
+                <Text style={styles.activityTime}>{formatTime(activity.timestamp)}</Text>
               </View>
-              
-              <Text style={styles.safeZoneName}>
-                {activity.safeZoneName}
-              </Text>
+
+              <Text style={styles.safeZoneName}>{activity.safeZoneName}</Text>
             </View>
 
-            <View style={[
-              styles.statusDot,
-              { backgroundColor: getActivityColor(activity.type) }
-            ]} />
+            <View
+              style={[styles.statusDot, { backgroundColor: getActivityColor(activity.type) }]}
+            />
 
-            {index < safeZoneActivity.length - 1 && (
-              <View style={styles.connector} />
-            )}
+            {index < safeZoneActivity.length - 1 && <View style={styles.connector} />}
           </View>
         ))}
       </ScrollView>
 
       {safeZoneActivity.length >= 10 && (
         <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Showing last {safeZoneActivity.length} activities
-          </Text>
+          <Text style={styles.footerText}>Showing last {safeZoneActivity.length} activities</Text>
         </View>
       )}
     </View>

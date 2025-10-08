@@ -1,0 +1,9 @@
+{
+  "nyc": {
+    "mta-subway": {
+      "url": "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",
+      "apiKeyEnv": "MTA_API_KEY",
+      "apiKeyHeader": "x-api-key"
+    }
+  }
+}

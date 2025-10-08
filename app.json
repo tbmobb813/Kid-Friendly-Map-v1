@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+  "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
@@ -45,7 +45,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.kid-friendly-map-transit-navigator",
+  "package": "app.rork.kid_friendly_map_transit_navigator",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
@@ -64,6 +64,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "expo-dev-client",
       [
         "expo-router",
         {
@@ -110,10 +111,38 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": false
+    },
+    "extra": {
+      "monitoring": {
+        "enabled": true,
+        "sentryDsn": "",
+        "environment": "development",
+        "tracesSampleRate": 0.2,
+        "autoSessionTracking": true,
+        "profileSampleRate": 0
+      },
+      "analytics": {
+        "enabled": false,
+        "batchSize": 10,
+        "flushInterval": 30000,
+        "plausible": {
+          "enabled": false,
+          "endpoint": "",
+          "siteId": "",
+          "sharedKey": "",
+          "defaultUrl": "https://app.kidfriendlymap.example",
+          "source": "kid-map-app"
+        },
+        "privacy": {
+          "defaultOptIn": false
+        }
+      }
     }
   }
 }

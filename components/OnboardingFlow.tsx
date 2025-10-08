@@ -1,37 +1,32 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import Colors from "@/constants/colors";
-import RegionSelector from "./RegionSelector";
-import { useRegionStore } from "@/stores/regionStore";
-import { MapPin, Settings, Shield, CheckCircle } from "lucide-react-native";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import Colors from '@/constants/colors';
+import RegionSelector from './RegionSelector';
+import { useRegionStore } from '@/stores/regionStore';
+import { MapPin, Settings, Shield, CheckCircle } from 'lucide-react-native';
 
-type OnboardingStep = "welcome" | "region" | "preferences" | "safety" | "complete";
+type OnboardingStep = 'welcome' | 'region' | 'preferences' | 'safety' | 'complete';
 
 type OnboardingFlowProps = {
   onComplete: () => void;
 };
 
 const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
-  const [currentStep, setCurrentStep] = useState<OnboardingStep>("welcome");
-  const {
-    availableRegions,
-    userPreferences,
-    setRegion,
-    updatePreferences,
-    completeOnboarding,
-  } = useRegionStore();
+  const [currentStep, setCurrentStep] = useState<OnboardingStep>('welcome');
+  const { availableRegions, userPreferences, setRegion, updatePreferences, completeOnboarding } =
+    useRegionStore();
 
   const handleRegionSelect = (regionId: string) => {
     setRegion(regionId);
-    setCurrentStep("preferences");
+    setCurrentStep('preferences');
   };
 
   const handlePreferencesComplete = () => {
-    setCurrentStep("safety");
+    setCurrentStep('safety');
   };
 
   const handleSafetyComplete = () => {
-    setCurrentStep("complete");
+    setCurrentStep('complete');
   };
 
   const handleComplete = () => {
@@ -46,10 +41,10 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
       </View>
       <Text style={styles.stepTitle}>Welcome to KidMap!</Text>
       <Text style={styles.stepDescription}>
-        KidMap helps kids navigate public transportation safely and confidently. 
-        Let's set up your app for your city and preferences.
+        KidMap helps kids navigate public transportation safely and confidently. Let's set up your
+        app for your city and preferences.
       </Text>
-      <Pressable style={styles.primaryButton} onPress={() => setCurrentStep("region")}>
+      <Pressable style={styles.primaryButton} onPress={() => setCurrentStep('region')}>
         <Text style={styles.buttonText}>Get Started</Text>
       </Pressable>
     </View>
@@ -64,7 +59,10 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
   );
 
   const renderPreferences = () => (
-    <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContentContainer}>
+    <ScrollView
+      style={styles.scrollContainer}
+      contentContainerStyle={styles.scrollContentContainer}
+    >
       <View style={styles.iconContainer}>
         <Settings size={48} color={Colors.primary} />
       </View>
@@ -79,28 +77,32 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
           <Pressable
             style={[
               styles.optionButton,
-              userPreferences.preferredUnits === "imperial" && styles.selectedOption
+              userPreferences.preferredUnits === 'imperial' && styles.selectedOption,
             ]}
-            onPress={() => updatePreferences({ preferredUnits: "imperial" })}
+            onPress={() => updatePreferences({ preferredUnits: 'imperial' })}
           >
-            <Text style={[
-              styles.optionText,
-              userPreferences.preferredUnits === "imperial" && styles.selectedOptionText
-            ]}>
+            <Text
+              style={[
+                styles.optionText,
+                userPreferences.preferredUnits === 'imperial' && styles.selectedOptionText,
+              ]}
+            >
               Imperial (miles, °F)
             </Text>
           </Pressable>
           <Pressable
             style={[
               styles.optionButton,
-              userPreferences.preferredUnits === "metric" && styles.selectedOption
+              userPreferences.preferredUnits === 'metric' && styles.selectedOption,
             ]}
-            onPress={() => updatePreferences({ preferredUnits: "metric" })}
+            onPress={() => updatePreferences({ preferredUnits: 'metric' })}
           >
-            <Text style={[
-              styles.optionText,
-              userPreferences.preferredUnits === "metric" && styles.selectedOptionText
-            ]}>
+            <Text
+              style={[
+                styles.optionText,
+                userPreferences.preferredUnits === 'metric' && styles.selectedOptionText,
+              ]}
+            >
               Metric (km, °C)
             </Text>
           </Pressable>
@@ -110,18 +112,15 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
       <View style={styles.preferenceSection}>
         <Text style={styles.sectionTitle}>Accessibility</Text>
         <Pressable
-          style={[
-            styles.toggleOption,
-            userPreferences.accessibilityMode && styles.selectedToggle
-          ]}
-          onPress={() => updatePreferences({ 
-            accessibilityMode: !userPreferences.accessibilityMode 
-          })}
+          style={[styles.toggleOption, userPreferences.accessibilityMode && styles.selectedToggle]}
+          onPress={() =>
+            updatePreferences({
+              accessibilityMode: !userPreferences.accessibilityMode,
+            })
+          }
         >
           <Text style={styles.toggleText}>Enable accessibility features</Text>
-          {userPreferences.accessibilityMode && (
-            <CheckCircle size={20} color={Colors.success} />
-          )}
+          {userPreferences.accessibilityMode && <CheckCircle size={20} color={Colors.success} />}
         </Pressable>
       </View>
 
@@ -132,7 +131,10 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
   );
 
   const renderSafety = () => (
-    <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContentContainer}>
+    <ScrollView
+      style={styles.scrollContainer}
+      contentContainerStyle={styles.scrollContentContainer}
+    >
       <View style={styles.iconContainer}>
         <Shield size={48} color={Colors.primary} />
       </View>
@@ -158,18 +160,15 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
 
       <View style={styles.preferenceSection}>
         <Pressable
-          style={[
-            styles.toggleOption,
-            userPreferences.parentalControls && styles.selectedToggle
-          ]}
-          onPress={() => updatePreferences({ 
-            parentalControls: !userPreferences.parentalControls 
-          })}
+          style={[styles.toggleOption, userPreferences.parentalControls && styles.selectedToggle]}
+          onPress={() =>
+            updatePreferences({
+              parentalControls: !userPreferences.parentalControls,
+            })
+          }
         >
           <Text style={styles.toggleText}>Enable parental controls</Text>
-          {userPreferences.parentalControls && (
-            <CheckCircle size={20} color={Colors.success} />
-          )}
+          {userPreferences.parentalControls && <CheckCircle size={20} color={Colors.success} />}
         </Pressable>
       </View>
 
@@ -186,8 +185,7 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
       </View>
       <Text style={styles.stepTitle}>You're All Set!</Text>
       <Text style={styles.stepDescription}>
-        KidMap is now configured for your region and preferences. 
-        Start exploring your city safely!
+        KidMap is now configured for your region and preferences. Start exploring your city safely!
       </Text>
       <Pressable style={styles.primaryButton} onPress={handleComplete}>
         <Text style={styles.buttonText}>Start Using KidMap</Text>
@@ -197,19 +195,20 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
 
   const renderCurrentStep = () => {
     switch (currentStep) {
-      case "welcome": return renderWelcome();
-      case "region": return renderRegionSelection();
-      case "preferences": return renderPreferences();
-      case "safety": return renderSafety();
-      case "complete": return renderComplete();
+      case 'welcome':
+        return renderWelcome();
+      case 'region':
+        return renderRegionSelection();
+      case 'preferences':
+        return renderPreferences();
+      case 'safety':
+        return renderSafety();
+      case 'complete':
+        return renderComplete();
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {renderCurrentStep()}
-    </View>
-  );
+  return <View style={styles.container}>{renderCurrentStep()}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -220,7 +219,7 @@ const styles = StyleSheet.create({
   stepContainer: {
     flex: 1,
     padding: 24,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   scrollContainer: {
     flex: 1,
@@ -228,23 +227,23 @@ const styles = StyleSheet.create({
   scrollContentContainer: {
     padding: 24,
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   iconContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 24,
   },
   stepTitle: {
     fontSize: 28,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 16,
   },
   stepDescription: {
     fontSize: 16,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 24,
     marginBottom: 32,
   },
@@ -253,25 +252,25 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 32,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 24,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   preferenceSection: {
     marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 12,
   },
   optionRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   optionButton: {
@@ -279,55 +278,55 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.card,
     borderRadius: 8,
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     borderWidth: 2,
-    borderColor: "transparent",
+    borderColor: 'transparent',
   },
   selectedOption: {
     borderColor: Colors.primary,
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
   },
   optionText: {
     fontSize: 14,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   selectedOptionText: {
     color: Colors.primary,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   toggleOption: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: Colors.card,
     borderRadius: 8,
     padding: 16,
     borderWidth: 2,
-    borderColor: "transparent",
+    borderColor: 'transparent',
   },
   selectedToggle: {
     borderColor: Colors.success,
-    backgroundColor: "#F0FFF4",
+    backgroundColor: '#F0FFF4',
   },
   toggleText: {
     fontSize: 16,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   safetyFeatures: {
     marginBottom: 24,
   },
   featureItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
     gap: 12,
   },
   featureText: {
     fontSize: 16,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 

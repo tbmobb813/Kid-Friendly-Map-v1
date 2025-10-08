@@ -1,4 +1,4 @@
-import { AccessibilityInfo, Platform } from "react-native";
+import { AccessibilityInfo, Platform } from 'react-native';
 
 export const announceForAccessibility = (message: string) => {
   if (Platform.OS !== 'web') {
@@ -10,7 +10,7 @@ export const isScreenReaderEnabled = async (): Promise<boolean> => {
   if (Platform.OS === 'web') {
     return false; // Web screen reader detection is complex
   }
-  
+
   try {
     return await AccessibilityInfo.isScreenReaderEnabled();
   } catch {
@@ -18,10 +18,7 @@ export const isScreenReaderEnabled = async (): Promise<boolean> => {
   }
 };
 
-export const getAccessibilityLabel = (
-  text: string,
-  context?: string
-): string => {
+export const getAccessibilityLabel = (text: string, context?: string): string => {
   if (context) {
     return `${text}, ${context}`;
   }

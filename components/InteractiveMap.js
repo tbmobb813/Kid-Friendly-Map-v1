@@ -44,7 +44,6 @@ const InteractiveMap = ({ origin, destination, route, onMapReady, onSelectLocati
         if (Platform.OS === 'web')
             return null;
         try {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mod = require('react-native-webview');
             return mod?.WebView ?? null;
         }

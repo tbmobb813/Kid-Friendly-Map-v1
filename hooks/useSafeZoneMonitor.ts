@@ -4,6 +4,8 @@ import { Platform, Alert } from 'react-native';
 import { useParentalStore } from '@/stores/parentalStore';
 import { SafeZone } from '@/types/parental';
 import { showNotification, requestNotificationPermission } from '@/utils/notifications';
+import { startGeofencing } from '@/geofence';
+import Config from '@/utils/config';
 
 type SafeZoneEvent = {
   safeZone: SafeZone;
@@ -22,12 +24,7 @@ type LocationState = {
 };
 
 // Calculate distance between two points in meters
-const calculateDistance = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
   const R = 6371e3; // Earth's radius in meters
   const φ1 = (lat1 * Math.PI) / 180;
   const φ2 = (lat2 * Math.PI) / 180;
@@ -49,18 +46,19 @@ export const useSafeZoneMonitor = () => {
   const [safeZoneStates, setSafeZoneStates] = useState<Record<string, boolean>>({});
   const locationSubscription = useRef<Location.LocationSubscription | null>(null);
   const lastNotificationTime = useRef<Record<string, number>>({});
+  const geofencingStarted = useRef(false);
 
   // Initialize safe zone states
   useEffect(() => {
     if (currentLocation && safeZones.length > 0) {
       const initialStates: Record<string, boolean> = {};
-      safeZones.forEach(zone => {
+      safeZones.forEach((zone) => {
         if (zone.isActive) {
           const distance = calculateDistance(
             currentLocation.latitude,
             currentLocation.longitude,
             zone.latitude,
-            zone.longitude
+            zone.longitude,
           );
           initialStates[zone.id] = distance <= zone.radius;
         }
@@ -74,8 +72,9 @@ export const useSafeZoneMonitor = () => {
     if (!settings.safeZoneAlerts) return;
 
     const { safeZone, type } = event;
-    const shouldNotify = type === 'entry' ? safeZone.notifications.onEntry : safeZone.notifications.onExit;
-    
+    const shouldNotify =
+      type === 'entry' ? safeZone.notifications.onEntry : safeZone.notifications.onExit;
+
     if (!shouldNotify) return;
 
     // Prevent spam notifications (minimum 5 minutes between same zone notifications)
@@ -86,9 +85,8 @@ export const useSafeZoneMonitor = () => {
     lastNotificationTime.current[`${safeZone.id}_${type}`] = now;
 
     const title = type === 'entry' ? '🟢 Safe Zone Entry' : '🔴 Safe Zone Exit';
-    const body = type === 'entry' 
-      ? `Child has entered ${safeZone.name}` 
-      : `Child has left ${safeZone.name}`;
+    const body =
+      type === 'entry' ? `Child has entered ${safeZone.name}` : `Child has left ${safeZone.name}`;
 
     await showNotification({ title, body, priority: 'high' });
 
@@ -115,14 +113,14 @@ export const useSafeZoneMonitor = () => {
     const newStates: Record<string, boolean> = {};
     const events: SafeZoneEvent[] = [];
 
-    safeZones.forEach(zone => {
+    safeZones.forEach((zone) => {
       if (!zone.isActive) return;
 
       const distance = calculateDistance(
         location.latitude,
         location.longitude,
         zone.latitude,
-        zone.longitude
+        zone.longitude,
       );
 
       const isInside = distance <= zone.radius;
@@ -174,7 +172,7 @@ export const useSafeZoneMonitor = () => {
           Alert.alert(
             'Location Permission Required',
             'Safe zone monitoring requires location access to work properly.',
-            [{ text: 'OK' }]
+            [{ text: 'OK' }],
           );
           return;
         }
@@ -193,27 +191,55 @@ export const useSafeZoneMonitor = () => {
       }
 
       // Get initial location
-      const initialLocation = Platform.OS === 'web'
-        ? await new Promise<LocationState>((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-              (position) => resolve({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                timestamp: Date.now(),
-              }),
-              reject
-            );
-          })
-        : await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Balanced,
-          }).then(loc => ({
-            latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
-            timestamp: Date.now(),
-          }));
+      const initialLocation =
+        Platform.OS === 'web'
+          ? await new Promise<LocationState>((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(
+                (position) =>
+                  resolve({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    timestamp: Date.now(),
+                  }),
+                reject,
+              );
+            })
+          : await Location.getCurrentPositionAsync({
+              accuracy: Location.Accuracy.Balanced,
+            }).then((loc) => ({
+              latitude: loc.coords.latitude,
+              longitude: loc.coords.longitude,
+              timestamp: Date.now(),
+            }));
 
       setCurrentLocation(initialLocation);
       await checkSafeZones(initialLocation);
+
+      if (
+        Platform.OS !== 'web' &&
+        Config.FEATURES.GEOFENCING &&
+        safeZones.some((zone) => zone.isActive) &&
+        !geofencingStarted.current
+      ) {
+        try {
+          const regions = safeZones
+            .filter((zone) => zone.isActive)
+            .map((zone) => ({
+              identifier: zone.id,
+              latitude: zone.latitude,
+              longitude: zone.longitude,
+              radius: zone.radius,
+            }));
+
+          if (regions.length > 0) {
+            await startGeofencing(regions);
+            geofencingStarted.current = true;
+            console.log('Geofencing initialized for safe zones');
+          }
+        } catch (geofenceError) {
+          console.error('Failed to start geofencing:', geofenceError);
+        }
+      }
 
       // Start location subscription
       if (Platform.OS !== 'web') {
@@ -231,7 +257,7 @@ export const useSafeZoneMonitor = () => {
             };
             setCurrentLocation(newLocation);
             checkSafeZones(newLocation);
-          }
+          },
         );
       } else {
         // Web: Use periodic checking
@@ -250,7 +276,7 @@ export const useSafeZoneMonitor = () => {
             enableHighAccuracy: false,
             timeout: 30000,
             maximumAge: 60000,
-          }
+          },
         );
 
         locationSubscription.current = {
@@ -273,6 +299,7 @@ export const useSafeZoneMonitor = () => {
       locationSubscription.current = null;
     }
     setIsMonitoring(false);
+    geofencingStarted.current = false;
     console.log('Safe zone monitoring stopped');
   };
 
@@ -280,9 +307,9 @@ export const useSafeZoneMonitor = () => {
   const getCurrentSafeZoneStatus = () => {
     if (!currentLocation) return null;
 
-    const activeSafeZones = safeZones.filter(zone => zone.isActive);
-    const insideZones = activeSafeZones.filter(zone => safeZoneStates[zone.id]);
-    const outsideZones = activeSafeZones.filter(zone => !safeZoneStates[zone.id]);
+    const activeSafeZones = safeZones.filter((zone) => zone.isActive);
+    const insideZones = activeSafeZones.filter((zone) => safeZoneStates[zone.id]);
+    const outsideZones = activeSafeZones.filter((zone) => !safeZoneStates[zone.id]);
 
     return {
       totalActive: activeSafeZones.length,

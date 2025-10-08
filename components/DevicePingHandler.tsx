@@ -18,9 +18,9 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
 
   // Check for pending pings
   useEffect(() => {
-    const pendingPings = devicePings.filter(ping => ping.status === 'pending');
+    const pendingPings = devicePings.filter((ping) => ping.status === 'pending');
     const latestPing = pendingPings[pendingPings.length - 1];
-    
+
     if (latestPing && latestPing.id !== activePing?.id) {
       setActivePing(latestPing);
       handlePingReceived(latestPing);
@@ -29,7 +29,7 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
 
   const handlePingReceived = (ping: DevicePingRequest) => {
     console.log('Device ping received:', ping.type, ping.message);
-    
+
     switch (ping.type) {
       case 'ring':
         handleRingPing(ping);
@@ -45,13 +45,13 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
 
   const handleRingPing = (ping: DevicePingRequest) => {
     setIsRinging(true);
-    
+
     // Vibrate the device
     if (Platform.OS !== 'web') {
       const pattern = [0, 1000, 500, 1000, 500, 1000];
       Vibration.vibrate(pattern, true);
     }
-    
+
     // Show alert
     Alert.alert(
       '📱 Device Ping',
@@ -62,7 +62,7 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
           onPress: () => handleAcknowledgePing(ping.id),
         },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
   };
 
@@ -80,21 +80,17 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
           style: 'cancel',
           onPress: () => handleAcknowledgePing(ping.id, false),
         },
-      ]
+      ],
     );
   };
 
   const handleMessagePing = (ping: DevicePingRequest) => {
-    Alert.alert(
-      '💬 Message from Parent',
-      ping.message || 'You have a message from your parent',
-      [
-        {
-          text: 'OK',
-          onPress: () => handleAcknowledgePing(ping.id),
-        },
-      ]
-    );
+    Alert.alert('💬 Message from Parent', ping.message || 'You have a message from your parent', [
+      {
+        text: 'OK',
+        onPress: () => handleAcknowledgePing(ping.id),
+      },
+    ]);
   };
 
   const handleAcknowledgePing = async (pingId: string, shareLocation: boolean = true) => {
@@ -108,13 +104,16 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
       }
 
       // Acknowledge the ping with location if requested
-      const locationData = shareLocation && !location.error ? {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      } : undefined;
+      const locationData =
+        shareLocation && !location.error
+          ? {
+              latitude: location.latitude,
+              longitude: location.longitude,
+            }
+          : undefined;
 
       await acknowledgePing(pingId, locationData);
-      
+
       // Update last known location if sharing
       if (locationData) {
         updateLastKnownLocation({
@@ -126,10 +125,12 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
       }
 
       setActivePing(null);
-      
+
       Alert.alert(
         '✅ Response Sent',
-        shareLocation ? 'Your location has been shared with your parent' : 'Response sent to your parent'
+        shareLocation
+          ? 'Your location has been shared with your parent'
+          : 'Response sent to your parent',
       );
     } catch (error) {
       console.error('Failed to acknowledge ping:', error);
@@ -178,20 +179,16 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
     <View style={styles.overlay} testID={testId}>
       <View style={[styles.pingCard, isRinging && styles.ringingCard]}>
         <View style={styles.pingHeader}>
-          <View style={styles.pingIconContainer}>
-            {getPingIcon()}
-          </View>
+          <View style={styles.pingIconContainer}>{getPingIcon()}</View>
           <Pressable style={styles.dismissButton} onPress={handleDismissPing}>
             <X size={20} color={Colors.textLight} />
           </Pressable>
         </View>
-        
+
         <Text style={styles.pingTitle}>{getPingTitle()}</Text>
-        
-        {activePing.message && (
-          <Text style={styles.pingMessage}>{activePing.message}</Text>
-        )}
-        
+
+        {activePing.message && <Text style={styles.pingMessage}>{activePing.message}</Text>}
+
         <View style={styles.pingActions}>
           {activePing.type === 'location' ? (
             <>
@@ -201,7 +198,7 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
               >
                 <Text style={styles.declineButtonText}>Decline</Text>
               </Pressable>
-              
+
               <Pressable
                 style={[styles.actionButton, styles.shareButton]}
                 onPress={() => handleAcknowledgePing(activePing.id, true)}
@@ -220,7 +217,7 @@ const DevicePingHandler: React.FC<DevicePingHandlerProps> = ({ testId }) => {
             </Pressable>
           )}
         </View>
-        
+
         <Text style={styles.pingTime}>
           Received {new Date(activePing.requestedAt).toLocaleTimeString()}
         </Text>

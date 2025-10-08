@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
-import Colors from "@/constants/colors";
-import { useRegionStore } from "@/stores/regionStore";
-import RegionSelector from "./RegionSelector";
-import { Globe, X } from "lucide-react-native";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Pressable, Modal } from 'react-native';
+import Colors from '@/constants/colors';
+import { useRegionStore } from '@/stores/regionStore';
+import RegionSelector from './RegionSelector';
+import { Globe, X } from 'lucide-react-native';
 
 const RegionSwitcher: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,11 +21,7 @@ const RegionSwitcher: React.FC = () => {
         <Text style={styles.triggerText}>{currentRegion.name}</Text>
       </Pressable>
 
-      <Modal
-        visible={showModal}
-        animationType="slide"
-        presentationStyle="pageSheet"
-      >
+      <Modal visible={showModal} animationType="slide" presentationStyle="pageSheet">
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Switch Region</Text>
@@ -33,7 +29,7 @@ const RegionSwitcher: React.FC = () => {
               <X size={24} color={Colors.text} />
             </Pressable>
           </View>
-          
+
           <RegionSelector
             regions={availableRegions}
             selectedRegion={userPreferences.selectedRegion}
@@ -47,8 +43,8 @@ const RegionSwitcher: React.FC = () => {
 
 const styles = StyleSheet.create({
   trigger: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 8,
     paddingVertical: 8,
@@ -57,7 +53,7 @@ const styles = StyleSheet.create({
   },
   triggerText: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Colors.text,
   },
   modalContainer: {
@@ -65,16 +61,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   modalHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
   },
   closeButton: {

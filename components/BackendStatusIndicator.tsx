@@ -33,21 +33,21 @@ export default function BackendStatusIndicator() {
           icon: AlertTriangle,
           color: Colors.warning,
           backgroundColor: Colors.warning + '20',
-          text: 'Slow connection'
+          text: 'Slow connection',
         };
       case 'down':
         return {
           icon: WifiOff,
           color: Colors.error,
           backgroundColor: Colors.error + '20',
-          text: 'Connection issues'
+          text: 'Connection issues',
         };
       default:
         return {
           icon: Wifi,
           color: Colors.success,
           backgroundColor: Colors.success + '20',
-          text: 'Connected'
+          text: 'Connected',
         };
     }
   };
@@ -58,9 +58,7 @@ export default function BackendStatusIndicator() {
   return (
     <View style={[styles.container, { backgroundColor: config.backgroundColor }]}>
       <IconComponent size={16} color={config.color} />
-      <Text style={[styles.text, { color: config.color }]}>
-        {config.text}
-      </Text>
+      <Text style={[styles.text, { color: config.color }]}>{config.text}</Text>
     </View>
   );
 }

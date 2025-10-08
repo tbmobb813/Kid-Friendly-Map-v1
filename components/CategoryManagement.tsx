@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, TextInput, Modal, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  TextInput,
+  Modal,
+  Alert,
+} from 'react-native';
 import Colors from '@/constants/colors';
 import { CustomCategory } from '@/types/navigation';
 import { useCategoryManagement } from '@/stores/categoryStore';
@@ -45,13 +54,16 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
     }
 
     if (!canCreateCategory(userMode)) {
-      Alert.alert('Limit Reached', `You can only create up to ${settings.maxCustomCategories} custom categories.`);
+      Alert.alert(
+        'Limit Reached',
+        `You can only create up to ${settings.maxCustomCategories} custom categories.`,
+      );
       return;
     }
 
     try {
       const isApproved = !needsApproval(userMode);
-      
+
       await addCategory({
         name: newCategoryName.trim(),
         icon: selectedIcon,
@@ -67,7 +79,10 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
       setSelectedColor('#007AFF');
 
       if (needsApproval(userMode)) {
-        Alert.alert('Category Created', 'Your category has been created and is waiting for parent approval.');
+        Alert.alert(
+          'Category Created',
+          'Your category has been created and is waiting for parent approval.',
+        );
       } else {
         Alert.alert('Success', 'Category created successfully!');
       }
@@ -105,25 +120,21 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
       return;
     }
 
-    Alert.alert(
-      'Delete Category',
-      `Are you sure you want to delete "${category.name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await deleteCategory(category.id);
-              Alert.alert('Success', 'Category deleted successfully!');
-            } catch (error) {
-              Alert.alert('Error', 'Failed to delete category. Please try again.');
-            }
-          },
+    Alert.alert('Delete Category', `Are you sure you want to delete "${category.name}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await deleteCategory(category.id);
+            Alert.alert('Success', 'Category deleted successfully!');
+          } catch (error) {
+            Alert.alert('Error', 'Failed to delete category. Please try again.');
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleApproveCategory = async (categoryId: string) => {
@@ -152,11 +163,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
   };
 
   const CategoryModal = () => (
-    <Modal
-      visible={showCreateModal}
-      animationType="slide"
-      presentationStyle="pageSheet"
-    >
+    <Modal visible={showCreateModal} animationType="slide" presentationStyle="pageSheet">
       <View style={styles.modalContainer}>
         <View style={styles.modalHeader}>
           <Pressable onPress={() => setShowCreateModal(false)} style={styles.modalButton}>
@@ -165,7 +172,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
           <Text style={styles.modalTitle}>
             {editingCategory ? 'Edit Category' : 'Create Category'}
           </Text>
-          <Pressable 
+          <Pressable
             onPress={editingCategory ? handleEditCategory : handleCreateCategory}
             style={styles.modalButton}
           >
@@ -209,10 +216,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
               {availableIcons.map((icon) => (
                 <Pressable
                   key={icon}
-                  style={[
-                    styles.iconOption,
-                    selectedIcon === icon && styles.selectedIconOption,
-                  ]}
+                  style={[styles.iconOption, selectedIcon === icon && styles.selectedIconOption]}
                   onPress={() => setSelectedIcon(icon)}
                 >
                   <CategoryButton
@@ -278,11 +282,7 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
             </Text>
             {pendingCategories.map((category) => (
               <View key={category.id} style={styles.categoryItem}>
-                <CategoryButton
-                  customCategory={category}
-                  onPress={() => {}}
-                  size="small"
-                />
+                <CategoryButton customCategory={category} onPress={() => {}} size="small" />
                 <View style={styles.categoryInfo}>
                   <Text style={styles.categoryName}>{category.name}</Text>
                   <Text style={styles.categoryMeta}>
@@ -311,40 +311,36 @@ const CategoryManagement: React.FC<CategoryManagementProps> = ({ onBack, userMod
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>All Categories</Text>
           <Text style={styles.sectionDescription}>
-            {userMode === 'parent' 
+            {userMode === 'parent'
               ? 'Manage all categories available to your child'
-              : 'Your available categories'
-            }
+              : 'Your available categories'}
           </Text>
           {approvedCategories.map((category) => (
             <View key={category.id} style={styles.categoryItem}>
-              <CategoryButton
-                customCategory={category}
-                onPress={() => {}}
-                size="small"
-              />
+              <CategoryButton customCategory={category} onPress={() => {}} size="small" />
               <View style={styles.categoryInfo}>
                 <Text style={styles.categoryName}>{category.name}</Text>
                 <Text style={styles.categoryMeta}>
                   {category.isDefault ? 'Default' : `Created by ${category.createdBy}`}
                 </Text>
               </View>
-              {!category.isDefault && (userMode === 'parent' || category.createdBy === userMode) && (
-                <View style={styles.categoryActions}>
-                  <Pressable
-                    onPress={() => openEditModal(category)}
-                    style={[styles.actionButton, styles.editButton]}
-                  >
-                    <Edit3 size={20} color="#FFF" />
-                  </Pressable>
-                  <Pressable
-                    onPress={() => handleDeleteCategory(category)}
-                    style={[styles.actionButton, styles.deleteButton]}
-                  >
-                    <Trash2 size={20} color="#FFF" />
-                  </Pressable>
-                </View>
-              )}
+              {!category.isDefault &&
+                (userMode === 'parent' || category.createdBy === userMode) && (
+                  <View style={styles.categoryActions}>
+                    <Pressable
+                      onPress={() => openEditModal(category)}
+                      style={[styles.actionButton, styles.editButton]}
+                    >
+                      <Edit3 size={20} color="#FFF" />
+                    </Pressable>
+                    <Pressable
+                      onPress={() => handleDeleteCategory(category)}
+                      style={[styles.actionButton, styles.deleteButton]}
+                    >
+                      <Trash2 size={20} color="#FFF" />
+                    </Pressable>
+                  </View>
+                )}
             </View>
           ))}
         </View>

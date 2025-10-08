@@ -5,8 +5,8 @@ jest.mock('react-native', () => ({
   Platform: {
     OS: 'ios',
     Version: '17.0',
-    select: jest.fn((options) => options.ios || options.default)
-  }
+    select: jest.fn((options) => options.ios || options.default),
+  },
 }));
 
 describe('iOS Platform Tests', () => {
@@ -21,7 +21,7 @@ describe('iOS Platform Tests', () => {
       const mockPermissions = {
         location: 'granted',
         camera: 'granted',
-        notifications: 'denied'
+        notifications: 'denied',
       };
 
       expect(mockPermissions.location).toBe('granted');
@@ -31,7 +31,7 @@ describe('iOS Platform Tests', () => {
     it('should use iOS-specific UI components', () => {
       const iosComponent = Platform.select({
         ios: 'IOSSpecificComponent',
-        default: 'DefaultComponent'
+        default: 'DefaultComponent',
       });
 
       expect(iosComponent).toBe('IOSSpecificComponent');
@@ -43,7 +43,7 @@ describe('iOS Platform Tests', () => {
         top: 47, // iPhone with notch
         bottom: 34,
         left: 0,
-        right: 0
+        right: 0,
       };
 
       expect(mockSafeAreaInsets.top).toBeGreaterThan(20);
@@ -55,7 +55,7 @@ describe('iOS Platform Tests', () => {
       const mockHaptics = {
         selectionAsync: jest.fn(),
         impactAsync: jest.fn(),
-        notificationAsync: jest.fn()
+        notificationAsync: jest.fn(),
       };
 
       // Should be available on iOS
@@ -69,9 +69,9 @@ describe('iOS Platform Tests', () => {
       const mockLocationService = {
         requestPermission: jest.fn().mockResolvedValue('granted'),
         getCurrentPosition: jest.fn().mockResolvedValue({
-          coords: { latitude: 37.7749, longitude: -122.4194 }
+          coords: { latitude: 37.7749, longitude: -122.4194 },
         }),
-        watchPosition: jest.fn()
+        watchPosition: jest.fn(),
       };
 
       expect(mockLocationService.requestPermission).toBeDefined();
@@ -82,7 +82,7 @@ describe('iOS Platform Tests', () => {
       const mockEmergencyFeatures = {
         emergencyCall: jest.fn(),
         emergencyContacts: ['911', 'emergency-contact-1'],
-        sosFeature: true
+        sosFeature: true,
       };
 
       expect(mockEmergencyFeatures.sosFeature).toBe(true);
@@ -95,7 +95,7 @@ describe('iOS Platform Tests', () => {
       const mockPerformanceConfig = {
         animationDriver: 'native',
         imageOptimization: true,
-        memoryManagement: 'automatic'
+        memoryManagement: 'automatic',
       };
 
       expect(mockPerformanceConfig.animationDriver).toBe('native');
@@ -109,7 +109,7 @@ describe('iOS Platform Tests', () => {
         voiceOver: true,
         dynamicType: true,
         reduceMotion: false,
-        highContrast: false
+        highContrast: false,
       };
 
       expect(mockAccessibility.voiceOver).toBe(true);

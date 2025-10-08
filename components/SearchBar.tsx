@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, TextInput, View, Pressable } from "react-native";
-import { Search, X } from "lucide-react-native";
-import Colors from "@/constants/colors";
+import React from 'react';
+import { StyleSheet, TextInput, View, Pressable } from 'react-native';
+import { Search, X } from 'lucide-react-native';
+import Colors from '@/constants/colors';
 
 type SearchBarProps = {
   value: string;
@@ -14,7 +14,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
   onClear,
-  placeholder = "Where do you want to go?",
+  placeholder = 'Where do you want to go?',
 }) => {
   return (
     <View style={styles.container}>
@@ -38,13 +38,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: Colors.card,
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 56,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,

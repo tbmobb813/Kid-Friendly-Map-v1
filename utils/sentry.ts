@@ -8,7 +8,7 @@ export function initSentry(dsn?: string) {
 
   try {
     // Lazy-import so local dev without Sentry dependency won't fail
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+
     const Sentry = require('@sentry/react-native');
 
     Sentry.init({ dsn });
@@ -16,7 +16,7 @@ export function initSentry(dsn?: string) {
     return Sentry;
   } catch (err) {
     // Fallback - log and continue
-    // eslint-disable-next-line no-console
+
     console.warn('Sentry dependency not installed or failed to initialize', err);
     return { captureException: (e: any) => console.error('Sentry fallback', e) };
   }

@@ -1,0 +1,28 @@
+worker_processes 1;
+
+events { worker_connections 1024; }
+
+http {
+  sendfile on;
+  upstream adapter_upstream {
+    server 127.0.0.1:3001;
+  }
+
+  server {
+    listen 80;
+    server_name _;
+
+    location / {
+      proxy_pass http://adapter_upstream;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # simple basic auth for health/metrics (example)
+    location /metrics {
+      proxy_pass http://adapter_upstream/metrics;
+    }
+  }
+}

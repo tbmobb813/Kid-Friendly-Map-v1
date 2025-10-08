@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gtfs-import-nightly
+spec:
+  schedule: "0 4 * * *" # Every day at 04:00 UTC
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: gtfs-importer
+              image: node:20
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: transit-adapter-secrets
+                      key: DATABASE_URL
+                - name: GTFS_ZIP_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: transit-adapter-secrets
+                      key: GTFS_ZIP_URL
+              command: ["sh", "-c"]
+              args:
+                - |
+                  curl -L "$GTFS_ZIP_URL" -o gtfs.zip && \
+                  node server/tools/import-static-gtfs.js gtfs.zip && \
+                  DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js && \
+                  DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"
+          restartPolicy: OnFailure
