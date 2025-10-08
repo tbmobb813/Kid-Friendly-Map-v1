@@ -3,7 +3,11 @@ const { startServer } = require('../../index.js');
 
 let server;
 describe('Versioned API', () => {
-  beforeAll(() => { process.env.FEED_REFRESH_ENABLED='false'; server = startServer(); });
+  beforeAll(() => {
+    process.env.FEED_REFRESH_ENABLED = 'false';
+    process.env.PORT = '0'; // Use random available port
+    server = startServer();
+  });
   afterAll(() => { if (server) server.close(); });
 
   test('v1 feed returns version field', async () => {
