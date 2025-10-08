@@ -26,7 +26,7 @@
 
 | Roadmap Phase | Recommended Activities | App Status | Key Takeaways |
 | --- | --- | --- | --- |
-| Phase 1: Research & Validation | Parent/child interviews, competitive review, feasibility study | ⚠️ Competitive research done implicitly; user research & documentation pending | Highest-priority gap before launch |
+| Phase 1: Research & Validation | Parent/child interviews, competitive review, feasibility study | ⚠️ Research implicit; formal user studies & docs pending | High-priority gap pre-launch |
 | Phase 2: Concept Development | Define unique value proposition & audience | ✅ Fully articulated through product experience | Strong UVP: "Educational navigation for kids" |
 | Phase 3: MVP Planning | Core feature scoping, architecture choices | ✅ App exceeds MVP (multi-modal routing, gamification, safety suite) | Ready for production-level polish |
 | Phase 4: Dev Approach | Stack selection, partner decisions | ✅ Expo RN + local-first design matches/betters recommendations | Maintain hybrid architecture |

@@ -216,7 +216,7 @@
 
 ### Code Written
 
-```
+```text
 utils/monitoring.ts:                       550 lines (NEW)
 tests/offline-validation.test.ts:          400 lines (NEW)
 tests/monitoring.test.ts:                  400 lines (NEW)
@@ -226,7 +226,7 @@ mocks/@react-native-community/netinfo.ts:   15 lines (NEW)
 TOTAL:                                     2,015 lines
 ```
 
-### Test Coverage
+### Test Coverage Summary
 
 Total Tests Written:                     65 tests
 

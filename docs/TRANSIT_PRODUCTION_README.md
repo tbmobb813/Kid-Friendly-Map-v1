@@ -1,3 +1,272 @@
+
+## Shape/Geometry Import (Polylines)
+
+To support map polylines, import `shapes.txt` from GTFS and expose shape data in enriched route output.
+
+- Extend importers to parse shapes and associate with trips/routes.
+- Update API response to include `polyline` or `shape` field per route.
+- Document client usage for rendering polylines.
+
+
+
+## Advanced Alerting & Dashboarding
+
+- Set up Grafana dashboards for latency, error rate, cache hit ratio, and error budget burn.
+- Example panels: p99 latency, cache effectiveness, SLO compliance.
+- Export dashboard JSON for reproducibility.
+
+
+
+## Staging/Blue-Green Deployment Guidance
+
+- Use k8s Deployments or Cloud Run revisions for zero-downtime deploys.
+- Apply schema migrations using staging tables and atomic swaps.
+- Document rollback and traffic shifting procedures.
+
+
+
+## API Versioning & Backward Compatibility
+
+- Version API endpoints (e.g., `/feeds/v1/:region/:system.json`).
+- Document schema changes and migration strategy.
+- Maintain backward compatibility for clients.
+
+
+
+## Security Hardening
+
+- Integrate with API gateway for authentication and rate limiting.
+- Enable TLS everywhere; terminate at proxy/gateway.
+- Add DDoS protection and audit logging.
+- Document incident response and key rotation procedures.
+
+
+
+## Compliance & Privacy
+
+- Document data retention and deletion policies.
+- Note privacy requirements for user and transit data.
+- Reference regulatory standards (GDPR, CCPA, etc.) if applicable.
+
+
+
+## Final Checklist Review
+
+- Review all must-have and nice-to-have items for completion.
+- Mark deferred or optional items for future work.
+
+
+
+## Changelog & Governance
+
+- Update `DOCS_CHANGELOG.md` for every major production change.
+- Note documentation ownership and review process.
+
+
+
+## Style Guide Reference
+
+- See `STYLE_GUIDE.md` for documentation and code standards.
+
+## Load Testing & SLO Instrumentation
+
+### Load Testing
+
+- Use tools like `k6`, `artillery`, or `wrk` to simulate concurrent requests to `/feeds/:region/:system.json`.
+- Example k6 script:
+
+   ```javascript
+   import http from 'k6/http';
+   export default function () {
+      http.get('http://localhost:3001/feeds/nyc/mta-subway.json');
+   }
+   ```
+
+- Run with increasing VUs (virtual users) and monitor latency, error rate, and cache hit ratio.
+
+### SLO Instrumentation
+
+- Key metrics:
+   - `transit_adapter_fetch_duration_seconds` (histogram)
+   - `transit_adapter_enriched_routes` (gauge)
+   - `transit_adapter_cache_hits_total` / `transit_adapter_cache_misses_total`
+   - `transit_adapter_fetch_failures_total`
+
+- Example Prometheus SLO rules:
+
+   ```yaml
+   - alert: TransitAdapterHighLatency
+      expr: histogram_quantile(0.99, sum(rate(transit_adapter_fetch_duration_seconds_bucket[5m])) by (le)) > 2
+      for: 5m
+      labels:
+         severity: warning
+      annotations:
+         summary: "Transit adapter p99 request latency >2s"
+   - alert: TransitAdapterErrorRate
+      expr: increase(transit_adapter_fetch_failures_total[10m]) / increase(transit_adapter_cache_hits_total[10m]) > 0.01
+      for: 10m
+      labels:
+         severity: critical
+      annotations:
+         summary: "Transit adapter error rate >1%"
+   ```
+
+- Review SLOs after load tests and adjust thresholds for production traffic.
+### Cache Metrics & Redis Failover Testing
+
+- Prometheus metrics:
+      - `transit_adapter_cache_hits_total{type="redis|memory"}`
+      - `transit_adapter_cache_misses_total{type="redis|memory"}`
+- Monitor hit/miss rates to tune cache TTL and sizing.
+
+#### Redis Failover Test
+
+1. Start adapter with Redis enabled (`REDIS_URL`).
+2. Stop Redis container/pod and observe adapter logs (should warn and fallback to memory cache).
+3. Confirm continued operation and cache metrics switch to `type="memory"`.
+4. Restart Redis and verify adapter resumes Redis caching.
+
+## Distributed Caching (Redis)
+
+Enable Redis to share cache across multiple adapter instances for consistent, fast feed responses.
+
+### Setup
+
+- Adapter auto-detects Redis if `REDIS_URL` is set (uses in-memory cache otherwise).
+- Add Redis to your deployment:
+      - Docker Compose: see `server/docker-compose.redis.yml`
+      - Kubernetes: see `server/k8s-redis.yaml` and set `REDIS_URL` in ConfigMap or env.
+- Use Redis 7+ for best performance and reliability.
+
+### Configuration
+
+- Set `REDIS_URL` (e.g., `redis://localhost:6379` or `redis://redis:6379` in Compose/k8s).
+- Adapter will use Redis for all feed cache operations.
+
+### Operational Notes
+
+- Monitor Redis health and memory usage.
+- Set up persistence (AOF or RDB) for cache durability if needed.
+- Use Redis Sentinel or cloud-managed Redis for HA in production.
+- Fallback to in-memory cache if Redis is unavailable (adapter logs warning).
+
+
+### Monitoring & Failover
+
+- Alert on Redis connection errors or high latency.
+- Validate cache hit/miss rates via metrics and logs.
+
+## Secrets Management & Rotation
+
+Securely store and rotate all API keys and sensitive config using a secret manager. Integrate with CI/CD and cloud platforms for automated updates.
+
+### GitHub Actions / CI
+
+- Store secrets in repository settings (`Settings > Secrets and variables > Actions`).
+- Reference secrets in workflows as `${{ secrets.MTA_API_KEY }}` etc.
+- Rotate keys by updating in the UI or via GitHub CLI (`gh secret set ...`).
+
+### Kubernetes
+
+- Use k8s Secret manifests (see `server/k8s-secrets.yaml`).
+- Rotate keys with `kubectl patch` or apply updated manifest.
+- Use the provided script:
+
+   ```bash
+   ./server/scripts/rotate-secrets.sh MTA_API_KEY new-key-value
+   ```
+
+- Restart affected pods to pick up new secrets.
+
+### Cloud Secret Managers
+
+- AWS: Use Secrets Manager (`aws secretsmanager update-secret ...`).
+- GCP: Use Secret Manager (`gcloud secrets versions add ...`).
+- Azure: Use Key Vault (`az keyvault secret set ...`).
+- Reference secrets in deployment config or inject as env vars.
+
+### Rotation Procedures
+
+1. Update secret in manager (UI, CLI, or script).
+2. Redeploy or restart services to reload secrets.
+3. Audit access and changes regularly.
+
+### Audit Logging & Compliance
+
+- Enable audit logging for all secret access and changes.
+- Review logs for unauthorized access or failed rotations.
+- Set up alerts for unexpected changes or access patterns.
+
+### Best Practices
+
+- Never commit secrets to source control.
+- Use least privilege for secret access.
+- Rotate keys regularly (monthly/quarterly or per policy).
+- Document rotation schedule and responsible roles.
+
+## Postgres Backup & Restore Runbook
+
+Regular backups are essential for production reliability and compliance. Use the provided script and procedures to automate and monitor backups.
+
+### Backup Script
+
+- See `server/scripts/backup-postgres.sh` for a ready-to-use backup script.
+- Usage:
+
+
+   ```bash
+   DATABASE_URL="postgres://postgres:postgres@localhost:5432/transit" ./server/scripts/backup-postgres.sh /path/to/backup_dir
+   ```
+
+- The script creates a timestamped, gzipped SQL dump in the specified directory.
+
+### Restore Procedure
+
+1. Stop the adapter and ensure Postgres is running.
+2. Restore the backup:
+
+
+    ```bash
+    gunzip -c /path/to/backup_dir/transit_backup_YYYY-MM-DD_HH-MM-SS.sql.gz | psql "$DATABASE_URL"
+    ```
+
+3. (Optional) Re-import static GTFS if needed:
+
+
+    ```bash
+    node server/tools/import-static-gtfs.js path/to/gtfs.zip
+    DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
+    ```
+
+### Automation
+
+- Use a cron job or systemd timer to run the backup script nightly:
+
+
+   ```cron
+   0 3 * * * DATABASE_URL=... /path/to/backup-postgres.sh /path/to/backup_dir
+   ```
+
+- Store backups in a secure, offsite location with retention policy (e.g., 7-30 days).
+
+### Monitoring & Alerting
+
+- Monitor backup job exit codes and file creation.
+- Alert if backup fails or is missing for >24h (Prometheus node exporter or file checks).
+
+- Example Prometheus rule:
+
+
+   ```yaml
+   - alert: PostgresBackupMissing
+      expr: absent(transit_backup_last_success_timestamp_seconds) or (time() - transit_backup_last_success_timestamp_seconds > 86400)
+      for: 1h
+      labels:
+         severity: critical
+      annotations:
+         summary: "No successful Postgres backup in last 24h"
+   ```
+
 # Implementation highlights & design decisions
 
 ## Transit Adapter — Production Readiness & Integration
@@ -91,12 +360,90 @@ Response shape:
 1. Provide a production deployment (container image, k8s manifest / cloud run set up, LB + TLS termination).
 
 1. Provide a background worker to refresh upstream feeds and warm the cache.
+   (Done: background refresh loop with structured logs + refresh metrics in `server/index.js`.
+   Controlled via `FEED_REFRESH_ENABLED` (default on) and `FEED_REFRESH_INTERVAL_SEC`).
 
 1. Add metrics & alerts (enrichment rate, fetch failures, request latency).
+   (In progress: request + refresh histograms & failure counters implemented.
+   TODO: add alerting rules + `enriched_routes` SLO alert & error budget dashboard).
 
 1. Ensure Postgres backups and a runbook for restore and re-import.
 
 ## Roadmap & next steps (priority)
+
+## GTFS Import Automation
+
+To keep static GTFS data fresh for enrichment, automate nightly imports using either GitHub Actions or Kubernetes CronJob.
+
+### GitHub Actions (recommended for cloud-native repos)
+
+- See `.github/workflows/nightly-gtfs-import.yml` for a ready-to-use workflow.
+- Set `DATABASE_URL` and `GTFS_ZIP_URL` as repository secrets.
+- The workflow downloads the GTFS zip, imports to JSON, then loads into Postgres (staging + swap).
+
+### Kubernetes CronJob (recommended for k8s deployments)
+
+- See `server/k8s-gtfs-import-cronjob.yaml` for a sample manifest.
+- Reference secrets for `DATABASE_URL` and `GTFS_ZIP_URL`.
+- The job runs nightly, importing GTFS and updating Postgres atomically.
+
+
+### Manual/VM Automation
+
+- Use a systemd timer or cron job to run:
+
+   ```bash
+   curl -L "$GTFS_ZIP_URL" -o gtfs.zip
+   node server/tools/import-static-gtfs.js gtfs.zip
+   DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
+   DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"
+   ```
+
+
+### Notes
+
+- Always use the staging + swap pattern for zero-downtime updates.
+- Monitor import logs and set up alerting for failures.
+
+## Request Latency SLO & Alerting Guidance
+
+### SLO Targets
+
+- **Request latency:** 95% of `/feeds/:region/:system.json` requests should complete in <1s (p99 <2s).
+- **Enriched routes:** At least 90% of requests should return ≥1 enriched route (destination or nextStopName).
+
+### Prometheus Metrics
+
+- `transit_adapter_fetch_duration_seconds` — histogram of request fetch durations
+- `transit_adapter_enriched_routes` — gauge of enriched routes per request
+
+### Example Prometheus Alert Rules
+
+```yaml
+groups:
+   - name: transit-adapter
+      rules:
+         - alert: TransitAdapterHighLatency
+            expr: histogram_quantile(0.99, sum(rate(transit_adapter_fetch_duration_seconds_bucket[5m])) by (le)) > 2
+            for: 5m
+            labels:
+               severity: warning
+            annotations:
+               summary: "Transit adapter p99 request latency >2s"
+         - alert: TransitAdapterLowEnrichment
+            expr: avg_over_time(transit_adapter_enriched_routes[10m]) < 1
+            for: 10m
+            labels:
+               severity: critical
+            annotations:
+               summary: "Transit adapter returning no enriched routes"
+```
+
+### Operational Guidance
+
+- Tune alert thresholds to match user experience goals and backend capacity.
+- Add dashboards for latency, enrichment rate, and error budget burn.
+- Review SLOs quarterly and adjust as needed for real-world load.
 
 ### Immediate
 

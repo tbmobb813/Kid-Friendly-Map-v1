@@ -1,5 +1,18 @@
 const express = require('express');
 const { LRUCache } = require('lru-cache');
+let redisClient = null;
+const redisUrl = process.env.REDIS_URL || '';
+if (redisUrl) {
+  try {
+    const Redis = require('ioredis');
+    redisClient = new Redis(redisUrl);
+    redisClient.on('error', err => console.error('Redis error:', err));
+    console.log('Redis cache enabled:', redisUrl);
+  } catch (e) {
+    console.warn('Redis not available, falling back to in-memory cache:', e);
+    redisClient = null;
+  }
+}
 const fs = require('fs');
 const path = require('path');
 const promClient = require('prom-client');
@@ -17,12 +30,26 @@ function requireApiKey(req, res, next) {
   return next();
 }
 
-// Simple in-memory cache with short TTL
-const cache = new LRUCache({ max: 100, ttl: 10000 }); // 10s default
+// Cache abstraction: Redis if available, else in-memory
+const cache = redisClient
+  ? {
+      async get(key) {
+        const val = await redisClient.get(key);
+        return val ? JSON.parse(val) : undefined;
+      },
+      async set(key, value, ttl = 10000) {
+        await redisClient.set(key, JSON.stringify(value), 'PX', ttl);
+      },
+      async has(key) {
+        return (await redisClient.exists(key)) === 1;
+      }
+    }
+  : new LRUCache({ max: 100, ttl: 10000 }); // 10s default
 
 // Prometheus metrics
 const collectDefaultMetrics = promClient.collectDefaultMetrics;
 collectDefaultMetrics();
+
 const fetchDuration = new promClient.Histogram({
   name: 'transit_adapter_fetch_duration_seconds',
   help: 'Duration of upstream feed fetches',
@@ -30,19 +57,56 @@ const fetchDuration = new promClient.Histogram({
 });
 const fetchFailures = new promClient.Counter({ name: 'transit_adapter_fetch_failures_total', help: 'Number of failed fetch attempts' });
 const enrichedRoutesGauge = new promClient.Gauge({ name: 'transit_adapter_enriched_routes', help: 'Number of enriched routes returned per request' });
+const cacheHitCounter = new promClient.Counter({ name: 'transit_adapter_cache_hits_total', help: 'Number of cache hits', labelNames: ['type'] });
+const cacheMissCounter = new promClient.Counter({ name: 'transit_adapter_cache_misses_total', help: 'Number of cache misses', labelNames: ['type'] });
+
+// Background refresh metrics
+const refreshDuration = new promClient.Histogram({
+  name: 'transit_adapter_refresh_duration_seconds',
+  help: 'Duration of background feed refresh fetches',
+  labelNames: ['system'],
+  buckets: [0.1, 0.5, 1, 2, 5]
+});
+const refreshFailures = new promClient.Counter({
+  name: 'transit_adapter_refresh_failures_total',
+  help: 'Number of failed background refresh attempts',
+  labelNames: ['system']
+});
+
+// Background refresh configuration
+const feedRefreshEnabled = process.env.FEED_REFRESH_ENABLED !== 'false'; // default ON
+const feedRefreshIntervalSec = parseInt(process.env.FEED_REFRESH_INTERVAL_SEC || '30', 10); // default 30s
 
 
 
 async function fetchAndCache(url, apiKeyHeader, apiKey) {
   const cacheKey = `${url}|${apiKeyHeader || ''}|${apiKey || ''}`;
-  if (cache.has(cacheKey)) return cache.get(cacheKey);
+  if (await cache.has(cacheKey)) {
+    cacheHitCounter.labels(redisClient ? 'redis' : 'memory').inc();
+    return await cache.get(cacheKey);
+  } else {
+    cacheMissCounter.labels(redisClient ? 'redis' : 'memory').inc();
+  }
   const feed = await fetchGtfsRt(url, apiKeyHeader, apiKey);
-  cache.set(cacheKey, feed);
+  await cache.set(cacheKey, feed);
   return feed;
 }
 
 // Load server-side feed mapping
 const feedMap = require('./feeds.json');
+
+// Flatten feed map for iteration (region + system metadata)
+function listFeedEntries() {
+  const out = [];
+  for (const region of Object.keys(feedMap || {})) {
+    const regionMap = feedMap[region] || {};
+    for (const system of Object.keys(regionMap)) {
+      const entry = regionMap[system];
+      if (entry && entry.url) out.push({ region, system, ...entry });
+    }
+  }
+  return out;
+}
 
 // GET /feeds/:region/:system.json
 app.get('/feeds/:region/:system.json', requireApiKey, async (req, res) => {
@@ -134,4 +198,60 @@ app.get('/metrics', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Transit adapter listening on port ${port}`);
+  if (feedRefreshEnabled) {
+    startBackgroundRefresh();
+  } else {
+    console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
+  }
 });
+
+// Background refresh worker ---------------------------------------------
+let refreshLoopActive = false;
+function startBackgroundRefresh() {
+  console.log(`Starting background feed refresh loop every ${feedRefreshIntervalSec}s`);
+  setInterval(async () => {
+    if (refreshLoopActive) return; // skip overlapping interval
+    refreshLoopActive = true;
+    try {
+      const feeds = listFeedEntries();
+      for (const f of feeds) {
+        const { system, region, url, apiKeyEnv, apiKeyHeader } = f;
+        const apiKey = apiKeyEnv ? process.env[apiKeyEnv] : undefined;
+        if (!url) continue;
+        const endTimer = refreshDuration.labels(system).startTimer();
+        const started = Date.now();
+        try {
+          // Direct fetch (do not reuse cache here to force freshness)
+          const feed = await fetchGtfsRt(url, apiKeyHeader || 'x-api-key', apiKey);
+          const durationMs = Date.now() - started;
+          // Structured log for refresh event
+          console.info(JSON.stringify({
+            ts: new Date().toISOString(),
+            msg: 'transit_adapter.refresh',
+            system,
+            region,
+            url,
+            duration_ms: durationMs,
+            entity_count: Array.isArray(feed?.entity) ? feed.entity.length : 0
+          }));
+        } catch (err) {
+          refreshFailures.labels(system).inc();
+          console.warn(JSON.stringify({
+            ts: new Date().toISOString(),
+            level: 'warn',
+            msg: 'transit_adapter.refresh_error',
+            system,
+            region,
+            error: String(err)
+          }));
+        } finally {
+          endTimer();
+        }
+      }
+    } catch (e) {
+      console.error('Background refresh loop error', e);
+    } finally {
+      refreshLoopActive = false;
+    }
+  }, feedRefreshIntervalSec * 1000);
+}

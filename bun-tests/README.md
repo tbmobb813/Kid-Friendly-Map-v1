@@ -2,7 +2,7 @@
 
 ## Test Structure
 
-```
+```text
 bun-tests/
 ├── utils/           # Pure utility function tests
 │   ├── validation.test.ts
