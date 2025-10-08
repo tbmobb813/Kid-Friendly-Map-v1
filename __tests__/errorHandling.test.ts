@@ -42,9 +42,10 @@ describe('withRetry', () => {
       .fn<() => Promise<unknown>>()
       .mockRejectedValue(new Error('Non-retryable'));
 
-    // typed jest.fn so `attempt` is a number and returns boolean
-    const shouldRetry = jest.fn<(error: Error, attempt: number) => boolean>()
-      .mockReturnValue(false);
+    // Explicitly type the callback and cast the jest mock to that signature so this
+    // passes under different @types/jest / TS versions in CI.
+    const shouldRetry: (error: Error, attempt: number) => boolean =
+      (jest.fn().mockReturnValue(false) as unknown) as (error: Error, attempt: number) => boolean;
 
     await expect(
       withRetry(mockOperation, {
