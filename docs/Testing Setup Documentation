@@ -1,0 +1,25 @@
+# Testing Setup Documentation
+
+## 1. Use `simpleRender` and Query Helpers
+
+- When adding new tests, utilize the `simpleRender` function and query helpers (`getByTestId`, `queryByTestId`) from `test-utils.js` to render components and access elements.
+
+## 2. Wrap State Updates in `act()`
+
+- Always wrap any state updates or event triggers in `act()` to ensure that React's state updates are handled correctly during tests.
+
+## 3. Use `fireEvent.fire()` for Custom Events
+
+- For component-specific events that require custom payloads, use the `fireEvent.fire()` method. This allows you to simulate events with the necessary data structure.
+
+## Additional Recommendations
+
+- **Test Coverage**: Consider adding coverage reports to ensure all parts of your components are tested. You can do this by running Jest with the `--coverage` flag.
+  
+- **Mocking External Dependencies**: If your components rely on external libraries or APIs, ensure you mock these dependencies to isolate tests and avoid side effects.
+
+- **Organizing Tests**: Keep your tests organized by grouping related tests in the same file or directory structure. This makes it easier to maintain and understand.
+
+- **Continuous Integration**: If you haven't already, consider setting up a CI/CD pipeline to run your tests automatically on code changes. This helps catch issues early.
+
+- **Documentation**: Maintain clear documentation for your components and their expected behavior, which can help when writing tests.

@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ActivityIndicator } from "react-native";
-import { Image } from "expo-image";
-import Colors from "@/constants/colors";
-import { ImageOff } from "lucide-react-native";
+import React, { useState } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Image } from 'expo-image';
+import Colors from '@/constants/colors';
+import { ImageOff } from 'lucide-react-native';
 
 type OptimizedImageProps = {
   source: { uri: string } | number;
   style?: any;
   placeholder?: string;
-  contentFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
+  contentFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   onLoad?: () => void;
   onError?: () => void;
 };
@@ -17,7 +17,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   source,
   style,
   placeholder,
-  contentFit = "cover",
+  contentFit = 'cover',
   onLoad,
   onError,
 }) => {
@@ -66,13 +66,13 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 const styles = StyleSheet.create({
   errorContainer: {
     backgroundColor: Colors.border,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: Colors.card,
   },
 });

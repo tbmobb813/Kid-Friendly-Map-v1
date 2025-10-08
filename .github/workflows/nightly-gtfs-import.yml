@@ -1,0 +1,25 @@
+name: Nightly GTFS Import
+on:
+  schedule:
+    - cron: '0 4 * * *' # Every day at 04:00 UTC
+  workflow_dispatch:
+jobs:
+  import-gtfs:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GTFS_ZIP_URL: ${{ secrets.GTFS_ZIP_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download GTFS zip
+        run: |
+          curl -L "$GTFS_ZIP_URL" -o gtfs.zip
+      - name: Extract GTFS and import to JSON
+        run: |
+          node server/tools/import-static-gtfs.js gtfs.zip
+      - name: Import JSON to Postgres (staging + swap)
+        run: |
+          DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
+      - name: (Optional) Fast COPY import
+        run: |
+          DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"

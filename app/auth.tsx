@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -25,7 +25,7 @@ export default function AuthScreen() {
     password: '',
     confirmPassword: '',
     name: '',
-    role: 'user' as 'user' | 'parent'
+    role: 'user' as 'user' | 'parent',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -35,7 +35,7 @@ export default function AuthScreen() {
 
   const handleSubmit = async () => {
     clearError();
-    
+
     // Validation
     if (!isValidEmail(formData.email)) {
       Alert.alert('Invalid Email', 'Please enter a valid email address');
@@ -64,19 +64,19 @@ export default function AuthScreen() {
 
     try {
       let result;
-      
+
       if (isLogin) {
         result = await login({
           email: formData.email,
           password: formData.password,
-          rememberMe: true
+          rememberMe: true,
         });
       } else {
         result = await register({
           email: formData.email,
           password: formData.password,
           name: formData.name,
-          role: formData.role
+          role: formData.role,
         });
       }
 
@@ -86,7 +86,7 @@ export default function AuthScreen() {
       } else {
         Alert.alert(
           isLogin ? 'Login Failed' : 'Registration Failed',
-          result.error || 'Please try again'
+          result.error || 'Please try again',
         );
       }
     } catch (err) {
@@ -104,29 +104,24 @@ export default function AuthScreen() {
       password: '',
       confirmPassword: '',
       name: '',
-      role: 'user'
+      role: 'user',
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardView}
       >
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.header}>
-            <Text style={styles.title}>
-              {isLogin ? 'Welcome Back' : 'Create Account'}
-            </Text>
+            <Text style={styles.title}>{isLogin ? 'Welcome Back' : 'Create Account'}</Text>
             <Text style={styles.subtitle}>
-              {isLogin 
-                ? 'Sign in to continue your journey' 
-                : 'Join us for safer travels'
-              }
+              {isLogin ? 'Sign in to continue your journey' : 'Join us for safer travels'}
             </Text>
           </View>
 
@@ -139,7 +134,7 @@ export default function AuthScreen() {
                   placeholder="Full Name"
                   placeholderTextColor={Colors.textSecondary}
                   value={formData.name}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
+                  onChangeText={(text) => setFormData((prev) => ({ ...prev, name: text }))}
                   autoCapitalize="words"
                   testID="name-input"
                 />
@@ -153,7 +148,7 @@ export default function AuthScreen() {
                 placeholder="Email Address"
                 placeholderTextColor={Colors.textSecondary}
                 value={formData.email}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, email: text }))}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -168,7 +163,7 @@ export default function AuthScreen() {
                 placeholder="Password"
                 placeholderTextColor={Colors.textSecondary}
                 value={formData.password}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, password: text }))}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, password: text }))}
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -195,7 +190,9 @@ export default function AuthScreen() {
                   placeholder="Confirm Password"
                   placeholderTextColor={Colors.textSecondary}
                   value={formData.confirmPassword}
-                  onChangeText={(text) => setFormData(prev => ({ ...prev, confirmPassword: text }))}
+                  onChangeText={(text) =>
+                    setFormData((prev) => ({ ...prev, confirmPassword: text }))
+                  }
                   secureTextEntry={!showConfirmPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -220,32 +217,33 @@ export default function AuthScreen() {
                 <Text style={styles.roleLabel}>Account Type</Text>
                 <View style={styles.roleButtons}>
                   <Pressable
-                    style={[
-                      styles.roleButton,
-                      formData.role === 'user' && styles.roleButtonActive
-                    ]}
-                    onPress={() => setFormData(prev => ({ ...prev, role: 'user' }))}
+                    style={[styles.roleButton, formData.role === 'user' && styles.roleButtonActive]}
+                    onPress={() => setFormData((prev) => ({ ...prev, role: 'user' }))}
                     testID="user-role-button"
                   >
-                    <Text style={[
-                      styles.roleButtonText,
-                      formData.role === 'user' && styles.roleButtonTextActive
-                    ]}>
+                    <Text
+                      style={[
+                        styles.roleButtonText,
+                        formData.role === 'user' && styles.roleButtonTextActive,
+                      ]}
+                    >
                       Regular User
                     </Text>
                   </Pressable>
                   <Pressable
                     style={[
                       styles.roleButton,
-                      formData.role === 'parent' && styles.roleButtonActive
+                      formData.role === 'parent' && styles.roleButtonActive,
                     ]}
-                    onPress={() => setFormData(prev => ({ ...prev, role: 'parent' }))}
+                    onPress={() => setFormData((prev) => ({ ...prev, role: 'parent' }))}
                     testID="parent-role-button"
                   >
-                    <Text style={[
-                      styles.roleButtonText,
-                      formData.role === 'parent' && styles.roleButtonTextActive
-                    ]}>
+                    <Text
+                      style={[
+                        styles.roleButtonText,
+                        formData.role === 'parent' && styles.roleButtonTextActive,
+                      ]}
+                    >
                       Parent/Guardian
                     </Text>
                   </Pressable>
@@ -290,12 +288,10 @@ export default function AuthScreen() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
+              {isLogin ? "Don't have an account? " : 'Already have an account? '}
             </Text>
             <Pressable onPress={toggleMode} testID="toggle-mode-button">
-              <Text style={styles.footerLink}>
-                {isLogin ? 'Sign Up' : 'Sign In'}
-              </Text>
+              <Text style={styles.footerLink}>{isLogin ? 'Sign Up' : 'Sign In'}</Text>
             </Pressable>
           </View>
         </ScrollView>

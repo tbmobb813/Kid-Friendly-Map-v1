@@ -25,7 +25,9 @@ export const addInAppBannerListener = (cb: (banner: InAppBanner) => void) => {
 };
 export const showInAppBanner = (banner: InAppBanner) => {
   inAppListeners.forEach((l) => {
-    try { l(banner); } catch {}
+    try {
+      l(banner);
+    } catch {}
   });
 };
 
@@ -37,15 +39,22 @@ export const initializeNotifications = async () => {
   try {
     const { Notifications } = require('expo-notifications');
     Notifications.setNotificationHandler({
-      handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: true, shouldSetBadge: false }),
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
     });
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
-        name: 'Default', importance: Notifications.AndroidImportance.DEFAULT,
+        name: 'Default',
+        importance: Notifications.AndroidImportance.DEFAULT,
       });
       await Notifications.setNotificationChannelAsync('high', {
-        name: 'High Priority', importance: Notifications.AndroidImportance.HIGH,
-        sound: 'default', vibrationPattern: [0, 250, 250, 250],
+        name: 'High Priority',
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: 'default',
+        vibrationPattern: [0, 250, 250, 250],
       });
     }
   } catch (e) {
@@ -55,7 +64,7 @@ export const initializeNotifications = async () => {
 
 export const showNotification = async (options: NotificationOptions) => {
   const { title, body, icon = '/icon.png', priority = 'normal', scheduleAt } = options;
-  
+
   if (Platform.OS === 'web') {
     if ('Notification' in window) {
       if (Notification.permission === 'granted') {
@@ -134,8 +143,8 @@ export const showDevelopmentBuildRecommendation = () => {
       'For the best experience with notifications and background features, consider using a development build instead of Expo Go.\n\nLearn more at: docs.expo.dev/develop/development-builds/',
       [
         { text: 'Maybe Later', style: 'cancel' },
-        { text: 'Learn More', onPress: () => console.log('Open development build docs') }
-      ]
+        { text: 'Learn More', onPress: () => console.log('Open development build docs') },
+      ],
     );
   }
 };

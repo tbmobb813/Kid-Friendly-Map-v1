@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, FlatList, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import SearchBar from "./SearchBar";
-import { MapPin, Clock, Star } from "lucide-react-native";
-import { useDebounce } from "@/hooks/useDebounce";
-import { Place } from "@/types/navigation";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import SearchBar from './SearchBar';
+import { MapPin, Clock, Star } from 'lucide-react-native';
+import { useDebounce } from '@/hooks/useDebounce';
+import { Place } from '@/types/navigation';
 
 type SearchSuggestion = {
   id: string;
   text: string;
-  type: "recent" | "popular" | "place";
+  type: 'recent' | 'popular' | 'place';
   place?: Place;
 };
 
@@ -37,10 +37,14 @@ const SearchWithSuggestions: React.FC<SearchWithSuggestionsProps> = ({
 
   const getSuggestionIcon = (type: string) => {
     switch (type) {
-      case "recent": return <Clock size={16} color={Colors.textLight} />;
-      case "popular": return <Star size={16} color={Colors.warning} />;
-      case "place": return <MapPin size={16} color={Colors.primary} />;
-      default: return <MapPin size={16} color={Colors.textLight} />;
+      case 'recent':
+        return <Clock size={16} color={Colors.textLight} />;
+      case 'popular':
+        return <Star size={16} color={Colors.warning} />;
+      case 'place':
+        return <MapPin size={16} color={Colors.primary} />;
+      default:
+        return <MapPin size={16} color={Colors.textLight} />;
     }
   };
 
@@ -65,12 +69,12 @@ const SearchWithSuggestions: React.FC<SearchWithSuggestionsProps> = ({
         value={value}
         onChangeText={onChangeText}
         onClear={() => {
-          onChangeText("");
+          onChangeText('');
           setShowSuggestions(false);
         }}
         placeholder={placeholder}
       />
-      
+
       {showSuggestions && (
         <View style={styles.suggestionsContainer}>
           <FlatList
@@ -88,16 +92,16 @@ const SearchWithSuggestions: React.FC<SearchWithSuggestionsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: 'relative',
   },
   suggestionsContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 60,
     left: 0,
     right: 0,
     backgroundColor: Colors.card,
     borderRadius: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -108,8 +112,8 @@ const styles = StyleSheet.create({
     maxHeight: 200,
   },
   suggestionItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,

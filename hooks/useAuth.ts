@@ -9,22 +9,22 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     token: null,
     isAuthenticated: false,
     isLoading: true,
-    error: null
+    error: null,
   });
 
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     log.debug('Setting up auth context');
-    
+
     // Listen to auth state changes
     const unsubscribe = authManager.addListener((state) => {
-      log.debug('Auth state updated', { 
+      log.debug('Auth state updated', {
         isAuthenticated: state.isAuthenticated,
-        userId: state.user?.id 
+        userId: state.user?.id,
       });
       setAuthState(state);
-      
+
       if (!isInitialized) {
         setIsInitialized(true);
       }
@@ -32,12 +32,12 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
     // Get initial state
     setAuthState(authManager.authState);
-    
+
     // Mark as initialized after a short delay to allow auth manager to initialize
     const initTimer = setTimeout(() => {
       if (!isInitialized) {
         setIsInitialized(true);
-        setAuthState(prev => ({ ...prev, isLoading: false }));
+        setAuthState((prev) => ({ ...prev, isLoading: false }));
       }
     }, 1000);
 
@@ -48,60 +48,60 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   }, [isInitialized]);
 
   const login = useCallback(async (credentials: LoginCredentials) => {
-    setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+    setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
+
     try {
       const result = await authManager.login(credentials);
-      
+
       if (!result.success) {
-        setAuthState(prev => ({ 
-          ...prev, 
-          isLoading: false, 
-          error: result.error || 'Login failed' 
+        setAuthState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: result.error || 'Login failed',
         }));
       }
-      
+
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
-      setAuthState(prev => ({ 
-        ...prev, 
-        isLoading: false, 
-        error: errorMessage 
+      setAuthState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: errorMessage,
       }));
       return { success: false, error: errorMessage };
     }
   }, []);
 
   const register = useCallback(async (data: RegisterData) => {
-    setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+    setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
+
     try {
       const result = await authManager.register(data);
-      
+
       if (!result.success) {
-        setAuthState(prev => ({ 
-          ...prev, 
-          isLoading: false, 
-          error: result.error || 'Registration failed' 
+        setAuthState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: result.error || 'Registration failed',
         }));
       }
-      
+
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Registration failed';
-      setAuthState(prev => ({ 
-        ...prev, 
-        isLoading: false, 
-        error: errorMessage 
+      setAuthState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: errorMessage,
       }));
       return { success: false, error: errorMessage };
     }
   }, []);
 
   const logout = useCallback(async () => {
-    setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+    setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
+
     try {
       await authManager.logout();
     } catch (error) {
@@ -110,7 +110,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   }, []);
 
   const clearError = useCallback(() => {
-    setAuthState(prev => ({ ...prev, error: null }));
+    setAuthState((prev) => ({ ...prev, error: null }));
   }, []);
 
   const updateProfile = useCallback(async (updates: any) => {
@@ -145,7 +145,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     // State
     ...authState,
     isInitialized,
-    
+
     // Actions
     login,
     register,
@@ -158,11 +158,12 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     setParentalPin,
     extendSession,
     getSessionTimeRemaining,
-    
+
     // Smart routes profile wiring
-    toggleLikedSuggestion: (id: string, liked: boolean) => authManager.toggleLikedSuggestion(id, liked),
+    toggleLikedSuggestion: (id: string, liked: boolean) =>
+      authManager.toggleLikedSuggestion(id, liked),
     saveRoute: (routeId: string, save: boolean) => authManager.saveRoute(routeId, save),
-    
+
     // Utilities
     isParentUser: authState.user?.role === 'parent',
     isChildUser: authState.user?.role === 'child',
@@ -170,7 +171,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     canAccessFeature: (feature: string) => {
       if (!authState.user?.parentalControls?.isEnabled) return true;
       return !authState.user.parentalControls.restrictions.includes(feature);
-    }
+    },
   };
 });
 
@@ -181,17 +182,17 @@ export function useAuthUser() {
 }
 
 export function useAuthActions() {
-  const { 
-    login, 
-    register, 
-    logout, 
-    updateProfile, 
-    changePassword, 
+  const {
+    login,
+    register,
+    logout,
+    updateProfile,
+    changePassword,
     resetPassword,
     verifyParentalPin,
-    setParentalPin
+    setParentalPin,
   } = useAuth();
-  
+
   return {
     login,
     register,
@@ -200,21 +201,21 @@ export function useAuthActions() {
     changePassword,
     resetPassword,
     verifyParentalPin,
-    setParentalPin
+    setParentalPin,
   };
 }
 
 export function useParentalControls() {
-  const { 
-    user, 
-    hasParentalControls, 
-    canAccessFeature, 
-    verifyParentalPin, 
+  const {
+    user,
+    hasParentalControls,
+    canAccessFeature,
+    verifyParentalPin,
     setParentalPin,
     isParentUser,
-    isChildUser
+    isChildUser,
   } = useAuth();
-  
+
   return {
     hasParentalControls,
     canAccessFeature,
@@ -222,6 +223,6 @@ export function useParentalControls() {
     setParentalPin,
     isParentUser,
     isChildUser,
-    parentalControls: user?.parentalControls
+    parentalControls: user?.parentalControls,
   };
 }

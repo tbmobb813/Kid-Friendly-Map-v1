@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useRouter } from "expo-router";
-import OnboardingFlow from "@/components/OnboardingFlow";
-import Colors from "@/constants/colors";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import OnboardingFlow from '@/components/OnboardingFlow';
+import Colors from '@/constants/colors';
 
 export default function OnboardingScreen() {
   const router = useRouter();

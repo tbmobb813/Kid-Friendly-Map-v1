@@ -101,13 +101,11 @@ const DevicePingHistory: React.FC<DevicePingHistoryProps> = ({ testId }) => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} testID={testId}>
       <Text style={styles.title}>Device Ping History</Text>
-      
+
       {sortedPings.map((ping) => (
         <View key={ping.id} style={styles.pingCard}>
           <View style={styles.pingHeader}>
-            <View style={styles.pingIconContainer}>
-              {getPingIcon(ping.type)}
-            </View>
+            <View style={styles.pingIconContainer}>{getPingIcon(ping.type)}</View>
             <View style={styles.pingInfo}>
               <Text style={styles.pingType}>{getPingTypeText(ping.type)}</Text>
               <Text style={styles.pingDate}>
@@ -116,20 +114,20 @@ const DevicePingHistory: React.FC<DevicePingHistoryProps> = ({ testId }) => {
             </View>
             <View style={styles.statusContainer}>
               {getStatusIcon(ping.status)}
-              <Text style={[
-                styles.statusText,
-                ping.status === 'acknowledged' && styles.successText,
-                ping.status === 'failed' && styles.errorText,
-                ping.status === 'pending' && styles.warningText,
-              ]}>
+              <Text
+                style={[
+                  styles.statusText,
+                  ping.status === 'acknowledged' && styles.successText,
+                  ping.status === 'failed' && styles.errorText,
+                  ping.status === 'pending' && styles.warningText,
+                ]}
+              >
                 {getStatusText(ping.status)}
               </Text>
             </View>
           </View>
 
-          {ping.message && (
-            <Text style={styles.pingMessage}>{ping.message}</Text>
-          )}
+          {ping.message && <Text style={styles.pingMessage}>{ping.message}</Text>}
 
           {ping.response && (
             <View style={styles.responseContainer}>
@@ -137,12 +135,13 @@ const DevicePingHistory: React.FC<DevicePingHistoryProps> = ({ testId }) => {
               <Text style={styles.responseTime}>
                 Acknowledged at {formatTime(ping.response.timestamp)}
               </Text>
-              
+
               {ping.response.location && (
                 <View style={styles.locationContainer}>
                   <MapPin size={14} color={Colors.success} />
                   <Text style={styles.locationText}>
-                    Location shared: {ping.response.location.latitude.toFixed(4)}, {ping.response.location.longitude.toFixed(4)}
+                    Location shared: {ping.response.location.latitude.toFixed(4)},{' '}
+                    {ping.response.location.longitude.toFixed(4)}
                   </Text>
                 </View>
               )}

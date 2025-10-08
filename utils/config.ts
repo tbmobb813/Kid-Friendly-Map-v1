@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 let Constants: any;
 try {
   // Prefer using require so this will work under CommonJS test runner.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+
   Constants = require('expo-constants');
 } catch (e) {
   // Fallback shape used by the app; kept small and stable for tests.
@@ -156,18 +156,16 @@ export const Config = {
   // Environment
   isDev: __DEV__,
   isProduction: !__DEV__,
-  
+
   // API Configuration
-  API_BASE_URL: __DEV__ 
-    ? 'http://localhost:3000/api' 
-    : 'https://your-production-api.com/api',
-  
+  API_BASE_URL: __DEV__ ? 'http://localhost:3000/api' : 'https://your-production-api.com/api',
+
   API_TIMEOUT: 10000,
-  
+
   // App Configuration
   APP_VERSION: Constants.expoConfig?.version || '1.0.0',
   APP_NAME: Constants.expoConfig?.name || 'Transit Navigator',
-  
+
   // Feature Flags
   FEATURES: {
     VOICE_NAVIGATION: true,
@@ -179,7 +177,7 @@ export const Config = {
     PUSH_NOTIFICATIONS: true,
     GEOFENCING: Platform.OS !== 'web',
   },
-  
+
   // Cache Configuration
   CACHE: {
     DEFAULT_TTL: 5 * 60 * 1000, // 5 minutes
@@ -187,7 +185,7 @@ export const Config = {
     ROUTES_TTL: 2 * 60 * 1000, // 2 minutes
     USER_DATA_TTL: 60 * 60 * 1000, // 1 hour
   },
-  
+
   // Location Configuration
   LOCATION: {
     ACCURACY: 'high' as const,
@@ -195,7 +193,7 @@ export const Config = {
     MAX_AGE: 60000,
     DISTANCE_FILTER: 10, // meters
   },
-  
+
   // Map Configuration
   MAP: {
     DEFAULT_ZOOM: mapDefaults.defaultZoom,
@@ -236,14 +234,23 @@ export const Config = {
     AUTO_SESSION_TRACKING: monitoringSettings.autoSessionTracking,
     PROFILE_SAMPLE_RATE: monitoringSettings.profileSampleRate,
   },
-  
+
+  MONITORING: {
+    ENABLED: monitoringSettings.enabled,
+    SENTRY_DSN: monitoringSettings.sentryDsn,
+    ENVIRONMENT: monitoringSettings.environment,
+    TRACES_SAMPLE_RATE: monitoringSettings.tracesSampleRate,
+    AUTO_SESSION_TRACKING: monitoringSettings.autoSessionTracking,
+    PROFILE_SAMPLE_RATE: monitoringSettings.profileSampleRate,
+  },
+
   // Performance
   PERFORMANCE: {
     ENABLE_FLIPPER: __DEV__,
     LOG_SLOW_RENDERS: __DEV__,
     RENDER_TIMEOUT: 16, // 60fps = 16ms per frame
   },
-  
+
   // Platform-specific
   PLATFORM: {
     IS_IOS: Platform.OS === 'ios',
@@ -251,20 +258,20 @@ export const Config = {
     IS_WEB: Platform.OS === 'web',
     HAS_NOTCH: Constants.statusBarHeight > 20,
   },
-  
+
   // Regional Configuration
   REGIONS: {
     DEFAULT: 'new-york',
     SUPPORTED: ['new-york', 'london', 'tokyo'],
   },
-  
+
   // Accessibility
   ACCESSIBILITY: {
     MINIMUM_TOUCH_SIZE: 44,
     FONT_SCALE_FACTOR: 1.2,
     HIGH_CONTRAST_THRESHOLD: 4.5,
   },
-  
+
   // Security
   SECURITY: {
     ENABLE_SSL_PINNING: !__DEV__,

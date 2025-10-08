@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -229,14 +229,10 @@
 <a name='L164'></a><a href='#L164'>164</a>
 <a name='L165'></a><a href='#L165'>165</a>
 <a name='L166'></a><a href='#L166'>166</a>
-<a name='L167'></a><a href='#L167'>167</a>
-<a name='L168'></a><a href='#L168'>168</a>
-<a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L167'></a><a href='#L167'>167</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -248,16 +244,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -402,12 +394,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable } from "react-native";</span>
-<span class="cstat-no" title="statement not covered" >import Colors from "@/constants/colors";</span>
-<span class="cstat-no" title="statement not covered" >import { Trophy, MapPin, Zap, Target } from "lucide-react-native";</span>
-import { UserStats } from "@/types/gamification";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { Trophy, MapPin, Zap, Target } from 'lucide-react-native';
+import { UserStats } from '@/types/gamification';
 &nbsp;
 type UserStatsCardProps = {
   stats: UserStats;
@@ -415,10 +407,11 @@ type UserStatsCardProps = {
 };
 &nbsp;
 const UserStatsCard: React.FC&lt;UserStatsCardProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> stats, onPetClick }) =&gt; {</span>
-  const getProgressToNextLevel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+  const getProgressToNextLevel = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
     const pointsForCurrentLevel = <span class="cstat-no" title="statement not covered" >(stats.level - 1) * 200;</span>
     const pointsForNextLevel = <span class="cstat-no" title="statement not covered" >stats.level * 200;</span>
-    const progress = <span class="cstat-no" title="statement not covered" >(stats.totalPoints - pointsForCurrentLevel) / (pointsForNextLevel - pointsForCurrentLevel);</span>
+    const progress =
+<span class="cstat-no" title="statement not covered" >      (stats.totalPoints - pointsForCurrentLevel) / (pointsForNextLevel - pointsForCurrentLevel);</span>
 <span class="cstat-no" title="statement not covered" >    return Math.max(0, Math.min(1, progress));</span>
   };
 &nbsp;
@@ -429,7 +422,7 @@ const UserStatsCard: React.FC&lt;UserStatsCardProps&gt; = <span class="cstat-no"
           &lt;Trophy size={24} color={Colors.primary} /&gt;
           &lt;Text style={styles.levelText}&gt;Level {stats.level}&lt;/Text&gt;
         &lt;/View&gt;
-        
+&nbsp;
         &lt;View style={styles.headerRight}&gt;
           &lt;Text style={styles.pointsText}&gt;{stats.totalPoints} points&lt;/Text&gt;
           {onPetClick &amp;&amp; (
@@ -443,12 +436,7 @@ const UserStatsCard: React.FC&lt;UserStatsCardProps&gt; = <span class="cstat-no"
 &nbsp;
       &lt;View style={styles.progressContainer}&gt;
         &lt;View style={styles.progressBar}&gt;
-          &lt;View 
-            style={[
-              styles.progressFill, 
-              { width: `${getProgressToNextLevel() * 100}%` }
-            ]} 
-          /&gt;
+          &lt;View style={[styles.progressFill, { width: `${getProgressToNextLevel() * 100}%` }]} /&gt;
         &lt;/View&gt;
         &lt;Text style={styles.progressText}&gt;
           {Math.round(getProgressToNextLevel() * 100)}% to Level {stats.level + 1}
@@ -484,26 +472,26 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     borderRadius: 16,
     padding: 20,
     margin: 16,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
   },
   levelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   levelText: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   headerRight: {
@@ -512,7 +500,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
   pointsText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
   },
   petButton: {
@@ -539,40 +527,40 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
     height: 8,
     backgroundColor: Colors.border,
     borderRadius: 4,
-    overflow: "hidden",
+    overflow: 'hidden',
     marginBottom: 8,
   },
   progressFill: {
-    height: "100%",
+    height: '100%',
     backgroundColor: Colors.primary,
     borderRadius: 4,
   },
   progressText: {
     fontSize: 12,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
   },
   statsGrid: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   statItem: {
-    alignItems: "center",
+    alignItems: 'center',
     gap: 4,
   },
   statNumber: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
   },
   statLabel: {
     fontSize: 12,
     color: Colors.textLight,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default UserStatsCard;</span>
+export default UserStatsCard;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -580,7 +568,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

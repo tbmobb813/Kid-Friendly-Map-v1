@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState, useEffect, useCallback } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UseAsyncStorageReturn<T> = {
   data: T | null;
@@ -10,10 +10,7 @@ type UseAsyncStorageReturn<T> = {
   refresh: () => Promise<void>;
 };
 
-export function useAsyncStorage<T>(
-  key: string,
-  defaultValue?: T
-): UseAsyncStorageReturn<T> {
+export function useAsyncStorage<T>(key: string, defaultValue?: T): UseAsyncStorageReturn<T> {
   const [data, setDataState] = useState<T | null>(defaultValue || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,17 +37,20 @@ export function useAsyncStorage<T>(
     }
   }, [key, defaultValue]);
 
-  const setData = useCallback(async (value: T) => {
-    try {
-      setError(null);
-      await AsyncStorage.setItem(key, JSON.stringify(value));
-      setDataState(value);
-    } catch (err) {
-      console.error(`Error saving ${key}:`, err);
-      setError(`Failed to save ${key}`);
-      throw err;
-    }
-  }, [key]);
+  const setData = useCallback(
+    async (value: T) => {
+      try {
+        setError(null);
+        await AsyncStorage.setItem(key, JSON.stringify(value));
+        setDataState(value);
+      } catch (err) {
+        console.error(`Error saving ${key}:`, err);
+        setError(`Failed to save ${key}`);
+        throw err;
+      }
+    },
+    [key],
+  );
 
   const removeData = useCallback(async () => {
     try {

@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+  adapter:
+    build: .
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - MTA_API_KEY=${MTA_API_KEY}
+      - API_AUTH_KEY=${API_AUTH_KEY}
+    depends_on:
+      - redis
+    ports:
+      - "3001:3001"
+volumes:
+  redis-data:

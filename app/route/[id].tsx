@@ -1,45 +1,35 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import Colors from "@/constants/colors";
-import DirectionStep from "@/components/DirectionStep";
-import MapPlaceholder from "@/components/MapPlaceholder";
-import SafetyPanel from "@/components/SafetyPanel";
-import { useNavigationStore } from "@/stores/navigationStore";
-import { Clock, Navigation, MapPin } from "lucide-react-native";
-import VoiceNavigation from "@/components/VoiceNavigation";
-import FunFactCard from "@/components/FunFactCard";
-import { getRandomFunFact } from "@/mocks/funFacts";
-import useLocation from "@/hooks/useLocation";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import Colors from '@/constants/colors';
+import DirectionStep from '@/components/DirectionStep';
+import MapPlaceholder from '@/components/MapPlaceholder';
+import SafetyPanel from '@/components/SafetyPanel';
+import { useNavigationStore } from '@/stores/navigationStore';
+import { Clock, Navigation, MapPin } from 'lucide-react-native';
+import VoiceNavigation from '@/components/VoiceNavigation';
+import FunFactCard from '@/components/FunFactCard';
+import { getRandomFunFact } from '@/mocks/funFacts';
+import useLocation from '@/hooks/useLocation';
 
 export default function RouteDetailScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const { location } = useLocation();
-  
-  const { 
-    origin,
-    destination,
-    availableRoutes,
-    selectedRoute
-  } = useNavigationStore();
+
+  const { origin, destination, availableRoutes, selectedRoute } = useNavigationStore();
 
   // Find the route by ID
-  const route = selectedRoute?.id === id 
-    ? selectedRoute 
-    : availableRoutes.find(r => r.id === id);
+  const route = selectedRoute?.id === id ? selectedRoute : availableRoutes.find((r) => r.id === id);
 
   const [showFunFact, setShowFunFact] = useState(true);
-  const [currentFunFact] = useState(getRandomFunFact("subway"));
+  const [currentFunFact] = useState(getRandomFunFact('subway'));
 
   if (!route || !origin || !destination) {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>Route not found</Text>
-        <Pressable 
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
+        <Pressable style={styles.backButton} onPress={() => router.back()}>
           <Text style={styles.backButtonText}>Go Back</Text>
         </Pressable>
       </View>
@@ -48,30 +38,38 @@ export default function RouteDetailScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <MapPlaceholder 
-        message={`Map showing route from ${origin.name} to ${destination.name}`} 
-      />
-      
-      <VoiceNavigation 
-        currentStep={route.steps[0]?.from ? `${route.steps[0].type === 'walk' ? 'Walk' : 'Take'} from ${route.steps[0].from} to ${route.steps[0].to}` : "Starting your journey"}
+      <MapPlaceholder message={`Map showing route from ${origin.name} to ${destination.name}`} />
+
+      <VoiceNavigation
+        currentStep={
+          route.steps[0]?.from
+            ? `${route.steps[0].type === 'walk' ? 'Walk' : 'Take'} from ${route.steps[0].from} to ${
+                route.steps[0].to
+              }`
+            : 'Starting your journey'
+        }
       />
 
-      <SafetyPanel 
-        currentLocation={location} 
-        currentPlace={destination ? {
-          id: destination.id,
-          name: destination.name
-        } : undefined}
+      <SafetyPanel
+        currentLocation={location}
+        currentPlace={
+          destination
+            ? {
+                id: destination.id,
+                name: destination.name,
+              }
+            : undefined
+        }
       />
 
       {showFunFact && (
-        <FunFactCard 
+        <FunFactCard
           fact={currentFunFact}
           location="Transit System"
           onDismiss={() => setShowFunFact(false)}
         />
       )}
-      
+
       <View style={styles.contentContainer}>
         <View style={styles.routeSummary}>
           <View style={styles.locationContainer}>
@@ -83,9 +81,9 @@ export default function RouteDetailScreen() {
                 {origin.name}
               </Text>
             </View>
-            
+
             <View style={styles.locationConnector} />
-            
+
             <View style={styles.locationRow}>
               <View style={[styles.locationPin, styles.destinationPin]}>
                 <MapPin size={16} color="#FFFFFF" />
@@ -95,7 +93,7 @@ export default function RouteDetailScreen() {
               </Text>
             </View>
           </View>
-          
+
           <View style={styles.timeInfo}>
             <Text style={styles.duration}>{route.totalDuration} min</Text>
             <View style={styles.timeRow}>
@@ -106,19 +104,15 @@ export default function RouteDetailScreen() {
             </View>
           </View>
         </View>
-        
+
         <Text style={styles.sectionTitle}>Step by Step Directions</Text>
-        
+
         <View style={styles.stepsContainer}>
           {route.steps.map((step, index) => (
-            <DirectionStep
-              key={step.id}
-              step={step}
-              isLast={index === route.steps.length - 1}
-            />
+            <DirectionStep key={step.id} step={step} isLast={index === route.steps.length - 1} />
           ))}
         </View>
-        
+
         <View style={styles.tipContainer}>
           <Text style={styles.tipTitle}>Kid-Friendly Tip</Text>
           <Text style={styles.tipText}>
@@ -148,16 +142,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   locationPin: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   originPin: {
@@ -185,13 +179,13 @@ const styles = StyleSheet.create({
   },
   duration: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 4,
   },
   timeRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   clockIcon: {
     marginRight: 4,
@@ -202,7 +196,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 16,
   },
@@ -210,7 +204,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   tipContainer: {
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 24,
@@ -219,7 +213,7 @@ const styles = StyleSheet.create({
   },
   tipTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
     marginBottom: 8,
   },
@@ -230,8 +224,8 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
   },
   errorText: {
@@ -246,8 +240,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   backButtonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });

@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TransitStep } from "@/types/navigation";
-import Colors from "@/constants/colors";
-import TransitStepIndicator from "./TransitStepIndicator";
-import { Clock, ArrowRight } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { TransitStep } from '@/types/navigation';
+import Colors from '@/constants/colors';
+import TransitStepIndicator from './TransitStepIndicator';
+import { Clock, ArrowRight } from 'lucide-react-native';
 
 type DirectionStepProps = {
   step: TransitStep;
@@ -17,7 +17,7 @@ const DirectionStep: React.FC<DirectionStepProps> = ({ step, isLast }) => {
         <TransitStepIndicator step={step} size="large" />
         {!isLast && <View style={styles.connector} />}
       </View>
-      
+
       <View style={styles.rightColumn}>
         <View style={styles.headerRow}>
           <Text style={styles.stepType}>
@@ -26,20 +26,20 @@ const DirectionStep: React.FC<DirectionStepProps> = ({ step, isLast }) => {
           </Text>
           <Text style={styles.duration}>{step.duration} min</Text>
         </View>
-        
+
         <View style={styles.locationContainer}>
           <View style={styles.locationRow}>
             <Text style={styles.locationLabel}>From:</Text>
             <Text style={styles.locationText}>{step.from}</Text>
           </View>
-          
+
           <View style={styles.locationRow}>
             <Text style={styles.locationLabel}>To:</Text>
             <Text style={styles.locationText}>{step.to}</Text>
           </View>
         </View>
-        
-        {(step.departureTime && step.arrivalTime) && (
+
+        {step.departureTime && step.arrivalTime && (
           <View style={styles.timeContainer}>
             <Clock size={14} color={Colors.textLight} style={styles.clockIcon} />
             <Text style={styles.timeText}>
@@ -47,7 +47,7 @@ const DirectionStep: React.FC<DirectionStepProps> = ({ step, isLast }) => {
             </Text>
             {step.stops !== undefined && (
               <Text style={styles.stopsText}>
-                {step.stops} {step.stops === 1 ? "stop" : "stops"}
+                {step.stops} {step.stops === 1 ? 'stop' : 'stops'}
               </Text>
             )}
           </View>
@@ -59,11 +59,11 @@ const DirectionStep: React.FC<DirectionStepProps> = ({ step, isLast }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 16,
   },
   leftColumn: {
-    alignItems: "center",
+    alignItems: 'center',
     marginRight: 16,
   },
   connector: {
@@ -77,19 +77,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   stepType: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
   },
   duration: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
   },
   locationContainer: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   locationRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 4,
   },
   locationLabel: {
@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   timeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   clockIcon: {
     marginRight: 4,

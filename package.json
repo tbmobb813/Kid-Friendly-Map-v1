@@ -2,6 +2,7 @@
   "name": "expo-app",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "start": "cross-env NODE_OPTIONS=\"--experimental-specifier-resolution=node\" expo start",
     "start:clean": "rimraf node_modules/.cache .expo && expo start --clear",

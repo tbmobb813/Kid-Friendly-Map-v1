@@ -41,9 +41,10 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
       id: 'platform',
       name: 'Platform Compatibility',
       status: platformStatus,
-      message: Platform.OS === 'web' 
-        ? 'Running on web - some features limited' 
-        : `Running on ${Platform.OS} - full features available`,
+      message:
+        Platform.OS === 'web'
+          ? 'Running on web - some features limited'
+          : `Running on ${Platform.OS} - full features available`,
       lastChecked: now,
     });
 
@@ -90,9 +91,10 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
           id: 'location',
           name: 'Location Services',
           status: status === 'granted' ? 'healthy' : 'warning',
-          message: status === 'granted' 
-            ? 'Location permissions granted' 
-            : 'Location permissions needed for full functionality',
+          message:
+            status === 'granted'
+              ? 'Location permissions granted'
+              : 'Location permissions needed for full functionality',
           lastChecked: now,
         });
       } else {
@@ -101,9 +103,7 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
           id: 'location',
           name: 'Location Services',
           status: hasGeolocation ? 'healthy' : 'error',
-          message: hasGeolocation 
-            ? 'Geolocation API available' 
-            : 'Geolocation not supported',
+          message: hasGeolocation ? 'Geolocation API available' : 'Geolocation not supported',
           lastChecked: now,
         });
       }
@@ -118,19 +118,19 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
     }
 
     // Memory usage check (basic)
-    const memoryStatus = Platform.OS === 'web' && (performance as any).memory 
-      ? ((performance as any).memory.usedJSHeapSize / (performance as any).memory.jsHeapSizeLimit) > 0.8 
-        ? 'warning' 
-        : 'healthy'
-      : 'healthy';
-    
+    const memoryStatus =
+      Platform.OS === 'web' && (performance as any).memory
+        ? (performance as any).memory.usedJSHeapSize / (performance as any).memory.jsHeapSizeLimit >
+          0.8
+          ? 'warning'
+          : 'healthy'
+        : 'healthy';
+
     checks.push({
       id: 'memory',
       name: 'Memory Usage',
       status: memoryStatus,
-      message: memoryStatus === 'warning' 
-        ? 'High memory usage detected' 
-        : 'Memory usage normal',
+      message: memoryStatus === 'warning' ? 'High memory usage detected' : 'Memory usage normal',
       lastChecked: now,
     });
 
@@ -140,16 +140,16 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
 
   useEffect(() => {
     runHealthChecks();
-    
+
     // Run health checks every 5 minutes
     const interval = setInterval(runHealthChecks, 5 * 60 * 1000);
-    
+
     return () => clearInterval(interval);
   }, [isConnected]);
 
   const getOverallStatus = (): 'healthy' | 'warning' | 'error' => {
-    if (healthChecks.some(check => check.status === 'error')) return 'error';
-    if (healthChecks.some(check => check.status === 'warning')) return 'warning';
+    if (healthChecks.some((check) => check.status === 'error')) return 'error';
+    if (healthChecks.some((check) => check.status === 'warning')) return 'warning';
     return 'healthy';
   };
 
@@ -176,8 +176,8 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
   };
 
   const overallStatus = getOverallStatus();
-  const errorCount = healthChecks.filter(check => check.status === 'error').length;
-  const warningCount = healthChecks.filter(check => check.status === 'warning').length;
+  const errorCount = healthChecks.filter((check) => check.status === 'error').length;
+  const warningCount = healthChecks.filter((check) => check.status === 'warning').length;
 
   return (
     <View style={styles.container} testID={testId}>
@@ -185,18 +185,23 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
         <View style={styles.statusIndicator}>
           {getStatusIcon(overallStatus)}
           <Text style={[styles.statusText, { color: getStatusColor(overallStatus) }]}>
-            System {overallStatus === 'healthy' ? 'Healthy' : overallStatus === 'warning' ? 'Issues Detected' : 'Errors Found'}
+            System{' '}
+            {overallStatus === 'healthy'
+              ? 'Healthy'
+              : overallStatus === 'warning'
+              ? 'Issues Detected'
+              : 'Errors Found'}
           </Text>
         </View>
-        
-        <Pressable 
+
+        <Pressable
           style={[styles.refreshButton, isRunningChecks && styles.refreshButtonDisabled]}
           onPress={runHealthChecks}
           disabled={isRunningChecks}
         >
-          <RefreshCw 
-            size={16} 
-            color={isRunningChecks ? Colors.textLight : Colors.primary} 
+          <RefreshCw
+            size={16}
+            color={isRunningChecks ? Colors.textLight : Colors.primary}
             style={isRunningChecks ? styles.spinning : undefined}
           />
         </Pressable>
@@ -236,9 +241,8 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
         <View style={styles.actionSection}>
           <Text style={styles.actionTitle}>Recommended Actions:</Text>
           <Text style={styles.actionText}>
-            • Check your internet connection{'\n'}
-            • Restart the app if issues persist{'\n'}
-            • Contact support if problems continue
+            • Check your internet connection{'\n'}• Restart the app if issues persist{'\n'}• Contact
+            support if problems continue
           </Text>
         </View>
       )}

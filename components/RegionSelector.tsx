@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, FlatList, Pressable } from "react-native";
-import Colors from "@/constants/colors";
-import { RegionConfig } from "@/types/region";
-import { MapPin, Check } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
+import Colors from '@/constants/colors';
+import { RegionConfig } from '@/types/region';
+import { MapPin, Check } from 'lucide-react-native';
 
 type RegionSelectorProps = {
   regions: RegionConfig[];
@@ -17,10 +17,7 @@ const RegionSelector: React.FC<RegionSelectorProps> = ({
 }) => {
   const renderRegion = ({ item }: { item: RegionConfig }) => (
     <Pressable
-      style={[
-        styles.regionItem,
-        selectedRegion === item.id && styles.selectedRegion
-      ]}
+      style={[styles.regionItem, selectedRegion === item.id && styles.selectedRegion]}
       onPress={() => onSelectRegion(item.id)}
     >
       <View style={styles.regionInfo}>
@@ -33,9 +30,7 @@ const RegionSelector: React.FC<RegionSelectorProps> = ({
           </Text>
         </View>
       </View>
-      {selectedRegion === item.id && (
-        <Check size={24} color={Colors.success} />
-      )}
+      {selectedRegion === item.id && <Check size={24} color={Colors.success} />}
     </Pressable>
   );
 
@@ -45,7 +40,7 @@ const RegionSelector: React.FC<RegionSelectorProps> = ({
       <Text style={styles.subtitle}>
         Select your city to get accurate transit information and local content.
       </Text>
-      
+
       <FlatList
         data={regions}
         renderItem={renderRegion}
@@ -63,15 +58,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginBottom: 8,
-    textAlign: "center",
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
     color: Colors.textLight,
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 24,
     lineHeight: 22,
   },
@@ -79,23 +74,23 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   regionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: Colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 2,
-    borderColor: "transparent",
+    borderColor: 'transparent',
   },
   selectedRegion: {
     borderColor: Colors.primary,
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
   },
   regionInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   regionText: {
@@ -104,7 +99,7 @@ const styles = StyleSheet.create({
   },
   regionName: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },

@@ -1,13 +1,13 @@
 import createContextHook from '@nkzw/create-context-hook';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { 
-  SafeZone, 
-  CheckInRequest, 
-  ParentalSettings, 
-  EmergencyContact, 
-  ParentDashboardData, 
-  DevicePingRequest 
+import {
+  SafeZone,
+  CheckInRequest,
+  ParentalSettings,
+  EmergencyContact,
+  ParentDashboardData,
+  DevicePingRequest,
 } from '@/types/parental';
 
 const DEFAULT_EMERGENCY_CONTACTS: EmergencyContact[] = [
@@ -180,14 +180,14 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
   };
 
   const updateSafeZone = async (id: string, updates: Partial<SafeZone>) => {
-    const updatedSafeZones = safeZones.map(zone =>
-      zone.id === id ? { ...zone, ...updates } : zone
+    const updatedSafeZones = safeZones.map((zone) =>
+      zone.id === id ? { ...zone, ...updates } : zone,
     );
     await saveSafeZones(updatedSafeZones);
   };
 
   const deleteSafeZone = async (id: string) => {
-    const updatedSafeZones = safeZones.filter(zone => zone.id !== id);
+    const updatedSafeZones = safeZones.filter((zone) => zone.id !== id);
     await saveSafeZones(updatedSafeZones);
   };
 
@@ -207,11 +207,14 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
     return newRequest;
   };
 
-  const completeCheckIn = async (requestId: string, location?: { latitude: number; longitude: number; placeName?: string }) => {
-    const updatedRequests = checkInRequests.map(request =>
+  const completeCheckIn = async (
+    requestId: string,
+    location?: { latitude: number; longitude: number; placeName?: string },
+  ) => {
+    const updatedRequests = checkInRequests.map((request) =>
       request.id === requestId
         ? { ...request, status: 'completed' as const, completedAt: Date.now(), location }
-        : request
+        : request,
     );
     await saveCheckInRequests(updatedRequests);
   };
@@ -230,15 +233,15 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
   };
 
   const updateEmergencyContact = async (id: string, updates: Partial<EmergencyContact>) => {
-    const updatedContacts = settings.emergencyContacts.map(contact =>
-      contact.id === id ? { ...contact, ...updates } : contact
+    const updatedContacts = settings.emergencyContacts.map((contact) =>
+      contact.id === id ? { ...contact, ...updates } : contact,
     );
     const newSettings = { ...settings, emergencyContacts: updatedContacts };
     await saveSettings(newSettings);
   };
 
   const deleteEmergencyContact = async (id: string) => {
-    const updatedContacts = settings.emergencyContacts.filter(contact => contact.id !== id);
+    const updatedContacts = settings.emergencyContacts.filter((contact) => contact.id !== id);
     const newSettings = { ...settings, emergencyContacts: updatedContacts };
     await saveSettings(newSettings);
   };
@@ -258,8 +261,11 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
     return newPing;
   };
 
-  const acknowledgePing = async (pingId: string, location?: { latitude: number; longitude: number }) => {
-    const updatedPings = devicePings.map(ping =>
+  const acknowledgePing = async (
+    pingId: string,
+    location?: { latitude: number; longitude: number },
+  ) => {
+    const updatedPings = devicePings.map((ping) =>
       ping.id === pingId
         ? {
             ...ping,
@@ -269,7 +275,7 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
               location,
             },
           }
-        : ping
+        : ping,
     );
     await saveDevicePings(updatedPings);
   };
@@ -283,7 +289,9 @@ export const [ParentalProvider, useParentalStore] = createContextHook(() => {
     saveDashboardData(updatedData);
   };
 
-  const updateLastKnownLocation = (location: NonNullable<ParentDashboardData['lastKnownLocation']>) => {
+  const updateLastKnownLocation = (
+    location: NonNullable<ParentDashboardData['lastKnownLocation']>,
+  ) => {
     const updatedData = {
       ...dashboardData,
       lastKnownLocation: location,

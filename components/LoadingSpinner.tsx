@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, View, Animated, Platform } from "react-native";
-import Colors from "@/constants/colors";
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, View, Animated, Platform } from 'react-native';
+import Colors from '@/constants/colors';
 
 type LoadingSpinnerProps = {
-  size?: "small" | "medium" | "large";
+  size?: 'small' | 'medium' | 'large';
   color?: string;
 };
 
-const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
-  size = "medium", 
-  color = Colors.primary 
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  size = 'medium',
+  color = Colors.primary,
 }) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
@@ -32,9 +32,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   const getSize = () => {
     switch (size) {
-      case "small": return 20;
-      case "medium": return 32;
-      case "large": return 48;
+      case 'small':
+        return 20;
+      case 'medium':
+        return 32;
+      case 'large':
+        return 48;
     }
   };
 
@@ -60,8 +63,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   spinner: {
     borderWidth: 3,

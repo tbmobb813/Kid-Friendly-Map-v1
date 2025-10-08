@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/86</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
@@ -204,7 +204,16 @@
 <a name='L139'></a><a href='#L139'>139</a>
 <a name='L140'></a><a href='#L140'>140</a>
 <a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,6 +241,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -244,12 +255,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,7 +363,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { Platform, Alert } from 'react-native';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Platform, Alert } from 'react-native';
 &nbsp;
 export type NotificationOptions = {
   title: string;
@@ -363,36 +381,45 @@ type InAppBanner = {
 };
 &nbsp;
 const inAppListeners: Array&lt;(banner: InAppBanner) =&gt; void&gt; = <span class="cstat-no" title="statement not covered" >[];</span>
-export const <span class="cstat-no" title="statement not covered" >addInAppBannerListener = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>c</span>b: (banner: InAppBanner) =&gt; void) =&gt; {</span>
+export const addInAppBannerListener = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>b: (banner: InAppBanner) =&gt; void) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  inAppListeners.push(cb);</span>
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
     const i = <span class="cstat-no" title="statement not covered" >inAppListeners.indexOf(cb);</span>
 <span class="cstat-no" title="statement not covered" >    if (i &gt; -1) <span class="cstat-no" title="statement not covered" >inAppListeners.splice(i, 1);</span></span>
   };
 };
-export const <span class="cstat-no" title="statement not covered" >showInAppBanner = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>b</span>anner: InAppBanner) =&gt; {</span>
+export const showInAppBanner = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(b</span>anner: InAppBanner) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  inAppListeners.forEach(<span class="fstat-no" title="function not covered" >(l</span>) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    try { <span class="cstat-no" title="statement not covered" >l(banner); </span>} catch {}</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      l(banner);</span>
+    } catch {}
   });
 };
 &nbsp;
 // Check if we're running in Expo Go (which has notification limitations)
 const isExpoGo = <span class="cstat-no" title="statement not covered" >__DEV__ &amp;&amp; Platform.OS !== 'web';</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >initializeNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >a</span>sync </span>() =&gt; {</span>
+export const initializeNotifications = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (Platform.OS === 'web') <span class="cstat-no" title="statement not covered" >return;</span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const { Notifications } = <span class="cstat-no" title="statement not covered" >require('expo-notifications');</span>
 <span class="cstat-no" title="statement not covered" >    Notifications.setNotificationHandler({</span>
-      handleNotification: <span class="fstat-no" title="function not covered" >async </span>() =&gt; (<span class="cstat-no" title="statement not covered" >{ shouldShowAlert: true, shouldPlaySound: true, shouldSetBadge: false })</span>,
+      handleNotification: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+      }),
     });
 <span class="cstat-no" title="statement not covered" >    if (Platform.OS === 'android') {</span>
 <span class="cstat-no" title="statement not covered" >      await Notifications.setNotificationChannelAsync('default', {</span>
-        name: 'Default', importance: Notifications.AndroidImportance.DEFAULT,
+        name: 'Default',
+        importance: Notifications.AndroidImportance.DEFAULT,
       });
 <span class="cstat-no" title="statement not covered" >      await Notifications.setNotificationChannelAsync('high', {</span>
-        name: 'High Priority', importance: Notifications.AndroidImportance.HIGH,
-        sound: 'default', vibrationPattern: [0, 250, 250, 250],
+        name: 'High Priority',
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: 'default',
+        vibrationPattern: [0, 250, 250, 250],
       });
     }
   } catch (e) {
@@ -400,9 +427,9 @@ export const <span class="cstat-no" title="statement not covered" >initializeNot
   }
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >showNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >a</span>sync </span>(options: NotificationOptions) =&gt; {</span>
+export const showNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (options: NotificationOptions) =&gt; {</span>
   const { title, body, icon = <span class="branch-0 cbranch-no" title="branch not covered" >'/icon.png',</span> priority = <span class="branch-0 cbranch-no" title="branch not covered" >'normal',</span> scheduleAt } = <span class="cstat-no" title="statement not covered" >options;</span>
-  
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  if (Platform.OS === 'web') {</span>
 <span class="cstat-no" title="statement not covered" >    if ('Notification' in window) {</span>
 <span class="cstat-no" title="statement not covered" >      if (Notification.permission === 'granted') {</span>
@@ -438,7 +465,7 @@ export const <span class="cstat-no" title="statement not covered" >showNotificat
   }
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >requestNotificationPermission = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >a</span>sync </span>(): Promise&lt;boolean&gt; =&gt; {</span>
+export const requestNotificationPermission = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;boolean&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (Platform.OS === 'web') {</span>
 <span class="cstat-no" title="statement not covered" >    if ('Notification' in window) {</span>
       const permission = <span class="cstat-no" title="statement not covered" >await Notification.requestPermission();</span>
@@ -461,7 +488,7 @@ export const <span class="cstat-no" title="statement not covered" >requestNotifi
   }
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >hasNotificationPermission = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>): boolean =</span>&gt; {</span>
+export const hasNotificationPermission = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: boolean =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (Platform.OS === 'web') {</span>
 <span class="cstat-no" title="statement not covered" >    return 'Notification' in window &amp;&amp; Notification.permission === 'granted';</span>
   }
@@ -474,15 +501,15 @@ export const <span class="cstat-no" title="statement not covered" >hasNotificati
   }
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >showDevelopmentBuildRecommendation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
+export const showDevelopmentBuildRecommendation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (isExpoGo) {</span>
 <span class="cstat-no" title="statement not covered" >    Alert.alert(</span>
       '📱 Enhanced Features Available',
       'For the best experience with notifications and background features, consider using a development build instead of Expo Go.\n\nLearn more at: docs.expo.dev/develop/development-builds/',
       [
         { text: 'Maybe Later', style: 'cancel' },
-        { text: 'Learn More', onPress: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Open development build docs') </span>}
-      ]
+        { text: 'Learn More', onPress: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Open development build docs') </span>},
+      ],
     );
   }
 };
@@ -493,7 +520,7 @@ export const <span class="cstat-no" title="statement not covered" >showDevelopme
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T20:36:02.866Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { TravelMode } from "@/types/navigation";
-import Colors from "@/constants/colors";
-import { Train, Car, Bike, MapPin } from "lucide-react-native";
+import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { TravelMode } from '@/types/navigation';
+import Colors from '@/constants/colors';
+import { Train, Car, Bike, MapPin } from 'lucide-react-native';
 
 type TravelModeSelectorProps = {
   selectedMode: TravelMode;
@@ -11,10 +11,10 @@ type TravelModeSelectorProps = {
 
 const TravelModeSelector: React.FC<TravelModeSelectorProps> = ({ selectedMode, onModeChange }) => {
   const modes: { mode: TravelMode; icon: React.ReactNode; label: string }[] = [
-    { mode: "transit", icon: <Train size={20} />, label: "Transit" },
-    { mode: "walking", icon: <MapPin size={20} />, label: "Walk" },
-    { mode: "biking", icon: <Bike size={20} />, label: "Bike" },
-    { mode: "driving", icon: <Car size={20} />, label: "Drive" },
+    { mode: 'transit', icon: <Train size={20} />, label: 'Transit' },
+    { mode: 'walking', icon: <MapPin size={20} />, label: 'Walk' },
+    { mode: 'biking', icon: <Bike size={20} />, label: 'Bike' },
+    { mode: 'driving', icon: <Car size={20} />, label: 'Drive' },
   ];
 
   return (
@@ -31,12 +31,10 @@ const TravelModeSelector: React.FC<TravelModeSelectorProps> = ({ selectedMode, o
             >
               <View style={[styles.iconContainer, isSelected && styles.selectedIcon]}>
                 {React.cloneElement(icon as React.ReactElement<{ color?: string }>, {
-                  color: isSelected ? "#FFFFFF" : Colors.textLight,
+                  color: isSelected ? '#FFFFFF' : Colors.textLight,
                 })}
               </View>
-              <Text style={[styles.modeLabel, isSelected && styles.selectedLabel]}>
-                {label}
-              </Text>
+              <Text style={[styles.modeLabel, isSelected && styles.selectedLabel]}>{label}</Text>
             </Pressable>
           );
         })}
@@ -51,18 +49,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 12,
   },
   modesContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 8,
   },
   modeButton: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     padding: 12,
     borderRadius: 12,
     backgroundColor: Colors.card,
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
   },
   selectedMode: {
     borderColor: Colors.primary,
-    backgroundColor: "#F0F4FF",
+    backgroundColor: '#F0F4FF',
   },
   iconContainer: {
     marginBottom: 4,
@@ -83,12 +81,12 @@ const styles = StyleSheet.create({
   },
   modeLabel: {
     fontSize: 12,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Colors.textLight,
   },
   selectedLabel: {
     color: Colors.primary,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 
