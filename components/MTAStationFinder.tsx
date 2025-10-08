@@ -52,6 +52,13 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
   const [favoriteStations, setFavoriteStations] = useState<string[]>([]);
 
   // Mock station data with comprehensive kid-friendly information
+  // Named coordinates for stations and stops
+  const COORD_TIMES_SQ_42 = { lat: 40.7549, lng: -73.9872 };
+  const COORD_CENTRAL_PARK_59 = { lat: 40.7681, lng: -73.9819 };
+  const COORD_BROOKLYN_BRIDGE_CITY_HALL = { lat: 40.7127, lng: -74.0059 };
+  const COORD_14TH_ST_UNION_SQ = { lat: 40.7348, lng: -73.9897 };
+  const COORD_14TH_ST_1ST_AV_BUS = { lat: 40.7323, lng: -73.9860 };
+
   const mockStations: StationInfo[] = [
     {
       id: "times-sq-42",
@@ -59,8 +66,8 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
       type: "subway",
       borough: "Manhattan",
       lines: ["1", "2", "3", "7", "N", "Q", "R", "W", "S"],
-      coordinates: { lat: 40.7549, lng: -73.9872 },
-      distance: userLocation ? calculateDistance(userLocation, { lat: 40.7549, lng: -73.9872 }) : undefined,
+      coordinates: COORD_TIMES_SQ_42,
+      distance: userLocation ? calculateDistance(userLocation, COORD_TIMES_SQ_42) : undefined,
       accessibility: {
         wheelchairAccessible: true,
         elevators: ["Street to mezzanine", "Mezzanine to platform"],
@@ -89,8 +96,8 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
       type: "subway", 
       borough: "Manhattan",
       lines: ["A", "B", "C", "D", "1"],
-      coordinates: { lat: 40.7681, lng: -73.9819 },
-      distance: userLocation ? calculateDistance(userLocation, { lat: 40.7681, lng: -73.9819 }) : undefined,
+      coordinates: COORD_CENTRAL_PARK_59,
+      distance: userLocation ? calculateDistance(userLocation, COORD_CENTRAL_PARK_59) : undefined,
       accessibility: {
         wheelchairAccessible: true,
         elevators: ["Street to mezzanine elevator", "Platform elevator"],
@@ -118,8 +125,8 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
       type: "subway",
       borough: "Manhattan", 
       lines: ["4", "5", "6"],
-      coordinates: { lat: 40.7127, lng: -74.0059 },
-      distance: userLocation ? calculateDistance(userLocation, { lat: 40.7127, lng: -74.0059 }) : undefined,
+      coordinates: COORD_BROOKLYN_BRIDGE_CITY_HALL,
+      distance: userLocation ? calculateDistance(userLocation, COORD_BROOKLYN_BRIDGE_CITY_HALL) : undefined,
       accessibility: {
         wheelchairAccessible: false,
         elevators: [],
@@ -147,8 +154,8 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
       type: "subway",
       borough: "Manhattan",
       lines: ["4", "5", "6", "L", "N", "Q", "R", "W"],
-      coordinates: { lat: 40.7348, lng: -73.9897 },
-      distance: userLocation ? calculateDistance(userLocation, { lat: 40.7348, lng: -73.9897 }) : undefined,
+      coordinates: COORD_14TH_ST_UNION_SQ,
+      distance: userLocation ? calculateDistance(userLocation, COORD_14TH_ST_UNION_SQ) : undefined,
       accessibility: {
         wheelchairAccessible: true,
         elevators: ["Main elevator to all levels", "Platform elevators"],
@@ -177,8 +184,8 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
       type: "bus",
       borough: "Manhattan",
       lines: ["M15"],
-      coordinates: { lat: 40.7323, lng: -73.9860 },
-      distance: userLocation ? calculateDistance(userLocation, { lat: 40.7323, lng: -73.9860 }) : undefined,
+      coordinates: COORD_14TH_ST_1ST_AV_BUS,
+      distance: userLocation ? calculateDistance(userLocation, COORD_14TH_ST_1ST_AV_BUS) : undefined,
       accessibility: {
         wheelchairAccessible: true,
         elevators: [],
