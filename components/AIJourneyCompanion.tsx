@@ -24,7 +24,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
   currentLocation,
   destination,
   isNavigating,
-  selectedRoute
+  selectedRoute,
 }) => {
   const [messages, setMessages] = useState<CompanionMessage[]>([]);
   const [currentMessage, setCurrentMessage] = useState<CompanionMessage | null>(null);
@@ -82,14 +82,14 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           messages: [
             {
               role: 'system',
-              content: `You are Buddy, a friendly AI companion for kids using a navigation app. Create engaging, educational, and safe content for a journey to ${destination.name}. Keep responses short (1-2 sentences), age-appropriate, and encouraging. Focus on interesting facts, safety reminders, or fun observations about the area.${routeContext ? ' Also mention relevant aspects of their chosen route when appropriate.' : ''}`
+              content: `You are Buddy, a friendly AI companion for kids using a navigation app. Create engaging, educational, and safe content for a journey to ${destination.name}. Keep responses short (1-2 sentences), age-appropriate, and encouraging. Focus on interesting facts, safety reminders, or fun observations about the area.${routeContext ? ' Also mention relevant aspects of their chosen route when appropriate.' : ''}`,
             },
             {
               role: 'user',
-              content: `I'm traveling to ${destination.name} in ${destination.address}${routeContext}. Tell me something interesting about this area or give me a fun fact to make the journey more exciting!`
-            }
-          ]
-        })
+              content: `I'm traveling to ${destination.name} in ${destination.address}${routeContext}. Tell me something interesting about this area or give me a fun fact to make the journey more exciting!`,
+            },
+          ],
+        }),
       });
 
       const data = await response.json();
@@ -104,7 +104,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
       setMessages((prev) => [...prev, newMessage]);
       setCurrentMessage(newMessage);
       setCompanionMood('excited');
-      
+
       // Speak the message if voice is enabled
       if (voiceEnabled) {
         await speakMessage(data.completion);
@@ -113,11 +113,11 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
       console.log('AI companion error:', error);
       // Fallback to route-aware message if available
       let fallbackText = `Great choice going to ${destination.name}! I bet you'll discover something amazing there. Stay safe and enjoy your adventure! 🌟`;
-      
+
       if (selectedRoute) {
         fallbackText = `You chose the ${selectedRoute.name}! With a ${selectedRoute.kidFriendlyScore}% safety score, you're in good hands. ${selectedRoute.aiRecommendations[0]} 🌟`;
       }
-      
+
       const fallbackMessage: CompanionMessage = {
         id: Date.now().toString(),
         text: fallbackText,
@@ -125,7 +125,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
         timestamp: new Date(),
       };
       setCurrentMessage(fallbackMessage);
-      
+
       if (voiceEnabled) {
         await speakMessage(fallbackText);
       }
@@ -168,7 +168,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
       setMessages((prev) => [...prev, quizMessage]);
       setCurrentMessage(quizMessage);
       setCompanionMood('curious');
-      
+
       if (voiceEnabled) {
         await speakMessage(`Quiz Time! ${data.completion}`);
       }
@@ -190,29 +190,30 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           messages: [
             {
               role: 'system',
-              content: 'You are a friendly AI companion explaining route features to kids. Be encouraging and highlight safety aspects.'
+              content:
+                'You are a friendly AI companion explaining route features to kids. Be encouraging and highlight safety aspects.',
             },
             {
               role: 'user',
-              content: `Tell me something cool about this route: ${selectedRoute.name} with ${selectedRoute.kidFriendlyScore}% safety score, ${selectedRoute.difficultyLevel} difficulty, passing through ${selectedRoute.safetyFeatures.slice(0, 2).join(' and ')}. Keep it to 1-2 sentences and make it exciting!`
-            }
-          ]
-        })
+              content: `Tell me something cool about this route: ${selectedRoute.name} with ${selectedRoute.kidFriendlyScore}% safety score, ${selectedRoute.difficultyLevel} difficulty, passing through ${selectedRoute.safetyFeatures.slice(0, 2).join(' and ')}. Keep it to 1-2 sentences and make it exciting!`,
+            },
+          ],
+        }),
       });
 
       const data = await response.json();
-      
+
       const routeMessage: CompanionMessage = {
         id: Date.now().toString(),
         text: `🗺️ ${data.completion}`,
         type: 'route-insight',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev, routeMessage]);
+      setMessages((prev) => [...prev, routeMessage]);
       setCurrentMessage(routeMessage);
       setCompanionMood('excited');
-      
+
       if (voiceEnabled) {
         await speakMessage(data.completion);
       }
@@ -223,10 +224,10 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
         id: Date.now().toString(),
         text: `🗺️ Your ${selectedRoute.name} has a ${selectedRoute.kidFriendlyScore}% safety score! That's awesome! You'll pass through some great safe zones. 🛡️`,
         type: 'route-insight',
-        timestamp: new Date()
+        timestamp: new Date(),
       };
       setCurrentMessage(fallbackInsight);
-      
+
       if (voiceEnabled) {
         await speakMessage(fallbackInsight.text);
       }
@@ -281,20 +282,20 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
               <Sparkles size={16} color={Colors.primary} />
               <Text style={styles.actionButtonText}>Quiz Me!</Text>
             </Pressable>
-            
+
             {selectedRoute && (
               <Pressable style={styles.actionButton} onPress={generateRouteInsight}>
                 <Shield size={16} color={Colors.primary} />
                 <Text style={styles.actionButtonText}>Route Info</Text>
               </Pressable>
             )}
-            
+
             <Pressable style={styles.actionButton} onPress={generateJourneyContent}>
               <Bot size={16} color={Colors.primary} />
               <Text style={styles.actionButtonText}>Tell Me More</Text>
             </Pressable>
           </View>
-          
+
           {selectedRoute && (
             <View style={styles.routeInfoCard}>
               <View style={styles.routeInfoHeader}>
@@ -302,15 +303,9 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
                 <Text style={styles.routeInfoTitle}>{selectedRoute.name}</Text>
               </View>
               <View style={styles.routeStats}>
-                <Text style={styles.routeStat}>
-                  🛡️ {selectedRoute.kidFriendlyScore}% Safe
-                </Text>
-                <Text style={styles.routeStat}>
-                  ⏱️ {selectedRoute.estimatedDuration} min
-                </Text>
-                <Text style={styles.routeStat}>
-                  📊 {selectedRoute.difficultyLevel}
-                </Text>
+                <Text style={styles.routeStat}>🛡️ {selectedRoute.kidFriendlyScore}% Safe</Text>
+                <Text style={styles.routeStat}>⏱️ {selectedRoute.estimatedDuration} min</Text>
+                <Text style={styles.routeStat}>📊 {selectedRoute.difficultyLevel}</Text>
               </View>
             </View>
           )}

@@ -12,7 +12,6 @@ approximately 1 hour as planned.
 - **File**: `/config/transit/nyc-stations.ts`
 
 - **Features**:
-
   - Complete station coordinates for 6 NYC stations
 
   - Kid-friendly safety ratings and accessibility features
@@ -28,7 +27,6 @@ approximately 1 hour as planned.
 - **File**: `/components/InteractiveMap.tsx`
 
 - **Enhancements**:
-
   - Added `onStationPress` callback prop
 
   - Added `showTransitStations` toggle prop
@@ -46,7 +44,6 @@ approximately 1 hour as planned.
 - **File**: `/app/(tabs)/map.tsx`
 
 - **Features**:
-
   - Modal integration for station information
 
   - Station click handling with `MTALiveArrivals` component

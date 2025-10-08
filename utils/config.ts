@@ -41,10 +41,7 @@ const ensureNumber = (value: unknown, fallback: number): number => {
   return fallback;
 };
 
-const ensureCoordinate = (
-  value: unknown,
-  fallback: { latitude: number; longitude: number },
-) => {
+const ensureCoordinate = (value: unknown, fallback: { latitude: number; longitude: number }) => {
   if (
     value &&
     typeof value === 'object' &&
@@ -76,9 +73,7 @@ const mapDefaults = {
   maxZoom: ensureNumber(mapsExtra.maxZoom, 20),
   animationDuration: ensureNumber(mapsExtra.animationDuration, 1000),
   accessToken:
-    typeof mapsExtra.token === 'string' && mapsExtra.token.length > 0
-      ? mapsExtra.token
-      : null,
+    typeof mapsExtra.token === 'string' && mapsExtra.token.length > 0 ? mapsExtra.token : null,
 };
 
 const routingSettings = {
@@ -86,19 +81,13 @@ const routingSettings = {
     typeof routingExtra.baseUrl === 'string' && routingExtra.baseUrl.length > 0
       ? routingExtra.baseUrl
       : 'https://api.openrouteservice.org',
-  ORS_API_KEY:
-    typeof routingExtra.orsApiKey === 'string'
-      ? routingExtra.orsApiKey
-      : '',
+  ORS_API_KEY: typeof routingExtra.orsApiKey === 'string' ? routingExtra.orsApiKey : '',
   DEFAULT_PROFILE:
     typeof routingExtra.defaultProfile === 'string' && routingExtra.defaultProfile.length > 0
       ? routingExtra.defaultProfile
       : 'foot-walking',
   REQUEST_TIMEOUT: ensureNumber(routingExtra.requestTimeout, 15000),
-  INCLUDE_ETA:
-    typeof routingExtra.includeEta === 'boolean'
-      ? routingExtra.includeEta
-      : true,
+  INCLUDE_ETA: typeof routingExtra.includeEta === 'boolean' ? routingExtra.includeEta : true,
 };
 
 const monitoringSettings = {
@@ -111,29 +100,20 @@ const monitoringSettings = {
         ? 'development'
         : 'production',
   tracesSampleRate:
-    typeof monitoringExtra.tracesSampleRate === 'number'
-      ? monitoringExtra.tracesSampleRate
-      : 0.2,
+    typeof monitoringExtra.tracesSampleRate === 'number' ? monitoringExtra.tracesSampleRate : 0.2,
   autoSessionTracking:
     typeof monitoringExtra.autoSessionTracking === 'boolean'
       ? monitoringExtra.autoSessionTracking
       : true,
   profileSampleRate:
-    typeof monitoringExtra.profileSampleRate === 'number'
-      ? monitoringExtra.profileSampleRate
-      : 0,
+    typeof monitoringExtra.profileSampleRate === 'number' ? monitoringExtra.profileSampleRate : 0,
 };
 
 const analyticsSettings = {
   enabled: typeof analyticsExtra.enabled === 'boolean' ? analyticsExtra.enabled : !__DEV__,
-  batchSize:
-    typeof analyticsExtra.batchSize === 'number'
-      ? analyticsExtra.batchSize
-      : 10,
+  batchSize: typeof analyticsExtra.batchSize === 'number' ? analyticsExtra.batchSize : 10,
   flushInterval:
-    typeof analyticsExtra.flushInterval === 'number'
-      ? analyticsExtra.flushInterval
-      : 30000,
+    typeof analyticsExtra.flushInterval === 'number' ? analyticsExtra.flushInterval : 30000,
   plausible: {
     enabled: typeof plausibleExtra.enabled === 'boolean' ? plausibleExtra.enabled : !__DEV__,
     endpoint: typeof plausibleExtra.endpoint === 'string' ? plausibleExtra.endpoint : '',
@@ -147,9 +127,7 @@ const analyticsSettings = {
   },
   privacy: {
     defaultOptIn:
-      typeof privacyExtra.defaultOptIn === 'boolean'
-        ? privacyExtra.defaultOptIn
-        : false,
+      typeof privacyExtra.defaultOptIn === 'boolean' ? privacyExtra.defaultOptIn : false,
   },
 };
 export const Config = {
@@ -207,7 +185,7 @@ export const Config = {
   },
 
   ROUTING: routingSettings,
-  
+
   // Analytics
   ANALYTICS: {
     ENABLED: analyticsSettings.enabled,
@@ -224,15 +202,6 @@ export const Config = {
     PRIVACY: {
       DEFAULT_OPT_IN: analyticsSettings.privacy.defaultOptIn,
     },
-  },
-
-  MONITORING: {
-    ENABLED: monitoringSettings.enabled,
-    SENTRY_DSN: monitoringSettings.sentryDsn,
-    ENVIRONMENT: monitoringSettings.environment,
-    TRACES_SAMPLE_RATE: monitoringSettings.tracesSampleRate,
-    AUTO_SESSION_TRACKING: monitoringSettings.autoSessionTracking,
-    PROFILE_SAMPLE_RATE: monitoringSettings.profileSampleRate,
   },
 
   MONITORING: {

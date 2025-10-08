@@ -4,16 +4,18 @@ const { app, startServer } = require('../../index.js');
 let server;
 
 describe('Transit Adapter API', () => {
-    beforeAll(() => {
-      process.env.FEED_REFRESH_ENABLED = 'false';
-      process.env.NODE_ENV = 'test';
-      process.env.PORT = '0'; // Use random available port
-      server = startServer();
-    });
+  beforeAll(() => {
+    process.env.FEED_REFRESH_ENABLED = 'false';
+    process.env.NODE_ENV = 'test';
+    process.env.PORT = '0'; // Use random available port
+    server = startServer();
+  });
 
-    afterAll(() => { if (server) server.close(); });
+  afterAll(() => {
+    if (server) server.close();
+  });
 
-    it('GET /feeds/:region/:system.json should return routes array (mock)', async () => {
+  it('GET /feeds/:region/:system.json should return routes array (mock)', async () => {
     const res = await request(app).get('/feeds/nyc/mta-subway.json?mock=1');
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body.routes)).toBe(true);

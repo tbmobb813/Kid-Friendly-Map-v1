@@ -1,7 +1,7 @@
 # ⚡ KidMap: Quick Reference Action Plan
 
 **Last Updated:** October 1, 2025  
-**Status:** Post-Strategic Review  
+**Status:** Post-Strategic Review
 
 ---
 
@@ -92,13 +92,13 @@
 - [ ] Draft COPPA checklist outline
 - [ ] Research privacy lawyer options
 
-#### Strategic Docs**
+#### Strategic Docs\*\*
 
 - [ ] Write `docs/strategy/UVP.md`
 - [ ] Document competitive differentiators
 - [ ] Create user personas
 
-#### Technical Prep**
+#### Technical Prep\*\*
 
 - [ ] Research Expo Speech API
 - [ ] Plan offline test scenarios
@@ -106,27 +106,27 @@
 
 ### ✅ Week 2-4 Actions
 
-#### Research Execution**
+#### Research Execution\*\*
 
 - [ ] Conduct 15-20 parent interviews
 - [ ] Run 20+ child usability sessions
 - [ ] Complete educator consultations
 - [ ] Synthesize findings into priorities
 
-#### Compliance**
+#### Compliance\*\*
 
 - [ ] Complete COPPA checklist
 - [ ] Create data flow diagrams
 - [ ] Schedule legal consultation
 - [ ] Draft retention policies
 
-#### Voice Guidance**
+#### Voice Guidance\*\*
 
 - [ ] Prototype TTS implementation
 - [ ] Create settings toggle
 - [ ] User test with children
 
-#### Offline Testing**
+#### Offline Testing\*\*
 
 - [ ] Write `docs/OFFLINE_READINESS.md`
 - [ ] Implement airplane mode tests
@@ -134,7 +134,7 @@
 
 ### ✅ Week 5-8 Actions
 
-#### Backend Development**
+#### Backend Development\*\*
 
 - [ ] Bootstrap Fastify project
 - [ ] Set up PostgreSQL + PostGIS
@@ -142,14 +142,14 @@
 - [ ] Create safe zone API
 - [ ] Add Socket.io layer
 
-#### Educational Content**
+#### Educational Content\*\*
 
 - [ ] Design navigation lessons
 - [ ] Write geography modules
 - [ ] Create safety scenarios
 - [ ] Integrate with gamification
 
-#### Partnerships**
+#### Partnerships\*\*
 
 - [ ] Contact 10-15 schools/programs
 - [ ] Draft partnership proposal
@@ -157,21 +157,21 @@
 
 ### ✅ Week 9-12 Actions
 
-#### Backend Completion**
+#### Backend Completion\*\*
 
 - [ ] Finish all core endpoints
 - [ ] Deploy to Railway staging
 - [ ] Integration testing
 - [ ] Documentation
 
-#### Progressive Independence**
+#### Progressive Independence\*\*
 
 - [ ] Implement level system
 - [ ] Build progression UI
 - [ ] Parent approval workflows
 - [ ] User testing
 
-#### Beta Preparation**
+#### Beta Preparation\*\*
 
 - [ ] Recruit 100+ beta families
 - [ ] Create onboarding materials
@@ -327,5 +327,5 @@ A: TBD - options are freemium, subscription, or B2B2C. Decide after pilot progra
 
 ---
 
-*For detailed analysis, see `STRATEGIC_ROADMAP_ALIGNMENT.md`*  
-*For current status, see `COMPREHENSIVE_PROJECT_STATUS.md`*
+_For detailed analysis, see `STRATEGIC_ROADMAP_ALIGNMENT.md`_  
+_For current status, see `COMPREHENSIVE_PROJECT_STATUS.md`_

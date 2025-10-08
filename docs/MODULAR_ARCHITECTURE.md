@@ -48,14 +48,9 @@ Each module has a single, well-defined responsibility:
 
 ```typescript
 // Essential utilities and constants
-exports: [
-  'constants/colors',
-  'types/navigation',
-  'utils/logger',
-  'utils/config'
-]
-dependencies: []
-lazy: false
+exports: ['constants/colors', 'types/navigation', 'utils/logger', 'utils/config'];
+dependencies: [];
+lazy: false;
 ```
 
 #### `safety`
@@ -66,23 +61,19 @@ exports: [
   'components/SafetyPanel',
   'components/SafeZoneIndicator',
   'stores/parentalStore',
-  'utils/errorHandling'
-]
-dependencies: ['core', 'location']
-lazy: false
+  'utils/errorHandling',
+];
+dependencies: ['core', 'location'];
+lazy: false;
 ```
 
 #### `location`
 
 ```typescript
 // Location services
-exports: [
-  'hooks/useLocation',
-  'hooks/useSafeZoneMonitor',
-  'utils/locationUtils'
-]
-dependencies: ['core']
-lazy: false
+exports: ['hooks/useLocation', 'hooks/useSafeZoneMonitor', 'utils/locationUtils'];
+dependencies: ['core'];
+lazy: false;
 ```
 
 ### Feature Modules (Lazy Loaded)
@@ -94,22 +85,19 @@ lazy: false
 exports: [
   'stores/gamificationStore',
   'components/AchievementBadge',
-  'components/VirtualPetCompanion'
-]
-dependencies: ['core']
-lazy: true
+  'components/VirtualPetCompanion',
+];
+dependencies: ['core'];
+lazy: true;
 ```
 
 #### `ai`
 
 ```typescript
 // AI-powered features
-exports: [
-  'components/AIJourneyCompanion',
-  'components/SmartRouteSuggestions'
-]
-dependencies: ['core', 'location']
-lazy: true
+exports: ['components/AIJourneyCompanion', 'components/SmartRouteSuggestions'];
+dependencies: ['core', 'location'];
+lazy: true;
 ```
 
 ### Platform Modules
@@ -118,10 +106,10 @@ lazy: true
 
 ```typescript
 // Platform-specific implementations
-exports: ['utils/platform-specific']
-dependencies: ['core']
-lazy: true
-platform: 'ios' | 'android' | 'web'
+exports: ['utils/platform-specific'];
+dependencies: ['core'];
+lazy: true;
+platform: 'ios' | 'android' | 'web';
 ```
 
 ## Module Loading Strategy
@@ -145,7 +133,7 @@ import { moduleLoader } from '@/utils/moduleConfig';
 await Promise.all([
   moduleLoader.loadModule('core'),
   moduleLoader.loadModule('safety'),
-  moduleLoader.loadModule('location')
+  moduleLoader.loadModule('location'),
 ]);
 
 // Load feature modules when needed
@@ -173,7 +161,7 @@ newModule: {
 
 1. **Create Module Structure**
 
-``` text
+```text
 modules/newModule/
 ├── components/
 ├── hooks/
@@ -271,7 +259,6 @@ describe('Module Loading', () => {
 ### From Monolithic to Modular
 
 1. **Identify Module Boundaries**
-
    - Group related components
 
    - Identify shared dependencies
@@ -279,7 +266,6 @@ describe('Module Loading', () => {
    - Define clear interfaces
 
 1. **Create Module Structure**
-
    - Move files to module directories
 
    - Update import paths
@@ -287,7 +273,6 @@ describe('Module Loading', () => {
    - Create module index files
 
 1. **Update Build Process**
-
    - Configure lazy loading
 
    - Update bundler settings
@@ -295,7 +280,6 @@ describe('Module Loading', () => {
    - Add module validation
 
 1. **Test Migration**
-
    - Verify all imports work
 
    - Test lazy loading

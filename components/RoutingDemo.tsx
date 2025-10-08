@@ -28,10 +28,10 @@ interface Location {
 export default function RoutingDemo() {
   const [fromLocation, setFromLocation] = useState<Location>({
     lat: 40.7128,
-    lng: -74.0060,
+    lng: -74.006,
     name: 'New York City Hall',
   });
-  
+
   const [toLocation, setToLocation] = useState<Location>({
     lat: 40.7505,
     lng: -73.9934,
@@ -41,7 +41,7 @@ export default function RoutingDemo() {
   const [childAge, setChildAge] = useState<string>('8');
   const [wheelchair, setWheelchair] = useState(false);
   const [prioritizeSafety, setPrioritizeSafety] = useState(true);
-  
+
   const [routes, setRoutes] = useState<UnifiedRoute[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedModes, setSelectedModes] = useState<string[]>(['WALK', 'TRANSIT']);
@@ -63,7 +63,7 @@ export default function RoutingDemo() {
   const testLocations = [
     {
       name: 'NYC: City Hall → Times Square',
-      from: { lat: 40.7128, lng: -74.0060, name: 'NYC City Hall' },
+      from: { lat: 40.7128, lng: -74.006, name: 'NYC City Hall' },
       to: { lat: 40.7505, lng: -73.9934, name: 'Times Square' },
     },
     {
@@ -119,7 +119,7 @@ export default function RoutingDemo() {
     } catch (error) {
       console.error('Route finding error:', error);
       Alert.alert('Error', 'Failed to find routes. Please try again.');
-      
+
       monitoring.captureError({
         error: error as Error,
         context: 'Routing Demo - Find Routes',
@@ -147,7 +147,7 @@ export default function RoutingDemo() {
         const route = await orsService.getKidFriendlyRoute(coordinates, parseInt(childAge));
         Alert.alert(
           'ORS Kid-Friendly Route',
-          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`
+          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`,
         );
       } else {
         const route = await orsService.getRoute({
@@ -158,7 +158,7 @@ export default function RoutingDemo() {
         });
         Alert.alert(
           'ORS Walking Route',
-          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`
+          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`,
         );
       }
     } catch (error) {
@@ -186,7 +186,7 @@ export default function RoutingDemo() {
           const itinerary = plan.plan.itineraries[0];
           Alert.alert(
             'OTP2 Kid-Friendly Transit',
-            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`
+            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`,
           );
         } else {
           Alert.alert('OTP2', 'No transit routes found');
@@ -201,7 +201,7 @@ export default function RoutingDemo() {
           const itinerary = plan.plan.itineraries[0];
           Alert.alert(
             'OTP2 Transit Plan',
-            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`
+            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`,
           );
         } else {
           Alert.alert('OTP2', 'No transit routes found');
@@ -223,9 +223,9 @@ export default function RoutingDemo() {
         </Text>
         <Text style={styles.routeSource}>{route.source}</Text>
       </View>
-      
+
       <Text style={styles.routeDescription}>{route.description}</Text>
-      
+
       <View style={styles.routeStats}>
         <View style={styles.statItem}>
           <Text style={styles.statLabel}>Duration</Text>
@@ -233,7 +233,9 @@ export default function RoutingDemo() {
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statLabel}>Distance</Text>
-          <Text style={styles.statValue}>{Math.round(route.summary.distance / 1000 * 10) / 10} km</Text>
+          <Text style={styles.statValue}>
+            {Math.round((route.summary.distance / 1000) * 10) / 10} km
+          </Text>
         </View>
         <View style={styles.statItem}>
           <Text style={styles.statLabel}>Safety</Text>
@@ -246,16 +248,16 @@ export default function RoutingDemo() {
       </View>
 
       {route.summary.transfers !== undefined && (
-        <Text style={styles.transferInfo}>
-          Transfers: {route.summary.transfers}
-        </Text>
+        <Text style={styles.transferInfo}>Transfers: {route.summary.transfers}</Text>
       )}
 
       {route.alerts && route.alerts.length > 0 && (
         <View style={styles.alertsContainer}>
           <Text style={styles.alertsTitle}>Alerts:</Text>
           {route.alerts.slice(0, 2).map((alert, i) => (
-            <Text key={i} style={styles.alertText}>• {alert}</Text>
+            <Text key={i} style={styles.alertText}>
+              • {alert}
+            </Text>
           ))}
         </View>
       )}
@@ -265,7 +267,7 @@ export default function RoutingDemo() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>🗺️ ORS + OTP2 Routing Demo</Text>
-      
+
       {/* Quick Test Locations */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Quick Test Locations</Text>
@@ -291,14 +293,18 @@ export default function RoutingDemo() {
             style={styles.input}
             placeholder="Latitude"
             value={fromLocation.lat.toString()}
-            onChangeText={(text) => setFromLocation(prev => ({ ...prev, lat: parseFloat(text) || 0 }))}
+            onChangeText={(text) =>
+              setFromLocation((prev) => ({ ...prev, lat: parseFloat(text) || 0 }))
+            }
             keyboardType="numeric"
           />
           <TextInput
             style={styles.input}
             placeholder="Longitude"
             value={fromLocation.lng.toString()}
-            onChangeText={(text) => setFromLocation(prev => ({ ...prev, lng: parseFloat(text) || 0 }))}
+            onChangeText={(text) =>
+              setFromLocation((prev) => ({ ...prev, lng: parseFloat(text) || 0 }))
+            }
             keyboardType="numeric"
           />
         </View>
@@ -306,7 +312,7 @@ export default function RoutingDemo() {
           style={styles.input}
           placeholder="Location Name"
           value={fromLocation.name}
-          onChangeText={(text) => setFromLocation(prev => ({ ...prev, name: text }))}
+          onChangeText={(text) => setFromLocation((prev) => ({ ...prev, name: text }))}
         />
       </View>
 
@@ -318,14 +324,18 @@ export default function RoutingDemo() {
             style={styles.input}
             placeholder="Latitude"
             value={toLocation.lat.toString()}
-            onChangeText={(text) => setToLocation(prev => ({ ...prev, lat: parseFloat(text) || 0 }))}
+            onChangeText={(text) =>
+              setToLocation((prev) => ({ ...prev, lat: parseFloat(text) || 0 }))
+            }
             keyboardType="numeric"
           />
           <TextInput
             style={styles.input}
             placeholder="Longitude"
             value={toLocation.lng.toString()}
-            onChangeText={(text) => setToLocation(prev => ({ ...prev, lng: parseFloat(text) || 0 }))}
+            onChangeText={(text) =>
+              setToLocation((prev) => ({ ...prev, lng: parseFloat(text) || 0 }))
+            }
             keyboardType="numeric"
           />
         </View>
@@ -333,7 +343,7 @@ export default function RoutingDemo() {
           style={styles.input}
           placeholder="Location Name"
           value={toLocation.name}
-          onChangeText={(text) => setToLocation(prev => ({ ...prev, name: text }))}
+          onChangeText={(text) => setToLocation((prev) => ({ ...prev, name: text }))}
         />
       </View>
 
@@ -350,17 +360,19 @@ export default function RoutingDemo() {
               ]}
               onPress={() => {
                 if (selectedModes.includes(mode.id)) {
-                  setSelectedModes(prev => prev.filter(m => m !== mode.id));
+                  setSelectedModes((prev) => prev.filter((m) => m !== mode.id));
                 } else {
-                  setSelectedModes(prev => [...prev, mode.id]);
+                  setSelectedModes((prev) => [...prev, mode.id]);
                 }
               }}
             >
               <Text style={styles.modeIcon}>{mode.icon}</Text>
-              <Text style={[
-                styles.modeLabel,
-                selectedModes.includes(mode.id) && styles.modeLabelSelected,
-              ]}>
+              <Text
+                style={[
+                  styles.modeLabel,
+                  selectedModes.includes(mode.id) && styles.modeLabelSelected,
+                ]}
+              >
                 {mode.label}
               </Text>
             </TouchableOpacity>
@@ -371,7 +383,7 @@ export default function RoutingDemo() {
       {/* Preferences */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Preferences</Text>
-        
+
         <View style={styles.preferenceRow}>
           <Text style={styles.preferenceLabel}>Child Age (0 for adult)</Text>
           <TextInput
@@ -383,10 +395,7 @@ export default function RoutingDemo() {
           />
         </View>
 
-        <TouchableOpacity
-          style={styles.checkboxRow}
-          onPress={() => setWheelchair(!wheelchair)}
-        >
+        <TouchableOpacity style={styles.checkboxRow} onPress={() => setWheelchair(!wheelchair)}>
           <View style={[styles.checkbox, wheelchair && styles.checkboxChecked]}>
             {wheelchair && <Text style={styles.checkmark}>✓</Text>}
           </View>

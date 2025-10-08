@@ -1,7 +1,9 @@
 # Enhanced Features Implementation Guide
 
 ## Overview
+
 This document details the implementation of three major enhancements to the Kid-Friendly Map application:
+
 1. **MMKV Storage** - High-performance key-value storage
 2. **Voice/TTS** - Text-to-speech with expo-speech
 3. **React Native Maps** - Native map integration
@@ -18,6 +20,7 @@ expo-speech@~13.1.7            # Already installed, now integrated
 ## 📦 1. MMKV Storage
 
 ### Features
+
 - **10x faster** than AsyncStorage
 - **Synchronous** operations (no await needed)
 - **Type-safe** API
@@ -28,6 +31,7 @@ expo-speech@~13.1.7            # Already installed, now integrated
 ### Usage
 
 #### Basic Operations
+
 ```typescript
 import { mainStorage, cache, StorageKeys } from '../utils/storage';
 
@@ -35,7 +39,7 @@ import { mainStorage, cache, StorageKeys } from '../utils/storage';
 mainStorage.set(StorageKeys.USER_PROFILE, {
   name: 'John',
   age: 10,
-  favoriteColor: 'blue'
+  favoriteColor: 'blue',
 });
 
 // Retrieve data
@@ -53,6 +57,7 @@ const enabled = mainStorage.getBoolean('enabled', false);
 ```
 
 #### Cache with Expiration
+
 ```typescript
 import { StorageUtils } from '../utils/storage';
 
@@ -68,6 +73,7 @@ console.log(`Cleared ${cleared} expired entries`);
 ```
 
 #### Batch Operations
+
 ```typescript
 // Set multiple values at once
 mainStorage.setBatch({
@@ -77,13 +83,11 @@ mainStorage.setBatch({
 });
 
 // Get multiple values
-const values = mainStorage.getBatch([
-  StorageKeys.THEME,
-  StorageKeys.LANGUAGE,
-]);
+const values = mainStorage.getBatch([StorageKeys.THEME, StorageKeys.LANGUAGE]);
 ```
 
 #### Migration from AsyncStorage
+
 ```typescript
 import { migrateFromAsyncStorage } from '../utils/storage';
 
@@ -92,24 +96,26 @@ await migrateFromAsyncStorage();
 ```
 
 ### Available Storage Keys
+
 ```typescript
-StorageKeys.USER_PROFILE          // User data
-StorageKeys.AUTH_TOKEN            // Auth token
-StorageKeys.EMERGENCY_CONTACTS    // Emergency contacts
-StorageKeys.SAFE_ZONES            // Safe zones
-StorageKeys.VOICE_ENABLED         // Voice settings
-StorageKeys.VOICE_RATE            // Speech rate
-StorageKeys.VOICE_PITCH           // Speech pitch
-StorageKeys.RECENT_SEARCHES       // Search history
-StorageKeys.FAVORITE_PLACES       // Favorites
-StorageKeys.ACHIEVEMENTS          // Achievements
-StorageKeys.TRANSIT_DATA          // Transit cache
+StorageKeys.USER_PROFILE; // User data
+StorageKeys.AUTH_TOKEN; // Auth token
+StorageKeys.EMERGENCY_CONTACTS; // Emergency contacts
+StorageKeys.SAFE_ZONES; // Safe zones
+StorageKeys.VOICE_ENABLED; // Voice settings
+StorageKeys.VOICE_RATE; // Speech rate
+StorageKeys.VOICE_PITCH; // Speech pitch
+StorageKeys.RECENT_SEARCHES; // Search history
+StorageKeys.FAVORITE_PLACES; // Favorites
+StorageKeys.ACHIEVEMENTS; // Achievements
+StorageKeys.TRANSIT_DATA; // Transit cache
 // ... and more (see utils/storage.ts)
 ```
 
 ## 🎤 2. Voice/TTS with Expo Speech
 
 ### Features
+
 - **Kid-friendly** voice selection
 - **Priority-based** speech queue
 - **Configurable** rate and pitch
@@ -121,6 +127,7 @@ StorageKeys.TRANSIT_DATA          // Transit cache
 ### Usage
 
 #### Basic Speech
+
 ```typescript
 import { voiceManager, speakMessage } from '../utils/voice';
 
@@ -137,16 +144,18 @@ await voiceManager.speak('Turn left ahead', {
 ```
 
 #### Navigation Guidance
+
 ```typescript
 import { speakNavigation } from '../utils/voice';
 
 // Distance-aware navigation
-await speakNavigation('Turn left', 50);  // "In a few steps, turn left"
+await speakNavigation('Turn left', 50); // "In a few steps, turn left"
 await speakNavigation('Turn left', 150); // "Soon, turn left"
 await speakNavigation('Turn left', 500); // "Up ahead, turn left"
 ```
 
 #### Safety Reminders
+
 ```typescript
 import { speakSafety, KidFriendlyPhrases } from '../utils/voice';
 
@@ -156,6 +165,7 @@ await speakSafety(KidFriendlyPhrases.safety.stayClose);
 ```
 
 #### Achievement Announcements
+
 ```typescript
 import { speakAchievement, KidFriendlyPhrases } from '../utils/voice';
 
@@ -164,13 +174,14 @@ await speakAchievement(KidFriendlyPhrases.achievements.firstJourney);
 ```
 
 #### Voice Settings
+
 ```typescript
 import { voiceManager } from '../utils/voice';
 
 // Update settings
 voiceManager.updateSettings({
-  rate: 0.9,      // 0.5 to 2.0 (slower = kid-friendly)
-  pitch: 1.1,     // 0.5 to 2.0 (higher = kid-friendly)
+  rate: 0.9, // 0.5 to 2.0 (slower = kid-friendly)
+  pitch: 1.1, // 0.5 to 2.0 (higher = kid-friendly)
   language: 'en-US',
   enabled: true,
 });
@@ -193,33 +204,35 @@ voiceManager.stop();
 ```
 
 #### Kid-Friendly Phrases
+
 ```typescript
 import { KidFriendlyPhrases } from '../utils/voice';
 
 // Navigation
-KidFriendlyPhrases.nav.turnLeft
-KidFriendlyPhrases.nav.turnRight
-KidFriendlyPhrases.nav.arrived
-KidFriendlyPhrases.nav.almostThere
+KidFriendlyPhrases.nav.turnLeft;
+KidFriendlyPhrases.nav.turnRight;
+KidFriendlyPhrases.nav.arrived;
+KidFriendlyPhrases.nav.almostThere;
 
 // Safety
-KidFriendlyPhrases.safety.stayClose
-KidFriendlyPhrases.safety.lookBothWays
-KidFriendlyPhrases.safety.holdHand
-KidFriendlyPhrases.safety.safeZone
+KidFriendlyPhrases.safety.stayClose;
+KidFriendlyPhrases.safety.lookBothWays;
+KidFriendlyPhrases.safety.holdHand;
+KidFriendlyPhrases.safety.safeZone;
 
 // Transit
-KidFriendlyPhrases.transit.boarding
-KidFriendlyPhrases.transit.exiting
-KidFriendlyPhrases.transit.holdOn
+KidFriendlyPhrases.transit.boarding;
+KidFriendlyPhrases.transit.exiting;
+KidFriendlyPhrases.transit.holdOn;
 
 // Encouragement
-KidFriendlyPhrases.encouragement.goodJob
-KidFriendlyPhrases.encouragement.keepGoing
-KidFriendlyPhrases.encouragement.wellDone
+KidFriendlyPhrases.encouragement.goodJob;
+KidFriendlyPhrases.encouragement.keepGoing;
+KidFriendlyPhrases.encouragement.wellDone;
 ```
 
 ### Voice Settings Component
+
 ```typescript
 import VoiceSettings from '../components/VoiceSettings';
 
@@ -230,6 +243,7 @@ import VoiceSettings from '../components/VoiceSettings';
 ## 🗺️ 3. React Native Maps
 
 ### Features
+
 - **Native** map rendering (Google Maps on Android)
 - **Safe zone** detection and visualization
 - **Route** visualization with polylines
@@ -240,6 +254,7 @@ import VoiceSettings from '../components/VoiceSettings';
 ### Usage
 
 #### Basic Map
+
 ```typescript
 import KidFriendlyMap from '../components/KidFriendlyMap';
 
@@ -250,6 +265,7 @@ import KidFriendlyMap from '../components/KidFriendlyMap';
 ```
 
 #### With Safe Zones
+
 ```typescript
 const safeZones = [
   {
@@ -281,22 +297,23 @@ const safeZones = [
 ```
 
 #### With Route
+
 ```typescript
 const route = [
-  { 
-    latitude: 40.7589, 
-    longitude: -73.9851, 
-    instruction: 'Start at home' 
+  {
+    latitude: 40.7589,
+    longitude: -73.9851,
+    instruction: 'Start at home'
   },
-  { 
-    latitude: 40.7600, 
-    longitude: -73.9820, 
-    instruction: 'Turn left at the corner' 
+  {
+    latitude: 40.7600,
+    longitude: -73.9820,
+    instruction: 'Turn left at the corner'
   },
-  { 
-    latitude: 40.7614, 
-    longitude: -73.9776, 
-    instruction: 'Arrive at school' 
+  {
+    latitude: 40.7614,
+    longitude: -73.9776,
+    instruction: 'Arrive at school'
   },
 ];
 
@@ -307,6 +324,7 @@ const route = [
 ```
 
 #### Location Tracking
+
 ```typescript
 <KidFriendlyMap
   onLocationChange={(location) => {
@@ -322,6 +340,7 @@ const route = [
 ```
 
 ### Map Features
+
 - **📍 My Location** - Center map on user location
 - **🗺️ Show Route** - Fit map to show entire route
 - **✅ Safe Zone Indicator** - Visual feedback when in safe zone
@@ -345,7 +364,7 @@ export default function JourneyScreen() {
   React.useEffect(() => {
     const savedRoute = mainStorage.get(StorageKeys.JOURNEY_HISTORY);
     const savedZones = mainStorage.get(StorageKeys.SAFE_ZONES);
-    
+
     if (savedRoute) setRoute(savedRoute);
     if (savedZones) setSafeZones(savedZones);
   }, []);
@@ -362,7 +381,7 @@ export default function JourneyScreen() {
   const handleSafeZoneEnter = (zone) => {
     // Speak safety message
     speakSafety(`You're now in ${zone.name}. Stay safe!`);
-    
+
     // Log to MMKV
     const history = mainStorage.get('zone_history', []);
     history.push({
@@ -390,6 +409,7 @@ export default function JourneyScreen() {
 ## 🧪 Testing
 
 ### Demo Component
+
 Use the comprehensive demo to test all features:
 
 ```typescript
@@ -400,6 +420,7 @@ import EnhancedFeaturesDemo from '../components/EnhancedFeaturesDemo';
 ```
 
 ### Test Commands
+
 ```bash
 # Run the app
 npx expo start
@@ -417,13 +438,16 @@ npx expo start --web
 ## 📝 Configuration
 
 ### App.json Updates
+
 The app.json has been configured with:
+
 - ✅ expo-speech plugin configuration
 - ✅ Location permissions for maps
 - ✅ Background audio for voice (iOS)
 - ✅ All necessary permissions
 
 ### Required Permissions
+
 - **Location**: For map and navigation
 - **Speech**: For TTS/voice features
 - **Storage**: Automatic (MMKV)
@@ -431,15 +455,17 @@ The app.json has been configured with:
 ## 🎯 Key Benefits
 
 ### MMKV vs AsyncStorage
-| Feature | MMKV | AsyncStorage |
-|---------|------|--------------|
-| Speed | 10x faster | Baseline |
-| API | Synchronous | Async/await |
-| Types | Type-safe | String only |
-| Size | Smaller | Larger |
-| Encryption | Built-in | External |
+
+| Feature    | MMKV        | AsyncStorage |
+| ---------- | ----------- | ------------ |
+| Speed      | 10x faster  | Baseline     |
+| API        | Synchronous | Async/await  |
+| Types      | Type-safe   | String only  |
+| Size       | Smaller     | Larger       |
+| Encryption | Built-in    | External     |
 
 ### Voice/TTS Features
+
 - ✅ Kid-friendly voice selection
 - ✅ Priority queue management
 - ✅ Navigation integration
@@ -448,6 +474,7 @@ The app.json has been configured with:
 - ✅ Offline support
 
 ### React Native Maps
+
 - ✅ Native performance
 - ✅ Safe zone detection
 - ✅ Route visualization
@@ -482,16 +509,19 @@ components/
 ## 🐛 Troubleshooting
 
 ### MMKV Issues
+
 - Ensure `react-native-mmkv` is properly installed
 - Run `npx expo prebuild` if needed
 - Check that the app rebuilds after installation
 
 ### Voice Issues
+
 - Test on physical device (simulators may have limited voices)
 - Check permissions in device settings
 - Verify voice is enabled in settings
 
 ### Map Issues
+
 - Google Maps requires API key for Android (production)
 - Test on physical device for best results
 - Check location permissions

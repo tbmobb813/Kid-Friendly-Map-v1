@@ -176,7 +176,7 @@ import { orsService } from './utils/orsService';
 
 const route = await orsService.getRoute({
   coordinates: [
-    [-74.0060, 40.7128], // NYC City Hall
+    [-74.006, 40.7128], // NYC City Hall
     [-73.9934, 40.7505], // Times Square
   ],
   profile: 'foot-walking',
@@ -195,10 +195,10 @@ import { orsService } from './utils/orsService';
 
 const kidRoute = await orsService.getKidFriendlyRoute(
   [
-    [-74.0060, 40.7128],
+    [-74.006, 40.7128],
     [-73.9934, 40.7505],
   ],
-  8 // Child age
+  8, // Child age
 );
 
 // Route optimized for 8-year-old safety
@@ -225,7 +225,7 @@ console.log(`Transfers: ${trip.plan.itineraries[0].transfers}`);
 import { unifiedRoutingService } from './utils/unifiedRoutingService';
 
 const routes = await unifiedRoutingService.getRoutes({
-  from: { lat: 40.7128, lng: -74.0060, name: 'Start' },
+  from: { lat: 40.7128, lng: -74.006, name: 'Start' },
   to: { lat: 40.7505, lng: -73.9934, name: 'End' },
   preferences: {
     modes: ['WALK', 'TRANSIT'],
@@ -236,7 +236,7 @@ const routes = await unifiedRoutingService.getRoutes({
 });
 
 // Returns ranked routes from all services
-routes.forEach(route => {
+routes.forEach((route) => {
   console.log(`${route.type}: ${route.summary.duration}min, Safety: ${route.safetyScore}/100`);
 });
 ```

@@ -73,11 +73,14 @@ class EnhancedCacheManager {
 
   private setupPeriodicCleanup() {
     // Clean up every 30 minutes
-    setInterval(() => {
-      this.cleanupExpiredEntries().catch((error) => {
-        log.warn('Periodic cache cleanup failed', error as Error);
-      });
-    }, 30 * 60 * 1000);
+    setInterval(
+      () => {
+        this.cleanupExpiredEntries().catch((error) => {
+          log.warn('Periodic cache cleanup failed', error as Error);
+        });
+      },
+      30 * 60 * 1000,
+    );
   }
 
   private getCacheKey(key: string): string {

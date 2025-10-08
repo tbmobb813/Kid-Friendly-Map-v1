@@ -24,7 +24,7 @@ export default function AIRouteSuggestions({
   const [loading, setLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
   const [preferences, setPreferences] = useState<RoutePreferences>(
-    aiRouteEngine['userPreferences']
+    aiRouteEngine['userPreferences'],
   );
 
   useEffect(() => {
@@ -36,16 +36,13 @@ export default function AIRouteSuggestions({
   const generateRoutes = async () => {
     setLoading(true);
     try {
-      const smartRoutes = await aiRouteEngine.generateSmartRoutes(
-        origin!,
-        destination!
-      );
+      const smartRoutes = await aiRouteEngine.generateSmartRoutes(origin!, destination!);
       setRoutes(smartRoutes);
-      
+
       // Announce top route via voice
       if (smartRoutes.length > 0) {
         await speakMessage(
-          `I found ${smartRoutes.length} routes for you! The safest one takes about ${smartRoutes[0].estimatedDuration} minutes.`
+          `I found ${smartRoutes.length} routes for you! The safest one takes about ${smartRoutes[0].estimatedDuration} minutes.`,
         );
       }
     } catch (error) {
@@ -57,12 +54,12 @@ export default function AIRouteSuggestions({
 
   const handleRouteSelect = async (route: SmartRoute) => {
     setSelectedRoute(route.id);
-    
+
     // Voice announcement
     await speakMessage(
-      `You selected the ${route.name}. This route has a ${route.kidFriendlyScore} safety score!`
+      `You selected the ${route.name}. This route has a ${route.kidFriendlyScore} safety score!`,
     );
-    
+
     onRouteSelect?.(route);
   };
 
@@ -100,9 +97,7 @@ export default function AIRouteSuggestions({
   if (!origin || !destination) {
     return (
       <View className="flex-1 justify-center items-center p-8">
-        <Text className="text-xl font-bold text-gray-800 mb-2">
-          🗺️ Ready for Smart Routes!
-        </Text>
+        <Text className="text-xl font-bold text-gray-800 mb-2">🗺️ Ready for Smart Routes!</Text>
         <Text className="text-gray-600 text-center">
           Enter your starting point and destination to get AI-powered route suggestions
         </Text>
@@ -114,9 +109,7 @@ export default function AIRouteSuggestions({
     <ScrollView className="flex-1 bg-gray-50">
       {/* Header */}
       <View className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-        <Text className="text-2xl font-bold text-white mb-2">
-          🤖 AI Route Suggestions
-        </Text>
+        <Text className="text-2xl font-bold text-white mb-2">🤖 AI Route Suggestions</Text>
         <Text className="text-white opacity-90">
           Powered by smart algorithms for kid-friendly journeys
         </Text>
@@ -124,9 +117,7 @@ export default function AIRouteSuggestions({
 
       {/* Personalized Recommendations */}
       <View className="bg-blue-50 p-4 m-4 rounded-xl border border-blue-200">
-        <Text className="text-lg font-semibold text-blue-800 mb-2">
-          💡 Your Personal Insights
-        </Text>
+        <Text className="text-lg font-semibold text-blue-800 mb-2">💡 Your Personal Insights</Text>
         {aiRouteEngine.getPersonalizedRecommendations().map((rec, index) => (
           <Text key={index} className="text-sm text-blue-700 mb-1">
             • {rec}
@@ -154,20 +145,14 @@ export default function AIRouteSuggestions({
                   <View className="flex-row items-center flex-1">
                     <Text className="text-2xl mr-2">{index === 0 ? '⭐' : '✨'}</Text>
                     <View className="flex-1">
-                      <Text className="text-xl font-bold text-gray-800">
-                        {route.name}
-                      </Text>
-                      <Text className="text-sm text-gray-600 mt-1">
-                        {route.description}
-                      </Text>
+                      <Text className="text-xl font-bold text-gray-800">{route.name}</Text>
+                      <Text className="text-sm text-gray-600 mt-1">{route.description}</Text>
                     </View>
                   </View>
-                  
+
                   {/* AI Score Badge */}
                   <View className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-full w-16 h-16 items-center justify-center">
-                    <Text className="text-white font-bold text-lg">
-                      {route.score}
-                    </Text>
+                    <Text className="text-white font-bold text-lg">{route.score}</Text>
                     <Text className="text-white text-xs">AI Score</Text>
                   </View>
                 </View>
@@ -184,7 +169,9 @@ export default function AIRouteSuggestions({
                       🚶 {Math.round(route.walkingDistance)}m
                     </Text>
                   </View>
-                  <View className={`px-3 py-1 rounded-full ${getDifficultyColor(route.difficultyLevel)}`}>
+                  <View
+                    className={`px-3 py-1 rounded-full ${getDifficultyColor(route.difficultyLevel)}`}
+                  >
                     <Text className="text-xs font-semibold">
                       {route.difficultyLevel.toUpperCase()}
                     </Text>
@@ -259,9 +246,7 @@ export default function AIRouteSuggestions({
                 {/* Selected Badge */}
                 {isSelected && (
                   <View className="mt-3 bg-blue-500 p-2 rounded-lg">
-                    <Text className="text-white text-center font-semibold">
-                      ✓ Selected Route
-                    </Text>
+                    <Text className="text-white text-center font-semibold">✓ Selected Route</Text>
                   </View>
                 )}
               </View>
@@ -272,16 +257,10 @@ export default function AIRouteSuggestions({
 
       {/* Preferences Section */}
       <View className="bg-white m-4 p-4 rounded-xl shadow-sm">
-        <Text className="text-lg font-bold text-gray-800 mb-3">
-          ⚙️ Route Preferences
-        </Text>
+        <Text className="text-lg font-bold text-gray-800 mb-3">⚙️ Route Preferences</Text>
         <View className="space-y-2">
-          <Text className="text-sm text-gray-700">
-            👶 Child Age: {preferences.childAge} years
-          </Text>
-          <Text className="text-sm text-gray-700">
-            🎯 Preference: {preferences.timePreference}
-          </Text>
+          <Text className="text-sm text-gray-700">👶 Child Age: {preferences.childAge} years</Text>
+          <Text className="text-sm text-gray-700">🎯 Preference: {preferences.timePreference}</Text>
           <Text className="text-sm text-gray-700">
             🚶 Max Walking: {preferences.maxWalkingDistance}m
           </Text>
@@ -289,7 +268,7 @@ export default function AIRouteSuggestions({
             🔄 Max Transfers: {preferences.maxTransferCount}
           </Text>
         </View>
-        
+
         <Pressable
           className="mt-4 bg-gray-800 p-3 rounded-lg"
           onPress={() => {
@@ -297,35 +276,19 @@ export default function AIRouteSuggestions({
             speakMessage('Opening route preferences');
           }}
         >
-          <Text className="text-white text-center font-semibold">
-            Update Preferences
-          </Text>
+          <Text className="text-white text-center font-semibold">Update Preferences</Text>
         </Pressable>
       </View>
 
       {/* Info Footer */}
       <View className="bg-gradient-to-r from-purple-100 to-pink-100 p-6 m-4 rounded-xl">
-        <Text className="text-lg font-bold text-purple-800 mb-2">
-          🌟 How AI Helps You
-        </Text>
-        <Text className="text-sm text-purple-700 mb-2">
-          Our smart AI considers:
-        </Text>
-        <Text className="text-xs text-purple-600 mb-1">
-          • Your child's age and preferences
-        </Text>
-        <Text className="text-xs text-purple-600 mb-1">
-          • Safety features and safe zones
-        </Text>
-        <Text className="text-xs text-purple-600 mb-1">
-          • Current time, weather, and traffic
-        </Text>
-        <Text className="text-xs text-purple-600 mb-1">
-          • Your past journey history
-        </Text>
-        <Text className="text-xs text-purple-600">
-          • Accessibility requirements
-        </Text>
+        <Text className="text-lg font-bold text-purple-800 mb-2">🌟 How AI Helps You</Text>
+        <Text className="text-sm text-purple-700 mb-2">Our smart AI considers:</Text>
+        <Text className="text-xs text-purple-600 mb-1">• Your child's age and preferences</Text>
+        <Text className="text-xs text-purple-600 mb-1">• Safety features and safe zones</Text>
+        <Text className="text-xs text-purple-600 mb-1">• Current time, weather, and traffic</Text>
+        <Text className="text-xs text-purple-600 mb-1">• Your past journey history</Text>
+        <Text className="text-xs text-purple-600">• Accessibility requirements</Text>
       </View>
     </ScrollView>
   );

@@ -44,16 +44,16 @@ This project uses Expo Application Services (EAS) for production mobile builds.
 npm install -g eas-cli
 ```
 
- Login and configure credentials:
+Login and configure credentials:
 
 ```bash
 eas login
 # Follow prompts to configure your account
 ```
 
- Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions secrets.
+Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions secrets.
 
- Build:
+Build:
 
 ```bash
 npx eas build --profile production --platform all
@@ -140,4 +140,3 @@ See `docs/TESTING_GUIDE.md` and `docs/PERFORMANCE_OPTIMIZATION.md` for developer
 ## License
 
 Add a license file (e.g., MIT) if you intend to open-source this project.
-

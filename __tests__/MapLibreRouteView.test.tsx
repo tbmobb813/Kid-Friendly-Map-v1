@@ -11,30 +11,44 @@ jest.mock('@maplibre/maplibre-react-native', () => ({
     setAccessToken: jest.fn(),
     requestAndroidPermissionsIfNeeded: jest.fn(),
     MapView: ({ children, onPress, onDidFinishRenderingMapFully, ...props }: any) => {
-      return React.createElement('MapView', {
-        testID: 'mock-mapview',
-        onPress,
-        onDidFinishRenderingMapFully,
-        ...props,
-      }, children);
+      return React.createElement(
+        'MapView',
+        {
+          testID: 'mock-mapview',
+          onPress,
+          onDidFinishRenderingMapFully,
+          ...props,
+        },
+        children,
+      );
     },
     Camera: (props: any) => React.createElement('Camera', { testID: 'mock-camera', ...props }),
     ShapeSource: ({ children, onPress, ...props }: any) => {
-      return React.createElement('ShapeSource', {
-        testID: `mock-shapesource-${props.id}`,
-        onPress,
-        ...props,
-      }, children);
+      return React.createElement(
+        'ShapeSource',
+        {
+          testID: `mock-shapesource-${props.id}`,
+          onPress,
+          ...props,
+        },
+        children,
+      );
     },
-    LineLayer: (props: any) => React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) => React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
+    LineLayer: (props: any) =>
+      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
+    CircleLayer: (props: any) =>
+      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
   },
 }));
 
 // Mock MapLibreMap
 jest.mock('@/components/MapLibreMap', () => {
   return function MockMapLibreMap({ children, testID, ...props }: any) {
-    return React.createElement('MockMapLibreMap', { testID: testID || 'mock-maplibre-map', ...props }, children);
+    return React.createElement(
+      'MockMapLibreMap',
+      { testID: testID || 'mock-maplibre-map', ...props },
+      children,
+    );
   };
 });
 
@@ -108,7 +122,7 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={mockRouteGeoJSON}
-      />
+      />,
     );
 
     expect(getByTestId('mock-maplibre-map')).toBeTruthy();
@@ -118,10 +132,7 @@ describe('MapLibreRouteView', () => {
 
   it('should render origin and destination markers', () => {
     const { getByTestId } = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-      />
+      <MapLibreRouteView origin={mockOrigin} destination={mockDestination} />,
     );
 
     expect(getByTestId('mock-shapesource-endpoints')).toBeTruthy();
@@ -129,22 +140,14 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should render transit stations when enabled', () => {
-    const { getByTestId } = render(
-      <MapLibreRouteView
-        showTransitStations={true}
-      />
-    );
+    const { getByTestId } = render(<MapLibreRouteView showTransitStations={true} />);
 
     expect(getByTestId('mock-shapesource-stations')).toBeTruthy();
     expect(getByTestId('mock-circlelayer-stations-layer')).toBeTruthy();
   });
 
   it('should not render transit stations when disabled', () => {
-    const { queryByTestId } = render(
-      <MapLibreRouteView
-        showTransitStations={false}
-      />
-    );
+    const { queryByTestId } = render(<MapLibreRouteView showTransitStations={false} />);
 
     expect(queryByTestId('mock-shapesource-stations')).toBeNull();
     expect(queryByTestId('mock-circlelayer-stations-layer')).toBeNull();
@@ -152,11 +155,7 @@ describe('MapLibreRouteView', () => {
 
   it('should create fallback route when no route data provided', () => {
     const { getByTestId } = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-        routeGeoJSON={null}
-      />
+      <MapLibreRouteView origin={mockOrigin} destination={mockDestination} routeGeoJSON={null} />,
     );
 
     // Should still render route elements (fallback route)
@@ -165,11 +164,7 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should not render route when no origin or destination', () => {
-    const { queryByTestId } = render(
-      <MapLibreRouteView
-        routeGeoJSON={null}
-      />
-    );
+    const { queryByTestId } = render(<MapLibreRouteView routeGeoJSON={null} />);
 
     expect(queryByTestId('mock-shapesource-route')).toBeNull();
     expect(queryByTestId('mock-linelayer-route-line')).toBeNull();
@@ -177,17 +172,14 @@ describe('MapLibreRouteView', () => {
 
   it('should handle station press events', () => {
     const mockOnStationPress = jest.fn();
-    
+
     const { getByTestId } = render(
-      <MapLibreRouteView
-        onStationPress={mockOnStationPress}
-        showTransitStations={true}
-      />
+      <MapLibreRouteView onStationPress={mockOnStationPress} showTransitStations={true} />,
     );
 
     const stationsSource = getByTestId('mock-shapesource-stations');
     expect(stationsSource).toBeTruthy();
-    
+
     // Mock press event
     const mockEvent = {
       features: [
@@ -207,9 +199,7 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should use custom testID when provided', () => {
-    const { getByTestId } = render(
-      <MapLibreRouteView testID="custom-map-view" />
-    );
+    const { getByTestId } = render(<MapLibreRouteView testID="custom-map-view" />);
 
     expect(getByTestId('custom-map-view')).toBeTruthy();
   });
@@ -220,11 +210,11 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={mockRouteGeoJSON}
-      />
+      />,
     );
 
     const mapView = getByTestId('mock-maplibre-map');
-    
+
     // Should have centerCoordinate prop set
     expect(mapView.props.centerCoordinate).toBeDefined();
     expect(Array.isArray(mapView.props.centerCoordinate)).toBe(true);
@@ -242,7 +232,7 @@ describe('MapLibreRouteView', () => {
         origin={mockOrigin}
         destination={mockDestination}
         routeGeoJSON={emptyRouteGeoJSON}
-      />
+      />,
     );
 
     // Should still render the map

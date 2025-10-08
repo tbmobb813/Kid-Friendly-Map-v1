@@ -10,6 +10,7 @@
 The "Couldn't find the prevent remove context" error is **GONE** after downgrading to `@react-navigation/native@7.1.8`.
 
 **Evidence from logs:**
+
 - ✅ `LOG RootLayout render` appears (layout renders successfully)
 - ✅ NO "prevent remove context" error
 - ⚠️ New error: `useCategoryStore` issue (different, fixable)
@@ -19,16 +20,19 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 ## Current Blockers
 
 ### 1. USB Device Not Recognized
+
 **Problem:** Your Android phone doesn't show up in `lsusb`  
 **Cause:** USB mode set to "Charging only" OR bad cable  
 **Solution:** See "Quick USB Fix" section below
 
 ### 2. Emulator Won't Start
+
 **Problem:** Not enough disk space (need 7.4GB, have 4.9GB)  
 **Disk Usage:** 82GB / 92GB (95% full)  
 **Solution:** See "Free Up Space" section below
 
 ### 3. New App Error
+
 **Problem:** `TypeError: Cannot read property 'getApprovedCategories' of undefined`  
 **Location:** `app/(tabs)/index.tsx:57`  
 **Solution:** See "Fix CategoryStore Error" section below
@@ -47,17 +51,20 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
    - Select **"File Transfer"** or **"MTP"** (NOT "Charging only"!)
 
 2. **Enable Developer Mode:**
+
    ```
    Settings → About phone → Tap "Build number" 7 times
    You'll see "You are now a developer!"
    ```
 
 3. **Enable USB Debugging:**
+
    ```
    Settings → Developer options → Toggle ON "USB debugging"
    ```
 
 4. **Restart ADB and check:**
+
    ```bash
    adb kill-server && adb start-server
    lsusb  # Should show a new device now!
@@ -157,6 +164,7 @@ To quickly test on your physical phone without native build:
 4. **Scan QR code with Expo Go app**
 
 **Limitations:**
+
 - ❌ MapLibre won't work (needs native build)
 - ❌ MMKV won't work (needs native build)
 - ✅ Can test navigation (the main fix!)
@@ -199,20 +207,20 @@ Or let me know and I can help debug the store implementation!
 
 **Try in this order:**
 
-1. **OPTION 1 first** (2 minutes) - Fix USB mode on phone  
-   - If your device appears in `adb devices`, you're golden!  
+1. **OPTION 1 first** (2 minutes) - Fix USB mode on phone
+   - If your device appears in `adb devices`, you're golden!
    - Run `npx expo run:android` and you're done!
 
-2. **If USB fails, try OPTION 4** (5 minutes) - Use Expo Go  
-   - At least confirm navigation fix works  
+2. **If USB fails, try OPTION 4** (5 minutes) - Use Expo Go
+   - At least confirm navigation fix works
    - Test app functionality
 
-3. **Then fix disk space (OPTION 2)** if you want emulator  
-   - Clean caches to free 3GB  
-   - Create smaller emulator  
+3. **Then fix disk space (OPTION 2)** if you want emulator
+   - Clean caches to free 3GB
+   - Create smaller emulator
    - Run full native build
 
-4. **Meanwhile, let's fix the CategoryStore error**  
+4. **Meanwhile, let's fix the CategoryStore error**
    - This is blocking your app regardless of device
 
 ---
@@ -220,15 +228,18 @@ Or let me know and I can help debug the store implementation!
 ## Current File Status
 
 ### ✅ Fixed Files:
+
 - `package.json` - @react-navigation/native downgraded to 7.1.8
 - `node_modules` - Clean reinstalled
 - Navigation - Working! No more context error
 
 ### ⚠️ Files Needing Attention:
+
 - `app/(tabs)/index.tsx` - CategoryStore error on line 57
 - Possibly `stores/categoryStore.ts` - May need implementation check
 
 ### 📝 Documentation Created:
+
 - `DEPENDENCY_FIX_SUMMARY.md` - Navigation fix details
 - `ANDROID_DEVICE_SETUP.md` - Device connection guide
 - `USB_DEBUG_GUIDE.md` - Detailed USB troubleshooting
@@ -244,6 +255,7 @@ Or let me know and I can help debug the store implementation!
    (Pull down notification, tap USB notification, select File Transfer)
 
 2. **Run these commands:**
+
    ```bash
    adb devices
    # If device shows up, run:
@@ -260,11 +272,13 @@ Or let me know and I can help debug the store implementation!
 ## Success Criteria
 
 ### Minimum Success (What We've Achieved):
+
 - ✅ Navigation context error eliminated
 - ✅ `@react-navigation/native@7.1.8` installed
 - ✅ Clean node_modules reinstall
 
 ### Full Success (What We Need):
+
 - 🎯 Device/emulator connected to ADB
 - 🎯 Native build running (`npx expo run:android`)
 - 🎯 MapLibre native modules working
@@ -274,8 +288,9 @@ Or let me know and I can help debug the store implementation!
 ---
 
 **What should we tackle first?** Let me know:
+
 - A) Keep trying USB device connection
-- B) Free up space for emulator  
+- B) Free up space for emulator
 - C) Use Expo Go to test current fix
 - D) Fix CategoryStore error first
 - E) Something else?

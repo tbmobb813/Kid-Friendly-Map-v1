@@ -4,9 +4,11 @@ jest.mock('ioredis', () => {
     const store = new Map();
     return {
       get: async (k) => store.get(k) || null,
-      set: async (k, v) => { store.set(k, v); },
-      exists: async (k) => store.has(k) ? 1 : 0,
-      on: () => {}
+      set: async (k, v) => {
+        store.set(k, v);
+      },
+      exists: async (k) => (store.has(k) ? 1 : 0),
+      on: () => {},
     };
   });
 });
@@ -20,14 +22,22 @@ jest.mock('../../adapter.js', () => {
   const original = jest.requireActual('../../adapter.js');
   return {
     ...original,
-    fetchGtfsRt: jest.fn(async () => ({ entity: [] }))
+    fetchGtfsRt: jest.fn(async () => ({ entity: [] })),
   };
 });
 
 describe('Redis cache integration', () => {
   let server;
-  beforeAll(() => { process.env.FEED_REFRESH_ENABLED = 'false'; server = startServer(); });
-  afterAll(() => { if (server) { _internal.stopBackgroundRefresh(); server.close(); } });
+  beforeAll(() => {
+    process.env.FEED_REFRESH_ENABLED = 'false';
+    server = startServer();
+  });
+  afterAll(() => {
+    if (server) {
+      _internal.stopBackgroundRefresh();
+      server.close();
+    }
+  });
 
   test('fetchGtfsRt called once for same feed (cache hit)', async () => {
     const { fetchGtfsRt } = require('../../adapter.js');

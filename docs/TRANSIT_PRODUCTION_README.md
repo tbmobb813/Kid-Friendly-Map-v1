@@ -115,12 +115,12 @@ Change management:
 - Use tools like `k6`, `artillery`, or `wrk` to simulate concurrent requests to `/feeds/:region/:system.json`.
 - Example k6 script:
 
-   ```javascript
-   import http from 'k6/http';
-   export default function () {
-      http.get('http://localhost:3001/feeds/nyc/mta-subway.json');
-   }
-   ```
+  ```javascript
+  import http from 'k6/http';
+  export default function () {
+    http.get('http://localhost:3001/feeds/nyc/mta-subway.json');
+  }
+  ```
 
 - Run with increasing VUs (virtual users) and monitor latency, error rate, and cache hit ratio.
 
@@ -134,30 +134,28 @@ Change management:
 
 - Example Prometheus SLO rules:
 
-   ```yaml
-   - alert: TransitAdapterHighLatency
-      expr: histogram_quantile(0.99, sum(rate(transit_adapter_fetch_duration_seconds_bucket[5m])) by (le)) > 2
-      for: 5m
-      labels:
-         severity: warning
-      annotations:
-         summary: "Transit adapter p99 request latency >2s"
-   - alert: TransitAdapterErrorRate
-      expr: increase(transit_adapter_fetch_failures_total[10m]) / increase(transit_adapter_cache_hits_total[10m]) > 0.01
-      for: 10m
-      labels:
-         severity: critical
-      annotations:
-         summary: "Transit adapter error rate >1%"
-   ```
+  ```yaml
+  - alert: TransitAdapterHighLatency
+     expr: histogram_quantile(0.99, sum(rate(transit_adapter_fetch_duration_seconds_bucket[5m])) by (le)) > 2
+     for: 5m
+     labels:
+        severity: warning
+     annotations:
+        summary: "Transit adapter p99 request latency >2s"
+  - alert: TransitAdapterErrorRate
+     expr: increase(transit_adapter_fetch_failures_total[10m]) / increase(transit_adapter_cache_hits_total[10m]) > 0.01
+     for: 10m
+     labels:
+        severity: critical
+     annotations:
+        summary: "Transit adapter error rate >1%"
+  ```
 
 - Review SLOs after load tests and adjust thresholds for production traffic.
 
 ### Cache Metrics & Redis Failover Testing
 
-- Prometheus metrics:
-      - `transit_adapter_cache_hits_total{type="redis|memory"}`
-      - `transit_adapter_cache_misses_total{type="redis|memory"}`
+- Prometheus metrics: - `transit_adapter_cache_hits_total{type="redis|memory"}` - `transit_adapter_cache_misses_total{type="redis|memory"}`
 - Monitor hit/miss rates to tune cache TTL and sizing.
 
 #### Redis Failover Test
@@ -174,9 +172,7 @@ Enable Redis to share cache across multiple adapter instances for consistent, fa
 ### Setup
 
 - Adapter auto-detects Redis if `REDIS_URL` is set (uses in-memory cache otherwise).
-- Add Redis to your deployment:
-      - Docker Compose: see `server/docker-compose.redis.yml`
-      - Kubernetes: see `server/k8s-redis.yaml` and set `REDIS_URL` in ConfigMap or env.
+- Add Redis to your deployment: - Docker Compose: see `server/docker-compose.redis.yml` - Kubernetes: see `server/k8s-redis.yaml` and set `REDIS_URL` in ConfigMap or env.
 - Use Redis 7+ for best performance and reliability.
 
 ### Configuration
@@ -212,9 +208,9 @@ Securely store and rotate all API keys and sensitive config using a secret manag
 - Rotate keys with `kubectl patch` or apply updated manifest.
 - Use the provided script:
 
-   ```bash
-   ./server/scripts/rotate-secrets.sh MTA_API_KEY new-key-value
-   ```
+  ```bash
+  ./server/scripts/rotate-secrets.sh MTA_API_KEY new-key-value
+  ```
 
 - Restart affected pods to pick up new secrets.
 
@@ -253,9 +249,9 @@ Regular backups are essential for production reliability and compliance. Use the
 - See `server/scripts/backup-postgres.sh` for a ready-to-use backup script.
 - Usage:
 
-   ```bash
-   DATABASE_URL="postgres://postgres:postgres@localhost:5432/transit" ./server/scripts/backup-postgres.sh /path/to/backup_dir
-   ```
+  ```bash
+  DATABASE_URL="postgres://postgres:postgres@localhost:5432/transit" ./server/scripts/backup-postgres.sh /path/to/backup_dir
+  ```
 
 - The script creates a timestamped, gzipped SQL dump in the specified directory.
 
@@ -264,24 +260,24 @@ Regular backups are essential for production reliability and compliance. Use the
 1. Stop the adapter and ensure Postgres is running.
 2. Restore the backup:
 
-    ```bash
-    gunzip -c /path/to/backup_dir/transit_backup_YYYY-MM-DD_HH-MM-SS.sql.gz | psql "$DATABASE_URL"
-    ```
+   ```bash
+   gunzip -c /path/to/backup_dir/transit_backup_YYYY-MM-DD_HH-MM-SS.sql.gz | psql "$DATABASE_URL"
+   ```
 
 3. (Optional) Re-import static GTFS if needed:
 
-    ```bash
-    node server/tools/import-static-gtfs.js path/to/gtfs.zip
-    DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
-    ```
+   ```bash
+   node server/tools/import-static-gtfs.js path/to/gtfs.zip
+   DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
+   ```
 
 ### Automation
 
 - Use a cron job or systemd timer to run the backup script nightly:
 
-   ```cron
-   0 3 * * * DATABASE_URL=... /path/to/backup-postgres.sh /path/to/backup_dir
-   ```
+  ```cron
+  0 3 * * * DATABASE_URL=... /path/to/backup-postgres.sh /path/to/backup_dir
+  ```
 
 - Store backups in a secure, offsite location with retention policy (e.g., 7-30 days).
 
@@ -292,15 +288,15 @@ Regular backups are essential for production reliability and compliance. Use the
 
 - Example Prometheus rule:
 
-   ```yaml
-   - alert: PostgresBackupMissing
-      expr: absent(transit_backup_last_success_timestamp_seconds) or (time() - transit_backup_last_success_timestamp_seconds > 86400)
-      for: 1h
-      labels:
-         severity: critical
-      annotations:
-         summary: "No successful Postgres backup in last 24h"
-   ```
+  ```yaml
+  - alert: PostgresBackupMissing
+     expr: absent(transit_backup_last_success_timestamp_seconds) or (time() - transit_backup_last_success_timestamp_seconds > 86400)
+     for: 1h
+     labels:
+        severity: critical
+     annotations:
+        summary: "No successful Postgres backup in last 24h"
+  ```
 
 # Implementation highlights & design decisions
 
@@ -313,11 +309,10 @@ this file as the canonical reference for future work.
 ## Overview
 
 - Purpose: a server-side adapter that fetches GTFS-RT (realtime) feeds, normalizes them to a simple JSON
-   schema for the client app, and enriches realtime trip updates using static GTFS data (stops, trips,
-   routes) stored in Postgres or JSON indexes.
+  schema for the client app, and enriches realtime trip updates using static GTFS data (stops, trips,
+  routes) stored in Postgres or JSON indexes.
 
 - Main components:
-
   - `server/index.js` — Express adapter exposing `/feeds/:region/:system.json`, `/health`, `/metrics`.
 
   - `server/adapter.js` — Feed decoding and normalization logic, async enrichment via `server/lib/gtfsStore-pg.js`.
@@ -426,12 +421,12 @@ To keep static GTFS data fresh for enrichment, automate nightly imports using ei
 
 - Use a systemd timer or cron job to run:
 
-   ```bash
-   curl -L "$GTFS_ZIP_URL" -o gtfs.zip
-   node server/tools/import-static-gtfs.js gtfs.zip
-   DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
-   DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"
-   ```
+  ```bash
+  curl -L "$GTFS_ZIP_URL" -o gtfs.zip
+  node server/tools/import-static-gtfs.js gtfs.zip
+  DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres.js
+  DATABASE_URL="$DATABASE_URL" node server/tools/import-to-postgres-copy.js || echo "COPY import skipped"
+  ```
 
 ### Notes
 

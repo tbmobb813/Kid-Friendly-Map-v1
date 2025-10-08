@@ -1,9 +1,9 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { CategoryProvider } from "@/stores/categoryStore";
-import { ParentalProvider } from "@/stores/parentalStore";
-import { AuthProvider } from "@/hooks/useAuth";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { CategoryProvider } from '@/stores/categoryStore';
+import { ParentalProvider } from '@/stores/parentalStore';
+import { AuthProvider } from '@/hooks/useAuth';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'react-native-gesture-handler';
 
 // Enable screens before any navigation

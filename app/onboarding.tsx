@@ -8,7 +8,7 @@ export default function OnboardingScreen() {
   const router = useRouter();
 
   const handleOnboardingComplete = () => {
-    router.replace("/(tabs)" as any);
+    router.replace('/(tabs)' as any);
   };
 
   return (

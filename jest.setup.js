@@ -5,17 +5,19 @@ global.__DEV__ = true;
 
 // Minimal ErrorUtils shim to satisfy React Native global error handling usage
 // Provides getGlobalHandler and setGlobalHandler used by utils/logger.ts
-global.ErrorUtils = (function() {
-	let handler = (error, isFatal) => {
-		// default noop handler during tests
-		// throw the error so tests see unhandled exceptions unless overridden
-		throw error;
-	};
+global.ErrorUtils = (function () {
+  let handler = (error, isFatal) => {
+    // default noop handler during tests
+    // throw the error so tests see unhandled exceptions unless overridden
+    throw error;
+  };
 
-	return {
-		getGlobalHandler: () => handler,
-		setGlobalHandler: (h) => { handler = h; },
-	};
+  return {
+    getGlobalHandler: () => handler,
+    setGlobalHandler: (h) => {
+      handler = h;
+    },
+  };
 })();
 
 // Provide an in-memory AsyncStorage mock for tests

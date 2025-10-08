@@ -44,10 +44,9 @@ export default function ExpoMapView({
       <View style={styles.container} testID={testId}>
         <View style={styles.fallbackContainer}>
           <Text style={styles.fallbackText}>
-            {!isExpoMapsAvailable 
+            {!isExpoMapsAvailable
               ? 'Expo Maps requires a development build.\nCurrently showing OpenStreetMap fallback.\n\nTo use native Google/Apple Maps:\n• Build a development build with "npx expo run:android"'
-              : 'Expo Maps is only supported on Android in this implementation.\nSwitch to the OpenStreetMap view for iOS compatibility.'
-            }
+              : 'Expo Maps is only supported on Android in this implementation.\nSwitch to the OpenStreetMap view for iOS compatibility.'}
           </Text>
         </View>
       </View>
@@ -64,24 +63,25 @@ export default function ExpoMapView({
 
   // Default center (NYC)
   const defaultCenter = { latitude: 40.7128, longitude: -74.006 };
-  
+
   // Determine map center
   const center = origin?.coordinates || destination?.coordinates || defaultCenter;
-  
+
   const cameraPosition = {
     coordinates: center,
     zoom: 12,
   };
 
   // Convert route coordinates if available
-  const routeCoordinates = route?.geometry?.coordinates?.map(coord => ({
-    latitude: coord.latitude,
-    longitude: coord.longitude,
-  })) || [];
+  const routeCoordinates =
+    route?.geometry?.coordinates?.map((coord) => ({
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+    })) || [];
 
   // Filter nearby transit stations
-  const nearbyStations = showTransitStations 
-    ? nycStations.filter(station => {
+  const nearbyStations = showTransitStations
+    ? nycStations.filter((station) => {
         const distance = getDistance(center, {
           latitude: station.coordinates[1],
           longitude: station.coordinates[0],
@@ -93,15 +93,15 @@ export default function ExpoMapView({
   // Simple distance calculation
   function getDistance(point1: LatLng, point2: LatLng): number {
     const R = 6371e3; // Earth's radius in meters
-    const φ1 = point1.latitude * Math.PI/180;
-    const φ2 = point2.latitude * Math.PI/180;
-    const Δφ = (point2.latitude-point1.latitude) * Math.PI/180;
-    const Δλ = (point2.longitude-point1.longitude) * Math.PI/180;
+    const φ1 = (point1.latitude * Math.PI) / 180;
+    const φ2 = (point2.latitude * Math.PI) / 180;
+    const Δφ = ((point2.latitude - point1.latitude) * Math.PI) / 180;
+    const Δλ = ((point2.longitude - point1.longitude) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
   }
@@ -137,23 +137,31 @@ export default function ExpoMapView({
   // Prepare markers array for Android GoogleMaps
   const markers = [
     // Origin marker
-    ...(origin ? [{
-      id: 'origin',
-      coordinates: origin.coordinates,
-      title: 'Origin',
-      snippet: origin.name,
-      showCallout: true,
-    }] : []),
-    
+    ...(origin
+      ? [
+          {
+            id: 'origin',
+            coordinates: origin.coordinates,
+            title: 'Origin',
+            snippet: origin.name,
+            showCallout: true,
+          },
+        ]
+      : []),
+
     // Destination marker
-    ...(destination ? [{
-      id: 'destination',
-      coordinates: destination.coordinates,
-      title: 'Destination',
-      snippet: destination.name,
-      showCallout: true,
-    }] : []),
-    
+    ...(destination
+      ? [
+          {
+            id: 'destination',
+            coordinates: destination.coordinates,
+            title: 'Destination',
+            snippet: destination.name,
+            showCallout: true,
+          },
+        ]
+      : []),
+
     // Transit station markers
     ...nearbyStations.map((station) => ({
       id: `station-${station.id}`,
@@ -169,12 +177,17 @@ export default function ExpoMapView({
   ];
 
   // Prepare polylines array
-  const polylines = routeCoordinates.length > 1 ? [{
-    id: 'route',
-    coordinates: routeCoordinates,
-    color: Colors.primary,
-    width: 4,
-  }] : [];
+  const polylines =
+    routeCoordinates.length > 1
+      ? [
+          {
+            id: 'route',
+            coordinates: routeCoordinates,
+            color: Colors.primary,
+            width: 4,
+          },
+        ]
+      : [];
 
   return (
     <View style={styles.container} testID={testId}>
@@ -203,7 +216,7 @@ export default function ExpoMapView({
       />
 
       {/* Recenter Button */}
-      <Pressable 
+      <Pressable
         style={styles.recenterButton}
         onPress={recenterMap}
         accessibilityRole="button"

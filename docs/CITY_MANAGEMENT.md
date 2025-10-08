@@ -74,7 +74,7 @@ The KidMap app now includes a comprehensive city management system that supports
 
 ### File Structure
 
-``` text
+```text
 config/regions/
 ├── newYork.ts
 ├── chicago.ts
@@ -213,34 +213,34 @@ The system includes a sophisticated transit data updater that:
 
 ```typescript
 export const newCityConfig: RegionConfig = {
-  id: "new-city",
-  name: "New City",
-  country: "United States",
-  timezone: "America/New_York",
-  currency: "USD",
-  language: "en",
+  id: 'new-city',
+  name: 'New City',
+  country: 'United States',
+  timezone: 'America/New_York',
+  currency: 'USD',
+  language: 'en',
   coordinates: { latitude: 40.0, longitude: -74.0 },
   transitSystems: [
     {
-      id: "city-metro",
-      name: "City Metro",
-      type: "subway",
-      color: "#0066CC",
-      routes: ["Red", "Blue", "Green"]
-    }
+      id: 'city-metro',
+      name: 'City Metro',
+      type: 'subway',
+      color: '#0066CC',
+      routes: ['Red', 'Blue', 'Green'],
+    },
   ],
-  emergencyNumber: "911",
-  safetyTips: ["Stay with an adult", "Keep your transit card safe"],
-  funFacts: ["Fun fact about the city"],
+  emergencyNumber: '911',
+  safetyTips: ['Stay with an adult', 'Keep your transit card safe'],
+  funFacts: ['Fun fact about the city'],
   popularPlaces: [
     {
-      name: "City Park",
-      category: "park",
-      description: "Great place for families"
-    }
+      name: 'City Park',
+      category: 'park',
+      description: 'Great place for families',
+    },
   ],
-  transitApiEndpoint: "https://api.newcity.gov/",
-  mapStyle: "standard"
+  transitApiEndpoint: 'https://api.newcity.gov/',
+  mapStyle: 'standard',
 };
 ```
 
@@ -248,7 +248,7 @@ export const newCityConfig: RegionConfig = {
 
 ```typescript
 // Update single city
-const result = await transitDataUpdater.updateRegionTransitData("nyc");
+const result = await transitDataUpdater.updateRegionTransitData('nyc');
 
 // Update all cities
 const results = await transitDataUpdater.updateAllRegions();

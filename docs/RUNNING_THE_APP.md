@@ -77,7 +77,6 @@ npm run demo:offline
 1. **For Expo app**: Use `npm start` NOT `npm expo start` ❌
 
 1. **For tests**:
-
    - React Native tests: Use Jest → `npm run test:integration` ✅
 
    - Pure logic tests: Use Bun → `npm run test:logic` ✅
@@ -96,7 +95,7 @@ npm run test:routing  # ✅ Works with Jest
 
 ## 📁 Test Directory Structure
 
-``` text
+```text
 __tests__/          → React Native integration tests (use Jest)
   ├── routing-integration.test.ts  ✅ 19/19 passing
   ├── offline-validation.test.ts
@@ -178,13 +177,13 @@ npm --version    # Should be >= 9
 
 ## 📝 Quick Reference
 
-| Command | Purpose | Test Runner |
-|---------|---------|-------------|
-| `npm start` | Start Expo dev server | - |
-| `npm run test:routing` | Test routing features | Jest |
-| `npm run test:logic` | Test pure logic | Bun |
-| `npm run test:all` | Run all tests | Both |
-| `npm run demo:integration` | Demo script | Node.js |
+| Command                    | Purpose               | Test Runner |
+| -------------------------- | --------------------- | ----------- |
+| `npm start`                | Start Expo dev server | -           |
+| `npm run test:routing`     | Test routing features | Jest        |
+| `npm run test:logic`       | Test pure logic       | Bun         |
+| `npm run test:all`         | Run all tests         | Both        |
+| `npm run demo:integration` | Demo script           | Node.js     |
 
 ---
 

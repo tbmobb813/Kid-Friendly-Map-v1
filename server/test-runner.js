@@ -11,13 +11,13 @@ async function run() {
   // For the test runner we'll simulate a FeedMessage by converting our mock.routes -> minimal trip_update entities
   const entities = mock.routes.map((r, i) => {
     const id = r.id || `e${i}`;
-    const arrivalTime = Math.floor(Date.now() / 1000) + ((r.nextArrival || 3) * 60);
+    const arrivalTime = Math.floor(Date.now() / 1000) + (r.nextArrival || 3) * 60;
     return {
       id,
       trip_update: {
         trip: { trip_id: r.id, route_id: r.name },
-        stop_time_update: [{ arrival: { time: arrivalTime } }]
-      }
+        stop_time_update: [{ arrival: { time: arrivalTime } }],
+      },
     };
   });
 
@@ -29,4 +29,7 @@ async function run() {
   console.log('Adapter test runner OK: routes', normalized.routes.length);
 }
 
-run().catch(err => { console.error(err); process.exit(1); });
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

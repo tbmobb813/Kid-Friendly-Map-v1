@@ -3,7 +3,7 @@
   "lastUpdated": "2024-01-01T12:00:00Z",
   "systemInfo": {
     "name": "REPLACE_BUS_SYSTEM_NAME",
-    "timezone": "REPLACE_TIMEZONE", 
+    "timezone": "REPLACE_TIMEZONE",
     "language": "REPLACE_LANGUAGE_CODE"
   },
   "stops": [
@@ -11,8 +11,8 @@
       "id": "REPLACE_STOP_ID_1",
       "name": "REPLACE_STOP_NAME_1",
       "coordinates": {
-        "lat": 0.0000,
-        "lng": 0.0000
+        "lat": 0.0,
+        "lng": 0.0
       },
       "routes": ["REPLACE_ROUTE_1", "REPLACE_ROUTE_2"],
       "accessibility": {
@@ -22,20 +22,11 @@
         "lighting": true,
         "realTimeDisplay": true
       },
-      "facilities": [
-        "REPLACE_FACILITY_1",
-        "REPLACE_FACILITY_2" 
-      ],
-      "nearbyLandmarks": [
-        "REPLACE_LANDMARK_1",
-        "REPLACE_LANDMARK_2"
-      ],
+      "facilities": ["REPLACE_FACILITY_1", "REPLACE_FACILITY_2"],
+      "nearbyLandmarks": ["REPLACE_LANDMARK_1", "REPLACE_LANDMARK_2"],
       "kidFriendlyInfo": {
         "nickname": "REPLACE_STOP_NICKNAME_1",
-        "whatToSee": [
-          "REPLACE_WHAT_TO_SEE_1",
-          "REPLACE_WHAT_TO_SEE_2"
-        ],
+        "whatToSee": ["REPLACE_WHAT_TO_SEE_1", "REPLACE_WHAT_TO_SEE_2"],
         "safetyTip": "REPLACE_SAFETY_TIP_1"
       }
     },
@@ -43,8 +34,8 @@
       "id": "REPLACE_STOP_ID_2",
       "name": "REPLACE_STOP_NAME_2",
       "coordinates": {
-        "lat": 0.0000,
-        "lng": 0.0000
+        "lat": 0.0,
+        "lng": 0.0
       },
       "routes": ["REPLACE_ROUTE_2", "REPLACE_ROUTE_3"],
       "accessibility": {
@@ -55,14 +46,10 @@
         "realTimeDisplay": false
       },
       "facilities": [],
-      "nearbyLandmarks": [
-        "REPLACE_LANDMARK_3"
-      ],
+      "nearbyLandmarks": ["REPLACE_LANDMARK_3"],
       "kidFriendlyInfo": {
         "nickname": "REPLACE_STOP_NICKNAME_2",
-        "whatToSee": [
-          "REPLACE_WHAT_TO_SEE_3"
-        ],
+        "whatToSee": ["REPLACE_WHAT_TO_SEE_3"],
         "safetyTip": "REPLACE_SAFETY_TIP_2"
       }
     },
@@ -70,8 +57,8 @@
       "id": "REPLACE_STOP_ID_3",
       "name": "REPLACE_STOP_NAME_3",
       "coordinates": {
-        "lat": 0.0000,
-        "lng": 0.0000
+        "lat": 0.0,
+        "lng": 0.0
       },
       "routes": ["REPLACE_ROUTE_1"],
       "accessibility": {
@@ -81,20 +68,11 @@
         "lighting": true,
         "realTimeDisplay": true
       },
-      "facilities": [
-        "REPLACE_FACILITY_3",
-        "REPLACE_FACILITY_4"
-      ],
-      "nearbyLandmarks": [
-        "REPLACE_LANDMARK_4",
-        "REPLACE_LANDMARK_5"
-      ],
+      "facilities": ["REPLACE_FACILITY_3", "REPLACE_FACILITY_4"],
+      "nearbyLandmarks": ["REPLACE_LANDMARK_4", "REPLACE_LANDMARK_5"],
       "kidFriendlyInfo": {
         "nickname": "REPLACE_STOP_NICKNAME_3",
-        "whatToSee": [
-          "REPLACE_WHAT_TO_SEE_4",
-          "REPLACE_WHAT_TO_SEE_5"
-        ],
+        "whatToSee": ["REPLACE_WHAT_TO_SEE_4", "REPLACE_WHAT_TO_SEE_5"],
         "safetyTip": "REPLACE_SAFETY_TIP_3"
       }
     }
@@ -119,7 +97,7 @@
     {
       "stopId": "REPLACE_STOP_ID_1",
       "route": "REPLACE_ROUTE_1",
-      "direction": "REPLACE_DIRECTION_1", 
+      "direction": "REPLACE_DIRECTION_1",
       "destination": "REPLACE_DESTINATION_1",
       "arrivalTime": "2024-01-01T12:18:00Z",
       "minutesAway": 18,
@@ -197,7 +175,7 @@
     },
     {
       "id": "REPLACE_ALERT_ID_2",
-      "title": "REPLACE_ALERT_TITLE_2", 
+      "title": "REPLACE_ALERT_TITLE_2",
       "description": "REPLACE_ALERT_DESCRIPTION_2",
       "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_2",
       "severity": "medium",
@@ -210,7 +188,7 @@
     {
       "id": "REPLACE_ALERT_ID_3",
       "title": "REPLACE_ALERT_TITLE_3",
-      "description": "REPLACE_ALERT_DESCRIPTION_3", 
+      "description": "REPLACE_ALERT_DESCRIPTION_3",
       "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_3",
       "severity": "high",
       "affectedRoutes": ["REPLACE_ROUTE_3"],

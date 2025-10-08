@@ -35,11 +35,7 @@ const BASE_URL = Config.ROUTING.BASE_URL.replace(/\/$/, '');
 const DEFAULT_TIMEOUT = Config.ROUTING.REQUEST_TIMEOUT;
 const INCLUDE_ETA = Config.ROUTING.INCLUDE_ETA;
 
-const buildRouteUrl = (
-  profile: string,
-  start: [number, number],
-  end: [number, number],
-): string => {
+const buildRouteUrl = (profile: string, start: [number, number], end: [number, number]): string => {
   const url = new URL(`${BASE_URL}/v2/directions/${profile}/geojson`);
   url.searchParams.set('start', `${start[0]},${start[1]}`);
   url.searchParams.set('end', `${end[0]},${end[1]}`);
@@ -68,12 +64,10 @@ const deriveSummary = (featureCollection: FeatureCollection | null) => {
   const firstFeature: any = featureCollection.features?.[0];
   const summary = firstFeature?.properties?.summary ?? {};
 
-  const durationSeconds = typeof summary?.duration === 'number'
-    ? Math.round(summary.duration)
-    : null;
-  const distanceMeters = typeof summary?.distance === 'number'
-    ? Math.round(summary.distance)
-    : null;
+  const durationSeconds =
+    typeof summary?.duration === 'number' ? Math.round(summary.duration) : null;
+  const distanceMeters =
+    typeof summary?.distance === 'number' ? Math.round(summary.distance) : null;
 
   return { durationSeconds, distanceMeters } as RouteSummary;
 };
@@ -102,7 +96,9 @@ export function useRouteORS(
     profileName: string,
   ): Promise<RouteGeoJSON | null> => {
     if (!Config.ROUTING.ORS_API_KEY) {
-      throw new Error('Missing OpenRouteService API key. Set EXPO_PUBLIC_ORS_API_KEY or configure extra.routing.');
+      throw new Error(
+        'Missing OpenRouteService API key. Set EXPO_PUBLIC_ORS_API_KEY or configure extra.routing.',
+      );
     }
 
     const controller = new AbortController();
@@ -193,7 +189,10 @@ export function useRouteORS(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start?.[0], start?.[1], end?.[0], end?.[1], profile, enabled]);
 
-  const summary = useMemo(() => (includeEta ? deriveSummary(geojson) : { durationSeconds: null, distanceMeters: null }), [geojson, includeEta]);
+  const summary = useMemo(
+    () => (includeEta ? deriveSummary(geojson) : { durationSeconds: null, distanceMeters: null }),
+    [geojson, includeEta],
+  );
 
   return {
     geojson,
