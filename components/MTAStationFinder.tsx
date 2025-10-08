@@ -51,14 +51,12 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({
   const [showAccessibleOnly, setShowAccessibleOnly] = useState(false);
   const [favoriteStations, setFavoriteStations] = useState<string[]>([]);
 
-  // Mock station data with comprehensive kid-friendly information
-  // Named coordinates for stations and stops
-  const COORD_TIMES_SQ_42 = { lat: 40.7549, lng: -73.9872 };
-  const COORD_CENTRAL_PARK_59 = { lat: 40.7681, lng: -73.9819 };
-  const COORD_BROOKLYN_BRIDGE_CITY_HALL = { lat: 40.7127, lng: -74.0059 };
-  const COORD_14TH_ST_UNION_SQ = { lat: 40.7348, lng: -73.9897 };
-  const COORD_14TH_ST_1ST_AV_BUS = { lat: 40.7323, lng: -73.9860 };
-
+// Named coordinates for stations and stops
+const COORD_TIMES_SQ_42 = { lat: 40.7549, lng: -73.9872 };
+const COORD_CENTRAL_PARK_59 = { lat: 40.7681, lng: -73.9819 };
+const COORD_BROOKLYN_BRIDGE_CITY_HALL = { lat: 40.7127, lng: -74.0059 };
+const COORD_14TH_ST_UNION_SQ = { lat: 40.7348, lng: -73.9897 };
+const COORD_14TH_ST_1ST_AV_BUS = { lat: 40.7323, lng: -73.9860 };
   const mockStations: StationInfo[] = [
     {
       id: "times-sq-42",
