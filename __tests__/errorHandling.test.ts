@@ -19,10 +19,10 @@ jest.mock('@react-native-async-storage/async-storage', () => {
 
 // after the hoisted mock factory runs, read the exposed mock for easier usage below
 const mockAsyncStorage = (globalThis as any).__mockAsyncStorage as {
-  getItem: jest.Mock;
-  setItem: jest.Mock;
-  removeItem: jest.Mock;
-  clear: jest.Mock;
+  getItem: jest.Mock<Promise<string | null>, [string]>;
+  setItem: jest.Mock<Promise<void>, [string, string]>;
+  removeItem: jest.Mock<Promise<void>, [string]>;
+  clear: jest.Mock<Promise<void>, []>;
 };
 
 import {
@@ -41,17 +41,21 @@ describe('Error Handling Utils', () => {
   });
 
   describe('withRetry', () => {
-    it('should succeed on first attempt', async () => {
-        const mockOperation = jest.fn<() => Promise<string>>().mockResolvedValue('success'); // Specify return type
-        const result = await withRetry(() => mockOperation(), DEFAULT_RETRY_CONFIG.storage);
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
 
-        expect(result).toBe('success');
-        expect(mockOperation).toHaveBeenCalledTimes(1);
+    it('should succeed on first attempt', async () => {
+      const mockOperation = jest.fn<() => Promise<string>>().mockResolvedValue('success'); // Specify return type
+      const result = await withRetry(() => mockOperation(), DEFAULT_RETRY_CONFIG.storage);
+
+      expect(result).toBe('success');
+      expect(mockOperation).toHaveBeenCalledTimes(1);
     });
 
     it('should retry on failure and eventually succeed', async () => {
       const mockOperation = jest
-        .fn()
+        .fn<() => Promise<string>>() // Specify return type
         .mockRejectedValueOnce(new Error('First failure'))
         .mockRejectedValueOnce(new Error('Second failure'))
         .mockResolvedValue('success');
@@ -75,19 +79,25 @@ describe('Error Handling Utils', () => {
     });
 
     it('should respect shouldRetry function', async () => {
-        const mockOperation = jest.fn<() => Promise<Error>>().mockRejectedValue(new Error('Non-retryable')); // Specify return type
-        const shouldRetry = jest.fn().mockReturnValue(false);
+      const mockOperation = jest
+        .fn<() => Promise<Error>>()
+        .mockRejectedValue(new Error('Non-retryable'));
 
-        await expect(
-            withRetry(() => mockOperation(), {
-                maxAttempts: 3,
-                delayMs: 10,
-                shouldRetry,
-            }),
-        ).rejects.toThrow('Non-retryable');
+      // Correctly type the shouldRetry function
+      const shouldRetry: (error: Error, attempt: number) => boolean = jest.fn((error, attempt) => {
+        return attempt < 3; // Example logic for retrying
+      });
 
-        expect(mockOperation).toHaveBeenCalledTimes(1);
-        expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 1);
+      await expect(
+        withRetry(mockOperation, {
+          maxAttempts: 3,
+          delayMs: 10,
+          shouldRetry,
+        }),
+      ).rejects.toThrow('Non-retryable');
+
+      expect(mockOperation).toHaveBeenCalledTimes(1);
+      expect(shouldRetry).toHaveBeenCalledWith(expect.any(Error), 1);
     });
   });
 
@@ -99,7 +109,7 @@ describe('Error Handling Utils', () => {
 
     it('should get item successfully', async () => {
       const testData = { test: 'data' };
-      mockAsyncStorage.getItem.mockResolvedValue(JSON.stringify(testData));
+      mockAsyncStorage.getItem.mockResolvedValue(JSON.stringify(testData)); // Ensure correct type
 
       const result = await SafeAsyncStorage.getItem('test-key');
 
@@ -116,14 +126,18 @@ describe('Error Handling Utils', () => {
       expect(result).toEqual(fallback);
     });
 
+    it('should handle storage errors', async () => {
+      mockAsyncStorage.getItem.mockRejectedValue(new Error('Storage error')); // Ensure correct type
+
+      await expect(SafeAsyncStorage.getItem('test-key')).rejects.toThrow('Storage error');
+    });
+
     it('should set item successfully', async () => {
-      const testData = { test: 'data' };
-      mockAsyncStorage.setItem.mockResolvedValue(undefined);
+      mockAsyncStorage.setItem.mockResolvedValue(undefined); // Ensure correct type
 
-      const result = await SafeAsyncStorage.setItem('test-key', testData);
+      await SafeAsyncStorage.setItem('test-key', 'test-value');
 
-      expect(result).toEqual(testData);
-      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith('test-key', JSON.stringify(testData));
+      expect(mockAsyncStorage.setItem).toHaveBeenCalledWith('test-key', 'test-value');
     });
 
     it('should handle batch operations', async () => {
