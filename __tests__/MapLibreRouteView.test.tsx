@@ -13,7 +13,21 @@ jest.mock('@/components/MapLibreMap', () => {
   const LineLayer = ({ id, ...rest }: any) =>
     React.createElement(View, { testID: `mock-linelayer-${id || 'unknown'}`, ...rest });
 
-  return { __esModule: true, default: Base, MapLibreGL: { ShapeSource, LineLayer } };
+  const CircleLayer = ({ id, ...rest }: any) =>
+    React.createElement(View, { testID: `mock-circlelayer-${id || 'unknown'}`, ...rest });
+
+  const MapLibreGL = { ShapeSource, LineLayer, CircleLayer };
+
+  // Attach properties to the Base component for compatibility
+  Base.MapLibreGL = MapLibreGL;
+  Base.isMapLibreAvailable = true;
+
+  return {
+    __esModule: true,
+    default: Base,
+    MapLibreGL: MapLibreGL,
+    isMapLibreAvailable: true,
+  };
 });
 
 jest.mock('@/utils/config', () => ({
@@ -29,12 +43,19 @@ import type { FeatureCollection, LineString } from 'geojson';
 
 const mod = require('@/components/MapLibreRouteView');
 console.log('MapLibreRouteView module keys:', Object.keys(mod)); // debug
+console.log('MapLibreRouteView default export:', typeof mod.default); // debug
 const MapLibreRouteView = mod.default || mod.MapLibreRouteView || mod;
 
 // quick assertions to get clearer failures
 if (!MapLibreRouteView) {
   throw new Error(
     'MapLibreRouteView import resolved to undefined. Check export (default vs named) and Jest moduleNameMapper for "@/".'
+  );
+}
+
+if (typeof MapLibreRouteView !== 'function') {
+  throw new Error(
+    `MapLibreRouteView import resolved to ${typeof MapLibreRouteView}, expected function. This suggests an import issue.`
   );
 }
 
@@ -86,8 +107,15 @@ const dest = {
 };
 
 describe('MapLibreRouteView (minimal)', () => {
+  it('imports correctly', () => {
+    expect(MapLibreRouteView).toBeDefined();
+    expect(typeof MapLibreRouteView).toBe('function');
+  });
+
   it('renders base component', () => {
-    expect(simpleRender(<MapLibreRouteView />).toJSON()).toBeTruthy();
+    expect(() => simpleRender(<MapLibreRouteView />)).not.toThrow();
+    const tree = simpleRender(<MapLibreRouteView />);
+    expect(tree.toJSON()).toBeTruthy();
   });
 
   it('renders route shapesource when origin/destination and route provided', () => {

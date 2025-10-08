@@ -33,8 +33,7 @@
   ],
   "exclude": [
     "templates/**",
-    "bun-tests/**",
-    "__tests__/MapLibreRouteView.test.tsx"
+    "bun-tests/**"
   ],
   "extends": "expo/tsconfig.base"
 }

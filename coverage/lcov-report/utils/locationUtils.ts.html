@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -141,20 +141,10 @@
 <a name='L76'></a><a href='#L76'>76</a>
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,16 +173,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,11 +180,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -216,7 +191,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -237,12 +227,7 @@
  * @param lon2 Longitude of second point
  * @returns Distance in meters
  */
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >c</span>alculateDistance(</span>
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number {
+export function <span class="fstat-no" title="function not covered" >calculateDistance(</span>lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = <span class="cstat-no" title="statement not covered" >6371e3;</span> // Earth's radius in meters
   const φ1 = <span class="cstat-no" title="statement not covered" >(lat1 * Math.PI) / 180;</span>
   const φ2 = <span class="cstat-no" title="statement not covered" >(lat2 * Math.PI) / 180;</span>
@@ -266,18 +251,18 @@
  * @param radiusMeters Allowed radius in meters (default: 100m)
  * @returns Object with verification status and distance
  */
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >v</span>erifyLocationProximity(</span>
+export function <span class="fstat-no" title="function not covered" >verifyLocationProximity(</span>
   currentLat: number,
   currentLon: number,
   targetLat: number,
   targetLon: number,
-  radiusMeters: number = <span class="branch-0 cbranch-no" title="branch not covered" >100</span>
+  radiusMeters: number = <span class="branch-0 cbranch-no" title="branch not covered" >100,</span>
 ): { isWithinRadius: boolean; distance: number } {
   const distance = <span class="cstat-no" title="statement not covered" >calculateDistance(currentLat, currentLon, targetLat, targetLon);</span>
-  
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
     isWithinRadius: distance &lt;= radiusMeters,
-    distance: Math.round(distance)
+    distance: Math.round(distance),
   };
 }
 &nbsp;
@@ -286,7 +271,7 @@
  * @param meters Distance in meters
  * @returns Formatted string
  */
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >f</span>ormatDistance(</span>meters: number): string {
+export function <span class="fstat-no" title="function not covered" >formatDistance(</span>meters: number): string {
 <span class="cstat-no" title="statement not covered" >  if (meters &lt; 1000) {</span>
 <span class="cstat-no" title="statement not covered" >    return `${meters}m`;</span>
   } else {
@@ -299,17 +284,17 @@
  * @param distance Distance from target in meters
  * @returns User-friendly accuracy description
  */
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >g</span>etLocationAccuracyDescription(</span>distance: number): string {
+export function <span class="fstat-no" title="function not covered" >getLocationAccuracyDescription(</span>distance: number): string {
 <span class="cstat-no" title="statement not covered" >  if (distance &lt;= 50) {</span>
-<span class="cstat-no" title="statement not covered" >    return "Very close";</span>
+<span class="cstat-no" title="statement not covered" >    return 'Very close';</span>
   } else <span class="cstat-no" title="statement not covered" >if (distance &lt;= 100) {</span>
-<span class="cstat-no" title="statement not covered" >    return "Close";</span>
+<span class="cstat-no" title="statement not covered" >    return 'Close';</span>
   } else <span class="cstat-no" title="statement not covered" >if (distance &lt;= 200) {</span>
-<span class="cstat-no" title="statement not covered" >    return "Nearby";</span>
+<span class="cstat-no" title="statement not covered" >    return 'Nearby';</span>
   } else <span class="cstat-no" title="statement not covered" >if (distance &lt;= 500) {</span>
-<span class="cstat-no" title="statement not covered" >    return "In the area";</span>
+<span class="cstat-no" title="statement not covered" >    return 'In the area';</span>
   } else {
-<span class="cstat-no" title="statement not covered" >    return "Far away";</span>
+<span class="cstat-no" title="statement not covered" >    return 'Far away';</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -319,7 +304,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T16:21:35.876Z
             </div>
         <script src="../prettify.js"></script>
         <script>

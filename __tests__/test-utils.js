@@ -53,3 +53,21 @@ export const fireEvent = {
 
 // Export act for other async operations
 export { act };
+
+// Basic test to validate utility functions
+describe('Test utilities', () => {
+  it('should export required testing utilities', () => {
+    expect(simpleRender).toBeDefined();
+    expect(getByTestId).toBeDefined();
+    expect(queryByTestId).toBeDefined();
+    expect(fireEvent).toBeDefined();
+    expect(act).toBeDefined();
+  });
+
+  it('should render a simple component', () => {
+    const TestComponent = () => React.createElement('div', { testID: 'test' }, 'Hello');
+    const renderer = simpleRender(React.createElement(TestComponent));
+    expect(renderer).toBeDefined();
+    expect(renderer.toJSON()).toBeTruthy();
+  });
+});
