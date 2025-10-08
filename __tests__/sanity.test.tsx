@@ -8,5 +8,7 @@ test('sanity view', () => {
       <Text>ok</Text>
     </View>,
   );
-  expect(r.root.findByType(Text).props.children).toBe('ok');
+
+  // Ensure 'r' is defined before accessing its properties
+  expect(r?.root.findByType(Text).props.children).toBe('ok');
 });
