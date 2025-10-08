@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/37</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/33</span>
             </div>
         
             
@@ -297,14 +297,7 @@
 <a name='L232'></a><a href='#L232'>232</a>
 <a name='L233'></a><a href='#L233'>233</a>
 <a name='L234'></a><a href='#L234'>234</a>
-<a name='L235'></a><a href='#L235'>235</a>
-<a name='L236'></a><a href='#L236'>236</a>
-<a name='L237'></a><a href='#L237'>237</a>
-<a name='L238'></a><a href='#L238'>238</a>
-<a name='L239'></a><a href='#L239'>239</a>
-<a name='L240'></a><a href='#L240'>240</a>
-<a name='L241'></a><a href='#L241'>241</a>
-<a name='L242'></a><a href='#L242'>242</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L235'></a><a href='#L235'>235</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -456,14 +449,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -476,7 +463,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -484,14 +470,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -557,7 +543,7 @@ export interface ModuleConfig {
   platform?: 'ios' | 'android' | 'web' | 'all';
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >MODULES: Record&lt;string, ModuleConfig&gt; = {</span>
+export const MODULES: Record&lt;string, ModuleConfig&gt; = <span class="cstat-no" title="statement not covered" >{</span>
   // Core modules (always loaded)
   core: {
     name: 'Core',
@@ -565,7 +551,7 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     dependencies: [],
     exports: ['colors', 'types', 'utils/logger', 'utils/config'],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Safety module (high priority)
@@ -579,10 +565,10 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
       'components/SafeZoneManagement',
       'components/ParentDashboard',
       'stores/parentalStore',
-      'utils/errorHandling'
+      'utils/errorHandling',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Location services module
@@ -590,13 +576,9 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     name: 'Location',
     version: '1.0.0',
     dependencies: ['core'],
-    exports: [
-      'hooks/useLocation',
-      'hooks/useSafeZoneMonitor',
-      'utils/locationUtils'
-    ],
+    exports: ['hooks/useLocation', 'hooks/useSafeZoneMonitor', 'utils/locationUtils'],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Navigation module
@@ -608,10 +590,10 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
       'stores/navigationStore',
       'components/RouteCard',
       'components/DirectionStep',
-      'components/SmartRouteSuggestions'
+      'components/SmartRouteSuggestions',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Regional content module
@@ -623,10 +605,10 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
       'stores/regionStore',
       'hooks/useRegionalData',
       'components/RegionSelector',
-      'config/regions/*'
+      'config/regions/*',
     ],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Gamification module (can be lazy loaded)
@@ -638,10 +620,10 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
       'stores/gamificationStore',
       'components/AchievementBadge',
       'components/UserStatsCard',
-      'components/VirtualPetCompanion'
+      'components/VirtualPetCompanion',
     ],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // AI features module (lazy loaded)
@@ -649,12 +631,9 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     name: 'AI',
     version: '1.0.0',
     dependencies: ['core', 'location'],
-    exports: [
-      'components/AIJourneyCompanion',
-      'components/SmartRouteSuggestions'
-    ],
+    exports: ['components/AIJourneyCompanion', 'components/SmartRouteSuggestions'],
     lazy: true,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // UI components module
@@ -668,10 +647,10 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
       'components/CategoryButton',
       'components/EmptyState',
       'components/LoadingSpinner',
-      'components/Toast'
+      'components/Toast',
     ],
     lazy: false,
-    platform: 'all'
+    platform: 'all',
   },
 &nbsp;
   // Platform-specific modules
@@ -681,7 +660,7 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     dependencies: ['core'],
     exports: ['utils/ios-specific'],
     lazy: true,
-    platform: 'ios'
+    platform: 'ios',
   },
 &nbsp;
   android: {
@@ -690,7 +669,7 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     dependencies: ['core'],
     exports: ['utils/android-specific'],
     lazy: true,
-    platform: 'android'
+    platform: 'android',
   },
 &nbsp;
   web: {
@@ -699,20 +678,20 @@ export const <span class="cstat-no" title="statement not covered" >MODULES: Reco
     dependencies: ['core'],
     exports: ['utils/web-specific'],
     lazy: true,
-    platform: 'web'
-  }
+    platform: 'web',
+  },
 };
 &nbsp;
 // Module loading priorities
-export const <span class="cstat-no" title="statement not covered" >LOAD_PRIORITIES = {</span>
+export const LOAD_PRIORITIES = <span class="cstat-no" title="statement not covered" >{</span>
   CRITICAL: ['core', 'safety', 'location'],
   HIGH: ['navigation', 'ui'],
   MEDIUM: ['regional', 'gamification'],
-  LOW: ['ai', 'ios', 'android', 'web']
+  LOW: ['ai', 'ios', 'android', 'web'],
 };
 &nbsp;
 // Dependency validation
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >v</span>alidateModuleDependencies(</span>): boolean {
+export function <span class="fstat-no" title="function not covered" >validateModuleDependencies(</span>): boolean {
 <span class="cstat-no" title="statement not covered" >  for (const [moduleName, config] of Object.entries(MODULES)) {</span>
 <span class="cstat-no" title="statement not covered" >    for (const dep of config.dependencies) {</span>
 <span class="cstat-no" title="statement not covered" >      if (!MODULES[dep]) {</span>
@@ -725,18 +704,18 @@ export const <span class="cstat-no" title="statement not covered" >LOAD_PRIORITI
 }
 &nbsp;
 // Get modules for current platform
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >g</span>etModulesForPlatform(</span>platform: 'ios' | 'android' | 'web'): ModuleConfig[] {
+export function <span class="fstat-no" title="function not covered" >getModulesForPlatform(</span>platform: 'ios' | 'android' | 'web'): ModuleConfig[] {
 <span class="cstat-no" title="statement not covered" >  return Object.values(MODULES).filter(</span>
-<span class="fstat-no" title="function not covered" >    module </span>=&gt; <span class="cstat-no" title="statement not covered" >module.platform === 'all' || module.platform === platform</span>
+<span class="fstat-no" title="function not covered" >    (m</span>odule) =&gt; <span class="cstat-no" title="statement not covered" >module.platform === 'all' || module.platform === platform,</span>
   );
 }
 &nbsp;
 // Module loader utility
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class M</span></span>oduleLoader {
-  private <span class="cstat-no" title="statement not covered" >loadedModules = new Set&lt;string&gt;();</span>
-  private <span class="cstat-no" title="statement not covered" >loadingPromises = new Map&lt;string, Promise&lt;void&gt;&gt;();</span>
+export class ModuleLoader {
+  private loadedModules = <span class="cstat-no" title="statement not covered" >new Set&lt;string&gt;();</span>
+  private loadingPromises = <span class="cstat-no" title="statement not covered" >new Map&lt;string, Promise&lt;void&gt;&gt;();</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  async </span>loadModule(moduleName: string): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  as</span>ync loadModule(moduleName: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    if (this.loadedModules.has(moduleName)) {</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
@@ -761,31 +740,31 @@ export const <span class="cstat-no" title="statement not covered" >LOAD_PRIORITI
     }
   }
 &nbsp;
-  private <span class="fstat-no" title="function not covered" >async </span>loadModuleInternal(moduleName: string, config: ModuleConfig): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  pr</span>ivate async loadModuleInternal(moduleName: string, config: ModuleConfig): Promise&lt;void&gt; {
     // Load dependencies first
 <span class="cstat-no" title="statement not covered" >    for (const dep of config.dependencies) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.loadModule(dep);</span>
     }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    console.log(`Loading module: ${moduleName}`);</span>
-    
+&nbsp;
     // In a real implementation, this would dynamically import the module
     // For now, we'll just simulate the loading
-<span class="cstat-no" title="statement not covered" >    await new Promise(<span class="fstat-no" title="function not covered" >resolve </span>=&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 100))</span>;</span>
-    
+<span class="cstat-no" title="statement not covered" >    await new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve) =&gt; <span class="cstat-no" title="statement not covered" >setTimeout(resolve, 100))</span>;</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >    console.log(`Module loaded: ${moduleName}`);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  isModuleLoaded(</span>moduleName: string): boolean {
+<span class="fstat-no" title="function not covered" >  is</span>ModuleLoaded(moduleName: string): boolean {
 <span class="cstat-no" title="statement not covered" >    return this.loadedModules.has(moduleName);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  getLoadedModules(</span>): string[] {
+<span class="fstat-no" title="function not covered" >  ge</span>tLoadedModules(): string[] {
 <span class="cstat-no" title="statement not covered" >    return Array.from(this.loadedModules);</span>
   }
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >moduleLoader = new ModuleLoader();</span>
+export const moduleLoader = <span class="cstat-no" title="statement not covered" >new ModuleLoader();</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -793,7 +772,7 @@ export const <span class="cstat-no" title="statement not covered" >moduleLoader 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T16:21:35.876Z
             </div>
         <script src="../prettify.js"></script>
         <script>

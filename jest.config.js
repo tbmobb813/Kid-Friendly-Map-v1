@@ -1,5 +1,5 @@
 export default {
-  preset: 'react-native',
+  // Remove preset: 'react-native' to avoid parsing issues with RN's mock files
   testPathIgnorePatterns: ['/node_modules/', '/bun-tests/'],
   testMatch: ['**/__tests__/**/*.(ts|tsx|js)', '**/*.(test|spec).(ts|tsx|js)'],
   collectCoverageFrom: [
@@ -26,9 +26,15 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFiles: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'node',  // Let's go back to node environment to avoid window conflicts
+  testEnvironment: 'node',
   transform: {
-    '^.+\\.(ts|tsx|js|jsx)$': 'babel-jest',
+    '^.+\\.(ts|tsx|js|jsx)$': ['babel-jest', {
+      presets: [
+        ['@babel/preset-env', { targets: { node: 'current' } }],
+        '@babel/preset-typescript',
+        '@babel/preset-react'
+      ],
+    }],
   },
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|@maplibre|@maplibre\\/maplibre-react-native|@react-navigation|expo|@expo|@react-native-community)/)'

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/31</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
@@ -160,7 +160,7 @@
 <a name='L95'></a><a href='#L95'>95</a>
 <a name='L96'></a><a href='#L96'>96</a>
 <a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -221,23 +221,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -248,6 +242,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,7 +257,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { Config } from '@/utils/config';</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Config } from '@/utils/config';
 &nbsp;
 export type WeatherUnits = 'imperial' | 'metric';
 &nbsp;
@@ -314,14 +314,14 @@ function <span class="fstat-no" title="function not covered" >buildRecommendatio
 <span class="cstat-no" title="statement not covered" >  if (condition === 'rainy') <span class="cstat-no" title="statement not covered" >return 'Bring a raincoat or umbrella.';</span></span>
 <span class="cstat-no" title="statement not covered" >  if (condition === 'snowy') <span class="cstat-no" title="statement not covered" >return 'Wear warm layers and watch your step.';</span></span>
 <span class="cstat-no" title="statement not covered" >  if (tempF &gt;= 90) <span class="cstat-no" title="statement not covered" >return 'Stay hydrated and seek shade when possible.';</span></span>
-<span class="cstat-no" title="statement not covered" >  if (tempF &lt;= 32) <span class="cstat-no" title="statement not covered" >return 'Bundle up, it\'s quite cold outside.';</span></span>
+<span class="cstat-no" title="statement not covered" >  if (tempF &lt;= 32) <span class="cstat-no" title="statement not covered" >return "Bundle up, it's quite cold outside.";</span></span>
 <span class="cstat-no" title="statement not covered" >  return 'Great time to head out!';</span>
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export a</span>sync function <span class="fstat-no" title="function not covered" >fetchWeather(</span>
+export async function <span class="fstat-no" title="function not covered" >fetchWeather(</span>
   lat: number,
   lon: number,
-  units: WeatherUnits
+  units: WeatherUnits,
 ): Promise&lt;NormalizedWeather&gt; {
   const isMetric = <span class="cstat-no" title="statement not covered" >units === 'metric';</span>
   const temperature_unit = <span class="cstat-no" title="statement not covered" >isMetric ? 'celsius' : 'fahrenheit';</span>
@@ -330,7 +330,7 @@ function <span class="fstat-no" title="function not covered" >buildRecommendatio
   const url = <span class="cstat-no" title="statement not covered" >`https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${lon}&amp;current=temperature_2m,weather_code,wind_speed_10m&amp;temperature_unit=${temperature_unit}&amp;wind_speed_unit=${wind_speed_unit}`;</span>
 &nbsp;
   const controller = <span class="cstat-no" title="statement not covered" >new AbortController();</span>
-  const timeoutId = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >controller.abort(),</span> Config.API_TIMEOUT);</span>
+  const timeoutId = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >controller.abort(),</span> Config.API_TIMEOUT);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const res = <span class="cstat-no" title="statement not covered" >await fetch(url, { signal: controller.signal });</span>
@@ -361,7 +361,7 @@ function <span class="fstat-no" title="function not covered" >buildRecommendatio
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T16:21:35.876Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
@@ -114,20 +114,16 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,19 +164,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-<span class="cstat-no" title="statement not covered" >import { StyleSheet, View, Text, Dimensions } from "react-native";</span>
-<span class="cstat-no" title="statement not covered" >import Colors from "@/constants/colors";</span>
-<span class="cstat-no" title="statement not covered" >import { MapPin } from "lucide-react-native";</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import Colors from '@/constants/colors';
+import { MapPin } from 'lucide-react-native';
 &nbsp;
 type MapPlaceholderProps = {
   message?: string;
 };
 &nbsp;
-const MapPlaceholder: React.FC&lt;MapPlaceholderProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({ </span></span>
-  message = <span class="branch-0 cbranch-no" title="branch not covered" >"Map will appear here" </span>
-}) =&gt; {
+const MapPlaceholder: React.FC&lt;MapPlaceholderProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> message = <span class="branch-0 cbranch-no" title="branch not covered" >'Map will appear here' </span>}) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.container}&gt;
       &lt;View style={styles.iconContainer}&gt;
@@ -193,22 +187,22 @@ const MapPlaceholder: React.FC&lt;MapPlaceholderProps&gt; = <span class="cstat-n
 &nbsp;
 const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.create({</span>
   container: {
-    width: "100%",
+    width: '100%',
     height: 300,
     backgroundColor: Colors.mapWater,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 12,
   },
   iconContainer: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -217,11 +211,11 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   message: {
     fontSize: 16,
     color: Colors.text,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default MapPlaceholder;</span>
+export default MapPlaceholder;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -229,7 +223,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-30T23:42:13.905Z
+                at 2025-10-08T16:21:35.876Z
             </div>
         <script src="../prettify.js"></script>
         <script>

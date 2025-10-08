@@ -1,44 +1,37 @@
 import React from 'react';
-import { View } from 'react-native';
 
-// Provide both named and default exports so different import styles used across the
-// codebase and tests resolve correctly. Render a plain React Native View so
-// @testing-library/react-native can query elements by testID.
+// Mock components for MapLibre GL components
+const MockShapeSource = ({ children, ...props }: any) => (
+  <div data-testid="mock-shape-source" {...props}>
+    {children}
+  </div>
+);
+
+const MockLineLayer = (props: any) => <div data-testid="mock-line-layer" {...props} />;
+
+const MockCircleLayer = (props: any) => <div data-testid="mock-circle-layer" {...props} />;
+
+// Main MapLibre Map component mock
+const MockMapLibreMap = ({ children, ...props }: any) => (
+  <div data-testid="mock-maplibre-map" {...props}>
+    {children}
+  </div>
+);
+
+// MapLibreGL object with all the required components
 export const MapLibreGL = {
-  MapView: (props: any) =>
-    React.createElement(
-      View as any,
-      { testID: props.testID || 'mock-maplibre-map', ...props },
-      props.children,
-    ),
-  Camera: (props: any) => React.createElement(View as any, { testID: 'mock-camera', ...props }),
-  ShapeSource: (props: any) =>
-    React.createElement(
-      View as any,
-      { testID: `mock-shapesource-${props.id}`, ...props },
-      props.children,
-    ),
-  LineLayer: (props: any) =>
-    React.createElement(View as any, { testID: `mock-linelayer-${props.id}`, ...props }),
-  CircleLayer: (props: any) =>
-    React.createElement(View as any, { testID: `mock-circlelayer-${props.id}`, ...props }),
+  ShapeSource: MockShapeSource,
+  LineLayer: MockLineLayer,
+  CircleLayer: MockCircleLayer,
 };
-
-const MapLibreMap = (props: any) =>
-  React.createElement(
-    View as any,
-    { testID: props.testID || 'mock-maplibre-map', ...props },
-    props.children,
-  );
 
 export const isMapLibreAvailable = true;
 
-// Default export mirrors named export style: a component for MapLibreMap and
-// attached properties for compatibility with import * as MapLibreMap or default imports.
-const defaultExport: any = MapLibreMap;
-defaultExport.MapLibreGL = MapLibreGL;
-defaultExport.isMapLibreAvailable = isMapLibreAvailable;
+// Attach properties to the main component for compatibility
+MockMapLibreMap.ShapeSource = MockShapeSource;
+MockMapLibreMap.LineLayer = MockLineLayer;
+MockMapLibreMap.CircleLayer = MockCircleLayer;
+MockMapLibreMap.MapLibreGL = MapLibreGL;
+MockMapLibreMap.isMapLibreAvailable = isMapLibreAvailable;
 
-export default function MapLibreMapMock(props: any) {
-  return <div data-testid="maplibre-mock" {...props} />;
-}
+export default MockMapLibreMap;
