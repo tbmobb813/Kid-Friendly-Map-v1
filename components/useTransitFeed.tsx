@@ -11,7 +11,11 @@ type RouteInfo = {
   nextStopName?: string;
 };
 
-export function useTransitFeed(region: string, system: string, opts: { pollIntervalMs?: number, mock?: boolean } = {}) {
+export function useTransitFeed(
+  region: string,
+  system: string,
+  opts: { pollIntervalMs?: number; mock?: boolean } = {},
+) {
   const [routes, setRoutes] = useState<RouteInfo[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +42,10 @@ export function useTransitFeed(region: string, system: string, opts: { pollInter
 
     fetchOnce();
     const t = setInterval(fetchOnce, pollInterval);
-    return () => { cancelled = true; clearInterval(t); };
+    return () => {
+      cancelled = true;
+      clearInterval(t);
+    };
   }, [region, system, opts.pollIntervalMs, opts.mock]);
 
   return { routes, loading, error };
