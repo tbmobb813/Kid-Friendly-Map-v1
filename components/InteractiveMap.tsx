@@ -135,6 +135,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   origin,
   destination,
   route,
+}) => {
   return (
     <Animated.View
       style={[styles.container, { transform: [{ scale: breathingAnim }] }]}
