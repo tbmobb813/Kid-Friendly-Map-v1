@@ -65,6 +65,13 @@ jobs:
 - `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` (or use GitHub Container Registry credentials instead).
 - `MTA_API_KEY` — set this in your deployment environment or CI if you want to hit the real MTA feed from CI (optional for build, required for runtime in production).
 
+### Optional Environment Variables (runtime)
+
+- `API_AUTH_KEY` — if set, clients must send this value via `x-adapter-key` header or `_key` query param.
+- `FEED_REFRESH_ENABLED` — set to `false` to disable the background refresh loop (default: enabled).
+- `FEED_REFRESH_INTERVAL_SEC` — interval for background refresh worker (default: `30`).
+- `PORT` — adapter listen port (default: `3001`).
+
 ## Running on a simple cloud VM or container service
 
 - Pull the image and run it with the MTA key set as an environment variable.
@@ -89,20 +96,26 @@ jobs:
 
 To run the adapter against MTA feeds you will need:
 
-- An MTA API key (register at https://datamine.mta.info/) — set this value as the env var named in `feeds.json` (default `MTA_API_KEY`).
+- An MTA API key (register at <https://datamine.mta.info/>) — set this value as the env var named in `feeds.json` (default `MTA_API_KEY`).
 - Static GTFS files (optional but recommended) — download the agency-provided GTFS zip(s) and either:
   - place extracted files in `server/static-gtfs/` and run `node tools/import-static-gtfs.js`, or
   - place the GTFS zip and run `node tools/import-static-gtfs.js path/to/gtfs.zip`.
 
 Required GTFS files for the importer:
+
 - `routes.txt`
 - `trips.txt`
 - `stops.txt`
 - `stop_times.txt`
 
 If you plan to use a Postgres-backed store (recommended for production):
-- Use `server/db/schema.sql` to create the schema, then either run `server/tools/import-to-postgres.js` (simple inserts) or `server/tools/import-to-postgres-copy.js` (COPY-based, faster) to load the JSON indexes into Postgres.
-- The CI workflow `ci-postgres-transit-adapter.yml` demonstrates running migrations and importing JSON indexes into Postgres in CI.
+
+- Use `server/db/schema.sql` to create the schema, then either run
+  `server/tools/import-to-postgres.js` (simple inserts) or
+  `server/tools/import-to-postgres-copy.js` (COPY-based, faster) to load the
+  JSON indexes into Postgres.
+- The CI workflow `ci-postgres-transit-adapter.yml` demonstrates running
+  migrations and importing JSON indexes into Postgres in CI.
 
 ## docker-compose (local dev)
 
@@ -120,10 +133,12 @@ node index.js
 
 ## Reverse proxy and TLS
 
-We include a sample `server/nginx/nginx.conf.sample` that demonstrates a simple reverse proxy. In production you should terminate TLS at the proxy and forward traffic to the adapter over private network. Use your certificate provider (Let's Encrypt, ACM, etc.) and point the proxy to the adapter process.
+We include a sample `server/nginx/nginx.conf.sample` that demonstrates a simple
+reverse proxy. In production you should terminate TLS at the proxy and forward
+traffic to the adapter over a private network. Use your certificate provider
+(Let's Encrypt, ACM, etc.) and point the proxy to the adapter process.
 
 To require a client key for the adapter endpoints, set `API_AUTH_KEY` in the adapter environment and clients must include it as `x-adapter-key` header or `_key` query param.
-
 
 ---
 If you want, I can also scaffold the GitHub Actions workflow file in the repo (disabled by default) and a simple systemd unit file for a VM. Which do you prefer next?
