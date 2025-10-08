@@ -7,8 +7,7 @@ test('sanity view', () => {
     <View>
       <Text>ok</Text>
     </View>,
-  );
+  ) as any; // assert as any so TS recognizes .root
 
-  // Ensure 'r' is defined and has the correct type
-  expect(r && r.root && r.root.findByType(Text).props.children).toBe('ok'); // Add check for r.root
+  expect(r.root.findByType(Text).props.children).toBe('ok');
 });
