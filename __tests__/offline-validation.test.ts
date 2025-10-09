@@ -13,6 +13,9 @@ jest.mock('@react-native-async-storage/async-storage');
 jest.mock('@react-native-community/netinfo');
 jest.mock('../utils/logger');
 
+// Keep a reference to the original AsyncStorage.setItem if available (some test environments mock it)
+const originalSetItem = (AsyncStorage as any).setItem;
+
 describe('Offline Validation Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
