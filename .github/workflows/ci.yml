@@ -75,9 +75,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run safety-specific tests
-        run: npx -y jest __tests__/safety.test.ts --coverage --ci --colors --runInBand
+        run: npx -y jest __tests__/safety.test.ts --ci --colors --runInBand
       - name: Validate error handling
-        run: npx -y jest __tests__/errorHandling.test.ts --coverage --ci --colors --runInBand
+        run: npx -y jest __tests__/errorHandling.test.ts --ci --colors --runInBand
 
   performance:
     name: Performance Tests
