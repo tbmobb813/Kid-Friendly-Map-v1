@@ -5,10 +5,10 @@ import { nycStations } from '@/config/transit/nyc-stations';
 import type { Place } from '@/types/navigation';
 // MapLibreMap will be required lazily inside the component so tests can mock it
 // even if they import this module before calling jest.mock.
-
+import type * as MapLibreModule from '@maplibre/maplibre-react-native';
 // Lazy-load the MapLibre native module directly so tests that mock
 // '@maplibre/maplibre-react-native' are respected.
-function getMapLibreModule(): any {
+function getMapLibreModule(): typeof MapLibreModule | null {
   try {
     // require is used to keep lazy loading behavior
     const imported = require('@maplibre/maplibre-react-native');
