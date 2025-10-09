@@ -181,8 +181,8 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   // Lazily resolve the MapLibreMap component so tests can mock '@/components/MapLibreMap'
   // even if jest.mock was called after this file was imported.
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const MapLibreMapComp = (require('@/components/MapLibreMap') as any)?.default ??
-    (require('@/components/MapLibreMap') as any);
+  const requiredMapLibreMap = require('@/components/MapLibreMap') as any;
+  const MapLibreMapComp = requiredMapLibreMap?.default ?? requiredMapLibreMap;
 
   if (!MapLibreModule || typeof MapLibreModule !== 'object' || !('MapView' in MapLibreModule)) {
     return null;
