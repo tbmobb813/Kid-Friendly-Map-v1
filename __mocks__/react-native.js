@@ -1,9 +1,8 @@
-// Simple mock of react-native for tests
+// Comprehensive mock of react-native for Jest in Node.
+// Provides host components as string-based elements so react-native-testing-library
+// can detect them as host components and includes minimal Animated implementation.
 const React = require('react');
 
-// Minimal, Flow-free mock of react-native for Jest in Node.
-// Expose host components as string-based elements so react-native-testing-library
-// can detect them as host components.
 const Platform = {
   OS: 'linux',
   Version: '1.0.0',
@@ -33,7 +32,6 @@ const NativeModules = {};
 const Animated = {
   View: (props) => React.createElement('AnimatedView', props, props.children),
   createAnimatedComponent: (c) => c,
-  // Minimal Value implementation
   Value: function (initialValue) {
     this._value = typeof initialValue === 'number' ? initialValue : 0;
     this._listeners = {};
@@ -57,7 +55,6 @@ const Animated = {
   },
   timing: (value, config) => ({
     start: (cb) => {
-      // apply end value synchronously to keep tests deterministic
       try {
         if (value && typeof value.setValue === 'function') {
           value.setValue(config.toValue);
@@ -93,8 +90,6 @@ module.exports = {
   Switch,
   ScrollView,
   Modal,
+  Easing,
   findNodeHandle,
 };
-
-// Export all components
-module.exports = components;
