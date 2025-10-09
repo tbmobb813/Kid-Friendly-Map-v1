@@ -97,8 +97,8 @@ const monitoringSettings = {
     typeof monitoringExtra.environment === 'string'
       ? monitoringExtra.environment
       : __DEV__
-      ? 'development'
-      : 'production',
+        ? 'development'
+        : 'production',
   tracesSampleRate:
     typeof monitoringExtra.tracesSampleRate === 'number' ? monitoringExtra.tracesSampleRate : 0.2,
   autoSessionTracking:

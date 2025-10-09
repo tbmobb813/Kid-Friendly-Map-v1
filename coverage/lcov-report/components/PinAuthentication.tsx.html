@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/57</span>
+                <span class='fraction'>0/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/43</span>
+                <span class='fraction'>0/36</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/52</span>
+                <span class='fraction'>0/57</span>
             </div>
         
             
@@ -370,10 +370,10 @@
 <a name='L305'></a><a href='#L305'>305</a>
 <a name='L306'></a><a href='#L306'>306</a>
 <a name='L307'></a><a href='#L307'>307</a>
-<a name='L308'></a><a href='#L308'>308</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L308'></a><a href='#L308'>308</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -676,11 +676,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
-import { StyleSheet, Text, View, Pressable, Alert, TextInput } from 'react-native';
-import Colors from '@/constants/colors';
-import { Lock, Eye, EyeOff } from 'lucide-react-native';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, Alert, TextInput } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { Lock, Eye, EyeOff } from 'lucide-react-native';</span>
 &nbsp;
 type PinAuthenticationProps = {
   onAuthenticated: () =&gt; void;
@@ -703,19 +703,19 @@ const PinAuthentication: React.FC&lt;PinAuthenticationProps&gt; = <span class="c
   const [isLoading, setIsLoading] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const [step, setStep] = <span class="cstat-no" title="statement not covered" >useState&lt;'enter' | 'confirm'&gt;('enter');</span>
 &nbsp;
-  const handlePinSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (pin.length &lt; 4) {</span>
+  const handlePinSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (pin.length &lt; 4) {</span>
 <span class="cstat-no" title="statement not covered" >      Alert.alert('Invalid PIN', 'PIN must be at least 4 digits');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (isSettingPin) {</span>
-<span class="cstat-no" title="statement not covered" >      if (step === 'enter') {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isSettingPin) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (step === 'enter') {</span>
 <span class="cstat-no" title="statement not covered" >        setStep('confirm');</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (pin !== confirmPin) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (pin !== confirmPin) {</span>
 <span class="cstat-no" title="statement not covered" >        Alert.alert('PIN Mismatch', 'PINs do not match. Please try again.');</span>
 <span class="cstat-no" title="statement not covered" >        setPin('');</span>
 <span class="cstat-no" title="statement not covered" >        setConfirmPin('');</span>
@@ -743,17 +743,17 @@ const PinAuthentication: React.FC&lt;PinAuthenticationProps&gt; = <span class="c
 &nbsp;
   const handleNumberPress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(n</span>umber: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (step === 'enter') {</span>
-<span class="cstat-no" title="statement not covered" >      if (pin.length &lt; 6) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (pin.length &lt; 6) {</span>
 <span class="cstat-no" title="statement not covered" >        setPin(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; <span class="cstat-no" title="statement not covered" >prev + number)</span>;</span>
       }
     } else {
-<span class="cstat-no" title="statement not covered" >      if (confirmPin.length &lt; 6) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (confirmPin.length &lt; 6) {</span>
 <span class="cstat-no" title="statement not covered" >        setConfirmPin(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; <span class="cstat-no" title="statement not covered" >prev + number)</span>;</span>
       }
     }
   };
 &nbsp;
-  const handleBackspace = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleBackspace = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (step === 'enter') {</span>
 <span class="cstat-no" title="statement not covered" >      setPin(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; <span class="cstat-no" title="statement not covered" >prev.slice(0, -1))</span>;</span>
     } else {
@@ -787,7 +787,7 @@ const PinAuthentication: React.FC&lt;PinAuthenticationProps&gt; = <span class="c
             maxLength={6}
             textAlign="center"
           /&gt;
-          &lt;Pressable style={styles.eyeButton} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowPin(!showPin)}</span>&gt;
+          &lt;Pressable style={styles.eyeButton} onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowPin(!showPin)}</span>&gt;
             {showPin ? (
               &lt;EyeOff size={20} color={Colors.textLight} /&gt;
             ) : (
@@ -813,15 +813,15 @@ const PinAuthentication: React.FC&lt;PinAuthenticationProps&gt; = <span class="c
           ['7', '8', '9'],
           ['', '0', '⌫'],
         ].map(<span class="fstat-no" title="function not covered" >(r</span>ow, rowIndex) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;View key={rowIndex} style={styles.keypadRow}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;View key={rowIndex} s</span>tyle={styles.keypadRow}&gt;
             {row.map(<span class="fstat-no" title="function not covered" >(k</span>ey, keyIndex) =&gt; (
 <span class="cstat-no" title="statement not covered" >              &lt;Pressable</span>
                 key={keyIndex}
                 style={[styles.keypadButton, key === '' &amp;&amp; styles.keypadButtonEmpty]}
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; {
 <span class="cstat-no" title="statement not covered" >                  if (key === '⌫') {</span>
 <span class="cstat-no" title="statement not covered" >                    handleBackspace();</span>
-                  } else <span class="cstat-no" title="statement not covered" >if (key !== '') {</span>
+                  } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (key !== '') {</span>
 <span class="cstat-no" title="statement not covered" >                    handleNumberPress(key);</span>
                   }
                 }}
@@ -983,7 +983,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default PinAuthentication;
+<span class="cstat-no" title="statement not covered" >export default PinAuthentication;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -991,7 +991,7 @@ export default PinAuthentication;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

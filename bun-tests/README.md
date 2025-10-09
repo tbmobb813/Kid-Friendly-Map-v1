@@ -2,7 +2,7 @@
 
 ## Test Structure
 
-```text
+```
 bun-tests/
 ├── utils/           # Pure utility function tests
 │   ├── validation.test.ts
@@ -67,7 +67,7 @@ npm run test:full
 - 🔄 Instant feedback in watch mode
 - 🎯 Perfect for TDD/rapid iteration
 
-### ✅ Jest Tests (**tests**/) - Comprehensive  
+### ✅ Jest Tests (**tests**/) - Comprehensive
 
 - React Native components
 - AsyncStorage integration
@@ -93,11 +93,11 @@ npm run test:full
 
 ## Performance Expectations
 
-| Test Suite | Execution Time | Use Case |
-|------------|----------------|----------|
-| Bun Logic Tests | ~0.3s | Development iteration |
-| Jest Integration | ~15s | Pre-commit validation |
-| Combined | ~15.3s | CI/CD pipeline |
+| Test Suite       | Execution Time | Use Case              |
+| ---------------- | -------------- | --------------------- |
+| Bun Logic Tests  | ~0.3s          | Development iteration |
+| Jest Integration | ~15s           | Pre-commit validation |
+| Combined         | ~15.3s         | CI/CD pipeline        |
 
 ## Commands Quick Reference
 
@@ -107,7 +107,7 @@ npm run test:fast           # Bun tests only
 npm run test:logic:watch    # Bun tests in watch mode
 
 # Full testing
-npm run test:integration    # Jest tests only  
+npm run test:integration    # Jest tests only
 npm run test:all           # Everything
 npm run test:full          # Same as test:all
 

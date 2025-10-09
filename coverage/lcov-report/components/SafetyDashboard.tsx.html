@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>0/45</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
@@ -572,7 +572,10 @@
 <a name='L507'></a><a href='#L507'>507</a>
 <a name='L508'></a><a href='#L508'>508</a>
 <a name='L509'></a><a href='#L509'>509</a>
-<a name='L510'></a><a href='#L510'>510</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L510'></a><a href='#L510'>510</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -585,14 +588,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1080,11 +1080,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Pressable, Alert } from 'react-native';
-import Colors from '@/constants/colors';
-import {
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, ScrollView, Pressable, Alert } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
   Shield,
   Camera,
   MapPin,
@@ -1097,11 +1097,11 @@ import {
   Settings,
   ArrowRight,
 } from 'lucide-react-native';
-import { useParentalStore } from '@/stores/parentalStore';
-import { useNavigationStore } from '@/stores/navigationStore';
-import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';
-import PhotoCheckInButton from './PhotoCheckInButton';
-import { SafeZoneIndicator } from './SafeZoneIndicator';
+<span class="cstat-no" title="statement not covered" >import { useParentalStore } from '@/stores/parentalStore';</span>
+<span class="cstat-no" title="statement not covered" >import { useNavigationStore } from '@/stores/navigationStore';</span>
+<span class="cstat-no" title="statement not covered" >import { useSafeZoneMonitor } from '@/hooks/useSafeZoneMonitor';</span>
+<span class="cstat-no" title="statement not covered" >import PhotoCheckInButton from './PhotoCheckInButton';</span>
+<span class="cstat-no" title="statement not covered" >import { SafeZoneIndicator } from './SafeZoneIndicator';</span>
 &nbsp;
 type SafetyDashboardProps = {
   currentLocation?: {
@@ -1132,18 +1132,18 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
   const pendingCheckInRequests = <span class="cstat-no" title="statement not covered" >checkInRequests.filter(<span class="fstat-no" title="function not covered" >(r</span>eq) =&gt; <span class="cstat-no" title="statement not covered" >req.status === 'pending')</span>.length;</span>
   const emergencyContacts = <span class="cstat-no" title="statement not covered" >settings.emergencyContacts.length;</span>
 &nbsp;
-  const handleEmergencyCall = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleEmergencyCall = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    Alert.alert('Emergency Help', "Choose how you'd like to get help:", [</span>
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Call 911', style: 'destructive', onPress: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Emergency call') </span>},
-      { text: 'Call Parent', onPress: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Parent call') </span>},
+      { text: 'Call 911', style: 'destructive', onPress: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Emergency call') </span>},
+      { text: 'Call Parent', onPress: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Parent call') </span>},
     ]);
   };
 &nbsp;
-  const handleQuickCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleQuickCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    Alert.alert('Quick Check-in', "Let your family know you're okay?", [</span>
       { text: 'Not now', style: 'cancel' },
-      { text: 'I&amp;apos;m OK!', onPress: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Quick check-in sent') </span>},
+      { text: 'I&amp;apos;m OK!', onPress: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Quick check-in sent') </span>},
     ]);
   };
 &nbsp;
@@ -1225,7 +1225,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
           &lt;SafeZoneIndicator /&gt;
 &nbsp;
           {currentZoneStatus &amp;&amp;
-            (<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+            (<span class="fstat-no" title="function not covered" >() =</span>&gt; {
               const isInSafeZone = <span class="cstat-no" title="statement not covered" >currentZoneStatus.inside &amp;&amp; currentZoneStatus.inside.length &gt; 0;</span>
               const zoneName = <span class="cstat-no" title="statement not covered" >isInSafeZone ? currentZoneStatus.inside[0].name : undefined;</span>
 <span class="cstat-no" title="statement not covered" >              return (</span>
@@ -1256,7 +1256,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
           &lt;View style={styles.section}&gt;
             &lt;View style={styles.sectionHeader}&gt;
               &lt;Text style={styles.sectionTitle}&gt;Quick Actions&lt;/Text&gt;
-              &lt;Pressable onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowQuickActions(false)}</span>&gt;
+              &lt;Pressable onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowQuickActions(false)}</span>&gt;
                 &lt;Text style={styles.hideButton}&gt;Hide&lt;/Text&gt;
               &lt;/Pressable&gt;
             &lt;/View&gt;
@@ -1279,14 +1279,14 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
               &lt;QuickActionButton
                 icon={&lt;MapPin /&gt;}
                 title="Share Location"
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Share location')}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Share location')}</span>
                 color={Colors.primary}
               /&gt;
 &nbsp;
               &lt;QuickActionButton
                 icon={&lt;Camera /&gt;}
                 title="Photo Check-in"
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Photo check-in')}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Photo check-in')}</span>
                 color={Colors.secondary}
               /&gt;
             &lt;/View&gt;
@@ -1311,7 +1311,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
               title="Safe Zones"
               value={activeSafeZones}
               subtitle="Active zones"
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to safe zones')}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to safe zones')}</span>
             /&gt;
 &nbsp;
             &lt;SafetyStatCard
@@ -1320,7 +1320,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
               value={recentCheckIns.length}
               subtitle="Recent"
               color={Colors.secondary}
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to check-in history')}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to check-in history')}</span>
             /&gt;
           &lt;/View&gt;
 &nbsp;
@@ -1339,7 +1339,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
               value={emergencyContacts}
               subtitle="Emergency"
               color="#9C27B0"
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to emergency contacts')}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >console.log('Navigate to emergency contacts')}</span>
             /&gt;
           &lt;/View&gt;
         &lt;/View&gt;
@@ -1350,7 +1350,7 @@ const SafetyDashboard: React.FC&lt;SafetyDashboardProps&gt; = <span class="cstat
 &nbsp;
           {recentCheckIns.length &gt; 0 ? (
             recentCheckIns.map(<span class="fstat-no" title="function not covered" >(c</span>heckIn, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >              &lt;View key={index} style={styles.activityItem}&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;View key={index} s</span>tyle={styles.activityItem}&gt;
                 &lt;CheckCircle size={16} color={Colors.success} /&gt;
                 &lt;View style={styles.activityContent}&gt;
                   &lt;Text style={styles.activityTitle}&gt;Checked in at {checkIn.placeName}&lt;/Text&gt;
@@ -1589,7 +1589,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default SafetyDashboard;
+<span class="cstat-no" title="statement not covered" >export default SafetyDashboard;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1597,7 +1597,7 @@ export default SafetyDashboard;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

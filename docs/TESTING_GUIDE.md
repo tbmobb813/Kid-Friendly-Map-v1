@@ -33,7 +33,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 1. Navigation & Routing
 
 - [ ] **Home Screen Navigation**
-
   - Search functionality works
 
   - Category filtering displays correct results
@@ -43,7 +42,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Tap to navigate to place details
 
 - [ ] **Multi-Modal Routing**
-
   - Walking directions display correctly
 
   - Transit routing shows accurate steps
@@ -55,7 +53,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Real-time transit updates
 
 - [ ] **Map Integration**
-
   - Location services permission
 
   - Current location accuracy
@@ -67,7 +64,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 2. Parental Controls & Safety
 
 - [ ] **PIN Authentication**
-
   - PIN setup and verification
 
   - Biometric fallback (if available)
@@ -77,7 +73,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - PIN reset functionality
 
 - [ ] **Parent Dashboard**
-
   - Access to all parental features
 
   - Safe zone management interface
@@ -87,7 +82,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Settings modification
 
 - [ ] **Safe Zones**
-
   - Create/edit/delete safe zones
 
   - Geofence accuracy testing
@@ -101,7 +95,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 3. Photo Check-ins
 
 - [ ] **Camera Integration**
-
   - Camera permission handling
 
   - Photo capture functionality
@@ -113,7 +106,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Photo storage and history
 
 - [ ] **Check-in History**
-
   - View past check-ins
 
   - Photo thumbnails display
@@ -127,7 +119,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 4. Device Ping/Locate
 
 - [ ] **Ping Functionality**
-
   - Ring device command
 
   - Location request handling
@@ -139,7 +130,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Ping history tracking
 
 - [ ] **Location Sharing**
-
   - Real-time location updates
 
   - Location accuracy
@@ -151,7 +141,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 5. Regional Support
 
 - [ ] **Multi-Region Testing**
-
   - Switch between regions
 
   - Region-specific transit data
@@ -165,7 +154,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 6. Notifications System
 
 - [ ] **Notification Delivery**
-
   - Web notifications (browser)
 
   - Alert fallbacks (Expo Go)
@@ -181,7 +169,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 7. Accessibility
 
 - [ ] **Screen Reader Support**
-
   - VoiceOver/TalkBack compatibility
 
   - Semantic labeling
@@ -191,7 +178,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
   - Button descriptions
 
 - [ ] **Visual Accessibility**
-
   - High contrast mode
 
   - Font size adjustments
@@ -203,7 +189,6 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 #### 8. Performance & Stability
 
 - [ ] **System Health Monitoring**
-
   - Network connectivity checks
 
   - Storage availability
@@ -382,7 +367,7 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 
 When reporting bugs, include:
 
-``` text
+```text
 **Bug Title:** Brief description
 
 **Environment:**

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.55% </span>
+                <span class="strong">34.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/108</span>
+                <span class='fraction'>39/114</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">23.4% </span>
+                <span class="strong">22.72% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/47</span>
+                <span class='fraction'>10/44</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.92% </span>
+                <span class="strong">34.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/97</span>
+                <span class='fraction'>36/103</span>
             </div>
         
             
@@ -621,6 +621,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -630,15 +631,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1168,7 +1168,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Enhanced Navigation Store with ORS and OTP2 Integration
  * Integrates unified routing services with existing navigation state
@@ -1322,7 +1322,7 @@ const convertUnifiedRouteToLegacyRoute = <span class="fstat-no" title="function 
   };
 &nbsp;
   // Create a basic transit step from the unified route
-  const createTransitStep = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: TransitStep =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+  const createTransitStep = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): TransitStep =</span>&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
     id: `${unifiedRoute.id}_step`,
     type: getTransitMode(unifiedRoute.type),
     from: request.from.name || 'Start',
@@ -1418,7 +1418,7 @@ export const useNavigationStore = create&lt;NavigationState&gt;((set, get) =&gt;
 &nbsp;
   addToFavorites: <span class="fstat-no" title="function not covered" >(p</span>lace) =&gt;
 <span class="cstat-no" title="statement not covered" >    set(<span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (state.favorites.some(<span class="fstat-no" title="function not covered" >(f</span>av) =&gt; <span class="cstat-no" title="statement not covered" >fav.id === place.id)</span>) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (state.favorites.some(<span class="fstat-no" title="function not covered" >(f</span>av) =&gt; <span class="cstat-no" title="statement not covered" >fav.id === place.id)</span>) {</span>
 <span class="cstat-no" title="statement not covered" >        return state;</span>
       }
 &nbsp;
@@ -1439,7 +1439,7 @@ export const useNavigationStore = create&lt;NavigationState&gt;((set, get) =&gt;
       };
     }),
 &nbsp;
-  clearRecentSearches: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >set({ recentSearches: [] }),</span>
+  clearRecentSearches: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >set({ recentSearches: [] }),</span>
 &nbsp;
   setSearchQuery: <span class="fstat-no" title="function not covered" >(q</span>uery) =&gt; <span class="cstat-no" title="statement not covered" >set({ searchQuery: query }),</span>
 &nbsp;
@@ -1586,7 +1586,7 @@ export const useNavigationStore = create&lt;NavigationState&gt;((set, get) =&gt;
     // Also select corresponding unified route if available
     const { unifiedRoutes } = <span class="cstat-no" title="statement not covered" >get();</span>
     const matchingUnifiedRoute = <span class="cstat-no" title="statement not covered" >unifiedRoutes.find(<span class="fstat-no" title="function not covered" >(u</span>r) =&gt; <span class="cstat-no" title="statement not covered" >ur.id === route.id)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (matchingUnifiedRoute) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (matchingUnifiedRoute) {</span>
 <span class="cstat-no" title="statement not covered" >      set({ selectedUnifiedRoute: matchingUnifiedRoute });</span>
     }
 &nbsp;
@@ -1629,7 +1629,7 @@ export const useNavigationStore = create&lt;NavigationState&gt;((set, get) =&gt;
     });
   },
 &nbsp;
-  clearRoute: <span class="fstat-no" title="function not covered" >()</span> =&gt;
+  clearRoute: <span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >    set({</span>
       origin: null,
       destination: null,
@@ -1729,7 +1729,7 @@ export default useNavigationStore;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

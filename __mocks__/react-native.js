@@ -1,45 +1,96 @@
-// Simple mock of react-native for tests
 const React = require('react');
 
-// Create native host components that RNTL can detect
-const createHostComponent = (name) => {
-  const Component = ({ children, testID, ...props }) => {
-    return React.createElement(name, { testID: testID || `rn-${name}`, ...props }, children);
-  };
-  Component.displayName = name;
-  return Component;
+// Minimal, Flow-free mock of react-native for Jest in Node.
+// Expose host components as string-based elements so react-native-testing-library
+// can detect them as host components.
+const Platform = {
+  OS: 'linux',
+  Version: '1.0.0',
+  select: (obj) => (obj.linux ?? obj.default ?? obj),
 };
 
-// Export components as both named exports and on the default export
-const components = {
-  View: createHostComponent('View'),
-  Text: createHostComponent('Text'),
-  ScrollView: createHostComponent('ScrollView'),
-  TouchableOpacity: createHostComponent('TouchableOpacity'),
-  TextInput: createHostComponent('TextInput'),
-  Image: createHostComponent('Image'),
-  
-  StyleSheet: {
-    create: (styles) => styles,
-    flatten: (style) => style,
+const View = (props) => React.createElement('View', props, props.children);
+const Text = (props) => React.createElement('Text', props, props.children);
+const Pressable = (props) => React.createElement('Pressable', props, props.children);
+const TextInput = (props) => React.createElement('TextInput', props, props.children);
+const Image = (props) => React.createElement('Image', props, props.children);
+const Switch = (props) => React.createElement('Switch', props, props.children);
+const ScrollView = (props) => React.createElement('ScrollView', props, props.children);
+const Modal = (props) => React.createElement('Modal', props, props.children);
+
+const StyleSheet = {
+  create: (styles) => styles,
+  flatten: (style) => (Array.isArray(style) ? Object.assign({}, ...style) : style),
+};
+
+const Dimensions = {
+  get: () => ({ width: 1024, height: 768 }),
+};
+
+const NativeModules = {};
+
+const Animated = {
+  View: (props) => React.createElement('AnimatedView', props, props.children),
+  createAnimatedComponent: (c) => c,
+  // Minimal Value implementation
+  Value: function (initialValue) {
+    this._value = typeof initialValue === 'number' ? initialValue : 0;
+    this._listeners = {};
+    this.setValue = (v) => {
+      this._value = v;
+      Object.values(this._listeners).forEach((cb) => cb({ value: this._value }));
+    };
+    this.addListener = (cb) => {
+      const id = `L${Math.random().toString(36).slice(2)}`;
+      this._listeners[id] = cb;
+      return id;
+    };
+    this.removeListener = (id) => {
+      delete this._listeners[id];
+    };
+    this.removeAllListeners = () => {
+      this._listeners = {};
+    };
+    this.interpolate = (config) => ({ __isInterpolated: true, config });
+    this.__getValue = () => this._value;
   },
-  Platform: {
-    OS: 'test',
-    select: (obj) => obj.test || obj.default || obj.android || obj.ios || {},
-  },
-  Dimensions: {
-    get: () => ({ width: 375, height: 812 }),
-  },
-  Animated: {
-    Value: class {
-      constructor() {}
-      interpolate() { return this; }
-      setValue() {}
+  timing: (value, config) => ({
+    start: (cb) => {
+      // apply end value synchronously to keep tests deterministic
+      try {
+        if (value && typeof value.setValue === 'function') {
+          value.setValue(config.toValue);
+        }
+        if (cb) cb();
+      } catch (e) {
+        if (cb) cb(e);
+      }
     },
-    View: createHostComponent('AnimatedView'),
-    Text: createHostComponent('AnimatedText'),
-  },
+  }),
 };
 
-// Export all components
-module.exports = components;
+const Easing = {
+  quad: (t) => t * t,
+  out: (fn) => fn,
+};
+
+function findNodeHandle() {
+  return null;
+}
+
+module.exports = {
+  Platform,
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  NativeModules,
+  Animated,
+  TextInput,
+  Image,
+  Switch,
+  ScrollView,
+  Modal,
+  findNodeHandle,
+};

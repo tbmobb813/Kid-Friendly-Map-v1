@@ -7,7 +7,7 @@ jest.mock('../lib/gtfsStore-pg', () => ({
   getNextStopsForTrip: async (tripId, count) => {
     if (tripId === 'trip1') return [{ stop_id: 's1', stop_name: 'Times Sq-42nd St' }];
     return [];
-  }
+  },
 }));
 
 // Set DATABASE_URL to ensure gtfsStorePg is loaded
@@ -22,10 +22,10 @@ const sampleFeed = {
       id: 'e1',
       trip_update: {
         trip: { trip_id: 'trip1', route_id: '1' },
-        stop_time_update: [{ arrival: { time: Math.floor(Date.now()/1000) + 60 } }]
-      }
-    }
-  ]
+        stop_time_update: [{ arrival: { time: Math.floor(Date.now() / 1000) + 60 } }],
+      },
+    },
+  ],
 };
 
 describe('adapter enrichment', () => {

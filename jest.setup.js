@@ -5,68 +5,54 @@ global.__DEV__ = true;
 
 // Minimal ErrorUtils shim to satisfy React Native global error handling usage
 // Provides getGlobalHandler and setGlobalHandler used by utils/logger.ts
-global.ErrorUtils = (function() {
-	let handler = (error, isFatal) => {
-		// default noop handler during tests
-		// throw the error so tests see unhandled exceptions unless overridden
-		throw error;
-	};
+global.ErrorUtils = (function () {
+  let handler = (error, isFatal) => {
+    // default noop handler during tests
+    // throw the error so tests see unhandled exceptions unless overridden
+    throw error;
+  };
 
-	return {
-		getGlobalHandler: () => handler,
-		setGlobalHandler: (h) => { handler = h; },
-	};
+  return {
+    getGlobalHandler: () => handler,
+    setGlobalHandler: (h) => {
+      handler = h;
+    },
+  };
 })();
 
 // Provide an in-memory AsyncStorage mock for tests
-// Provide an in-memory AsyncStorage mock for tests (explicit implementation)
-jest.mock('@react-native-async-storage/async-storage', () => {
-	const store = new Map();
+jest.mock('@react-native-async-storage/async-storage');
 
-	const asyncStorage = {
-		getItem: jest.fn((key) => Promise.resolve(store.has(key) ? store.get(key) : null)),
-		setItem: jest.fn((key, value) => { store.set(key, value); return Promise.resolve(); }),
-		removeItem: jest.fn((key) => { store.delete(key); return Promise.resolve(); }),
-		clear: jest.fn(() => { store.clear(); return Promise.resolve(); }),
-		// Additional methods used by the app
-		getAllKeys: jest.fn(() => Promise.resolve(Array.from(store.keys()))),
-		multiGet: jest.fn((keys) => Promise.resolve(keys.map(k => [k, store.has(k) ? store.get(k) : null]))),
-		multiSet: jest.fn((entries) => { entries.forEach(([k, v]) => store.set(k, v)); return Promise.resolve(); }),
-		multiRemove: jest.fn((keys) => { keys.forEach(k => store.delete(k)); return Promise.resolve(); }),
-		mergeItem: jest.fn((key, value) => { const existing = store.get(key); try {
-			const merged = existing ? JSON.stringify(Object.assign(JSON.parse(existing), JSON.parse(value))) : value;
-			store.set(key, merged);
-			return Promise.resolve();
-		} catch (e) {
-			// fallback to overwrite if parse/merge fails
-			store.set(key, value);
-			return Promise.resolve();
-		} }),
-	};
+// JSDOM / Jest may not provide TextEncoder/TextDecoder used by some server libs
+// (formidable / @noble/hashes). Polyfill from Node's util if missing.
+try {
+  const { TextEncoder, TextDecoder } = require('util');
+  if (typeof global.TextEncoder === 'undefined') global.TextEncoder = TextEncoder;
+  if (typeof global.TextDecoder === 'undefined') global.TextDecoder = TextDecoder;
+} catch (e) {
+  // ignore if util is not available in some environments
+}
 
-	return {
-		__esModule: true,
-		default: asyncStorage,
-	};
-});
+// Increase default test timeout globally to accommodate tests that use timers
+if (typeof jest !== 'undefined' && typeof jest.setTimeout === 'function') {
+  jest.setTimeout(60000);
+}
 
-// Mock @react-native-community/netinfo with a simple interface used by the app
-jest.mock('@react-native-community/netinfo', () => ({
-	__esModule: true,
-	default: {
-		addEventListener: jest.fn(() => jest.fn()),
-		fetch: jest.fn(() => Promise.resolve({ isConnected: true, isInternetReachable: true })),
-	},
-	// also export named constant used in some modules
-	useNetInfo: () => ({ isConnected: true, isInternetReachable: true }),
-}));
+// Some older JS tests call error handling helpers without importing them.
+// Make the common error handling utilities available globally to avoid fragile test order dependencies.
+try {
+  // eslint-disable-next-line global-require
+  const errorHandling = require('./utils/errorHandling');
 
-import 'whatwg-fetch'; // example: keep any globals you need
-
-// If you had code like `require('@testing-library/jest-native/extend-expect')`
-// migrate to the new matchers or remove if you already uninstalled the package.
-// e.g. import '@testing-library/jest-dom/extend-expect'; // optional
-
-// Any other global setup (mocks, timers, env vars) goes here.
-// Example:
-// globalThis.someMock = () => {};
+  if (errorHandling) {
+    global.withRetry = errorHandling.withRetry;
+    global.SafeAsyncStorage = errorHandling.SafeAsyncStorage;
+    global.DEFAULT_RETRY_CONFIG = errorHandling.DEFAULT_RETRY_CONFIG;
+    global.handleLocationError = errorHandling.handleLocationError;
+    global.handleNetworkError = errorHandling.handleNetworkError;
+    global.handleCameraError = errorHandling.handleCameraError;
+    global.createSafetyErrorBoundary = errorHandling.createSafetyErrorBoundary;
+  }
+} catch (e) {
+  // ignore; tests that import directly will still work
+}

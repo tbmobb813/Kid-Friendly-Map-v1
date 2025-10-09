@@ -1,9 +1,42 @@
 {
   "routes": [
-    { "id": "mta-bus-M15", "name": "M15", "systemId": "mta-bus", "status": "on-time", "nextArrival": 4, "direction": "Uptown", "destination": "East Harlem" },
-    { "id": "mta-bus-M42", "name": "M42", "systemId": "mta-bus", "status": "on-time", "nextArrival": 2, "direction": "Crosstown", "destination": "UN/1st Av" },
-    { "id": "mta-bus-B46", "name": "B46", "systemId": "mta-bus", "status": "delayed", "nextArrival": 8, "direction": "Southbound", "destination": "Kings Plaza", "delayReason": "Heavy traffic" },
-    { "id": "mta-bus-Q58", "name": "Q58", "systemId": "mta-bus", "status": "on-time", "nextArrival": 6, "direction": "Eastbound", "destination": "Flushing" }
+    {
+      "id": "mta-bus-M15",
+      "name": "M15",
+      "systemId": "mta-bus",
+      "status": "on-time",
+      "nextArrival": 4,
+      "direction": "Uptown",
+      "destination": "East Harlem"
+    },
+    {
+      "id": "mta-bus-M42",
+      "name": "M42",
+      "systemId": "mta-bus",
+      "status": "on-time",
+      "nextArrival": 2,
+      "direction": "Crosstown",
+      "destination": "UN/1st Av"
+    },
+    {
+      "id": "mta-bus-B46",
+      "name": "B46",
+      "systemId": "mta-bus",
+      "status": "delayed",
+      "nextArrival": 8,
+      "direction": "Southbound",
+      "destination": "Kings Plaza",
+      "delayReason": "Heavy traffic"
+    },
+    {
+      "id": "mta-bus-Q58",
+      "name": "Q58",
+      "systemId": "mta-bus",
+      "status": "on-time",
+      "nextArrival": 6,
+      "direction": "Eastbound",
+      "destination": "Flushing"
+    }
   ],
   "schedules": [
     {
@@ -11,9 +44,27 @@
       "stopId": "14th-st-1st-av",
       "stopName": "14th St/1st Av",
       "schedules": [
-        { "time": "2025-10-01T12:04:00Z", "route": "M15", "destination": "East Harlem", "headsign": "M15 SBS UPTOWN", "kidNote": "Select bus - pay before boarding!" },
-        { "time": "2025-10-01T12:09:00Z", "route": "M15", "destination": "South Ferry", "headsign": "M15 SBS DOWNTOWN", "kidNote": "Express bus to downtown" },
-        { "time": "2025-10-01T12:14:00Z", "route": "M15", "destination": "East Harlem", "headsign": "M15 SBS UPTOWN", "kidNote": "Next uptown bus" }
+        {
+          "time": "2025-10-01T12:04:00Z",
+          "route": "M15",
+          "destination": "East Harlem",
+          "headsign": "M15 SBS UPTOWN",
+          "kidNote": "Select bus - pay before boarding!"
+        },
+        {
+          "time": "2025-10-01T12:09:00Z",
+          "route": "M15",
+          "destination": "South Ferry",
+          "headsign": "M15 SBS DOWNTOWN",
+          "kidNote": "Express bus to downtown"
+        },
+        {
+          "time": "2025-10-01T12:14:00Z",
+          "route": "M15",
+          "destination": "East Harlem",
+          "headsign": "M15 SBS UPTOWN",
+          "kidNote": "Next uptown bus"
+        }
       ]
     },
     {
@@ -21,9 +72,27 @@
       "stopId": "42nd-st-times-sq",
       "stopName": "W 42nd St/7th Av",
       "schedules": [
-        { "time": "2025-10-01T12:02:00Z", "route": "M42", "destination": "UN/1st Av", "headsign": "M42 CROSSTOWN EAST", "kidNote": "Bus across 42nd Street" },
-        { "time": "2025-10-01T12:07:00Z", "route": "M42", "destination": "Port Authority", "headsign": "M42 CROSSTOWN WEST", "kidNote": "Bus to Port Authority" },
-        { "time": "2025-10-01T12:12:00Z", "route": "M42", "destination": "UN/1st Av", "headsign": "M42 CROSSTOWN EAST", "kidNote": "Next eastbound bus" }
+        {
+          "time": "2025-10-01T12:02:00Z",
+          "route": "M42",
+          "destination": "UN/1st Av",
+          "headsign": "M42 CROSSTOWN EAST",
+          "kidNote": "Bus across 42nd Street"
+        },
+        {
+          "time": "2025-10-01T12:07:00Z",
+          "route": "M42",
+          "destination": "Port Authority",
+          "headsign": "M42 CROSSTOWN WEST",
+          "kidNote": "Bus to Port Authority"
+        },
+        {
+          "time": "2025-10-01T12:12:00Z",
+          "route": "M42",
+          "destination": "UN/1st Av",
+          "headsign": "M42 CROSSTOWN EAST",
+          "kidNote": "Next eastbound bus"
+        }
       ]
     }
   ],
@@ -31,7 +100,7 @@
     {
       "id": "bus-detour-1",
       "systemId": "mta-bus",
-      "type": "detour", 
+      "type": "detour",
       "message": "M15 buses detoured via 3rd Av due to street fair on 1st Av between 14th-23rd Sts",
       "severity": "medium",
       "affectedRoutes": ["M15"],
@@ -41,7 +110,7 @@
     },
     {
       "id": "bus-slow-1",
-      "systemId": "mta-bus", 
+      "systemId": "mta-bus",
       "type": "delay",
       "message": "Expect delays on all crosstown routes due to heavy midday traffic",
       "severity": "low",
@@ -54,7 +123,7 @@
       "systemId": "mta-bus",
       "type": "information",
       "message": "All MTA buses are wheelchair accessible with lifts and priority seating",
-      "severity": "info", 
+      "severity": "info",
       "affectedRoutes": ["ALL"],
       "kidFriendlyMessage": "Every bus can help people in wheelchairs get on and off safely",
       "isAccessibilityAlert": true
@@ -66,7 +135,7 @@
       "name": "14th St/1st Av",
       "borough": "Manhattan",
       "routes": ["M15"],
-      "coordinates": { "lat": 40.7323, "lng": -73.9860 },
+      "coordinates": { "lat": 40.7323, "lng": -73.986 },
       "accessibility": {
         "wheelchairAccessible": true,
         "hasShelter": true,
@@ -81,7 +150,7 @@
       "features": ["Real-time arrival displays", "SBS fare machines", "Wheelchair accessible"]
     },
     {
-      "id": "42nd-st-times-sq", 
+      "id": "42nd-st-times-sq",
       "name": "W 42nd St/7th Av",
       "borough": "Manhattan",
       "routes": ["M42"],
@@ -109,9 +178,9 @@
     "security": "Onboard security cameras and emergency communication"
   },
   "realTimeData": {
-    "lastUpdated": "2025-10-01T12:00:00Z", 
+    "lastUpdated": "2025-10-01T12:00:00Z",
     "systemStatus": "normal",
-    "overallDelays": "minimal", 
+    "overallDelays": "minimal",
     "activeDetours": 1,
     "kidFriendlyStatus": "Buses are running well today! Some are slow because of traffic 🚌"
   },

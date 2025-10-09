@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/70</span>
+                <span class='fraction'>0/79</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/69</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
@@ -472,18 +472,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -876,18 +876,18 @@
  * Integrates AI route suggestions with map visualization and voice guidance
  */
 &nbsp;
-import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, TextInput, Modal, ScrollView, Alert } from 'react-native';
-import * as Location from 'expo-location';
-import KidFriendlyMap, { RoutePoint, SafeZone } from './KidFriendlyMap';
-import AIRouteSuggestions from './AIRouteSuggestions';
-import { aiRouteEngine, SmartRoute, RoutePreferences } from '../utils/aiRouteEngine';
-import { voiceManager, speakNavigation } from '../utils/voice';
-import { log } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { View, Text, Pressable, TextInput, Modal, ScrollView, Alert } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import * as Location from 'expo-location';</span>
+<span class="cstat-no" title="statement not covered" >import KidFriendlyMap, { RoutePoint, SafeZone } from './KidFriendlyMap';</span>
+<span class="cstat-no" title="statement not covered" >import AIRouteSuggestions from './AIRouteSuggestions';</span>
+<span class="cstat-no" title="statement not covered" >import { aiRouteEngine, SmartRoute, RoutePreferences } from '../utils/aiRouteEngine';</span>
+<span class="cstat-no" title="statement not covered" >import { voiceManager, speakNavigation } from '../utils/voice';</span>
+<span class="cstat-no" title="statement not covered" >import { log } from '../utils/logger';</span>
 &nbsp;
 type ScreenMode = 'search' | 'suggestions' | 'navigation';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >SmartNavigationScreen(</span>) {
+<span class="cstat-no" title="statement not covered" >export default function <span class="fstat-no" title="function not covered" >S</span>martNavigationScreen(</span>) {
   // Navigation state
   const [mode, setMode] = <span class="cstat-no" title="statement not covered" >useState&lt;ScreenMode&gt;('search');</span>
   const [origin, setOrigin] = <span class="cstat-no" title="statement not covered" >useState&lt;Location.LocationObject | null&gt;(null);</span>
@@ -909,12 +909,12 @@ export default function <span class="fstat-no" title="function not covered" >Sma
   const [routePoints, setRoutePoints] = <span class="cstat-no" title="statement not covered" >useState&lt;RoutePoint[]&gt;([]);</span>
   const [safeZones, setSafeZones] = <span class="cstat-no" title="statement not covered" >useState&lt;SafeZone[]&gt;([]);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    getCurrentLocation();</span>
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (selectedRoute) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (selectedRoute) {</span>
       // Convert smart route to map route points
       const points: RoutePoint[] = <span class="cstat-no" title="statement not covered" >selectedRoute.steps.map(<span class="fstat-no" title="function not covered" >(s</span>tep) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         latitude: step.location.latitude,
@@ -936,7 +936,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
 <span class="cstat-no" title="statement not covered" >      setSafeZones(zones);</span>
 &nbsp;
       // Start voice navigation
-<span class="cstat-no" title="statement not covered" >      if (preferences.voiceEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences.voiceEnabled) {</span>
 <span class="cstat-no" title="statement not covered" >        startVoiceNavigation(selectedRoute);</span>
       }
 &nbsp;
@@ -944,10 +944,10 @@ export default function <span class="fstat-no" title="function not covered" >Sma
     }
   }, [selectedRoute]);
 &nbsp;
-  const getCurrentLocation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const getCurrentLocation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { status } = <span class="cstat-no" title="statement not covered" >await Location.requestForegroundPermissionsAsync();</span>
-<span class="cstat-no" title="statement not covered" >      if (status !== 'granted') {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (status !== 'granted') {</span>
 <span class="cstat-no" title="statement not covered" >        Alert.alert('Permission Required', 'Please enable location access to use navigation');</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
@@ -961,20 +961,20 @@ export default function <span class="fstat-no" title="function not covered" >Sma
     }
   };
 &nbsp;
-  const startVoiceNavigation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (route: SmartRoute) =&gt; {</span>
+  const startVoiceNavigation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(route: SmartRoute) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await speakNavigation(</span>
       `Starting ${route.name}. This journey will take about ${route.estimatedDuration} minutes. ${route.aiRecommendations[0]}`,
     );
 &nbsp;
     // Announce first instruction
-<span class="cstat-no" title="statement not covered" >    if (route.steps.length &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (route.steps.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        await speakNavigation(route.steps[0].instruction);</span>
       }, 3000);
     }
   };
 &nbsp;
-  const handleSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     // In a real app, this would geocode the destination
     // For demo, using a mock location near NYC
     const mockDestination = <span class="cstat-no" title="statement not covered" >{</span>
@@ -990,7 +990,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
 <span class="cstat-no" title="statement not covered" >    setSelectedRoute(route);</span>
   };
 &nbsp;
-  const handleBackToSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleBackToSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setMode('search');</span>
 <span class="cstat-no" title="statement not covered" >    setDestination(null);</span>
 <span class="cstat-no" title="statement not covered" >    setSelectedRoute(null);</span>
@@ -998,7 +998,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
 <span class="cstat-no" title="statement not covered" >    setSafeZones([]);</span>
   };
 &nbsp;
-  const handleBackToSuggestions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleBackToSuggestions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setMode('suggestions');</span>
 <span class="cstat-no" title="statement not covered" >    setSelectedRoute(null);</span>
 <span class="cstat-no" title="statement not covered" >    setRoutePoints([]);</span>
@@ -1060,7 +1060,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
 &nbsp;
             {/* Preferences Button */}
             &lt;Pressable
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(true)}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(true)}</span>
               className="mt-4 bg-white rounded-xl p-4 shadow-sm"
             &gt;
               &lt;Text className="text-gray-800 text-center font-semibold"&gt;⚙️ Route Preferences&lt;/Text&gt;
@@ -1166,8 +1166,8 @@ export default function <span class="fstat-no" title="function not covered" >Sma
                 &lt;Text className="text-gray-800 text-center font-semibold"&gt;Change Route&lt;/Text&gt;
               &lt;/Pressable&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >                  if (preferences.voiceEnabled &amp;&amp; selectedRoute.steps.length &gt; 0) {</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; {
+<span class="cstat-no" title="statement not covered" >                  <span class="missing-if-branch" title="if path not taken" >I</span>if (preferences.voiceEnabled &amp;&amp; selectedRoute.steps.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >                    speakNavigation(selectedRoute.steps[0].instruction);</span>
                   }
                 }}
@@ -1185,7 +1185,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
         visible={showPreferences}
         animationType="slide"
         transparent={true}
-        onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(false)}</span>
+        onRequestClose={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(false)}</span>
       &gt;
         &lt;View className="flex-1 justify-end bg-black bg-opacity-50"&gt;
           &lt;View className="bg-white rounded-t-3xl p-6"&gt;
@@ -1201,7 +1201,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
                   {[5, 8, 10, 12].map(<span class="fstat-no" title="function not covered" >(a</span>ge) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;Pressable</span>
                       key={age}
-                      onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ childAge: age })}</span>
+                      onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ childAge: age })}</span>
                       className={`flex-1 p-3 rounded-lg ${
                         preferences.childAge === age ? 'bg-blue-500' : 'bg-gray-200'
                       }`}
@@ -1225,7 +1225,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
                   {['safety', 'speed', 'comfort'].map(<span class="fstat-no" title="function not covered" >(p</span>ref) =&gt; (
 <span class="cstat-no" title="statement not covered" >                    &lt;Pressable</span>
                       key={pref}
-                      onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ timePreference: pref as any })}</span>
+                      onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ timePreference: pref as any })}</span>
                       className={`p-3 rounded-lg ${
                         preferences.timePreference === pref ? 'bg-blue-500' : 'bg-gray-200'
                       }`}
@@ -1247,7 +1247,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
               &lt;View className="mb-4"&gt;
                 &lt;Text className="text-sm font-semibold text-gray-700 mb-2"&gt;Voice Guidance:&lt;/Text&gt;
                 &lt;Pressable
-                  onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ voiceEnabled: !preferences.voiceEnabled })}</span>
+                  onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >updatePreferences({ voiceEnabled: !preferences.voiceEnabled })}</span>
                   className={`p-3 rounded-lg ${
                     preferences.voiceEnabled ? 'bg-green-500' : 'bg-gray-200'
                   }`}
@@ -1264,7 +1264,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
             &lt;/ScrollView&gt;
 &nbsp;
             &lt;Pressable
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(false)}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowPreferences(false)}</span>
               className="bg-gray-800 p-4 rounded-lg mt-4"
             &gt;
               &lt;Text className="text-white text-center font-bold"&gt;Done&lt;/Text&gt;
@@ -1282,7 +1282,7 @@ export default function <span class="fstat-no" title="function not covered" >Sma
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

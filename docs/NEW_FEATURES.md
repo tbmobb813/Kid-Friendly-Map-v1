@@ -147,13 +147,13 @@ All new code is fully typed and error-free!
 
 ## 🎯 Benefits
 
-| Feature | Benefit |
-|---------|---------|
-| MMKV | 10x faster storage |
-| Voice/TTS | Hands-free navigation |
-| Maps | Native performance |
-| Type Safety | Fewer bugs |
-| Documentation | Easy to use |
+| Feature       | Benefit               |
+| ------------- | --------------------- |
+| MMKV          | 10x faster storage    |
+| Voice/TTS     | Hands-free navigation |
+| Maps          | Native performance    |
+| Type Safety   | Fewer bugs            |
+| Documentation | Easy to use           |
 
 ## 🔗 Resources
 

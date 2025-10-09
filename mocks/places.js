@@ -1,68 +1,68 @@
 export const favoriteLocations = [
-    {
-        id: "home",
-        name: "Home",
-        address: "123 Maple Street",
-        category: "home",
-        coordinates: {
-            latitude: 40.7128,
-            longitude: -74.0060
-        },
-        isFavorite: true
+  {
+    id: 'home',
+    name: 'Home',
+    address: '123 Maple Street',
+    category: 'home',
+    coordinates: {
+      latitude: 40.7128,
+      longitude: -74.006,
     },
-    {
-        id: "school",
-        name: "My School",
-        address: "555 Learning Lane",
-        category: "school",
-        coordinates: {
-            latitude: 40.7200,
-            longitude: -74.0100
-        },
-        isFavorite: true
+    isFavorite: true,
+  },
+  {
+    id: 'school',
+    name: 'My School',
+    address: '555 Learning Lane',
+    category: 'school',
+    coordinates: {
+      latitude: 40.72,
+      longitude: -74.01,
     },
-    {
-        id: "grandma",
-        name: "Grandma's House",
-        address: "42 Cookie Avenue",
-        category: "family",
-        coordinates: {
-            latitude: 40.7300,
-            longitude: -74.0200
-        },
-        isFavorite: true
+    isFavorite: true,
+  },
+  {
+    id: 'grandma',
+    name: "Grandma's House",
+    address: '42 Cookie Avenue',
+    category: 'family',
+    coordinates: {
+      latitude: 40.73,
+      longitude: -74.02,
     },
-    {
-        id: "park",
-        name: "Central Park",
-        address: "Central Park",
-        category: "park",
-        coordinates: {
-            latitude: 40.7850,
-            longitude: -73.9650
-        },
-        isFavorite: true
-    }
+    isFavorite: true,
+  },
+  {
+    id: 'park',
+    name: 'Central Park',
+    address: 'Central Park',
+    category: 'park',
+    coordinates: {
+      latitude: 40.785,
+      longitude: -73.965,
+    },
+    isFavorite: true,
+  },
 ];
 export const recentSearches = [
-    {
-        id: "library",
-        name: "Public Library",
-        address: "100 Book Street",
-        category: "library",
-        coordinates: {
-            latitude: 40.7150,
-            longitude: -74.0080
-        }
+  {
+    id: 'library',
+    name: 'Public Library',
+    address: '100 Book Street',
+    category: 'library',
+    coordinates: {
+      latitude: 40.715,
+      longitude: -74.008,
     },
-    {
-        id: "pizzaplace",
-        name: "Pizza Palace",
-        address: "88 Cheese Boulevard",
-        category: "restaurant",
-        coordinates: {
-            latitude: 40.7220,
-            longitude: -74.0150
-        }
-    }
+  },
+  {
+    id: 'pizzaplace',
+    name: 'Pizza Palace',
+    address: '88 Cheese Boulevard',
+    category: 'restaurant',
+    coordinates: {
+      latitude: 40.722,
+      longitude: -74.015,
+    },
+  },
 ];

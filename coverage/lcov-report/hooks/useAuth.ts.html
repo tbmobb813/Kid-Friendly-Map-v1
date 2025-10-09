@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/80</span>
+                <span class='fraction'>0/87</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/70</span>
+                <span class='fraction'>0/77</span>
             </div>
         
             
@@ -291,10 +291,10 @@
 <a name='L226'></a><a href='#L226'>226</a>
 <a name='L227'></a><a href='#L227'>227</a>
 <a name='L228'></a><a href='#L228'>228</a>
-<a name='L229'></a><a href='#L229'>229</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L229'></a><a href='#L229'>229</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -469,12 +469,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -498,7 +498,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -519,12 +519,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, useEffect, useCallback } from 'react';
-import createContextHook from '@nkzw/create-context-hook';
-import { authManager, AuthState, LoginCredentials, RegisterData } from '@/utils/auth';
-import { log } from '@/utils/logger';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useState, useEffect, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import createContextHook from '@nkzw/create-context-hook';</span>
+<span class="cstat-no" title="statement not covered" >import { authManager, AuthState, LoginCredentials, RegisterData } from '@/utils/auth';</span>
+<span class="cstat-no" title="statement not covered" >import { log } from '@/utils/logger';</span>
 &nbsp;
-export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement not covered" >createContextHook(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >[AuthProvider, useAuth] = c</span>reateContextHook(<span class="fstat-no" title="function not covered" >() =</span>&gt; {
   const [authState, setAuthState] = <span class="cstat-no" title="statement not covered" >useState&lt;AuthState&gt;({</span>
     user: null,
     token: null,
@@ -535,7 +535,7 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
 &nbsp;
   const [isInitialized, setIsInitialized] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    log.debug('Setting up auth context');</span>
 &nbsp;
     // Listen to auth state changes
@@ -546,7 +546,7 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
       });
 <span class="cstat-no" title="statement not covered" >      setAuthState(state);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!isInitialized) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!isInitialized) {</span>
 <span class="cstat-no" title="statement not covered" >        setIsInitialized(true);</span>
       }
     });
@@ -555,26 +555,26 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
 <span class="cstat-no" title="statement not covered" >    setAuthState(authManager.authState);</span>
 &nbsp;
     // Mark as initialized after a short delay to allow auth manager to initialize
-    const initTimer = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (!isInitialized) {</span>
+    const initTimer = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!isInitialized) {</span>
 <span class="cstat-no" title="statement not covered" >        setIsInitialized(true);</span>
 <span class="cstat-no" title="statement not covered" >        setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isLoading: false })</span>);</span>
       }
     }, 1000);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      unsubscribe();</span>
 <span class="cstat-no" title="statement not covered" >      clearTimeout(initTimer);</span>
     };
   }, [isInitialized]);
 &nbsp;
-  const login = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (credentials: LoginCredentials) =&gt; {</span>
+  const login = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(credentials: LoginCredentials) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isLoading: true, error: null })</span>);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const result = <span class="cstat-no" title="statement not covered" >await authManager.login(credentials);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!result.success) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.success) {</span>
 <span class="cstat-no" title="statement not covered" >        setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
           ...prev,
           isLoading: false,
@@ -594,13 +594,13 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
     }
   }, []);
 &nbsp;
-  const register = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (data: RegisterData) =&gt; {</span>
+  const register = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(data: RegisterData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isLoading: true, error: null })</span>);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const result = <span class="cstat-no" title="statement not covered" >await authManager.register(data);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!result.success) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!result.success) {</span>
 <span class="cstat-no" title="statement not covered" >        setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
           ...prev,
           isLoading: false,
@@ -620,7 +620,7 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
     }
   }, []);
 &nbsp;
-  const logout = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const logout = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, isLoading: true, error: null })</span>);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -630,35 +630,35 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
     }
   }, []);
 &nbsp;
-  const clearError = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearError = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setAuthState(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, error: null })</span>);</span>
   }, []);
 &nbsp;
-  const updateProfile = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (updates: any) =&gt; {</span>
+  const updateProfile = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(updates: any) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.updateProfile(updates);</span>
   }, []);
 &nbsp;
-  const changePassword = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (currentPassword: string, newPassword: string) =&gt; {</span>
+  const changePassword = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(currentPassword: string, newPassword: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.changePassword(currentPassword, newPassword);</span>
   }, []);
 &nbsp;
-  const resetPassword = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (email: string) =&gt; {</span>
+  const resetPassword = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(email: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.resetPassword(email);</span>
   }, []);
 &nbsp;
-  const verifyParentalPin = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (pin: string) =&gt; {</span>
+  const verifyParentalPin = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(pin: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.verifyParentalPin(pin);</span>
   }, []);
 &nbsp;
-  const setParentalPin = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (pin: string) =&gt; {</span>
+  const setParentalPin = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(pin: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.setParentalPin(pin);</span>
   }, []);
 &nbsp;
-  const extendSession = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const extendSession = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.extendSession();</span>
   }, []);
 &nbsp;
-  const getSessionTimeRemaining = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getSessionTimeRemaining = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return authManager.getSessionTimeRemaining();</span>
   }, []);
 &nbsp;
@@ -690,19 +690,19 @@ export const [AuthProvider, useAuth] = <span class="cstat-no" title="statement n
     isChildUser: authState.user?.role === 'child',
     hasParentalControls: authState.user?.parentalControls?.isEnabled || false,
     canAccessFeature: <span class="fstat-no" title="function not covered" >(f</span>eature: string) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (!authState.user?.parentalControls?.isEnabled) <span class="cstat-no" title="statement not covered" >return true;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!authState.user?.parentalControls?.isEnabled) <span class="cstat-no" title="statement not covered" >return true;</span></span>
 <span class="cstat-no" title="statement not covered" >      return !authState.user.parentalControls.restrictions.includes(feature);</span>
     },
   };
 });
 &nbsp;
 // Convenience hooks
-export function <span class="fstat-no" title="function not covered" >useAuthUser(</span>) {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seAuthUser(</span>) {
   const { user } = <span class="cstat-no" title="statement not covered" >useAuth();</span>
 <span class="cstat-no" title="statement not covered" >  return user;</span>
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >useAuthActions(</span>) {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seAuthActions(</span>) {
   const {
     login,
     register,
@@ -726,7 +726,7 @@ export function <span class="fstat-no" title="function not covered" >useAuthActi
   };
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >useParentalControls(</span>) {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >u</span>seParentalControls(</span>) {
   const {
     user,
     hasParentalControls,
@@ -754,7 +754,7 @@ export function <span class="fstat-no" title="function not covered" >useParental
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

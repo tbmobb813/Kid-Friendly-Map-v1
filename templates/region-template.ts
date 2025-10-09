@@ -1,17 +1,31 @@
-/*
- * City Transit Template
- *
- * This template provides a starting point for implementing kid-friendly transit navigation
- * for any city. Copy this file and customize the values for your specific city.
- *
- * INSTRUCTIONS:
- * 1. Copy this file to config/regions/yourCityName.ts
- * 2. Replace 'cityNameCamelCase' with your city name in camelCase (e.g., london, tokyo, sanFrancisco)
- * 3. Replace all "REPLACE_" placeholders with actual values for your city
- * 4. Update coordinate values (0.0000) with real latitude/longitude
- * 5. Adjust numeric values (fares, ages, months) as appropriate for your city
+/**/**
+
+ * City Transit Template * City Transit Template
+
+ *  * 
+
+ * This template provides a starting point for implementing kid-friendly transit navigation * This template provides a starting point for implementing kid-friendly transit navigation
+
+ * for any city. Copy this file and customize the values for your specific city. * for any city. Copy this file and customize the values for your specific city.
+
+ *  * 
+
+ * INSTRUCTIONS: * Replace the following placeholders:
+
+ * 1. Copy this file to config/regions/yourCityName.ts * - cityNameCamelCase: Use camelCase (e.g., newYork, london, tokyo)
+
+ * 2. Replace 'cityNameCamelCase' with your city name in camelCase (e.g., london, tokyo, sanFrancisco) * - All string values marked with "REPLACE_"
+
+ * 3. Replace all "REPLACE_" placeholders with actual values for your city * - All coordinate values (0.0000) with actual lat/lng
+
+ * 4. Update coordinate values (0.0000) with real latitude/longitude * - All numeric values as appropriate
+
+ * 5. Adjust numeric values (fares, ages, months) as appropriate for your city */
+
  * 6. Add or remove transit systems based on what's available in your city
- * 7. Add more popular places, foods, and cultural information as needed
+
+ * 7. Add more popular places, foods, and cultural information as neededimport { RegionConfig } from "@/types/region";
+
  */
 
 const cityNameCamelCase: RegionConfig = {
@@ -40,12 +54,11 @@ const cityNameCamelCase: RegionConfig = {  country: "REPLACE_COUNTRY_NAME", // e
 
       south: 0.0000,    }
 
-      east: 0.0000,
+      east: 0.0000,  },
 
-      west: 0.0000
+      west: 0.0000  
 
-    },
-    timezone: "REPLACE_TIMEZONE", // e.g., "Europe/London", "Asia/Tokyo"
+    }  timezone: "REPLACE_TIMEZONE", // e.g., "Europe/London", "Asia/Tokyo"
 
   },  currency: {
 
@@ -123,10 +136,9 @@ const cityNameCamelCase: RegionConfig = {  country: "REPLACE_COUNTRY_NAME", // e
 
       // Add more hospitals as needed
 
-    ],  // Transit systems available in this city
+    ]  // Transit systems available in this city
 
-  },
-  transitSystems: [
+  },  transitSystems: [
 
     {
 

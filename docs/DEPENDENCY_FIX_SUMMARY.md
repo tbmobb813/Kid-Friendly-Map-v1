@@ -12,7 +12,7 @@ The persistent navigation error was caused by using `@react-navigation/native@7.
 
 ### Error Symptoms
 
-``` text
+```text
 ERROR [Error: Couldn't find the prevent remove context. Is your component inside NavigationContent?]
 Code: _layout.tsx
   5 |   return <Stack />;
@@ -45,13 +45,13 @@ bun install @react-navigation/native@7.1.8
 
 ## Compatibility Matrix for Expo SDK 54
 
-| Package | Required Version | Current Version | Status |
-|---------|-----------------|----------------|--------|
-| expo | ^54.0.0 | 54.0.0 | ✅ |
-| expo-router | ~6.0.10 | 6.0.10 | ✅ |
-| @react-navigation/native | ^7.1.8 | 7.1.8 | ✅ Fixed |
-| react | 19.1.0 | 19.1.0 | ✅ |
-| react-native | 0.81.x | 0.81.4 | ✅ |
+| Package                  | Required Version | Current Version | Status   |
+| ------------------------ | ---------------- | --------------- | -------- |
+| expo                     | ^54.0.0          | 54.0.0          | ✅       |
+| expo-router              | ~6.0.10          | 6.0.10          | ✅       |
+| @react-navigation/native | ^7.1.8           | 7.1.8           | ✅ Fixed |
+| react                    | 19.1.0           | 19.1.0          | ✅       |
+| react-native             | 0.81.x           | 0.81.4          | ✅       |
 
 ---
 
@@ -95,7 +95,6 @@ bun install @react-navigation/native@7.1.8
    ```
 
 1. **Expected behavior:**
-
    - ✅ No "prevent remove context" error
 
    - ✅ App should load to initial screen
@@ -121,7 +120,6 @@ bun install @react-navigation/native@7.1.8
    This will enable MapLibre and MMKV native modules
 
 1. **Test navigation flow:**
-
    - Verify tab navigation works
 
    - Test deep linking
@@ -131,7 +129,6 @@ bun install @react-navigation/native@7.1.8
 ### Short-term (Within Sprint)
 
 1. **Replace expo-av with expo-audio/expo-video:**
-
    - Identify all usages: `grep -r "expo-av" components/ app/`
 
    - Migrate audio features to `expo-audio`
@@ -139,7 +136,6 @@ bun install @react-navigation/native@7.1.8
    - Migrate video features to `expo-video`
 
 1. **Consider MMKV alternatives:**
-
    - Option A: Downgrade to react-native-mmkv 2.x (no TurboModules required)
 
    - Option B: Enable New Architecture properly
@@ -149,13 +145,11 @@ bun install @react-navigation/native@7.1.8
 ### Long-term (Future Sprints)
 
 1. **Monitor @react-navigation updates:**
-
    - Watch for 7.1.18+ that fixes the context bug
 
    - Test newer versions in development branch first
 
 1. **New Architecture migration:**
-
    - Full TurboModules support
 
    - Better performance

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/64</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/61</span>
+                <span class='fraction'>0/59</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/57</span>
+                <span class='fraction'>0/63</span>
             </div>
         
             
@@ -414,11 +414,11 @@
 <a name='L349'></a><a href='#L349'>349</a>
 <a name='L350'></a><a href='#L350'>350</a>
 <a name='L351'></a><a href='#L351'>351</a>
-<a name='L352'></a><a href='#L352'>352</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L352'></a><a href='#L352'>352</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -764,12 +764,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
-import { AlertTriangle, CheckCircle, RefreshCw, Wifi, WifiOff } from 'lucide-react-native';
-import Colors from '@/constants/colors';
-import { useNetworkStatus } from '@/hooks/useNetworkStatus';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import { AlertTriangle, CheckCircle, RefreshCw, Wifi, WifiOff } from 'lucide-react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { useNetworkStatus } from '@/hooks/useNetworkStatus';</span>
 &nbsp;
 type SystemHealthMonitorProps = {
   testId?: string;
@@ -788,7 +788,7 @@ const SystemHealthMonitor: React.FC&lt;SystemHealthMonitorProps&gt; = <span clas
   const [isRunningChecks, setIsRunningChecks] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const { isConnected } = <span class="cstat-no" title="statement not covered" >useNetworkStatus();</span>
 &nbsp;
-  const runHealthChecks = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const runHealthChecks = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setIsRunningChecks(true);</span>
     const checks: HealthCheck[] = <span class="cstat-no" title="statement not covered" >[];</span>
     const now = <span class="cstat-no" title="statement not covered" >Date.now();</span>
@@ -905,18 +905,18 @@ const SystemHealthMonitor: React.FC&lt;SystemHealthMonitorProps&gt; = <span clas
 <span class="cstat-no" title="statement not covered" >    setIsRunningChecks(false);</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    runHealthChecks();</span>
 &nbsp;
     // Run health checks every 5 minutes
     const interval = <span class="cstat-no" title="statement not covered" >setInterval(runHealthChecks, 5 * 60 * 1000);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >clearInterval(interval);</span></span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >clearInterval(interval);</span></span>
   }, [isConnected]);
 &nbsp;
-  const getOverallStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: 'healthy' | 'warning' | 'error' =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (healthChecks.some(<span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.status === 'error')</span>) <span class="cstat-no" title="statement not covered" >return 'error';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (healthChecks.some(<span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.status === 'warning')</span>) <span class="cstat-no" title="statement not covered" >return 'warning';</span></span>
+  const getOverallStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): 'healthy' | 'warning' | 'error' =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (healthChecks.some(<span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.status === 'error')</span>) <span class="cstat-no" title="statement not covered" >return 'error';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (healthChecks.some(<span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.status === 'warning')</span>) <span class="cstat-no" title="statement not covered" >return 'warning';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'healthy';</span>
   };
 &nbsp;
@@ -956,8 +956,8 @@ const SystemHealthMonitor: React.FC&lt;SystemHealthMonitorProps&gt; = <span clas
             {overallStatus === 'healthy'
               ? 'Healthy'
               : overallStatus === 'warning'
-              ? 'Issues Detected'
-              : 'Errors Found'}
+                ? 'Issues Detected'
+                : 'Errors Found'}
           &lt;/Text&gt;
         &lt;/View&gt;
 &nbsp;
@@ -991,7 +991,7 @@ const SystemHealthMonitor: React.FC&lt;SystemHealthMonitorProps&gt; = <span clas
 &nbsp;
       &lt;View style={styles.checksList}&gt;
         {healthChecks.map(<span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;View key={check.id} style={styles.checkItem}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;View key={check.id} s</span>tyle={styles.checkItem}&gt;
             &lt;View style={styles.checkHeader}&gt;
               {getStatusIcon(check.status)}
               &lt;Text style={styles.checkName}&gt;{check.name}&lt;/Text&gt;
@@ -1115,7 +1115,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default SystemHealthMonitor;
+<span class="cstat-no" title="statement not covered" >export default SystemHealthMonitor;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1123,7 +1123,7 @@ export default SystemHealthMonitor;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

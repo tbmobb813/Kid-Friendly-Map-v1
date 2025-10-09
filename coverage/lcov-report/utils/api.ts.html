@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.28% </span>
+                <span class="strong">32.87% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>43/142</span>
+                <span class='fraction'>48/146</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">13.63% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/64</span>
+                <span class='fraction'>6/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">21.05% </span>
+                <span class="strong">23.07% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/38</span>
+                <span class='fraction'>9/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.49% </span>
+                <span class="strong">31.2% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>41/139</span>
+                <span class='fraction'>44/141</span>
             </div>
         
             
@@ -467,7 +467,7 @@
 <a name='L402'></a><a href='#L402'>402</a>
 <a name='L403'></a><a href='#L403'>403</a>
 <a name='L404'></a><a href='#L404'>404</a>
-<a name='L405'></a><a href='#L405'>405</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L405'></a><a href='#L405'>405</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -653,7 +653,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">50x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -753,7 +753,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -902,7 +902,7 @@ class ApiClient {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async request&lt;T&gt;(endpoint: string, options: RequestInit = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;ApiResponse&lt;T&gt;&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>request&lt;T&gt;(endpoint: string, options: RequestInit = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;ApiResponse&lt;T&gt;&gt; {
     const url = <span class="cstat-no" title="statement not covered" >`${this.baseURL}${endpoint}`;</span>
 &nbsp;
     const headers: Record&lt;string, string&gt; = <span class="cstat-no" title="statement not covered" >{</span>
@@ -910,12 +910,12 @@ class ApiClient {
       ...(options.headers as Record&lt;string, string&gt;),
     };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.authToken) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.authToken) {</span>
 <span class="cstat-no" title="statement not covered" >      headers.Authorization = `Bearer ${this.authToken}`;</span>
     }
 &nbsp;
     const controller = <span class="cstat-no" title="statement not covered" >new AbortController();</span>
-    const timeoutId = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >controller.abort(),</span> this.timeout);</span>
+    const timeoutId = <span class="cstat-no" title="statement not covered" >setTimeout(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >controller.abort(),</span> this.timeout);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const response = <span class="cstat-no" title="statement not covered" >await fetch(url, {</span>
@@ -926,7 +926,7 @@ class ApiClient {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      clearTimeout(timeoutId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`HTTP ${response.status}: ${response.statusText}`);</span>
       }
 &nbsp;
@@ -935,8 +935,8 @@ class ApiClient {
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      clearTimeout(timeoutId);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (error instanceof Error) {</span>
-<span class="cstat-no" title="statement not covered" >        if (error.name === 'AbortError') {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof Error) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (error.name === 'AbortError') {</span>
 <span class="cstat-no" title="statement not covered" >          throw new Error('Request timeout');</span>
         }
 <span class="cstat-no" title="statement not covered" >        throw error;</span>
@@ -946,34 +946,34 @@ class ApiClient {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync get&lt;T&gt;(endpoint: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>get&lt;T&gt;(endpoint: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.request&lt;T&gt;(endpoint, { method: 'GET' });</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync post&lt;T&gt;(endpoint: string, data?: any): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>post&lt;T&gt;(endpoint: string, data?: any): Promise&lt;ApiResponse&lt;T&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.request&lt;T&gt;(endpoint, {</span>
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync put&lt;T&gt;(endpoint: string, data?: any): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>put&lt;T&gt;(endpoint: string, data?: any): Promise&lt;ApiResponse&lt;T&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.request&lt;T&gt;(endpoint, {</span>
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync delete&lt;T&gt;(endpoint: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>delete&lt;T&gt;(endpoint: string): Promise&lt;ApiResponse&lt;T&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.request&lt;T&gt;(endpoint, { method: 'DELETE' });</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  se</span>tAuthToken(token: string) {
+<span class="fstat-no" title="function not covered" >  setAuthToken(</span>token: string) {
 <span class="cstat-no" title="statement not covered" >    this.authToken = token;</span>
 <span class="cstat-no" title="statement not covered" >    AsyncStorage.setItem('auth_token', token);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  cl</span>earAuthToken() {
+<span class="fstat-no" title="function not covered" >  clearAuthToken(</span>) {
 <span class="cstat-no" title="statement not covered" >    this.authToken = null;</span>
 <span class="cstat-no" title="statement not covered" >    AsyncStorage.removeItem('auth_token');</span>
   }
@@ -1007,9 +1007,9 @@ export const placesApi = {
 };
 &nbsp;
 export const userApi = {
-  getProfile: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >apiClient.get('/user/profile'),</span>
+  getProfile: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >apiClient.get('/user/profile'),</span>
   updateProfile: <span class="fstat-no" title="function not covered" >(d</span>ata: any) =&gt; <span class="cstat-no" title="statement not covered" >apiClient.put('/user/profile', data),</span>
-  getAchievements: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >apiClient.get('/user/achievements'),</span>
+  getAchievements: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >apiClient.get('/user/achievements'),</span>
   checkIn: <span class="fstat-no" title="function not covered" >(p</span>laceId: string, photo?: string) =&gt; <span class="cstat-no" title="statement not covered" >apiClient.post('/user/checkin', { placeId, photo }),</span>
 };
 &nbsp;
@@ -1057,7 +1057,7 @@ export const offlineStorage = {
         }),
       );
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.warn('Failed to cache response:', error);</span>
+      console.warn('Failed to cache response:', error);
     }
   },
 &nbsp;
@@ -1094,8 +1094,8 @@ export const offlineStorage = {
 export const handleApiError = <span class="fstat-no" title="function not covered" >(</span>
   error: any,
 ): { message: string; code?: string; isNetworkError: boolean } =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (error instanceof Error) {</span>
-<span class="cstat-no" title="statement not covered" >    if (error.name === 'AbortError') {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error instanceof Error) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.name === 'AbortError') {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'Request timed out. Please check your connection and try again.',
         code: 'TIMEOUT',
@@ -1103,7 +1103,7 @@ export const handleApiError = <span class="fstat-no" title="function not covered
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error.message.includes('Network request failed') || error.message.includes('fetch')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.message.includes('Network request failed') || error.message.includes('fetch')) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'Unable to connect to server. Please check your internet connection.',
         code: 'NETWORK_ERROR',
@@ -1111,7 +1111,7 @@ export const handleApiError = <span class="fstat-no" title="function not covered
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error.message.includes('HTTP 401')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.message.includes('HTTP 401')) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'Your session has expired. Please sign in again.',
         code: 'UNAUTHORIZED',
@@ -1119,7 +1119,7 @@ export const handleApiError = <span class="fstat-no" title="function not covered
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error.message.includes('HTTP 403')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.message.includes('HTTP 403')) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'You do not have permission to access this feature.',
         code: 'FORBIDDEN',
@@ -1127,7 +1127,7 @@ export const handleApiError = <span class="fstat-no" title="function not covered
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error.message.includes('HTTP 404')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.message.includes('HTTP 404')) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'The requested information could not be found.',
         code: 'NOT_FOUND',
@@ -1135,7 +1135,7 @@ export const handleApiError = <span class="fstat-no" title="function not covered
       };
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error.message.includes('HTTP 500')) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.message.includes('HTTP 500')) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
         message: 'Server error. Please try again later.',
         code: 'SERVER_ERROR',
@@ -1165,13 +1165,13 @@ export class BackendHealthMonitor {
   private listeners: ((status: 'healthy' | 'degraded' | 'down') =&gt; void)[] = [];
 &nbsp;
   static getInstance(): BackendHealthMonitor {
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!BackendHealthMonitor.instance) {
+    if (!BackendHealthMonitor.instance) {
       BackendHealthMonitor.instance = new BackendHealthMonitor();
     }
     return BackendHealthMonitor.instance;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync checkHealth(): Promise&lt;'healthy' | 'degraded' | 'down'&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>checkHealth(): Promise&lt;'healthy' | 'degraded' | 'down'&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const startTime = <span class="cstat-no" title="statement not covered" >Date.now();</span>
       const response = <span class="cstat-no" title="statement not covered" >await apiClient.get('/health');</span>
@@ -1195,14 +1195,14 @@ export class BackendHealthMonitor {
 <span class="cstat-no" title="statement not covered" >    return this.healthStatus;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate setHealthStatus(status: 'healthy' | 'degraded' | 'down') {
-<span class="cstat-no" title="statement not covered" >    if (this.healthStatus !== status) {</span>
+  private <span class="fstat-no" title="function not covered" >setHealthStatus(</span>status: 'healthy' | 'degraded' | 'down') {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.healthStatus !== status) {</span>
 <span class="cstat-no" title="statement not covered" >      this.healthStatus = status;</span>
 <span class="cstat-no" title="statement not covered" >      this.notifyListeners(status);</span>
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate notifyListeners(status: 'healthy' | 'degraded' | 'down') {
+  private <span class="fstat-no" title="function not covered" >notifyListeners(</span>status: 'healthy' | 'degraded' | 'down') {
 <span class="cstat-no" title="statement not covered" >    this.listeners.forEach(<span class="fstat-no" title="function not covered" >(l</span>istener) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
 <span class="cstat-no" title="statement not covered" >        listener(status);</span>
@@ -1212,11 +1212,11 @@ export class BackendHealthMonitor {
     });
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ad</span>dListener(callback: (status: 'healthy' | 'degraded' | 'down') =&gt; void): () =&gt; void {
+<span class="fstat-no" title="function not covered" >  addListener(</span>callback: (status: 'healthy' | 'degraded' | 'down') =&gt; void): () =&gt; void {
 <span class="cstat-no" title="statement not covered" >    this.listeners.push(callback);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
       const index = <span class="cstat-no" title="statement not covered" >this.listeners.indexOf(callback);</span>
-<span class="cstat-no" title="statement not covered" >      if (index &gt; -1) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (index &gt; -1) {</span>
 <span class="cstat-no" title="statement not covered" >        this.listeners.splice(index, 1);</span>
       }
     };
@@ -1226,7 +1226,7 @@ export class BackendHealthMonitor {
     return this.healthStatus;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  sh</span>ouldCheckHealth(): boolean {
+<span class="fstat-no" title="function not covered" >  shouldCheckHealth(</span>): boolean {
 <span class="cstat-no" title="statement not covered" >    return Date.now() - this.lastHealthCheck &gt; this.healthCheckInterval;</span>
   }
 }
@@ -1234,15 +1234,15 @@ export class BackendHealthMonitor {
 export const backendHealthMonitor = BackendHealthMonitor.getInstance();
 &nbsp;
 // Network-aware API wrapper with enhanced error handling
-export const createNetworkAwareApi = <span class="fstat-no" title="function not covered" >&lt;T</span> extends any[], R&gt;(
+export const createNetworkAwareApi = <span class="fstat-no" title="function not covered" >&lt;T extends any[], R&gt;(</span>
   apiFunction: (...args: T) =&gt; Promise&lt;ApiResponse&lt;R&gt;&gt;,
   cacheKey: string,
   maxAge?: number,
 ) =&gt; {
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >as</span>ync (...args: T): Promise&lt;ApiResponse&lt;R&gt;&gt; =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async </span>(...args: T): Promise&lt;ApiResponse&lt;R&gt;&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Check backend health if needed
-<span class="cstat-no" title="statement not covered" >      if (backendHealthMonitor.shouldCheckHealth()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (backendHealthMonitor.shouldCheckHealth()) {</span>
 <span class="cstat-no" title="statement not covered" >        backendHealthMonitor.checkHealth();</span>
       }
 &nbsp;
@@ -1250,7 +1250,7 @@ export const createNetworkAwareApi = <span class="fstat-no" title="function not 
       const response = <span class="cstat-no" title="statement not covered" >await apiFunction(...args);</span>
 &nbsp;
       // Cache successful response
-<span class="cstat-no" title="statement not covered" >      if (response.success) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (response.success) {</span>
 <span class="cstat-no" title="statement not covered" >        await offlineStorage.cacheResponse(cacheKey, response);</span>
       }
 &nbsp;
@@ -1260,9 +1260,9 @@ export const createNetworkAwareApi = <span class="fstat-no" title="function not 
 <span class="cstat-no" title="statement not covered" >      console.warn('Network request failed, trying cache:', errorInfo.message);</span>
 &nbsp;
       // Try cache fallback for network errors
-<span class="cstat-no" title="statement not covered" >      if (errorInfo.isNetworkError) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (errorInfo.isNetworkError) {</span>
         const cached = <span class="cstat-no" title="statement not covered" >await offlineStorage.getCachedResponse&lt;ApiResponse&lt;R&gt;&gt;(cacheKey, maxAge);</span>
-<span class="cstat-no" title="statement not covered" >        if (cached) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (cached) {</span>
 <span class="cstat-no" title="statement not covered" >          return {</span>
             ...cached,
             message: 'Showing cached data (offline)',
@@ -1282,7 +1282,7 @@ export const createNetworkAwareApi = <span class="fstat-no" title="function not 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

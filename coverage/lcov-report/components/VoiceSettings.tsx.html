@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/46</span>
+                <span class='fraction'>0/45</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -291,12 +291,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -514,21 +514,21 @@
  * Allows users to configure TTS/voice settings
  */
 &nbsp;
-import React, { useState, useEffect } from 'react';
-import { View, Text, Switch, Pressable, ScrollView } from 'react-native';
-import { voiceManager, VoiceSettings, KidFriendlyPhrases } from '../utils/voice';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { View, Text, Switch, Pressable, ScrollView } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import { voiceManager, VoiceSettings, KidFriendlyPhrases } from '../utils/voice';</span>
 import * as Speech from 'expo-speech';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >VoiceSettingsComponent(</span>) {
+<span class="cstat-no" title="statement not covered" >export default function <span class="fstat-no" title="function not covered" >V</span>oiceSettingsComponent(</span>) {
   const [settings, setSettings] = <span class="cstat-no" title="statement not covered" >useState&lt;VoiceSettings&gt;(voiceManager.getSettings());</span>
   const [voices, setVoices] = <span class="cstat-no" title="statement not covered" >useState&lt;Speech.Voice[]&gt;([]);</span>
   const [isTesting, setIsTesting] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    loadVoices();</span>
   }, []);
 &nbsp;
-  const loadVoices = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const loadVoices = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
     const availableVoices = <span class="cstat-no" title="statement not covered" >voiceManager.getAvailableVoices();</span>
 <span class="cstat-no" title="statement not covered" >    setVoices(availableVoices.filter(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >v.language.startsWith('en'))</span>);</span>
   };
@@ -539,11 +539,11 @@ export default function <span class="fstat-no" title="function not covered" >Voi
 <span class="cstat-no" title="statement not covered" >    voiceManager.updateSettings({ [key]: value });</span>
   };
 &nbsp;
-  const testVoice = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (isTesting) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const testVoice = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isTesting) <span class="cstat-no" title="statement not covered" >return;</span></span>
 <span class="cstat-no" title="statement not covered" >    setIsTesting(true);</span>
 <span class="cstat-no" title="statement not covered" >    await voiceManager.speak(KidFriendlyPhrases.encouragement.goodJob);</span>
-<span class="cstat-no" title="statement not covered" >    setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsTesting(false),</span> 2000);</span>
+<span class="cstat-no" title="statement not covered" >    setTimeout(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setIsTesting(false),</span> 2000);</span>
   };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
@@ -581,7 +581,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
           &lt;View className="bg-gray-50 p-4 rounded-xl"&gt;
             &lt;View className="flex-row justify-between gap-2"&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 0.7)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 0.7)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.rate === 0.7 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -596,7 +596,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
                 &lt;/Text&gt;
               &lt;/Pressable&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 0.9)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 0.9)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.rate === 0.9 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -611,7 +611,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
                 &lt;/Text&gt;
               &lt;/Pressable&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 1.3)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('rate', 1.3)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.rate === 1.3 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -640,7 +640,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
           &lt;View className="bg-gray-50 p-4 rounded-xl"&gt;
             &lt;View className="flex-row justify-between gap-2"&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 0.8)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 0.8)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.pitch === 0.8 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -655,7 +655,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
                 &lt;/Text&gt;
               &lt;/Pressable&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 1.1)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 1.1)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.pitch === 1.1 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -670,7 +670,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
                 &lt;/Text&gt;
               &lt;/Pressable&gt;
               &lt;Pressable
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 1.4)}</span>
+                onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleSettingChange('pitch', 1.4)}</span>
                 disabled={!settings.enabled}
                 className={`flex-1 p-3 rounded-lg ${
                   settings.pitch === 1.4 ? 'bg-blue-500' : 'bg-white border border-gray-300'
@@ -739,7 +739,7 @@ export default function <span class="fstat-no" title="function not covered" >Voi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

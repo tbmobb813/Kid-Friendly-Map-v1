@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/134</span>
+                <span class='fraction'>0/142</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/43</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/127</span>
+                <span class='fraction'>0/135</span>
             </div>
         
             
@@ -413,13 +413,13 @@
 <a name='L348'></a><a href='#L348'>348</a>
 <a name='L349'></a><a href='#L349'>349</a>
 <a name='L350'></a><a href='#L350'>350</a>
-<a name='L351'></a><a href='#L351'>351</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L351'></a><a href='#L351'>351</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -762,14 +762,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';
-import Colors from '@/constants/colors';
-import { Mic, Volume2 } from 'lucide-react-native';
-import * as Speech from 'expo-speech';
-import { Audio } from 'expo-av';
-import { useToast } from '@/hooks/useToast';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useCallback, useEffect, useRef, useState } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, Platform } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { Mic, Volume2 } from 'lucide-react-native';</span>
+<span class="cstat-no" title="statement not covered" >import * as Speech from 'expo-speech';</span>
+<span class="cstat-no" title="statement not covered" >import { Audio } from 'expo-av';</span>
+<span class="cstat-no" title="statement not covered" >import { useToast } from '@/hooks/useToast';</span>
 &nbsp;
 type VoiceNavigationProps = {
   currentStep?: string;
@@ -795,16 +795,16 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
   const { showToast } = <span class="cstat-no" title="statement not covered" >useToast();</span>
 &nbsp;
   const speak = <span class="cstat-no" title="statement not covered" >useCallback(</span>
-<span class="fstat-no" title="function not covered" >    as</span>ync (text: string) =&gt; {
+<span class="fstat-no" title="function not covered" >    async </span>(text: string) =&gt; {
 <span class="cstat-no" title="statement not covered" >      try {</span>
 <span class="cstat-no" title="statement not covered" >        setIsSpeaking(true);</span>
 <span class="cstat-no" title="statement not covered" >        Speech.stop();</span>
 <span class="cstat-no" title="statement not covered" >        await Speech.speak(text, {</span>
           language: 'en-US',
           rate: 1.0,
-          onDone: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
-          onStopped: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
-          onError: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
+          onDone: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
+          onStopped: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
+          onError: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setIsSpeaking(false),</span>
         });
       } catch {
 <span class="cstat-no" title="statement not covered" >        setIsSpeaking(false);</span>
@@ -814,11 +814,11 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     [showToast],
   );
 &nbsp;
-  const handleRepeat = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const handleRepeat = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    speak(currentStep);</span>
   }, [currentStep, speak]);
 &nbsp;
-  const startRecordingWeb = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const startRecordingWeb = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const stream = <span class="cstat-no" title="statement not covered" >await navigator.mediaDevices.getUserMedia({ audio: true });</span>
 <span class="cstat-no" title="statement not covered" >      mediaStreamRef.current = stream;</span>
@@ -826,7 +826,7 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
 <span class="cstat-no" title="statement not covered" >      mediaRecorderRef.current = mediaRecorder;</span>
 <span class="cstat-no" title="statement not covered" >      chunksRef.current = [];</span>
 <span class="cstat-no" title="statement not covered" >      mediaRecorder.ondataavailable = <span class="fstat-no" title="function not covered" >(e</span>: BlobEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (e.data &amp;&amp; e.data.size &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (e.data &amp;&amp; e.data.size &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >          chunksRef.current.push(e.data);</span>
         }
       };
@@ -838,15 +838,15 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     }
   }, [showToast]);
 &nbsp;
-  const stopRecordingWeb = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;Blob | null&gt; =&gt; {</span>
+  const stopRecordingWeb = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(): Promise&lt;Blob | null&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return new Promise(<span class="fstat-no" title="function not covered" >(r</span>esolve) =&gt; {</span>
       const mr = <span class="cstat-no" title="statement not covered" >mediaRecorderRef.current;</span>
       const stream = <span class="cstat-no" title="statement not covered" >mediaStreamRef.current;</span>
-<span class="cstat-no" title="statement not covered" >      if (!mr) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!mr) {</span>
 <span class="cstat-no" title="statement not covered" >        resolve(null);</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
-<span class="cstat-no" title="statement not covered" >      mr.onstop = <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      mr.onstop = <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
         const blob = <span class="cstat-no" title="statement not covered" >new Blob(chunksRef.current, { type: 'audio/webm' });</span>
 <span class="cstat-no" title="statement not covered" >        chunksRef.current = [];</span>
 <span class="cstat-no" title="statement not covered" >        stream?.getTracks().forEach(<span class="fstat-no" title="function not covered" >(t</span>) =&gt; <span class="cstat-no" title="statement not covered" >t.stop())</span>;</span>
@@ -863,11 +863,11 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     });
   }, []);
 &nbsp;
-  const startRecordingNative = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const startRecordingNative = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await Audio.requestPermissionsAsync();</span>
 <span class="cstat-no" title="statement not covered" >      await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });</span>
-      const RecordingClass: any = <span class="cstat-no" title="statement not covered" >(Audio as any).Recording || <span class="fstat-no" title="function not covered" >fu</span>nction () {};</span>
+      const RecordingClass: any = (<span class="cstat-no" title="statement not covered" >Audio as any).Recording || <span class="fstat-no" title="function not covered" >function () {}</span>;</span>
       const recording = <span class="cstat-no" title="statement not covered" >new RecordingClass();</span>
       // Use broader any for options to avoid strict expo-av type mismatches
       const options: any = <span class="cstat-no" title="statement not covered" >{</span>
@@ -892,10 +892,10 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     }
   }, [showToast]);
 &nbsp;
-  const stopRecordingNative = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;string | null&gt; =&gt; {</span>
+  const stopRecordingNative = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>(): Promise&lt;string | null&gt; =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const rec = <span class="cstat-no" title="statement not covered" >recordingRef.current;</span>
-<span class="cstat-no" title="statement not covered" >      if (!rec) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!rec) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 <span class="cstat-no" title="statement not covered" >      await rec.stopAndUnloadAsync();</span>
 <span class="cstat-no" title="statement not covered" >      await Audio.setAudioModeAsync({ allowsRecordingIOS: false });</span>
       const uri = <span class="cstat-no" title="statement not covered" >rec.getURI();</span>
@@ -908,7 +908,7 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     }
   }, []);
 &nbsp;
-  const startListening = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const startListening = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setErrorMsg(null);</span>
 <span class="cstat-no" title="statement not covered" >    if (Platform.OS === 'web') {</span>
 <span class="cstat-no" title="statement not covered" >      await startRecordingWeb();</span>
@@ -918,18 +918,18 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
   }, [startRecordingNative, startRecordingWeb]);
 &nbsp;
   const transcribe = <span class="cstat-no" title="statement not covered" >useCallback(</span>
-<span class="fstat-no" title="function not covered" >    as</span>ync (payload: { blob?: Blob; uri?: string }) =&gt; {
+<span class="fstat-no" title="function not covered" >    async </span>(payload: { blob?: Blob; uri?: string }) =&gt; {
       const form = <span class="cstat-no" title="statement not covered" >new FormData();</span>
 <span class="cstat-no" title="statement not covered" >      if (Platform.OS === 'web') {</span>
-<span class="cstat-no" title="statement not covered" >        if (payload.blob) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (payload.blob) {</span>
           const file = <span class="cstat-no" title="statement not covered" >new File([payload.blob], 'recording.webm', { type: 'audio/webm' });</span>
 <span class="cstat-no" title="statement not covered" >          form.append('audio', file);</span>
         }
-      } else <span class="cstat-no" title="statement not covered" >if (payload.uri) {</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (payload.uri) {</span>
         const uri = <span class="cstat-no" title="statement not covered" >payload.uri;</span>
         const ext = <span class="cstat-no" title="statement not covered" >uri.split('.').pop() ?? 'm4a';</span>
         // FormData typing in React Native differs; cast to any for now
-<span class="cstat-no" title="statement not covered" >        (form as any).append('audio', {</span>
+        (<span class="cstat-no" title="statement not covered" >form as any).append('audio', {</span>
           uri,
           name: `recording.${ext}`,
           type: `audio/${ext}`,
@@ -943,15 +943,15 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
             method: 'POST',
             body: form,
           });
-<span class="cstat-no" title="statement not covered" >          if (!res.ok) <span class="cstat-no" title="statement not covered" >throw new Error(`HTTP ${res.status}`);</span></span>
-          const json = <span class="cstat-no" title="statement not covered" >(await res.json()) as STTResponse;</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (!res.ok) <span class="cstat-no" title="statement not covered" >throw new Error(`HTTP ${res.status}`);</span></span>
+          const json = (<span class="cstat-no" title="statement not covered" >await res.json())</span> as STTResponse;
 <span class="cstat-no" title="statement not covered" >          setTranscript(json.text);</span>
 <span class="cstat-no" title="statement not covered" >          onVoiceCommand?.(json.text);</span>
 <span class="cstat-no" title="statement not covered" >          showToast('Heard: ' + json.text, 'success');</span>
 <span class="cstat-no" title="statement not covered" >          return;</span>
         } catch {
 <span class="cstat-no" title="statement not covered" >          attempts += 1;</span>
-<span class="cstat-no" title="statement not covered" >          if (attempts &gt; max) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (attempts &gt; max) {</span>
 <span class="cstat-no" title="statement not covered" >            setErrorMsg('Transcription failed. Please try again.');</span>
 <span class="cstat-no" title="statement not covered" >            showToast('Transcription failed', 'error');</span>
 <span class="cstat-no" title="statement not covered" >            return;</span>
@@ -963,23 +963,23 @@ const VoiceNavigation: React.FC&lt;VoiceNavigationProps&gt; = <span class="cstat
     [onVoiceCommand, showToast],
   );
 &nbsp;
-  const stopAndTranscribe = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const stopAndTranscribe = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      if (Platform.OS === 'web') {</span>
         const blob = <span class="cstat-no" title="statement not covered" >await stopRecordingWeb();</span>
-<span class="cstat-no" title="statement not covered" >        if (blob) <span class="cstat-no" title="statement not covered" >await transcribe({ blob });</span></span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (blob) <span class="cstat-no" title="statement not covered" >await transcribe({ blob });</span></span>
       } else {
         const uri = <span class="cstat-no" title="statement not covered" >await stopRecordingNative();</span>
-<span class="cstat-no" title="statement not covered" >        if (uri) <span class="cstat-no" title="statement not covered" >await transcribe({ uri });</span></span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (uri) <span class="cstat-no" title="statement not covered" >await transcribe({ uri });</span></span>
       }
     } catch {
 <span class="cstat-no" title="statement not covered" >      setErrorMsg('Something went wrong processing audio');</span>
     }
   }, [stopRecordingNative, stopRecordingWeb, transcribe]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (Platform.OS === 'web') {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (Platform.OS === 'web') {</span>
 <span class="cstat-no" title="statement not covered" >        mediaStreamRef.current?.getTracks().forEach(<span class="fstat-no" title="function not covered" >(t</span>) =&gt; <span class="cstat-no" title="statement not covered" >t.stop())</span>;</span>
 <span class="cstat-no" title="statement not covered" >        try {</span>
 <span class="cstat-no" title="statement not covered" >          mediaRecorderRef.current?.stop?.();</span>
@@ -1112,7 +1112,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default VoiceNavigation;
+<span class="cstat-no" title="statement not covered" >export default VoiceNavigation;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1120,7 +1120,7 @@ export default VoiceNavigation;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">48.8% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>82/168</span>
+                <span class='fraction'>86/172</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.63% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>53/97</span>
+                <span class='fraction'>30/66</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50.99% </span>
+                <span class="strong">52.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>77/151</span>
+                <span class='fraction'>81/155</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -720,20 +720,14 @@
 <a name='L655'></a><a href='#L655'>655</a>
 <a name='L656'></a><a href='#L656'>656</a>
 <a name='L657'></a><a href='#L657'>657</a>
-<a name='L658'></a><a href='#L658'>658</a>
-<a name='L659'></a><a href='#L659'>659</a>
-<a name='L660'></a><a href='#L660'>660</a>
-<a name='L661'></a><a href='#L661'>661</a>
-<a name='L662'></a><a href='#L662'>662</a>
-<a name='L663'></a><a href='#L663'>663</a>
-<a name='L664'></a><a href='#L664'>664</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L658'></a><a href='#L658'>658</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1141,8 +1135,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1183,8 +1175,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1332,8 +1322,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1388,7 +1376,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * OpenTripPlanner 2 (OTP2) Integration
  * Provides comprehensive multimodal transit planning with real-time data
@@ -1681,7 +1669,7 @@ class OpenTripPlanner2 {
   /**
    * Get accessible transit options
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getAccessibleTrip(
+<span class="fstat-no" title="function not covered" >  async </span>getAccessibleTrip(
     fromPlace: string,
     toPlace: string,
     requireWheelchair = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
@@ -1706,7 +1694,7 @@ class OpenTripPlanner2 {
   /**
    * Get real-time trip updates
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getTripUpdates(fromPlace: string, toPlace: string, itineraryId?: string): Promise&lt;any&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>getTripUpdates(fromPlace: string, toPlace: string, itineraryId?: string): Promise&lt;any&gt; {
     const endTimer = <span class="cstat-no" title="statement not covered" >monitoring.startPerformanceTimer('otp2_trip_updates');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -1718,7 +1706,7 @@ class OpenTripPlanner2 {
         toPlace,
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (itineraryId) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (itineraryId) {</span>
 <span class="cstat-no" title="statement not covered" >        params.append('itinerary', itineraryId);</span>
       }
 &nbsp;
@@ -1729,7 +1717,7 @@ class OpenTripPlanner2 {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`OTP2 Trip Updates API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1751,7 +1739,7 @@ class OpenTripPlanner2 {
   /**
    * Get nearby stops
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getNearbyStops(
+<span class="fstat-no" title="function not covered" >  async </span>getNearbyStops(
     lat: number,
     lng: number,
     radius = <span class="branch-0 cbranch-no" title="branch not covered" >500,</span> // meters
@@ -1775,7 +1763,7 @@ class OpenTripPlanner2 {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`OTP2 Nearby Stops API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1802,9 +1790,7 @@ class OpenTripPlanner2 {
 &nbsp;
     try {
       const routerId = this.config.routerId || <span class="branch-1 cbranch-no" title="branch not covered" >'default';</span>
-      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(
-        stopId,
-      )}`;
+      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(stopId)}`;
 &nbsp;
       const response = await fetch(url, {
         headers: {
@@ -1845,9 +1831,7 @@ class OpenTripPlanner2 {
 &nbsp;
     try {
       const routerId = this.config.routerId || <span class="branch-1 cbranch-no" title="branch not covered" >'default';</span>
-      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(
-        stopId,
-      )}/stoptimes`;
+      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(stopId)}/stoptimes`;
 &nbsp;
       const params = new URLSearchParams({
         timeRange: timeRange.toString(),
@@ -1885,7 +1869,7 @@ class OpenTripPlanner2 {
   /**
    * Get service alerts
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getAlerts(routeId?: string, stopId?: string, agencyId?: string): Promise&lt;any&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>getAlerts(routeId?: string, stopId?: string, agencyId?: string): Promise&lt;any&gt; {
     const endTimer = <span class="cstat-no" title="statement not covered" >monitoring.startPerformanceTimer('otp2_alerts');</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -1893,9 +1877,9 @@ class OpenTripPlanner2 {
       const url = <span class="cstat-no" title="statement not covered" >`${this.config.baseUrl}/otp/routers/${routerId}/index/alerts`;</span>
 &nbsp;
       const params = <span class="cstat-no" title="statement not covered" >new URLSearchParams();</span>
-<span class="cstat-no" title="statement not covered" >      if (routeId) <span class="cstat-no" title="statement not covered" >params.append('route', routeId);</span></span>
-<span class="cstat-no" title="statement not covered" >      if (stopId) <span class="cstat-no" title="statement not covered" >params.append('stop', stopId);</span></span>
-<span class="cstat-no" title="statement not covered" >      if (agencyId) <span class="cstat-no" title="statement not covered" >params.append('agency', agencyId);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (routeId) <span class="cstat-no" title="statement not covered" >params.append('route', routeId);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (stopId) <span class="cstat-no" title="statement not covered" >params.append('stop', stopId);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (agencyId) <span class="cstat-no" title="statement not covered" >params.append('agency', agencyId);</span></span>
 &nbsp;
       const response = <span class="cstat-no" title="statement not covered" >await fetch(`${url}?${params}`, {</span>
         headers: {
@@ -1904,7 +1888,7 @@ class OpenTripPlanner2 {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`OTP2 Alerts API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1939,7 +1923,7 @@ class OpenTripPlanner2 {
     // Optional parameters
     <span class="missing-if-branch" title="if path not taken" >I</span>if (request.time) <span class="cstat-no" title="statement not covered" >params.append('time', request.time);</span>
     <span class="missing-if-branch" title="if path not taken" >I</span>if (request.date) <span class="cstat-no" title="statement not covered" >params.append('date', request.date);</span>
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (request.mode) params.append('mode', request.mode);
+    if (request.mode) params.append('mode', request.mode);
     <span class="missing-if-branch" title="if path not taken" >I</span>if (request.arriveBy !== undefined) <span class="cstat-no" title="statement not covered" >params.append('arriveBy', request.arriveBy.toString());</span>
     if (request.wheelchair !== undefined)
       params.append('wheelchair', request.wheelchair.toString());
@@ -1994,9 +1978,7 @@ class OpenTripPlanner2 {
    * Create cache key for plan request
    */
   private createCacheKey(request: OTP2PlanRequest): string {
-    const key = `otp2_${request.fromPlace}_${request.toPlace}_${request.mode || <span class="branch-1 cbranch-no" title="branch not covered" >'default'}</span>_${
-      request.time || 'now'
-    }_${request.date || 'today'}`;
+    const key = `otp2_${request.fromPlace}_${request.toPlace}_${request.mode || <span class="branch-1 cbranch-no" title="branch not covered" >'default'}</span>_${request.time || 'now'}_${request.date || 'today'}`;
     return key.replace(/[^a-zA-Z0-9_-]/g, '_');
   }
 &nbsp;
@@ -2026,14 +2008,14 @@ class OpenTripPlanner2 {
   /**
    * Update configuration
    */
-<span class="fstat-no" title="function not covered" >  up</span>dateConfig(config: Partial&lt;OTP2Config&gt;): void {
+<span class="fstat-no" title="function not covered" >  updateConfig(</span>config: Partial&lt;OTP2Config&gt;): void {
 <span class="cstat-no" title="statement not covered" >    this.config = { ...this.config, ...config };</span>
   }
 &nbsp;
   /**
    * Clear cache
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync clearCache(): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>clearCache(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await offlineStorage.clearCache();</span>
 <span class="cstat-no" title="statement not covered" >      this.cache.clear();</span>
@@ -2059,7 +2041,7 @@ export default otp2Service;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

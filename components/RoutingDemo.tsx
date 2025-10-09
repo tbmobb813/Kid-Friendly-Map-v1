@@ -147,9 +147,7 @@ export default function RoutingDemo() {
         const route = await orsService.getKidFriendlyRoute(coordinates, parseInt(childAge));
         Alert.alert(
           'ORS Kid-Friendly Route',
-          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(
-            route.routes[0].summary.distance,
-          )} m`,
+          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`,
         );
       } else {
         const route = await orsService.getRoute({
@@ -160,9 +158,7 @@ export default function RoutingDemo() {
         });
         Alert.alert(
           'ORS Walking Route',
-          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(
-            route.routes[0].summary.distance,
-          )} m`,
+          `Found route: ${Math.round(route.routes[0].summary.duration / 60)} min, ${Math.round(route.routes[0].summary.distance)} m`,
         );
       }
     } catch (error) {
@@ -190,9 +186,7 @@ export default function RoutingDemo() {
           const itinerary = plan.plan.itineraries[0];
           Alert.alert(
             'OTP2 Kid-Friendly Transit',
-            `Found route: ${Math.round(itinerary.duration / 60)} min, ${
-              itinerary.transfers
-            } transfers`,
+            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`,
           );
         } else {
           Alert.alert('OTP2', 'No transit routes found');
@@ -207,9 +201,7 @@ export default function RoutingDemo() {
           const itinerary = plan.plan.itineraries[0];
           Alert.alert(
             'OTP2 Transit Plan',
-            `Found route: ${Math.round(itinerary.duration / 60)} min, ${
-              itinerary.transfers
-            } transfers`,
+            `Found route: ${Math.round(itinerary.duration / 60)} min, ${itinerary.transfers} transfers`,
           );
         } else {
           Alert.alert('OTP2', 'No transit routes found');

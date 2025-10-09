@@ -2,9 +2,7 @@
 
 ## Overview
 
-This guide covers setting up OpenRouteService (ORS) and OpenTripPlanner 2 (OTP2) for the Kid-Friendly
-Map application. These services provide comprehensive routing capabilities including walking, cycling,
-driving, and transit directions with kid-friendly optimizations.
+This guide covers setting up OpenRouteService (ORS) and OpenTripPlanner 2 (OTP2) for the Kid-Friendly Map application. These services provide comprehensive routing capabilities including walking, cycling, driving, and transit directions with kid-friendly optimizations.
 
 ## Quick Start
 
@@ -32,21 +30,15 @@ OTP2_CUSTOM_ENDPOINT=https://your-custom-otp2-instance.com
 ### 2. Get OpenRouteService API Key
 
 1. Visit [OpenRouteService](https://openrouteservice.org/)
-
-1. Sign up for a free account
-
-1. Navigate to your dashboard
-
-1. Create a new API token
-
-1. Copy the token to your `.env` file
+2. Sign up for a free account
+3. Navigate to your dashboard
+4. Create a new API token
+5. Copy the token to your `.env` file
 
 **Free tier limits:**
 
 - 2,000 requests per day
-
 - 40 requests per minute
-
 - For production, consider upgrading to a paid plan
 
 ### 3. Set up OpenTripPlanner 2
@@ -56,9 +48,7 @@ OTP2_CUSTOM_ENDPOINT=https://your-custom-otp2-instance.com
 Some cities provide public OTP2 instances:
 
 - **New York**: `https://otp.mta.info/otp`
-
 - **Portland**: `https://maps.trimet.org/otp`
-
 - **Helsinki**: `https://reittiopas.hsl.fi/otp`
 
 #### Option B: Local Development Instance
@@ -88,35 +78,22 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 #### Supported Profiles
 
 - **foot-walking**: Regular walking routes
-
 - **foot-hiking**: Hiking and trail routes
-
 - **cycling-regular**: Standard cycling routes
-
 - **cycling-road**: Road cycling optimized
-
 - **cycling-safe**: Family-friendly cycling
-
 - **cycling-mountain**: Mountain biking
-
 - **cycling-electric**: E-bike routes
-
 - **driving-car**: Car routing
-
 - **wheelchair**: Wheelchair accessible routes
 
 #### ORS Features
 
 - **Isochrone Analysis**: Reachability maps
-
 - **Matrix Calculations**: Distance/time matrices
-
 - **POI Search**: Points of interest
-
 - **Elevation Profiles**: Route elevation data
-
 - **Kid-Friendly Routing**: Safety-optimized paths
-
 - **Accessibility Support**: Wheelchair routing
 
 ### OpenTripPlanner 2 (OTP2)
@@ -124,27 +101,18 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 #### Supported Modes
 
 - **WALK**: Walking
-
 - **BIKE**: Cycling
-
 - **TRANSIT**: Public transportation
-
 - **CAR**: Driving
-
 - **Combined**: Multimodal trips
 
 #### OTP2 Features
 
 - **Real-time Data**: Live transit updates
-
 - **Trip Planning**: Multi-modal journey planning
-
 - **Stop Information**: Transit stop details
-
 - **Service Alerts**: Disruption notifications
-
 - **Accessibility**: Wheelchair accessible routes
-
 - **Kid-Friendly Transit**: Family-optimized options
 
 ## Kid-Friendly Features
@@ -154,33 +122,23 @@ java -Xmx4G -jar otp-2.4.0-shaded.jar --load .
 #### Walking Routes
 
 - Avoid busy highways and main roads
-
 - Prefer routes through parks and quiet streets
-
 - Prioritize well-lit areas
-
 - Include crosswalks and traffic lights
-
 - Avoid construction zones
 
 #### Cycling Routes
 
 - Use protected bike lanes when available
-
 - Avoid high-traffic roads
-
 - Prefer dedicated cycling paths
-
 - Include bike-friendly intersections
 
 #### Transit Routes
 
 - Minimize transfers for younger children
-
 - Prefer direct routes
-
 - Include accessible stations
-
 - Provide clear step-by-step directions
 
 ### Age-Based Adjustments
@@ -218,7 +176,7 @@ import { orsService } from './utils/orsService';
 
 const route = await orsService.getRoute({
   coordinates: [
-    [-74.0060, 40.7128], // NYC City Hall
+    [-74.006, 40.7128], // NYC City Hall
     [-73.9934, 40.7505], // Times Square
   ],
   profile: 'foot-walking',
@@ -237,10 +195,10 @@ import { orsService } from './utils/orsService';
 
 const kidRoute = await orsService.getKidFriendlyRoute(
   [
-    [-74.0060, 40.7128],
+    [-74.006, 40.7128],
     [-73.9934, 40.7505],
   ],
-  8 // Child age
+  8, // Child age
 );
 
 // Route optimized for 8-year-old safety
@@ -267,7 +225,7 @@ console.log(`Transfers: ${trip.plan.itineraries[0].transfers}`);
 import { unifiedRoutingService } from './utils/unifiedRoutingService';
 
 const routes = await unifiedRoutingService.getRoutes({
-  from: { lat: 40.7128, lng: -74.0060, name: 'Start' },
+  from: { lat: 40.7128, lng: -74.006, name: 'Start' },
   to: { lat: 40.7505, lng: -73.9934, name: 'End' },
   preferences: {
     modes: ['WALK', 'TRANSIT'],
@@ -278,7 +236,7 @@ const routes = await unifiedRoutingService.getRoutes({
 });
 
 // Returns ranked routes from all services
-routes.forEach(route => {
+routes.forEach((route) => {
   console.log(`${route.type}: ${route.summary.duration}min, Safety: ${route.safetyScore}/100`);
 });
 ```
@@ -432,9 +390,7 @@ console.log('OTP2 Status:', otp2Health);
 **Rate Limits**:
 
 - Free: 2,000 requests/day, 40/minute
-
 - Standard: 100,000 requests/day, 300/minute
-
 - Premium: Custom limits
 
 ### OpenTripPlanner 2 API
@@ -450,39 +406,29 @@ console.log('OTP2 Status:', otp2Health);
 ### Getting Help
 
 1. **Documentation**: Check service-specific docs
-
-1. **Community**: OpenRouteService and OTP2 forums
-
-1. **Issues**: Report bugs in respective GitHub repos
-
-1. **API Support**: Contact service providers for API issues
+2. **Community**: OpenRouteService and OTP2 forums
+3. **Issues**: Report bugs in respective GitHub repos
+4. **API Support**: Contact service providers for API issues
 
 ### Contributing
 
 1. **Bug Reports**: Use GitHub issues
-
-1. **Feature Requests**: Propose enhancements
-
-1. **Code Contributions**: Submit pull requests
-
-1. **Documentation**: Help improve guides
+2. **Feature Requests**: Propose enhancements
+3. **Code Contributions**: Submit pull requests
+4. **Documentation**: Help improve guides
 
 ## License and Attribution
 
 ### OpenRouteService
 
 - **License**: MIT
-
 - **Attribution**: Required for public apps
-
 - **Data**: OpenStreetMap contributors
 
 ### OpenTripPlanner 2
 
 - **License**: LGPL
-
 - **Attribution**: Recommended
-
 - **Data**: GTFS providers and OpenStreetMap
 
 ### Usage in App

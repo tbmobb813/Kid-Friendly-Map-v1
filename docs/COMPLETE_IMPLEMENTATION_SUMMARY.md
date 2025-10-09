@@ -216,7 +216,7 @@ const recommendations = aiRouteEngine.getPersonalizedRecommendations();
 
 ### Core Utilities (3 files)
 
-``` text
+```text
 utils/
 ├── storage.ts              (375 lines) - MMKV storage manager
 ├── voice.ts                (430 lines) - Voice/TTS manager
@@ -225,7 +225,7 @@ utils/
 
 ### UI Components (5 files)
 
-``` text
+```text
 components/
 ├── VoiceSettings.tsx              (230 lines) - Voice configuration UI
 ├── KidFriendlyMap.tsx             (290 lines) - Map with safe zones
@@ -236,7 +236,7 @@ components/
 
 ### Documentation (5 files)
 
-``` text
+```text
 docs/
 ├── ENHANCED_FEATURES_GUIDE.md     (450 lines) - Complete usage guide
 ├── QUICK_REFERENCE.md             (80 lines) - Code snippets
@@ -247,14 +247,14 @@ docs/
 
 ### Summary Files (2 files)
 
-``` text
+```text
 ├── NEW_FEATURES.md                (120 lines) - Feature overview
 └── IMPLEMENTATION_COMPLETE.md     (200 lines) - Initial completion summary
 ```
 
 ### Configuration
 
-``` text
+```text
 ├── app.json                       (Updated) - Added expo-speech plugin
 └── package.json                   (Updated) - New dependencies
 ```
@@ -323,7 +323,7 @@ docs/
 
 ## 🏗️ Architecture Overview
 
-``` text
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    User Interface Layer                      │
 ├─────────────────────────────────────────────────────────────┤
@@ -477,7 +477,7 @@ Final Score: 0-100 (displayed to user)
 
 ### All Features Work Together
 
-``` text
+```text
 User Journey Flow:
 1. Open app → MMKV loads saved preferences
 2. Enter destination → Voice announces "Searching for routes"
@@ -490,7 +490,7 @@ User Journey Flow:
 
 ### Data Flow
 
-``` text
+```text
 User Interaction
     ↓
 SmartNavigationScreen
@@ -523,7 +523,7 @@ KidFriendlyMap displays
 
 #### 1. Storage Demo (30 seconds)
 
-``` text
+```text
 "Let's look at storage. We're using MMKV, which is 10x faster than AsyncStorage.
 Watch me save and retrieve data instantly - it's synchronous!
 I can also set cache with automatic expiration. Perfect for transit data!"
@@ -531,7 +531,7 @@ I can also set cache with automatic expiration. Perfect for transit data!"
 
 #### 2. Voice Demo (30 seconds)
 
-``` text
+```text
 "Now for voice features. Listen..."
 [Tap navigation button] → "Turn left at the next corner"
 [Tap safety button] → "Remember to look both ways before crossing!"
@@ -540,7 +540,7 @@ I can also set cache with automatic expiration. Perfect for transit data!"
 
 #### 3. Maps Demo (30 seconds)
 
-``` text
+```text
 "Here's the native map with safe zones in green. Watch as I track my location
 in real-time. Routes are shown as blue lines. The map automatically
 announces when you enter safe zones!"
@@ -548,7 +548,7 @@ announces when you enter safe zones!"
 
 #### 4. AI Routes Demo (60 seconds)
 
-``` text
+```text
 "The best part - AI route suggestions!
 Enter a destination... and boom! 4 smart routes:
 

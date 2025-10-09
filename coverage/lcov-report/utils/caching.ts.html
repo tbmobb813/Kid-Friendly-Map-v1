@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/201</span>
+                <span class='fraction'>0/208</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/68</span>
+                <span class='fraction'>0/50</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/196</span>
+                <span class='fraction'>0/203</span>
             </div>
         
             
@@ -595,11 +595,14 @@
 <a name='L530'></a><a href='#L530'>530</a>
 <a name='L531'></a><a href='#L531'>531</a>
 <a name='L532'></a><a href='#L532'>532</a>
-<a name='L533'></a><a href='#L533'>533</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -671,6 +674,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -678,6 +682,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1107,13 +1113,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1124,14 +1128,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import AsyncStorage from '@react-native-async-storage/async-storage';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import AsyncStorage from '@react-native-async-storage/async-storage';</span>
 import { Platform } from 'react-native';
-import { SafeAsyncStorage } from './errorHandling';
-import { log } from './logger';
-import { Config } from './config';
+<span class="cstat-no" title="statement not covered" >import { SafeAsyncStorage } from './errorHandling';</span>
+<span class="cstat-no" title="statement not covered" >import { log } from './logger';</span>
+<span class="cstat-no" title="statement not covered" >import { Config } from './config';</span>
 &nbsp;
 export type CacheEntry&lt;T&gt; = {
   data: T;
@@ -1164,27 +1170,27 @@ export type CacheStats = {
 &nbsp;
 class EnhancedCacheManager {
   private static instance: EnhancedCacheManager;
-  private cachePrefix = <span class="cstat-no" title="statement not covered" >'enhanced_cache_';</span>
-  private metadataKey = <span class="cstat-no" title="statement not covered" >'cache_metadata';</span>
-  private stats = <span class="cstat-no" title="statement not covered" >{</span>
+  private <span class="cstat-no" title="statement not covered" >cachePrefix = 'enhanced_cache_';</span>
+  private <span class="cstat-no" title="statement not covered" >metadataKey = 'cache_metadata';</span>
+  private <span class="cstat-no" title="statement not covered" >stats = {</span>
     hits: 0,
     misses: 0,
     sets: 0,
     deletes: 0,
   };
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate constructor() {
+<span class="fstat-no" title="function not covered" >  private constructor() {</span>
 <span class="cstat-no" title="statement not covered" >    this.initializeCache();</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  st</span>atic getInstance(): EnhancedCacheManager {
-<span class="cstat-no" title="statement not covered" >    if (!EnhancedCacheManager.instance) {</span>
+<span class="fstat-no" title="function not covered" >  static </span>getInstance(): EnhancedCacheManager {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!EnhancedCacheManager.instance) {</span>
 <span class="cstat-no" title="statement not covered" >      EnhancedCacheManager.instance = new EnhancedCacheManager();</span>
     }
 <span class="cstat-no" title="statement not covered" >    return EnhancedCacheManager.instance;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async initializeCache() {
+  private <span class="fstat-no" title="function not covered" >async </span>initializeCache() {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      log.debug('Initializing enhanced cache manager');</span>
 &nbsp;
@@ -1200,27 +1206,30 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate setupPeriodicCleanup() {
+  private <span class="fstat-no" title="function not covered" >setupPeriodicCleanup(</span>) {
     // Clean up every 30 minutes
-<span class="cstat-no" title="statement not covered" >    setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      this.cleanupExpiredEntries().catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        log.warn('Periodic cache cleanup failed', error as Error);</span>
-      });
-    }, 30 * 60 * 1000);
+<span class="cstat-no" title="statement not covered" >    setInterval(</span>
+<span class="fstat-no" title="function not covered" >      () =</span>&gt; {
+<span class="cstat-no" title="statement not covered" >        this.cleanupExpiredEntries().catch(<span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          log.warn('Periodic cache cleanup failed', error as Error);</span>
+        });
+      },
+      30 * 60 * 1000,
+    );
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate getCacheKey(key: string): string {
+  private <span class="fstat-no" title="function not covered" >getCacheKey(</span>key: string): string {
 <span class="cstat-no" title="statement not covered" >    return `${this.cachePrefix}${key}`;</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async compressData(data: any): Promise&lt;string&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>compressData(data: any): Promise&lt;string&gt; {
     // Simple compression using JSON.stringify with space removal
     // In a real app, you might use a proper compression library
     const jsonString = <span class="cstat-no" title="statement not covered" >JSON.stringify(data);</span>
 <span class="cstat-no" title="statement not covered" >    return jsonString.replace(/\\s+/g, ' ').trim();</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async decompressData(compressedData: string): Promise&lt;any&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>decompressData(compressedData: string): Promise&lt;any&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      return JSON.parse(compressedData);</span>
     } catch (error) {
@@ -1229,7 +1238,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync set&lt;T&gt;(key: string, data: T, options: CacheOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;boolean&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>set&lt;T&gt;(key: string, data: T, options: CacheOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span>: Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const {
         ttl = <span class="branch-0 cbranch-no" title="branch not covered" >Config.CACHE.DEFAULT_TTL,</span>
@@ -1255,9 +1264,9 @@ class EnhancedCacheManager {
       let dataToStore = <span class="cstat-no" title="statement not covered" >cacheEntry;</span>
 &nbsp;
       // Compress if requested and data is large
-<span class="cstat-no" title="statement not covered" >      if (compress) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (compress) {</span>
         const jsonSize = <span class="cstat-no" title="statement not covered" >JSON.stringify(cacheEntry).length;</span>
-<span class="cstat-no" title="statement not covered" >        if (jsonSize &gt; 1024) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (jsonSize &gt; 1024) {</span>
           // Compress if larger than 1KB
           const compressedData = <span class="cstat-no" title="statement not covered" >await this.compressData(cacheEntry.data);</span>
 <span class="cstat-no" title="statement not covered" >          dataToStore = {</span>
@@ -1291,7 +1300,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync get&lt;T&gt;(key: string, defaultValue?: T): Promise&lt;T | null&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>get&lt;T&gt;(key: string, defaultValue?: T): Promise&lt;T | null&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const cacheEntry = <span class="cstat-no" title="statement not covered" >await SafeAsyncStorage.getItem&lt;CacheEntry&lt;T&gt;&gt;(</span>
         this.getCacheKey(key),
@@ -1299,14 +1308,14 @@ class EnhancedCacheManager {
         { strategy: 'fallback', fallbackValue: undefined },
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!cacheEntry) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!cacheEntry) {</span>
 <span class="cstat-no" title="statement not covered" >        this.stats.misses++;</span>
 <span class="cstat-no" title="statement not covered" >        log.debug(`Cache miss: ${key}`);</span>
 <span class="cstat-no" title="statement not covered" >        return defaultValue || null;</span>
       }
 &nbsp;
       // Check if expired
-<span class="cstat-no" title="statement not covered" >      if (cacheEntry.expiresAt &lt; Date.now()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.expiresAt &lt; Date.now()) {</span>
 <span class="cstat-no" title="statement not covered" >        log.debug(`Cache expired: ${key}`);</span>
 <span class="cstat-no" title="statement not covered" >        await this.delete(key);</span>
 <span class="cstat-no" title="statement not covered" >        this.stats.misses++;</span>
@@ -1335,7 +1344,7 @@ class EnhancedCacheManager {
       let data = <span class="cstat-no" title="statement not covered" >cacheEntry.data;</span>
 &nbsp;
       // Decompress if needed
-<span class="cstat-no" title="statement not covered" >      if (cacheEntry.metadata &amp;&amp; 'compressed' in cacheEntry.metadata) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.metadata &amp;&amp; 'compressed' in cacheEntry.metadata) {</span>
 <span class="cstat-no" title="statement not covered" >        data = (await this.decompressData(cacheEntry.data as string)) as T;</span>
       }
 &nbsp;
@@ -1353,7 +1362,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync delete(key: string): Promise&lt;boolean&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>delete(key: string): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await SafeAsyncStorage.removeItem(this.getCacheKey(key));</span>
 <span class="cstat-no" title="statement not covered" >      await this.removeCacheMetadata(key);</span>
@@ -1368,7 +1377,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync has(key: string): Promise&lt;boolean&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>has(key: string): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const cacheEntry = <span class="cstat-no" title="statement not covered" >await SafeAsyncStorage.getItem&lt;CacheEntry&lt;any&gt;&gt;(</span>
         this.getCacheKey(key),
@@ -1376,10 +1385,10 @@ class EnhancedCacheManager {
         { strategy: 'fallback', fallbackValue: undefined },
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!cacheEntry) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!cacheEntry) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
       // Check if expired
-<span class="cstat-no" title="statement not covered" >      if (cacheEntry.expiresAt &lt; Date.now()) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.expiresAt &lt; Date.now()) {</span>
 <span class="cstat-no" title="statement not covered" >        await this.delete(key);</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
@@ -1391,7 +1400,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync clear(): Promise&lt;boolean&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>clear(): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      log.info('Clearing all cache entries');</span>
 &nbsp;
@@ -1412,7 +1421,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync getStats(): Promise&lt;CacheStats&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>getStats(): Promise&lt;CacheStats&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const keys = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getAllKeys();</span>
       const cacheKeys = <span class="cstat-no" title="statement not covered" >keys.filter(<span class="fstat-no" title="function not covered" >(k</span>ey) =&gt; <span class="cstat-no" title="statement not covered" >key.startsWith(this.cachePrefix))</span>;</span>
@@ -1424,11 +1433,11 @@ class EnhancedCacheManager {
 <span class="cstat-no" title="statement not covered" >      for (const key of cacheKeys) {</span>
 <span class="cstat-no" title="statement not covered" >        try {</span>
           const entry = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem(key);</span>
-<span class="cstat-no" title="statement not covered" >          if (entry) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (entry) {</span>
 <span class="cstat-no" title="statement not covered" >            totalSize += entry.length;</span>
 &nbsp;
             const cacheEntry = <span class="cstat-no" title="statement not covered" >JSON.parse(entry);</span>
-<span class="cstat-no" title="statement not covered" >            if (cacheEntry.timestamp) {</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.timestamp) {</span>
 <span class="cstat-no" title="statement not covered" >              oldestEntry = Math.min(oldestEntry, cacheEntry.timestamp);</span>
 <span class="cstat-no" title="statement not covered" >              newestEntry = Math.max(newestEntry, cacheEntry.timestamp);</span>
             }
@@ -1460,7 +1469,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async cleanupExpiredEntries(): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>cleanupExpiredEntries(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      log.debug('Starting cache cleanup');</span>
 &nbsp;
@@ -1472,9 +1481,9 @@ class EnhancedCacheManager {
 <span class="cstat-no" title="statement not covered" >      for (const key of cacheKeys) {</span>
 <span class="cstat-no" title="statement not covered" >        try {</span>
           const entry = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem(key);</span>
-<span class="cstat-no" title="statement not covered" >          if (entry) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (entry) {</span>
             const cacheEntry = <span class="cstat-no" title="statement not covered" >JSON.parse(entry);</span>
-<span class="cstat-no" title="statement not covered" >            if (cacheEntry.expiresAt &amp;&amp; cacheEntry.expiresAt &lt; Date.now()) {</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.expiresAt &amp;&amp; cacheEntry.expiresAt &lt; Date.now()) {</span>
 <span class="cstat-no" title="statement not covered" >              await AsyncStorage.removeItem(key);</span>
 <span class="cstat-no" title="statement not covered" >              cleanedCount++;</span>
             }
@@ -1486,7 +1495,7 @@ class EnhancedCacheManager {
         }
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (cleanedCount &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (cleanedCount &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >        log.info(`Cleaned up ${cleanedCount} expired cache entries`);</span>
       }
     } catch (error) {
@@ -1494,7 +1503,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async updateCacheMetadata(key: string, metadata: any): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>updateCacheMetadata(key: string, metadata: any): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const existingMetadata = <span class="cstat-no" title="statement not covered" >await SafeAsyncStorage.getItem&lt;Record&lt;string, any&gt;&gt;(</span>
         this.metadataKey,
@@ -1516,7 +1525,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async removeCacheMetadata(key: string): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>removeCacheMetadata(key: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const existingMetadata = <span class="cstat-no" title="statement not covered" >await SafeAsyncStorage.getItem&lt;Record&lt;string, any&gt;&gt;(</span>
         this.metadataKey,
@@ -1524,7 +1533,7 @@ class EnhancedCacheManager {
         { strategy: 'fallback', fallbackValue: {} },
       );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (existingMetadata &amp;&amp; existingMetadata[key]) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (existingMetadata &amp;&amp; existingMetadata[key]) {</span>
 <span class="cstat-no" title="statement not covered" >        delete existingMetadata[key];</span>
 <span class="cstat-no" title="statement not covered" >        await SafeAsyncStorage.setItem(this.metadataKey, existingMetadata);</span>
       }
@@ -1534,7 +1543,7 @@ class EnhancedCacheManager {
   }
 &nbsp;
   // Advanced cache operations
-<span class="fstat-no" title="function not covered" >  as</span>ync invalidateByPattern(pattern: RegExp): Promise&lt;number&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>invalidateByPattern(pattern: RegExp): Promise&lt;number&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const keys = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getAllKeys();</span>
       const cacheKeys = <span class="cstat-no" title="statement not covered" >keys.filter(</span>
@@ -1552,7 +1561,7 @@ class EnhancedCacheManager {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync invalidateByVersion(version: string): Promise&lt;number&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>invalidateByVersion(version: string): Promise&lt;number&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const keys = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getAllKeys();</span>
       const cacheKeys = <span class="cstat-no" title="statement not covered" >keys.filter(<span class="fstat-no" title="function not covered" >(k</span>ey) =&gt; <span class="cstat-no" title="statement not covered" >key.startsWith(this.cachePrefix))</span>;</span>
@@ -1562,9 +1571,9 @@ class EnhancedCacheManager {
 <span class="cstat-no" title="statement not covered" >      for (const key of cacheKeys) {</span>
 <span class="cstat-no" title="statement not covered" >        try {</span>
           const entry = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem(key);</span>
-<span class="cstat-no" title="statement not covered" >          if (entry) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (entry) {</span>
             const cacheEntry = <span class="cstat-no" title="statement not covered" >JSON.parse(entry);</span>
-<span class="cstat-no" title="statement not covered" >            if (cacheEntry.version !== version) {</span>
+<span class="cstat-no" title="statement not covered" >            <span class="missing-if-branch" title="if path not taken" >I</span>if (cacheEntry.version !== version) {</span>
 <span class="cstat-no" title="statement not covered" >              await AsyncStorage.removeItem(key);</span>
 <span class="cstat-no" title="statement not covered" >              invalidatedCount++;</span>
             }
@@ -1585,14 +1594,14 @@ class EnhancedCacheManager {
   }
 &nbsp;
   // Network-aware caching
-<span class="fstat-no" title="function not covered" >  as</span>ync getOrFetch&lt;T&gt;(
+<span class="fstat-no" title="function not covered" >  async </span>getOrFetch&lt;T&gt;(
     key: string,
     fetchFunction: () =&gt; Promise&lt;T&gt;,
     options: CacheOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{},</span>
   ): Promise&lt;T | null&gt; {
     // Try cache first
     const cached = <span class="cstat-no" title="statement not covered" >await this.get&lt;T&gt;(key);</span>
-<span class="cstat-no" title="statement not covered" >    if (cached !== null) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (cached !== null) {</span>
 <span class="cstat-no" title="statement not covered" >      return cached;</span>
     }
 &nbsp;
@@ -1612,16 +1621,16 @@ class EnhancedCacheManager {
   }
 &nbsp;
   // Preload cache entries
-<span class="fstat-no" title="function not covered" >  as</span>ync preload(
+<span class="fstat-no" title="function not covered" >  async </span>preload(
     entries: Array&lt;{ key: string; fetchFunction: () =&gt; Promise&lt;any&gt;; options?: CacheOptions }&gt;,
   ): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    log.info(`Preloading ${entries.length} cache entries`);</span>
 &nbsp;
-    const promises = <span class="cstat-no" title="statement not covered" >entries.map(<span class="fstat-no" title="function not covered" >as</span>ync ({ key, fetchFunction, options }) =&gt; {</span>
+    const promises = <span class="cstat-no" title="statement not covered" >entries.map(<span class="fstat-no" title="function not covered" >async </span>({ key, fetchFunction, options }) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         // Only preload if not already cached
         const exists = <span class="cstat-no" title="statement not covered" >await this.has(key);</span>
-<span class="cstat-no" title="statement not covered" >        if (!exists) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!exists) {</span>
           const data = <span class="cstat-no" title="statement not covered" >await fetchFunction();</span>
 <span class="cstat-no" title="statement not covered" >          await this.set(key, data, options);</span>
         }
@@ -1636,14 +1645,14 @@ class EnhancedCacheManager {
 }
 &nbsp;
 // Export singleton instance
-export const cacheManager = <span class="cstat-no" title="statement not covered" >EnhancedCacheManager.getInstance();</span>
+export const <span class="cstat-no" title="statement not covered" >cacheManager = EnhancedCacheManager.getInstance();</span>
 &nbsp;
 // Utility functions for common cache patterns
-export function <span class="fstat-no" title="function not covered" >createCacheKey(</span>...parts: (string | number)[]): string {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >c</span>reateCacheKey(</span>...parts: (string | number)[]): string {
 <span class="cstat-no" title="statement not covered" >  return parts.join(':');</span>
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >getCacheTTL(</span>type: 'short' | 'medium' | 'long' | 'persistent'): number {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >g</span>etCacheTTL(</span>type: 'short' | 'medium' | 'long' | 'persistent'): number {
 <span class="cstat-no" title="statement not covered" >  switch (type) {</span>
     case 'short':
 <span class="cstat-no" title="statement not covered" >      return 2 * 60 * 1000; </span>// 2 minutes
@@ -1658,7 +1667,7 @@ export function <span class="fstat-no" title="function not covered" >getCacheTTL
   }
 }
 &nbsp;
-export default cacheManager;
+<span class="cstat-no" title="statement not covered" >export default cacheManager;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1666,7 +1675,7 @@ export default cacheManager;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

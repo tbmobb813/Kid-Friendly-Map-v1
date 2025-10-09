@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/58</span>
+                <span class='fraction'>0/64</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/51</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/50</span>
+                <span class='fraction'>0/56</span>
             </div>
         
             
@@ -1145,7 +1145,17 @@
 <a name='L1080'></a><a href='#L1080'>1080</a>
 <a name='L1081'></a><a href='#L1081'>1081</a>
 <a name='L1082'></a><a href='#L1082'>1082</a>
-<a name='L1083'></a><a href='#L1083'>1083</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1083'></a><a href='#L1083'>1083</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1159,18 +1169,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2226,9 +2226,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import {
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
   StyleSheet,
   Text,
   View,
@@ -2237,7 +2237,7 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import {
+<span class="cstat-no" title="statement not covered" >import {</span>
   MapPin,
   Navigation,
   Clock,
@@ -2251,8 +2251,8 @@ import {
   Heart,
   Play,
 } from 'lucide-react-native';
-import Colors from '@/constants/colors';
-import { subwayLineColors } from '@/config/transit-data/mta-subway-lines';
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { subwayLineColors } from '@/config/transit-data/mta-subway-lines';</span>
 &nbsp;
 type KidTripPlannerProps = {
   onTripReady?: (trip: TripPlan) =&gt; void;
@@ -2315,8 +2315,8 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
   });
 &nbsp;
   // Mock trip planning function with comprehensive kid-friendly routes
-  const planTrip = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!fromLocation.trim() || !toLocation.trim()) {</span>
+  const planTrip = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!fromLocation.trim() || !toLocation.trim()) {</span>
 <span class="cstat-no" title="statement not covered" >      Alert.alert('Missing Information', 'Please enter both starting point and destination!');</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
@@ -2522,14 +2522,14 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
 &nbsp;
   const selectTrip = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>rip: TripPlan) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setSelectedTrip(trip);</span>
-<span class="cstat-no" title="statement not covered" >    if (onTripReady) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (onTripReady) {</span>
 <span class="cstat-no" title="statement not covered" >      onTripReady(trip);</span>
     }
   };
 &nbsp;
   const renderStars = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>ating: number) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return Array.from({ length: 5 }, <span class="fstat-no" title="function not covered" >(_</span>, i) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >      &lt;Star key={i} size={16} color="#FFD700" fill={i &lt; rating ? '#FFD700' : 'none'} /&gt;</span>
+<span class="cstat-no" title="statement not covered" >      &lt;Star key={i} s</span>ize={16} color="#FFD700" fill={i &lt; rating ? '#FFD700' : 'none'} /&gt;
     ));
   };
 &nbsp;
@@ -2553,7 +2553,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
   };
 &nbsp;
   const renderSegment = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>egment: TripSegment, index: number) =&gt; {</span>
-    const getSegmentIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+    const getSegmentIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      switch (segment.type) {</span>
         case 'walk':
 <span class="cstat-no" title="statement not covered" >          return &lt;Navigation size={20} color={Colors.primary} /&gt;;</span>
@@ -2582,8 +2582,8 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
               {segment.type === 'walk'
                 ? 'Walk'
                 : segment.type === 'subway'
-                ? `${segment.line} Train`
-                : `${segment.line} Bus`}
+                  ? `${segment.line} Train`
+                  : `${segment.line} Bus`}
             &lt;/Text&gt;
             &lt;Text style={styles.segmentRoute}&gt;
               {segment.from} → {segment.to}
@@ -2611,7 +2611,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
           &lt;View style={styles.funThingsContainer}&gt;
             &lt;Text style={styles.funThingsTitle}&gt;👀 Look for:&lt;/Text&gt;
             {segment.funThingsToSee.map(<span class="fstat-no" title="function not covered" >(t</span>hing, idx) =&gt; (
-<span class="cstat-no" title="statement not covered" >              &lt;Text key={idx} style={styles.funThing}&gt;</span>
+<span class="cstat-no" title="statement not covered" >              &lt;Text key={idx} s</span>tyle={styles.funThing}&gt;
                 • {thing}
               &lt;/Text&gt;
             ))}
@@ -2654,7 +2654,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
   };
 &nbsp;
   const renderTripOption = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(t</span>rip: TripPlan) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;TouchableOpacity key={trip.id} style={styles.tripCard} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >selectTrip(trip)}</span>&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;TouchableOpacity key={trip.id} s</span>tyle={styles.tripCard} onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >selectTrip(trip)}</span>&gt;
       &lt;View style={styles.tripHeader}&gt;
         &lt;View style={styles.tripInfo}&gt;
           &lt;Text style={styles.tripDuration}&gt;{trip.totalDuration} min total&lt;/Text&gt;
@@ -2674,7 +2674,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
         &lt;/Text&gt;
       &lt;/View&gt;
 &nbsp;
-      &lt;TouchableOpacity style={styles.selectTripButton} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >selectTrip(trip)}</span>&gt;
+      &lt;TouchableOpacity style={styles.selectTripButton} onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >selectTrip(trip)}</span>&gt;
         &lt;Play size={16} color="#FFFFFF" /&gt;
         &lt;Text style={styles.selectTripText}&gt;Choose This Route&lt;/Text&gt;
       &lt;/TouchableOpacity&gt;
@@ -2723,7 +2723,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                 &lt;View style={styles.counterContainer}&gt;
                   &lt;TouchableOpacity
                     style={styles.counterButton}
-                    onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+                    onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                      setGroupSize(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, adults: Math.max(1, prev.adults - 1) })</span>)</span>
                     }
                   &gt;
@@ -2732,7 +2732,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                   &lt;Text style={styles.counterValue}&gt;{groupSize.adults}&lt;/Text&gt;
                   &lt;TouchableOpacity
                     style={styles.counterButton}
-                    onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setGroupSize(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, adults: prev.adults + 1 })</span>)}</span>
+                    onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setGroupSize(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, adults: prev.adults + 1 })</span>)}</span>
                   &gt;
                     &lt;Text style={styles.counterButtonText}&gt;+&lt;/Text&gt;
                   &lt;/TouchableOpacity&gt;
@@ -2744,7 +2744,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                 &lt;View style={styles.counterContainer}&gt;
                   &lt;TouchableOpacity
                     style={styles.counterButton}
-                    onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+                    onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                      setGroupSize(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
                         ...prev,
                         children: Math.max(0, prev.children - 1),
@@ -2756,7 +2756,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                   &lt;Text style={styles.counterValue}&gt;{groupSize.children}&lt;/Text&gt;
                   &lt;TouchableOpacity
                     style={styles.counterButton}
-                    onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+                    onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                      setGroupSize(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, children: prev.children + 1 })</span>)</span>
                     }
                   &gt;
@@ -2775,7 +2775,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                 styles.accessibilityOption,
                 accessibilityNeeds.wheelchair &amp;&amp; styles.accessibilityOptionActive,
               ]}
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                setAccessibilityNeeds(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, wheelchair: !prev.wheelchair })</span>)</span>
               }
             &gt;
@@ -2798,7 +2798,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
                 styles.accessibilityOption,
                 accessibilityNeeds.stroller &amp;&amp; styles.accessibilityOptionActive,
               ]}
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                setAccessibilityNeeds(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, stroller: !prev.stroller })</span>)</span>
               }
             &gt;
@@ -2859,7 +2859,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
             &lt;View style={styles.remindersContainer}&gt;
               &lt;Text style={styles.remindersTitle}&gt;📝 Things to Remember&lt;/Text&gt;
               {selectedTrip.thingsToRemember.map(<span class="fstat-no" title="function not covered" >(r</span>eminder, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;View key={index} style={styles.reminderItem}&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;View key={index} s</span>tyle={styles.reminderItem}&gt;
                   &lt;CheckCircle size={16} color="#4CAF50" /&gt;
                   &lt;Text style={styles.reminderText}&gt;{reminder}&lt;/Text&gt;
                 &lt;/View&gt;
@@ -2870,7 +2870,7 @@ const KidTripPlanner: React.FC&lt;KidTripPlannerProps&gt; = <span class="cstat-n
             &lt;View style={styles.funActivitiesContainer}&gt;
               &lt;Text style={styles.funActivitiesTitle}&gt;🎉 Fun Things to Do Along the Way&lt;/Text&gt;
               {selectedTrip.funAlongTheWay.map(<span class="fstat-no" title="function not covered" >(a</span>ctivity, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;Text key={index} style={styles.funActivity}&gt;</span>
+<span class="cstat-no" title="statement not covered" >                &lt;Text key={index} s</span>tyle={styles.funActivity}&gt;
                   • {activity}
                 &lt;/Text&gt;
               ))}
@@ -3308,7 +3308,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default KidTripPlanner;
+<span class="cstat-no" title="statement not covered" >export default KidTripPlanner;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -3316,7 +3316,7 @@ export default KidTripPlanner;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

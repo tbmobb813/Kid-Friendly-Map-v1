@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.58% </span>
+                <span class="strong">54.16% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>61/116</span>
+                <span class='fraction'>65/120</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.07% </span>
+                <span class="strong">76.08% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>40/54</span>
+                <span class='fraction'>35/46</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.75% </span>
+                <span class="strong">53.38% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>59/114</span>
+                <span class='fraction'>63/118</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -635,9 +635,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1196,7 +1196,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * OpenRouteService (ORS) Integration
  * Provides powerful routing capabilities with multiple profiles and optimization
@@ -1394,13 +1394,13 @@ class OpenRouteService {
   /**
    * Get multiple route options
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getRouteAlternatives(
+<span class="fstat-no" title="function not covered" >  async </span>getRouteAlternatives(
     coordinates: [number, number][],
     profiles: ORSProfile[] = <span class="branch-0 cbranch-no" title="branch not covered" >['foot-walking', 'cycling-regular'],</span>
     options?: Partial&lt;ORSRouteRequest&gt;,
   ): Promise&lt;{ profile: ORSProfile; route: ORSRouteResponse }[]&gt; {
     const results = <span class="cstat-no" title="statement not covered" >await Promise.allSettled(</span>
-      profiles.map(<span class="fstat-no" title="function not covered" >as</span>ync (profile) =&gt; {
+      profiles.map(<span class="fstat-no" title="function not covered" >async </span>(profile) =&gt; {
         const request: ORSRouteRequest = <span class="cstat-no" title="statement not covered" >{</span>
           coordinates,
           profile,
@@ -1492,7 +1492,7 @@ class OpenRouteService {
   /**
    * Get isochrone (reachability area)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getIsochrone(
+<span class="fstat-no" title="function not covered" >  async </span>getIsochrone(
     location: [number, number],
     range: number[], // time in seconds or distance in meters
     profile: ORSProfile = <span class="branch-0 cbranch-no" title="branch not covered" >'foot-walking',</span>
@@ -1521,7 +1521,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS Isochrone API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1543,7 +1543,7 @@ class OpenRouteService {
   /**
    * Get Points of Interest near a location
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getPOIs(
+<span class="fstat-no" title="function not covered" >  async </span>getPOIs(
     location: [number, number],
     categories: string[],
     radius = <span class="branch-0 cbranch-no" title="branch not covered" >1000,</span> // meters
@@ -1569,7 +1569,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS POI API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1591,7 +1591,7 @@ class OpenRouteService {
   /**
    * Calculate route matrix (multiple origins to multiple destinations)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getMatrix(
+<span class="fstat-no" title="function not covered" >  async </span>getMatrix(
     locations: [number, number][],
     profile: ORSProfile = <span class="branch-0 cbranch-no" title="branch not covered" >'foot-walking',</span>
     metrics: ('distance' | 'duration')[] = <span class="branch-0 cbranch-no" title="branch not covered" >['duration', 'distance'],</span>
@@ -1618,7 +1618,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS Matrix API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1738,14 +1738,14 @@ class OpenRouteService {
   /**
    * Update configuration
    */
-<span class="fstat-no" title="function not covered" >  up</span>dateConfig(config: Partial&lt;ORSConfig&gt;): void {
+<span class="fstat-no" title="function not covered" >  updateConfig(</span>config: Partial&lt;ORSConfig&gt;): void {
 <span class="cstat-no" title="statement not covered" >    this.config = { ...this.config, ...config };</span>
   }
 &nbsp;
   /**
    * Clear cache
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync clearCache(): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>clearCache(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await offlineStorage.clearCache();</span>
 <span class="cstat-no" title="statement not covered" >      this.cache.clear();</span>
@@ -1771,7 +1771,7 @@ export default orsService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>
