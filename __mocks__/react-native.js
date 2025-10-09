@@ -5,6 +5,3 @@ module.exports = {
   StyleSheet: rn.StyleSheet,
   Platform: { ...rn.Platform, OS: 'android' },
 };
-
-// Export all components
-module.exports = components;
