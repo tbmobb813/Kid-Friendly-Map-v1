@@ -92,4 +92,10 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+<<<<<<< HEAD
+=======
+# Test coverage
+coverage/
+
+>>>>>>> feat/transit
 # @end expo-cli
