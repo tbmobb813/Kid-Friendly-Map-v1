@@ -69,11 +69,53 @@ jest.mock('@/utils/config', () => ({
   },
 }));
 
+<<<<<<< HEAD
 // Mock Colors
 jest.mock('@/constants/colors', () => ({
   primary: '#007AFF',
   secondary: '#FF9500',
 }));
+=======
+import React from 'react';
+import renderer, { act } from 'react-test-renderer';
+import { describe, it, expect } from '@jest/globals';
+import type { FeatureCollection, LineString } from 'geojson';
+
+const mod = require('@/components/MapLibreRouteView');
+console.log('MapLibreRouteView module keys:', Object.keys(mod)); // debug
+console.log('MapLibreRouteView default export:', typeof mod.default); // debug
+const MapLibreRouteView = mod.default || mod.MapLibreRouteView || mod;
+
+// quick assertions to get clearer failures
+if (!MapLibreRouteView) {
+  throw new Error(
+    'MapLibreRouteView import resolved to undefined. Check export (default vs named) and Jest moduleNameMapper for "@/".'
+  );
+}
+
+if (typeof MapLibreRouteView !== 'function') {
+  throw new Error(
+    `MapLibreRouteView import resolved to ${typeof MapLibreRouteView}, expected function. This suggests an import issue.`
+  );
+}
+
+// Provide a simple renderer helper (some tests expect `render` to return getByTestId/queryByTestId)
+const render = (el: React.ReactElement) => {
+  let tree!: renderer.ReactTestRenderer;
+  act(() => {
+    tree = renderer.create(el);
+  });
+
+  const getByTestId = (id: string) =>
+    tree.root.findAll((n) => n.props && n.props.testID === id)[0];
+  const queryByTestId = (id: string) => {
+    const found = tree.root.findAll((n) => n.props && n.props.testID === id);
+    return found.length ? found[0] : null;
+  };
+
+  return { tree, getByTestId, queryByTestId };
+};
+>>>>>>> feat/transit
 
 const mockRouteGeoJSON: FeatureCollection<LineString> = {
   type: 'FeatureCollection',
@@ -110,10 +152,21 @@ const mockDestination = {
   coordinates: { latitude: 40.7142, longitude: -74.004 },
 };
 
+<<<<<<< HEAD
 describe('MapLibreRouteView', () => {
   it('should render without crashing', () => {
     const { getByTestId } = render(<MapLibreRouteView />);
     expect(getByTestId('mock-maplibre-map')).toBeTruthy();
+=======
+// Provide test-friendly aliases used by older tests
+const mockOrigin = origin;
+const mockDestination = dest;
+
+describe('MapLibreRouteView (minimal)', () => {
+  it('imports correctly', () => {
+    expect(MapLibreRouteView).toBeDefined();
+    expect(typeof MapLibreRouteView).toBe('function');
+>>>>>>> feat/transit
   });
 
   it('should render with route data', () => {
@@ -124,10 +177,14 @@ describe('MapLibreRouteView', () => {
         routeGeoJSON={mockRouteGeoJSON}
       />,
     );
+<<<<<<< HEAD
 
     expect(getByTestId('mock-maplibre-map')).toBeTruthy();
     expect(getByTestId('mock-shapesource-route')).toBeTruthy();
     expect(getByTestId('mock-linelayer-route-line')).toBeTruthy();
+=======
+    expect(getByTestId('mock-shapesource-route')).toBeTruthy();
+>>>>>>> feat/transit
   });
 
   it('should render origin and destination markers', () => {
@@ -140,6 +197,7 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should render transit stations when enabled', () => {
+<<<<<<< HEAD
     const { getByTestId } = render(<MapLibreRouteView showTransitStations={true} />);
 
     expect(getByTestId('mock-shapesource-stations')).toBeTruthy();
@@ -151,6 +209,19 @@ describe('MapLibreRouteView', () => {
 
     expect(queryByTestId('mock-shapesource-stations')).toBeNull();
     expect(queryByTestId('mock-circlelayer-stations-layer')).toBeNull();
+=======
+  const { getByTestId } = render(<MapLibreRouteView showTransitStations={true} />);
+
+  expect(getByTestId('mock-shapesource-stations')).toBeTruthy();
+  expect(getByTestId('mock-circlelayer-stations-layer')).toBeTruthy();
+  });
+
+  it('should not render transit stations when disabled', () => {
+  const { queryByTestId } = render(<MapLibreRouteView showTransitStations={false} />);
+
+  expect(queryByTestId('mock-shapesource-stations')).toBeNull();
+  expect(queryByTestId('mock-circlelayer-stations-layer')).toBeNull();
+>>>>>>> feat/transit
   });
 
   it('should create fallback route when no route data provided', () => {
@@ -164,10 +235,17 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should not render route when no origin or destination', () => {
+<<<<<<< HEAD
     const { queryByTestId } = render(<MapLibreRouteView routeGeoJSON={null} />);
 
     expect(queryByTestId('mock-shapesource-route')).toBeNull();
     expect(queryByTestId('mock-linelayer-route-line')).toBeNull();
+=======
+  const { queryByTestId } = render(<MapLibreRouteView routeGeoJSON={null} />);
+
+  expect(queryByTestId('mock-shapesource-route')).toBeNull();
+  expect(queryByTestId('mock-linelayer-route-line')).toBeNull();
+>>>>>>> feat/transit
   });
 
   it('should handle station press events', () => {
@@ -199,9 +277,15 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should use custom testID when provided', () => {
+<<<<<<< HEAD
     const { getByTestId } = render(<MapLibreRouteView testID="custom-map-view" />);
 
     expect(getByTestId('custom-map-view')).toBeTruthy();
+=======
+  const { getByTestId } = render(<MapLibreRouteView testID="custom-map-view" />);
+
+  expect(getByTestId('custom-map-view')).toBeTruthy();
+>>>>>>> feat/transit
   });
 
   it('should compute center correctly with route data', () => {
