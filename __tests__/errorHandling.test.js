@@ -7,7 +7,17 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
     removeItem: jest.fn(),
   },
 }));
+<<<<<<< HEAD
 import { SafeAsyncStorage, withRetry, DEFAULT_RETRY_CONFIG } from '@/utils/errorHandling';
+=======
+import {
+  SafeAsyncStorage,
+  withRetry,
+  DEFAULT_RETRY_CONFIG,
+  handleCameraError,
+  createSafetyErrorBoundary,
+} from '@/utils/errorHandling';
+>>>>>>> feat/transit
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const mockAsyncStorage = AsyncStorage;
