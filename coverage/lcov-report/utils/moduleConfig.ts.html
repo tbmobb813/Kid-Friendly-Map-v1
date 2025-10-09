@@ -1,63 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Code coverage report for utils/moduleConfig.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-      .coverage-summary .sorter {
-        background-image: url(../sort-arrow-sprite.png);
-      }
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
     </style>
-  </head>
-
-  <body>
-    <div class="wrapper">
-      <div class="pad1">
-        <h1>
-          <a href="../index.html">All files</a> / <a href="index.html">utils</a> moduleConfig.ts
-        </h1>
-        <div class="clearfix">
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Statements</span>
-            <span class="fraction">0/34</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Branches</span>
-            <span class="fraction">0/10</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Functions</span>
-            <span class="fraction">0/8</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Lines</span>
-            <span class="fraction">0/33</span>
-          </div>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">utils</a> moduleConfig.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/37</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/6</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/9</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/36</span>
+            </div>
+        
+            
         </div>
         <p class="quiet">
-          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
-          <em>p</em> or <em>k</em> for the previous block.
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-          <div class="quiet">
-            Filter:
-            <input type="search" id="fileSearch" />
-          </div>
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
         </template>
-      </div>
-      <div class="status-line low"></div>
-      <pre><table class="coverage">
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -452,12 +457,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -465,14 +470,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -538,7 +543,7 @@ export interface ModuleConfig {
   platform?: 'ios' | 'android' | 'web' | 'all';
 }
 &nbsp;
-export const MODULES: Record&lt;string, ModuleConfig&gt; = <span class="cstat-no" title="statement not covered" >{</span>
+export const <span class="cstat-no" title="statement not covered" >MODULES: Record&lt;string, ModuleConfig&gt; = {</span>
   // Core modules (always loaded)
   core: {
     name: 'Core',
@@ -678,7 +683,7 @@ export const MODULES: Record&lt;string, ModuleConfig&gt; = <span class="cstat-no
 };
 &nbsp;
 // Module loading priorities
-export const LOAD_PRIORITIES = <span class="cstat-no" title="statement not covered" >{</span>
+export const <span class="cstat-no" title="statement not covered" >LOAD_PRIORITIES = {</span>
   CRITICAL: ['core', 'safety', 'location'],
   HIGH: ['navigation', 'ui'],
   MEDIUM: ['regional', 'gamification'],
@@ -686,10 +691,10 @@ export const LOAD_PRIORITIES = <span class="cstat-no" title="statement not cover
 };
 &nbsp;
 // Dependency validation
-export function <span class="fstat-no" title="function not covered" >validateModuleDependencies(</span>): boolean {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >v</span>alidateModuleDependencies(</span>): boolean {
 <span class="cstat-no" title="statement not covered" >  for (const [moduleName, config] of Object.entries(MODULES)) {</span>
 <span class="cstat-no" title="statement not covered" >    for (const dep of config.dependencies) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!MODULES[dep]) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!MODULES[dep]) {</span>
 <span class="cstat-no" title="statement not covered" >        console.error(`Module ${moduleName} depends on non-existent module: ${dep}`);</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
@@ -699,28 +704,28 @@ export function <span class="fstat-no" title="function not covered" >validateMod
 }
 &nbsp;
 // Get modules for current platform
-export function <span class="fstat-no" title="function not covered" >getModulesForPlatform(</span>platform: 'ios' | 'android' | 'web'): ModuleConfig[] {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >g</span>etModulesForPlatform(</span>platform: 'ios' | 'android' | 'web'): ModuleConfig[] {
 <span class="cstat-no" title="statement not covered" >  return Object.values(MODULES).filter(</span>
 <span class="fstat-no" title="function not covered" >    (m</span>odule) =&gt; <span class="cstat-no" title="statement not covered" >module.platform === 'all' || module.platform === platform,</span>
   );
 }
 &nbsp;
 // Module loader utility
-export class ModuleLoader {
-  private loadedModules = <span class="cstat-no" title="statement not covered" >new Set&lt;string&gt;();</span>
-  private loadingPromises = <span class="cstat-no" title="statement not covered" >new Map&lt;string, Promise&lt;void&gt;&gt;();</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class M</span></span>oduleLoader {
+  private <span class="cstat-no" title="statement not covered" >loadedModules = new Set&lt;string&gt;();</span>
+  private <span class="cstat-no" title="statement not covered" >loadingPromises = new Map&lt;string, Promise&lt;void&gt;&gt;();</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >  as</span>ync loadModule(moduleName: string): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    if (this.loadedModules.has(moduleName)) {</span>
+<span class="fstat-no" title="function not covered" >  async </span>loadModule(moduleName: string): Promise&lt;void&gt; {
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.loadedModules.has(moduleName)) {</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.loadingPromises.has(moduleName)) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.loadingPromises.has(moduleName)) {</span>
 <span class="cstat-no" title="statement not covered" >      return this.loadingPromises.get(moduleName);</span>
     }
 &nbsp;
     const config = <span class="cstat-no" title="statement not covered" >MODULES[moduleName];</span>
-<span class="cstat-no" title="statement not covered" >    if (!config) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!config) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`Module ${moduleName} not found`);</span>
     }
 &nbsp;
@@ -735,7 +740,7 @@ export class ModuleLoader {
     }
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  pr</span>ivate async loadModuleInternal(moduleName: string, config: ModuleConfig): Promise&lt;void&gt; {
+  private <span class="fstat-no" title="function not covered" >async </span>loadModuleInternal(moduleName: string, config: ModuleConfig): Promise&lt;void&gt; {
     // Load dependencies first
 <span class="cstat-no" title="statement not covered" >    for (const dep of config.dependencies) {</span>
 <span class="cstat-no" title="statement not covered" >      await this.loadModule(dep);</span>
@@ -750,34 +755,33 @@ export class ModuleLoader {
 <span class="cstat-no" title="statement not covered" >    console.log(`Module loaded: ${moduleName}`);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  is</span>ModuleLoaded(moduleName: string): boolean {
+<span class="fstat-no" title="function not covered" >  isModuleLoaded(</span>moduleName: string): boolean {
 <span class="cstat-no" title="statement not covered" >    return this.loadedModules.has(moduleName);</span>
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  ge</span>tLoadedModules(): string[] {
+<span class="fstat-no" title="function not covered" >  getLoadedModules(</span>): string[] {
 <span class="cstat-no" title="statement not covered" >    return Array.from(this.loadedModules);</span>
   }
 }
 &nbsp;
-export const moduleLoader = <span class="cstat-no" title="statement not covered" >new ModuleLoader();</span>
+export const <span class="cstat-no" title="statement not covered" >moduleLoader = new ModuleLoader();</span>
 &nbsp;</pre></td></tr></table></pre>
 
-      <div class="push"></div>
-      <!-- for sticky footer -->
-    </div>
-    <!-- /wrapper -->
-    <div class="footer quiet pad2 space-top1 center small">
-      Code coverage generated by
-      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2025-10-08T20:36:02.866Z
-    </div>
-    <script src="../prettify.js"></script>
-    <script>
-      window.onload = function () {
-        prettyPrint();
-      };
-    </script>
-    <script src="../sorter.js"></script>
-    <script src="../block-navigation.js"></script>
-  </body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-09T02:27:42.561Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
 </html>
+    

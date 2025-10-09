@@ -1,4 +1,7 @@
-const { LRUCache } = require('lru-cache');
+// Require lru-cache in a way that works whether the package exports the constructor
+// directly or as { LRUCache } (different bundle/packaging shapes across environments).
+const _lru = require('lru-cache');
+const LRUCache = _lru.LRUCache || _lru;
 
 describe('Cache', () => {
   it('should store and retrieve values', () => {
