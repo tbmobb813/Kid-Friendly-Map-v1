@@ -101,11 +101,13 @@
     "cross-env": "^10.1.0",
     "jest-environment-jsdom": "^30.2.0",
     "metro-react-native-babel-preset": "^0.77.0",
-    "react-test-renderer": "18.2.0",
+    "react-test-renderer": "^19.1.0",
     "rimraf": "^4.0.0",
     "ts-jest": "^29.4.4",
     "tsx": "^4.20.6",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "ioredis": "^5.3.2",
+    "supertest": "^6.3.3"
   },
   "private": true
 }
