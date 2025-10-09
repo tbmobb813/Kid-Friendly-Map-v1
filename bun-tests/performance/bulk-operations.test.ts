@@ -23,10 +23,14 @@ describe('Performance Critical Operations', () => {
       );
 
       const end = performance.now();
-      const processingTime = end - start;
+  const processingTime = end - start;
 
-      expect(safeNearbyPlaygrounds.length).toBeGreaterThan(0);
-      expect(processingTime).toBeLessThan(100); // Should be very fast
+  // Allow scaling of performance thresholds via PERF_TIME_MULTIPLIER env var.
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxFilterTime = 100 * PERF_TIME_MULTIPLIER;
+
+  expect(safeNearbyPlaygrounds.length).toBeGreaterThan(0);
+  expect(processingTime).toBeLessThan(maxFilterTime); // Should be very fast
 
       console.log(`Bun: Filtered ${locations.length} locations in ${processingTime.toFixed(2)}ms`);
       console.log(`Found ${safeNearbyPlaygrounds.length} safe nearby playgrounds`);
@@ -62,7 +66,9 @@ describe('Performance Critical Operations', () => {
 
       expect(sorted.length).toBe(20000);
       expect(Object.keys(grouped).length).toBe(4);
-      expect(processingTime).toBeLessThan(200);
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxSortTime = 200 * PERF_TIME_MULTIPLIER;
+  expect(processingTime).toBeLessThan(maxSortTime);
 
       console.log(
         `Bun: Sorted and grouped ${locations.length} items in ${processingTime.toFixed(2)}ms`,
@@ -112,7 +118,9 @@ describe('Performance Critical Operations', () => {
       expect(parsed.locations.length).toBe(5000);
       expect(summary.totalLocations).toBe(5000);
       expect(Object.keys(summary.byType).length).toBeGreaterThan(0);
-      expect(processingTime).toBeLessThan(150);
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxJsonTime = 150 * PERF_TIME_MULTIPLIER;
+  expect(processingTime).toBeLessThan(maxJsonTime);
 
       console.log(
         `Bun: JSON ops on ${data.locations.length} records in ${processingTime.toFixed(2)}ms`,
@@ -153,7 +161,9 @@ describe('Performance Critical Operations', () => {
 
       expect(distances.length).toBe(10000);
       expect(averageDistance).toBeGreaterThan(0);
-      expect(processingTime).toBeLessThan(50);
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxDistanceTime = 50 * PERF_TIME_MULTIPLIER;
+  expect(processingTime).toBeLessThan(maxDistanceTime);
 
       console.log(
         `Bun: Calculated ${distances.length} distances in ${processingTime.toFixed(2)}ms`,
@@ -195,7 +205,9 @@ describe('Performance Critical Operations', () => {
 
       expect(processed.length).toBe(5000);
       expect(totalWords).toBeGreaterThan(0);
-      expect(processingTime).toBeLessThan(100);
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxTextTime = 100 * PERF_TIME_MULTIPLIER;
+  expect(processingTime).toBeLessThan(maxTextTime);
 
       console.log(
         `Bun: Processed ${texts.length} texts (${totalWords} words) in ${processingTime.toFixed(2)}ms`,

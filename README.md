@@ -137,6 +137,49 @@ See `docs/CONVERSATION_SUMMARY.md` for complete overview of strategic review.
 
 See `docs/TESTING_GUIDE.md` and `docs/PERFORMANCE_OPTIMIZATION.md` for developer guidance.
 
+## Testing (three suites)
+
+This repository separates tests into three focused suites to keep transforms and environments clean:
+
+
+```bash
+npm test
+```
+
+
+```bash
+npm run test:server
+```
+
+
+```bash
+npm run test:bun
+```
+
+Run all three locally in parallel with the helper script (it prints a consolidated summary):
+
+```bash
+npm run test:concurrent
+```
+
+CI runs these suites in parallel jobs — see `.github/workflows/tests.yml` for the workflow definition.
+
+Notes on performance-sensitive tests
+- PERF_TIME_MULTIPLIER: You can relax strict timing assertions locally by setting the environment variable `PERF_TIME_MULTIPLIER`. For example, to double allowed times:
+
+```bash
+PERF_TIME_MULTIPLIER=2 npm run test:bun
+```
+
+- FORCE_CONCURRENT: The concurrent runner defaults to sequential execution for local stability. To force parallel runs locally (not recommended on low-powered machines):
+
+```bash
+FORCE_CONCURRENT=1 npm run test:concurrent
+```
+
+CI runs the strict performance checks with `PERF_TIME_MULTIPLIER=1` by default; if you see failures locally, increase `PERF_TIME_MULTIPLIER` for development runs.
+
+
 ## License
 
 Add a license file (e.g., MIT) if you intend to open-source this project.
