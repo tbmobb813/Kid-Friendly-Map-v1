@@ -83,8 +83,8 @@ export default function ExpoMapView({
   const nearbyStations = showTransitStations
     ? nycStations.filter((station) => {
         const distance = getDistance(center, {
-          latitude: station.coordinates[1],
-          longitude: station.coordinates[0],
+          latitude: station.coordinates.latitude,
+          longitude: station.coordinates.longitude,
         });
         return distance < 2000; // Within 2km
       })
