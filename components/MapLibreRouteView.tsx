@@ -3,7 +3,20 @@ import type { Feature, FeatureCollection, Geometry, LineString, Position } from 
 import Colors from '@/constants/colors';
 import { nycStations } from '@/config/transit/nyc-stations';
 import type { Place } from '@/types/navigation';
-import MapLibreMap, { MapLibreGL, isMapLibreAvailable } from '@/components/MapLibreMap';
+// MapLibreMap will be required lazily inside the component so tests can mock it
+// even if they import this module before calling jest.mock.
+import type * as MapLibreModule from '@maplibre/maplibre-react-native';
+// Lazy-load the MapLibre native module directly so tests that mock
+// '@maplibre/maplibre-react-native' are respected.
+function getMapLibreModule(): typeof MapLibreModule | null {
+  try {
+    // require is used to keep lazy loading behavior
+    const imported = require('@maplibre/maplibre-react-native');
+    return imported?.default ?? imported;
+  } catch (e) {
+    return null;
+  }
+}
 import Config from '@/utils/config';
 
 export type MapLibreRouteViewProps = {
@@ -163,30 +176,19 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   showTransitStations = true,
   testID,
 }) => {
-  // Normalize imported mocks/exports — some module resolution in Jest/ts-jest can place
-  // named exports on the default export; be defensive so tests using moduleNameMapper
-  // mocks still render. Only bail out when the module explicitly indicates MapLibre is
-  // unavailable or when we can't find the MapLibreGL API surface.
-  const resolvedModule: any = (MapLibreMap as any) || {};
-  const resolvedMapLibreGL =
-    (MapLibreGL as any) ||
-    resolvedModule.MapLibreGL ||
-    (resolvedModule.default && resolvedModule.default.MapLibreGL);
-  const resolvedIsAvailable =
-    typeof isMapLibreAvailable !== 'undefined'
-      ? isMapLibreAvailable
-      : resolvedModule.isMapLibreAvailable ??
-        (resolvedModule.default && resolvedModule.default.isMapLibreAvailable) ??
-        true;
+  const MapLibreModule = getMapLibreModule();
 
-  // If the module explicitly indicates MapLibre is unavailable, bail out.
-  // Otherwise continue — tests provide mocks that may not expose the full
-  // MapLibreGL API but still render a MapLibreMap wrapper component.
-  if (resolvedIsAvailable === false) {
+  // Lazily resolve the MapLibreMap component so tests can mock '@/components/MapLibreMap'
+  // even if jest.mock was called after this file was imported.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const requiredMapLibreMap = require('@/components/MapLibreMap') as any;
+  const MapLibreMapComp = requiredMapLibreMap?.default ?? requiredMapLibreMap;
+
+  if (!MapLibreModule || typeof MapLibreModule !== 'object' || !('MapView' in MapLibreModule)) {
     return null;
   }
 
-  const MapLibre = resolvedMapLibreGL as any;
+  const MapLibre = MapLibreModule as any;
   const originCoord = useMemo(
     () => asLngLat(origin),
     [origin?.coordinates.latitude, origin?.coordinates.longitude],
@@ -237,8 +239,11 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
     [onStationPress],
   );
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore - required for test-time lazy require
   return (
-    <MapLibreMap centerCoordinate={centerCoordinate} testID={testID ?? 'mock-maplibre-map'}>
+    // @ts-ignore
+    <MapLibreMapComp centerCoordinate={centerCoordinate} testID={testID}>
       {routeShape && MapLibre && (
         <MapLibre.ShapeSource id="route" shape={routeShape}>
           <MapLibre.LineLayer
@@ -286,7 +291,7 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
           />
         </MapLibre.ShapeSource>
       )}
-    </MapLibreMap>
+    </MapLibreMapComp>
   );
 };
 

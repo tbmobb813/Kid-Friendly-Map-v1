@@ -182,8 +182,8 @@ export default function HomeScreen() {
               new Date().getHours() < 12
                 ? 'morning'
                 : new Date().getHours() < 18
-                ? 'afternoon'
-                : 'evening'
+                  ? 'afternoon'
+                  : 'evening'
             }
             onSelectRoute={(suggestion) => {
               console.log('Selected route:', suggestion);

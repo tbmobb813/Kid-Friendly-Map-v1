@@ -1,10 +1,8 @@
-Transit Adapter
-================
+# Transit Adapter
 
 Lightweight Express adapter that fetches GTFS-RT (protobuf) feeds, decodes them with `gtfs-realtime-bindings`, normalizes the results to a small JSON schema, and caches responses for a short TTL.
 
-Quick start
------------
+## Quick start
 
 1. From `server/` install dependencies:
 
@@ -24,8 +22,7 @@ MTA_API_KEY=your_key npm start
 GET /feeds/nyc/mta-subway.json?url=https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace&key=YOUR_KEY
 ```
 
-Notes
------
+## Notes
 
 - This is intentionally minimal. For production use you should:
   - Map region/system -> feed URL server-side instead of accepting the URL from the client

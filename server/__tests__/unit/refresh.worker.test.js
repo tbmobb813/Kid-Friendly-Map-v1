@@ -16,12 +16,17 @@ describe('Background refresh worker', () => {
     process.env.PORT = '0'; // Use random available port
     server = startServer();
   });
-  afterAll(() => { if (server) { _internal.stopBackgroundRefresh(); server.close(); } });
+  afterAll(() => {
+    if (server) {
+      _internal.stopBackgroundRefresh();
+      server.close();
+    }
+  });
 
   test('invokes fetchGtfsRt on interval', async () => {
     const { fetchGtfsRt } = require('../../adapter.js');
     expect(fetchGtfsRt).toHaveBeenCalledTimes(0);
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1200));
     expect(fetchGtfsRt).toHaveBeenCalled();
     _internal.stopBackgroundRefresh();
   });

@@ -95,6 +95,9 @@ export function useRouteORS(
     endCoord: [number, number],
     profileName: string,
   ): Promise<RouteGeoJSON | null> => {
+    // Debug logging for CI/test investigation
+    // eslint-disable-next-line no-console
+    console.debug('[useRouteORS] fetchRoute called', { startCoord, endCoord, profileName });
     if (!Config.ROUTING.ORS_API_KEY) {
       throw new Error(
         'Missing OpenRouteService API key. Set EXPO_PUBLIC_ORS_API_KEY or configure extra.routing.',
@@ -111,6 +114,8 @@ export function useRouteORS(
     }, DEFAULT_TIMEOUT);
 
     try {
+      // eslint-disable-next-line no-console
+      console.debug('[useRouteORS] performing fetch', { routeUrl });
       const response = await fetch(routeUrl, {
         method: 'GET',
         headers: {
@@ -118,6 +123,15 @@ export function useRouteORS(
         },
         signal: controller.signal,
       });
+      // If the controller was aborted while the mocked fetch resolved, ignore the result.
+      // eslint-disable-next-line no-console
+      console.debug('[useRouteORS] fetch resolved, aborted?', (controller.signal as any).aborted);
+      if (controller.signal && (controller.signal as any).aborted) {
+        // Treat as aborted
+        const abortErr: any = new Error('Aborted');
+        abortErr.name = 'AbortError';
+        throw abortErr;
+      }
 
       if (!response.ok) {
         const message = await response.text();
@@ -130,6 +144,8 @@ export function useRouteORS(
     } finally {
       clearTimeout(timeoutId);
       abortRef.current = null;
+      // eslint-disable-next-line no-console
+      console.debug('[useRouteORS] fetchRoute finally, cleared timeout');
     }
   };
 

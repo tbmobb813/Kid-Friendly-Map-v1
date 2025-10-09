@@ -92,7 +92,7 @@ const calculateScores = (route: ProcessedRoute, request: RouteRequest) => {
   const safetyScore = calculateSafetyScore(route.steps, request.preferences);
   const kidFriendlyScore = calculateKidFriendlyScore(route, request.preferences.childAge);
   const accessibilityScore = calculateAccessibilityScore(route, request.preferences.wheelchair);
-  
+
   return { safetyScore, kidFriendlyScore, accessibilityScore };
 };
 ```
@@ -121,7 +121,7 @@ const calculateScores = (route: ProcessedRoute, request: RouteRequest) => {
 it('should combine ORS and OTP2 routes with intelligent ranking', async () => {
   // Mock both services
   const routes = await unifiedRoutingService.getRoutes(testRequest);
-  
+
   expect(routes).toHaveLength(2);
   expect(routes[0].safetyScore).toBeGreaterThan(routes[1].safetyScore);
   // Verifies safety-prioritized ranking works correctly
@@ -158,7 +158,7 @@ const testLocations = [
 // Interactive testing
 <TouchableOpacity onPress={handleFindRoutes}>
   <Text>🔍 Find All Routes</Text>
-</TouchableOpacity>
+</TouchableOpacity>;
 ```
 
 ## 📚 Documentation
@@ -198,7 +198,7 @@ OTP2_ROUTER_ID=default
 ```json
 {
   "test:routing": "jest __tests__/routing-integration.test.ts",
-  "test:offline": "jest __tests__/offline-validation.test.ts", 
+  "test:offline": "jest __tests__/offline-validation.test.ts",
   "test:monitoring": "jest __tests__/monitoring.test.ts",
   "demo:routing": "expo start --dev-client",
   "demo:offline": "node demo-offline-monitoring.js"
@@ -244,19 +244,19 @@ OTP2_ROUTER_ID=default
 ```typescript
 const calculateSafetyScore = (steps: RouteStep[], preferences: RoutePreferences) => {
   let score = 100;
-  
-  steps.forEach(step => {
+
+  steps.forEach((step) => {
     // Deduct points for safety concerns
     if (step.instruction.includes('highway')) score -= 20;
     if (step.instruction.includes('busy street')) score -= 15;
     if (step.instruction.includes('construction')) score -= 10;
-    
+
     // Add points for safe features
     if (step.instruction.includes('park')) score += 10;
     if (step.instruction.includes('crosswalk')) score += 5;
     if (step.instruction.includes('traffic light')) score += 5;
   });
-  
+
   return Math.max(0, Math.min(100, score));
 };
 ```
@@ -299,7 +299,7 @@ The new routing services complement the existing 556-line AI route engine (`util
 
 - **ORS Walking Route**: ~200-500ms
 
-- **OTP2 Transit Planning**: ~300-800ms  
+- **OTP2 Transit Planning**: ~300-800ms
 
 - **Unified Route Combination**: ~500-1200ms
 
@@ -334,10 +334,12 @@ The new routing services complement the existing 556-line AI route engine (`util
    ```typescript
    // Update SmartNavigationScreen to use new routing
    import { unifiedRoutingService } from '../utils/unifiedRoutingService';
-   
+
    const getSmartRoute = async (from, to, userPreferences) => {
      const routes = await unifiedRoutingService.getRoutes({
-       from, to, preferences: userPreferences
+       from,
+       to,
+       preferences: userPreferences,
      });
      return routes[0]; // Best ranked route
    };
@@ -348,12 +350,12 @@ The new routing services complement the existing 556-line AI route engine (`util
    ```typescript
    // AI Journey Companion can analyze multiple route options
    import { AIJourneyCompanion } from '../components/AIJourneyCompanion';
-   
+
    const analyzeRoutes = (routes: UnifiedRoute[]) => {
-     return routes.map(route => ({
+     return routes.map((route) => ({
        route,
        aiInsights: AIJourneyCompanion.analyzeRoute(route),
-       recommendation: route.kidFriendlyScore > 80 ? 'Recommended' : 'Alternative'
+       recommendation: route.kidFriendlyScore > 80 ? 'Recommended' : 'Alternative',
      }));
    };
    ```
@@ -365,12 +367,12 @@ The new routing services complement the existing 556-line AI route engine (`util
    const preCacheCommonRoutes = async () => {
      const commonDestinations = await getFrequentDestinations();
      const currentLocation = await getCurrentLocation();
-     
+
      for (const destination of commonDestinations) {
        await unifiedRoutingService.getRoutes({
          from: currentLocation,
          to: destination,
-         preferences: getUserPreferences()
+         preferences: getUserPreferences(),
        });
      }
    };
@@ -388,14 +390,14 @@ The new routing services complement the existing 556-line AI route engine (`util
 
 ## ✅ Implementation Status
 
-| Component | Status | Lines | Tests | Documentation |
-|-----------|--------|-------|-------|---------------|
-| ORS Service | ✅ Complete | 800+ | 15+ tests | ✅ Complete |
-| OTP2 Service | ✅ Complete | 900+ | 12+ tests | ✅ Complete |
-| Unified Service | ✅ Complete | 600+ | 8+ tests | ✅ Complete |
-| Demo Component | ✅ Complete | 650+ | Manual | ✅ Complete |
-| Integration Tests | ✅ Complete | 400+ | 35+ tests | ✅ Complete |
-| Setup Documentation | ✅ Complete | 500+ | N/A | ✅ Complete |
+| Component           | Status      | Lines | Tests     | Documentation |
+| ------------------- | ----------- | ----- | --------- | ------------- |
+| ORS Service         | ✅ Complete | 800+  | 15+ tests | ✅ Complete   |
+| OTP2 Service        | ✅ Complete | 900+  | 12+ tests | ✅ Complete   |
+| Unified Service     | ✅ Complete | 600+  | 8+ tests  | ✅ Complete   |
+| Demo Component      | ✅ Complete | 650+  | Manual    | ✅ Complete   |
+| Integration Tests   | ✅ Complete | 400+  | 35+ tests | ✅ Complete   |
+| Setup Documentation | ✅ Complete | 500+  | N/A       | ✅ Complete   |
 
 **Total Implementation**: 3,850+ lines of production-ready code with comprehensive
 testing and documentation.

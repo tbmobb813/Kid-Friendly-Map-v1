@@ -229,7 +229,7 @@ const SmartRouteSuggestions: React.FC<SmartRouteSuggestionsProps> = ({
                 >
                   <Heart
                     size={18}
-                    color={suggestion.liked ?? false ? Colors.secondary : Colors.textLight}
+                    color={(suggestion.liked ?? false) ? Colors.secondary : Colors.textLight}
                   />
                 </Pressable>
               </View>

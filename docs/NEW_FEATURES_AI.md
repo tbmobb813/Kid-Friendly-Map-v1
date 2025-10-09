@@ -50,10 +50,7 @@ export default function App() {
 import { aiRouteEngine } from './utils/aiRouteEngine';
 
 // Generate smart routes
-const routes = await aiRouteEngine.generateSmartRoutes(
-  currentLocation,
-  destination
-);
+const routes = await aiRouteEngine.generateSmartRoutes(currentLocation, destination);
 
 // Update preferences
 aiRouteEngine.updatePreferences({
@@ -175,7 +172,7 @@ import KidFriendlyMap from './components/KidFriendlyMap';
 
 ### Learning Model
 
-``` text
+```text
 User selects route → AI records choice + context
     ↓
 Pattern recognition after 5+ similar choices
@@ -231,7 +228,6 @@ npx expo start
 1. Go to "Enhanced Features Demo"
 
 1. Try each tab:
-
    - **Smart Nav**: Complete navigation experience
 
    - **AI Routes**: View AI route generation

@@ -85,21 +85,21 @@ const addSafeZone = async (zone: Omit<SafeZone, 'id' | 'createdAt'>) => {
         name: zone.name,
         center: { latitude: zone.latitude, longitude: zone.longitude },
         radius: zone.radius,
-        childId: 'current_child'
+        childId: 'current_child',
       });
       console.log('✅ Created spatial safe zone:', spatialZone.name);
     }
   } catch (error) {
     console.log('⚠️ Spatial API unavailable, using fallback');
   }
-  
+
   // Your existing safe zone creation logic here
   const newZone: SafeZone = {
     ...zone,
     id: `safe_zone_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     createdAt: Date.now(),
   };
-  
+
   const updatedSafeZones = [...safeZones, newZone];
   await saveSafeZones(updatedSafeZones);
   return newZone;
@@ -129,19 +129,19 @@ export const spatialApi = {
 
   async checkSafeZoneContainment(
     location: { latitude: number; longitude: number },
-    childId: string
+    childId: string,
   ) {
     try {
       const response = await apiClient.post('/spatial/safe-zones/check', {
         location,
-        childId
+        childId,
       });
       return response.data;
     } catch (error) {
       console.warn('Spatial check failed:', error);
       throw error;
     }
-  }
+  },
 };
 ```
 

@@ -12,14 +12,14 @@
 
 ## Timeline Overview
 
-| Week | Focus | Key Deliverables | Leads |
-|------|-------|------------------|-------|
-| 1 | Legal alignment | Counsel engagement letter, kickoff agenda | Product Lead, Legal Liaison |
-| 2 | Policy drafting | Privacy Policy v0.9, Terms of Service v0.8 | Legal Writer |
-| 3 | Operational controls | Data-handling checklist v1.0, DPIA updates | Privacy Program Manager |
-| 4 | Monitoring readiness | Sentry config, Plausible rollout, monitoring runbook | Engineering & DevOps |
-| 5-6 | Offline tiles spike | Technical decision (Native vs WebView), spike report | Mobile Lead |
-| 7-8 | Offline implementation | MVP offline experience, QA sign-off | Mobile Lead, QA |
+| Week | Focus                  | Key Deliverables                                     | Leads                       |
+| ---- | ---------------------- | ---------------------------------------------------- | --------------------------- |
+| 1    | Legal alignment        | Counsel engagement letter, kickoff agenda            | Product Lead, Legal Liaison |
+| 2    | Policy drafting        | Privacy Policy v0.9, Terms of Service v0.8           | Legal Writer                |
+| 3    | Operational controls   | Data-handling checklist v1.0, DPIA updates           | Privacy Program Manager     |
+| 4    | Monitoring readiness   | Sentry config, Plausible rollout, monitoring runbook | Engineering & DevOps        |
+| 5-6  | Offline tiles spike    | Technical decision (Native vs WebView), spike report | Mobile Lead                 |
+| 7-8  | Offline implementation | MVP offline experience, QA sign-off                  | Mobile Lead, QA             |
 
 ## Workstream Details
 
@@ -99,23 +99,23 @@
 
 ## RACI Snapshot
 
-| Task | Responsible | Accountable | Consulted | Informed |
-|------|-------------|-------------|-----------|----------|
-| Legal counsel engagement | Product Lead | Head of Product | Legal, Data Eng | Exec Team |
-| Privacy policy draft | Legal Writer | General Counsel | Engineering, Marketing | Support |
-| Terms of Service | Legal Writer | General Counsel | Product, Trust & Safety | Support |
-| Data checklist | Privacy PM | CTO | Legal, DevOps | Entire org |
-| Sentry/Plausible rollout | Mobile Lead | CTO | DevOps, Privacy PM | Exec Team |
-| Offline tiles | Mobile Lead | CTO | Product, Legal | Exec Team |
+| Task                     | Responsible  | Accountable     | Consulted               | Informed   |
+| ------------------------ | ------------ | --------------- | ----------------------- | ---------- |
+| Legal counsel engagement | Product Lead | Head of Product | Legal, Data Eng         | Exec Team  |
+| Privacy policy draft     | Legal Writer | General Counsel | Engineering, Marketing  | Support    |
+| Terms of Service         | Legal Writer | General Counsel | Product, Trust & Safety | Support    |
+| Data checklist           | Privacy PM   | CTO             | Legal, DevOps           | Entire org |
+| Sentry/Plausible rollout | Mobile Lead  | CTO             | DevOps, Privacy PM      | Exec Team  |
+| Offline tiles            | Mobile Lead  | CTO             | Product, Legal          | Exec Team  |
 
 ## Risk Register
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|-----------|
-| Counsel onboarding delayed | Launch slip | Medium | Pre-book intro calls; prepare detailed brief |
-| Policy drafts outdated by feature churn | Compliance gaps | Medium | Change log + fortnightly sync |
-| Analytics vendor stores PII | Regulatory breach | Low | Vendor DPIA, contractual clauses, anonymization tests |
-| Offline tiles exceed storage budgets | App uninstalls | Medium | Quotas + compression + parental controls |
+| Risk                                    | Impact            | Likelihood | Mitigation                                            |
+| --------------------------------------- | ----------------- | ---------- | ----------------------------------------------------- |
+| Counsel onboarding delayed              | Launch slip       | Medium     | Pre-book intro calls; prepare detailed brief          |
+| Policy drafts outdated by feature churn | Compliance gaps   | Medium     | Change log + fortnightly sync                         |
+| Analytics vendor stores PII             | Regulatory breach | Low        | Vendor DPIA, contractual clauses, anonymization tests |
+| Offline tiles exceed storage budgets    | App uninstalls    | Medium     | Quotas + compression + parental controls              |
 
 ## Next Steps
 

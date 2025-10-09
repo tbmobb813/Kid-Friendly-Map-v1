@@ -14,9 +14,7 @@ export function simpleRender(component) {
 
 // Simplified query helpers that work with test renderer
 export function getByTestId(instance, testID) {
-  const results = instance.root.findAll(
-    node => node.props && node.props.testID === testID
-  );
+  const results = instance.root.findAll((node) => node.props && node.props.testID === testID);
   if (results.length === 0) {
     throw new Error(`Could not find element with testID: ${testID}`);
   }
@@ -48,7 +46,7 @@ export const fireEvent = {
         handler(eventData);
       });
     }
-  }
+  },
 };
 
 // Export act for other async operations
