@@ -1,63 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Code coverage report for stores/categoryStore.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-      .coverage-summary .sorter {
-        background-image: url(../sort-arrow-sprite.png);
-      }
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
     </style>
-  </head>
-
-  <body>
-    <div class="wrapper">
-      <div class="pad1">
-        <h1>
-          <a href="../index.html">All files</a> / <a href="index.html">stores</a> categoryStore.ts
-        </h1>
-        <div class="clearfix">
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Statements</span>
-            <span class="fraction">0/87</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Branches</span>
-            <span class="fraction">0/22</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Functions</span>
-            <span class="fraction">0/35</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Lines</span>
-            <span class="fraction">0/77</span>
-          </div>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">stores</a> categoryStore.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/92</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/16</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/35</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/80</span>
+            </div>
+        
+            
         </div>
         <p class="quiet">
-          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
-          <em>p</em> or <em>k</em> for the previous block.
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-          <div class="quiet">
-            Filter:
-            <input type="search" id="fileSearch" />
-          </div>
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
         </template>
-      </div>
-      <div class="status-line low"></div>
-      <pre><table class="coverage">
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -387,9 +392,9 @@
 <a name='L327'></a><a href='#L327'>327</a>
 <a name='L328'></a><a href='#L328'>328</a>
 <a name='L329'></a><a href='#L329'>329</a>
-<a name='L330'></a><a href='#L330'>330</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L330'></a><a href='#L330'>330</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -716,9 +721,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import createContextHook from '@nkzw/create-context-hook';
-import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import createContextHook from '@nkzw/create-context-hook';</span>
+<span class="cstat-no" title="statement not covered" >import { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import AsyncStorage from '@react-native-async-storage/async-storage';</span>
 import { CustomCategory, CategoryManagementSettings, PlaceCategory } from '@/types/navigation';
 &nbsp;
 const DEFAULT_CATEGORIES: CustomCategory[] = <span class="cstat-no" title="statement not covered" >[</span>
@@ -815,26 +820,26 @@ const STORAGE_KEYS = <span class="cstat-no" title="statement not covered" >{</sp
   SETTINGS: 'kidmap_category_settings',
 };
 &nbsp;
-export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-no" title="statement not covered" >createContextHook(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >[CategoryProvider, useCategoryStoreInternal] = c</span>reateContextHook(<span class="fstat-no" title="function not covered" >() =</span>&gt; {
   const [categories, setCategories] = <span class="cstat-no" title="statement not covered" >useState&lt;CustomCategory[]&gt;(DEFAULT_CATEGORIES);</span>
   const [settings, setSettings] = <span class="cstat-no" title="statement not covered" >useState&lt;CategoryManagementSettings&gt;(DEFAULT_SETTINGS);</span>
   const [isLoading, setIsLoading] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
 &nbsp;
   // Load data from storage
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+    const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         const [storedCategories, storedSettings] = <span class="cstat-no" title="statement not covered" >await Promise.all([</span>
           AsyncStorage.getItem(STORAGE_KEYS.CATEGORIES),
           AsyncStorage.getItem(STORAGE_KEYS.SETTINGS),
         ]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (storedCategories) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedCategories) {</span>
           const parsedCategories = <span class="cstat-no" title="statement not covered" >JSON.parse(storedCategories);</span>
 <span class="cstat-no" title="statement not covered" >          setCategories(parsedCategories);</span>
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (storedSettings) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedSettings) {</span>
           const parsedSettings = <span class="cstat-no" title="statement not covered" >JSON.parse(storedSettings);</span>
 <span class="cstat-no" title="statement not covered" >          setSettings(parsedSettings);</span>
         }
@@ -849,7 +854,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   }, []);
 &nbsp;
   // Save categories to storage
-  const saveCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newCategories: CustomCategory[]) =&gt; {</span>
+  const saveCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newCategories: CustomCategory[]) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(newCategories));</span>
 <span class="cstat-no" title="statement not covered" >      setCategories(newCategories);</span>
@@ -859,7 +864,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   };
 &nbsp;
   // Save settings to storage
-  const saveSettings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newSettings: CategoryManagementSettings) =&gt; {</span>
+  const saveSettings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newSettings: CategoryManagementSettings) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(newSettings));</span>
 <span class="cstat-no" title="statement not covered" >      setSettings(newSettings);</span>
@@ -869,7 +874,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   };
 &nbsp;
   // Add a new category
-  const addCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (category: Omit&lt;CustomCategory, 'id' | 'createdAt'&gt;) =&gt; {</span>
+  const addCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(category: Omit&lt;CustomCategory, 'id' | 'createdAt'&gt;) =&gt; {</span>
     const newCategory: CustomCategory = <span class="cstat-no" title="statement not covered" >{</span>
       ...category,
       id: `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -882,7 +887,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   };
 &nbsp;
   // Update an existing category
-  const updateCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string, updates: Partial&lt;CustomCategory&gt;) =&gt; {</span>
+  const updateCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string, updates: Partial&lt;CustomCategory&gt;) =&gt; {</span>
     const updatedCategories = <span class="cstat-no" title="statement not covered" >categories.map(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >      cat.id === id ? { ...cat, ...updates } : cat,</span>
     );
@@ -890,40 +895,40 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   };
 &nbsp;
   // Delete a category (only custom ones)
-  const deleteCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string) =&gt; {</span>
+  const deleteCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string) =&gt; {</span>
     const category = <span class="cstat-no" title="statement not covered" >categories.find(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >cat.id === id)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (category &amp;&amp; !category.isDefault) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (category &amp;&amp; !category.isDefault) {</span>
       const updatedCategories = <span class="cstat-no" title="statement not covered" >categories.filter(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >cat.id !== id)</span>;</span>
 <span class="cstat-no" title="statement not covered" >      await saveCategories(updatedCategories);</span>
     }
   };
 &nbsp;
   // Approve a category (parent action)
-  const approveCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string) =&gt; {</span>
+  const approveCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await updateCategory(id, { isApproved: true });</span>
   };
 &nbsp;
   // Get approved categories only
-  const getApprovedCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: CustomCategory[] =&gt; {</span>
+  const getApprovedCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): CustomCategory[] =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return categories.filter(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >cat.isApproved)</span>;</span>
   };
 &nbsp;
   // Get pending categories (waiting for approval)
-  const getPendingCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: CustomCategory[] =&gt; {</span>
+  const getPendingCategories = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): CustomCategory[] =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    return categories.filter(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >!cat.isApproved &amp;&amp; cat.createdBy === 'child')</span>;</span>
   };
 &nbsp;
   // Convert custom category to place category for compatibility
   const getPlaceCategory = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ustomCategoryId: string): PlaceCategory =&gt; {</span>
     const category = <span class="cstat-no" title="statement not covered" >categories.find(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >cat.id === customCategoryId)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (category &amp;&amp; category.isDefault) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (category &amp;&amp; category.isDefault) {</span>
 <span class="cstat-no" title="statement not covered" >      return customCategoryId as PlaceCategory;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return 'other';</span>
   };
 &nbsp;
   // Get available icons for category creation
-  const getAvailableIcons = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
+  const getAvailableIcons = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
     'Home',
     'GraduationCap',
     'Trees',
@@ -959,7 +964,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
   ];
 &nbsp;
   // Get available colors for category creation
-  const getAvailableColors = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
+  const getAvailableColors = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
     '#007AFF',
     '#FF9500',
     '#34C759',
@@ -1004,7 +1009,7 @@ export const [CategoryProvider, useCategoryStoreInternal] = <span class="cstat-n
 });
 &nbsp;
 // Safe wrapper that provides fallback values
-export const useCategoryStore = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useCategoryStore = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    return useCategoryStoreInternal();</span>
   } catch (error) {
@@ -1014,28 +1019,28 @@ export const useCategoryStore = <span class="cstat-no" title="statement not cove
       categories: DEFAULT_CATEGORIES,
       settings: DEFAULT_SETTINGS,
       isLoading: false,
-      addCategory: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; <span class="cstat-no" title="statement not covered" >DEFAULT_CATEGORIES[0],</span>
-      updateCategory: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-      deleteCategory: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-      approveCategory: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
-      getApprovedCategories: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >DEFAULT_CATEGORIES,</span>
-      getPendingCategories: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >[],</span>
-      getPlaceCategory: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >'other' as const,</span>
-      getAvailableIcons: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >['Home', 'GraduationCap', 'Trees'],</span>
-      getAvailableColors: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >['#007AFF', '#FF9500', '#34C759'],</span>
-      saveSettings: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {},
+      addCategory: <span class="fstat-no" title="function not covered" >async </span>() =&gt; <span class="cstat-no" title="statement not covered" >DEFAULT_CATEGORIES[0],</span>
+      updateCategory: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {},
+      deleteCategory: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {},
+      approveCategory: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {},
+      getApprovedCategories: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >DEFAULT_CATEGORIES,</span>
+      getPendingCategories: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >[],</span>
+      getPlaceCategory: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >'other' as const,</span>
+      getAvailableIcons: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >['Home', 'GraduationCap', 'Trees'],</span>
+      getAvailableColors: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >['#007AFF', '#FF9500', '#34C759'],</span>
+      saveSettings: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {},
     };
   }
 };
 &nbsp;
-export const useCategoryManagement = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useCategoryManagement = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const store = <span class="cstat-no" title="statement not covered" >useCategoryStore();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
     ...store,
     canCreateCategory: <span class="fstat-no" title="function not covered" >(c</span>reatedBy: 'parent' | 'child') =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (createdBy === 'parent') <span class="cstat-no" title="statement not covered" >return true;</span></span>
-<span class="cstat-no" title="statement not covered" >      if (!store.settings.allowChildToCreateCategories) <span class="cstat-no" title="statement not covered" >return false;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (createdBy === 'parent') <span class="cstat-no" title="statement not covered" >return true;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!store.settings.allowChildToCreateCategories) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 &nbsp;
       const customCategoriesCount = <span class="cstat-no" title="statement not covered" >store.categories.filter(<span class="fstat-no" title="function not covered" >(c</span>at) =&gt; <span class="cstat-no" title="statement not covered" >!cat.isDefault)</span>.length;</span>
 <span class="cstat-no" title="statement not covered" >      return customCategoriesCount &lt; store.settings.maxCustomCategories;</span>
@@ -1047,22 +1052,21 @@ export const useCategoryManagement = <span class="cstat-no" title="statement not
 };
 &nbsp;</pre></td></tr></table></pre>
 
-      <div class="push"></div>
-      <!-- for sticky footer -->
-    </div>
-    <!-- /wrapper -->
-    <div class="footer quiet pad2 space-top1 center small">
-      Code coverage generated by
-      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2025-10-08T20:36:02.866Z
-    </div>
-    <script src="../prettify.js"></script>
-    <script>
-      window.onload = function () {
-        prettyPrint();
-      };
-    </script>
-    <script src="../sorter.js"></script>
-    <script src="../block-navigation.js"></script>
-  </body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-09T00:32:30.297Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
 </html>
+    

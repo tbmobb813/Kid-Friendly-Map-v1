@@ -4,7 +4,7 @@ module.exports = {
   globals: {
     'ts-jest': {},
   },
-  testPathIgnorePatterns: ['/node_modules/', '/bun-tests/'],
+  testPathIgnorePatterns: ['/node_modules/', '/bun-tests/', '/server/__tests__/'],
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|expo|@expo|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-native-community|expo-router|@expo/vector-icons|react-native-svg|react-native-reanimated|@react-navigation|lucide-react-native|@react-native-async-storage)/)',
   ],

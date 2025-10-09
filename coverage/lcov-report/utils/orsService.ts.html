@@ -1,63 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Code coverage report for utils/orsService.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-      .coverage-summary .sorter {
-        background-image: url(../sort-arrow-sprite.png);
-      }
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
     </style>
-  </head>
-
-  <body>
-    <div class="wrapper">
-      <div class="pad1">
-        <h1>
-          <a href="../index.html">All files</a> / <a href="index.html">utils</a> orsService.ts
-        </h1>
-        <div class="clearfix">
-          <div class="fl pad1y space-right2">
-            <span class="strong">52.58% </span>
-            <span class="quiet">Statements</span>
-            <span class="fraction">61/116</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">74.07% </span>
-            <span class="quiet">Branches</span>
-            <span class="fraction">40/54</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">57.14% </span>
-            <span class="quiet">Functions</span>
-            <span class="fraction">12/21</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">51.75% </span>
-            <span class="quiet">Lines</span>
-            <span class="fraction">59/114</span>
-          </div>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">utils</a> orsService.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">54.16% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>65/120</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">76.08% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>35/46</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">57.14% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>12/21</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">53.38% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>63/118</span>
+            </div>
+        
+            
         </div>
         <p class="quiet">
-          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
-          <em>p</em> or <em>k</em> for the previous block.
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-          <div class="quiet">
-            Filter:
-            <input type="search" id="fileSearch" />
-          </div>
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
         </template>
-      </div>
-      <div class="status-line medium"></div>
-      <pre><table class="coverage">
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -630,9 +635,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1191,7 +1196,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * OpenRouteService (ORS) Integration
  * Provides powerful routing capabilities with multiple profiles and optimization
@@ -1389,13 +1394,13 @@ class OpenRouteService {
   /**
    * Get multiple route options
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getRouteAlternatives(
+<span class="fstat-no" title="function not covered" >  async </span>getRouteAlternatives(
     coordinates: [number, number][],
     profiles: ORSProfile[] = <span class="branch-0 cbranch-no" title="branch not covered" >['foot-walking', 'cycling-regular'],</span>
     options?: Partial&lt;ORSRouteRequest&gt;,
   ): Promise&lt;{ profile: ORSProfile; route: ORSRouteResponse }[]&gt; {
     const results = <span class="cstat-no" title="statement not covered" >await Promise.allSettled(</span>
-      profiles.map(<span class="fstat-no" title="function not covered" >as</span>ync (profile) =&gt; {
+      profiles.map(<span class="fstat-no" title="function not covered" >async </span>(profile) =&gt; {
         const request: ORSRouteRequest = <span class="cstat-no" title="statement not covered" >{</span>
           coordinates,
           profile,
@@ -1487,7 +1492,7 @@ class OpenRouteService {
   /**
    * Get isochrone (reachability area)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getIsochrone(
+<span class="fstat-no" title="function not covered" >  async </span>getIsochrone(
     location: [number, number],
     range: number[], // time in seconds or distance in meters
     profile: ORSProfile = <span class="branch-0 cbranch-no" title="branch not covered" >'foot-walking',</span>
@@ -1516,7 +1521,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS Isochrone API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1538,7 +1543,7 @@ class OpenRouteService {
   /**
    * Get Points of Interest near a location
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getPOIs(
+<span class="fstat-no" title="function not covered" >  async </span>getPOIs(
     location: [number, number],
     categories: string[],
     radius = <span class="branch-0 cbranch-no" title="branch not covered" >1000,</span> // meters
@@ -1564,7 +1569,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS POI API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1586,7 +1591,7 @@ class OpenRouteService {
   /**
    * Calculate route matrix (multiple origins to multiple destinations)
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync getMatrix(
+<span class="fstat-no" title="function not covered" >  async </span>getMatrix(
     locations: [number, number][],
     profile: ORSProfile = <span class="branch-0 cbranch-no" title="branch not covered" >'foot-walking',</span>
     metrics: ('distance' | 'duration')[] = <span class="branch-0 cbranch-no" title="branch not covered" >['duration', 'distance'],</span>
@@ -1613,7 +1618,7 @@ class OpenRouteService {
         signal: AbortSignal.timeout(this.config.timeout),
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (!response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!response.ok) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error(`ORS Matrix API error: ${response.status} ${response.statusText}`);</span>
       }
 &nbsp;
@@ -1733,14 +1738,14 @@ class OpenRouteService {
   /**
    * Update configuration
    */
-<span class="fstat-no" title="function not covered" >  up</span>dateConfig(config: Partial&lt;ORSConfig&gt;): void {
+<span class="fstat-no" title="function not covered" >  updateConfig(</span>config: Partial&lt;ORSConfig&gt;): void {
 <span class="cstat-no" title="statement not covered" >    this.config = { ...this.config, ...config };</span>
   }
 &nbsp;
   /**
    * Clear cache
    */
-<span class="fstat-no" title="function not covered" >  as</span>ync clearCache(): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>clearCache(): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await offlineStorage.clearCache();</span>
 <span class="cstat-no" title="statement not covered" >      this.cache.clear();</span>
@@ -1761,22 +1766,21 @@ export const orsService = new OpenRouteService({
 export default orsService;
 &nbsp;</pre></td></tr></table></pre>
 
-      <div class="push"></div>
-      <!-- for sticky footer -->
-    </div>
-    <!-- /wrapper -->
-    <div class="footer quiet pad2 space-top1 center small">
-      Code coverage generated by
-      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2025-10-08T20:36:02.866Z
-    </div>
-    <script src="../prettify.js"></script>
-    <script>
-      window.onload = function () {
-        prettyPrint();
-      };
-    </script>
-    <script src="../sorter.js"></script>
-    <script src="../block-navigation.js"></script>
-  </body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-09T00:32:30.297Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
 </html>
+    
