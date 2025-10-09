@@ -26,6 +26,7 @@
     "test:full": "npm run bun:test:ci && jest __tests__/",
     "bun:test:ci": "bash ./scripts/bun-test.sh --ci",
     "bun:test:watch": "bash ./scripts/bun-test.sh --watch",
+  "test:concurrent": "bash ./scripts/run-tests-concurrent.sh",
     "demo:routing": "expo start --dev-client",
     "demo:offline": "node demo-offline-monitoring.js",
     "demo:integration": "node demo-integration.js",
@@ -114,7 +115,8 @@
   "rimraf": "^4.0.0",
     "ts-jest": "^29.4.4",
     "tsx": "^4.20.6",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "jest-junit": "^13.0.0"
   },
   "private": true
 }

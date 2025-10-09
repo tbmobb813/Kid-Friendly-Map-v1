@@ -66,6 +66,8 @@ describe('Array and Object Processing (Performance Critical)', () => {
 
     expect(safePlaygrounds.length).toBeGreaterThan(0);
     console.log(`Bun: Filtered ${locations.length} locations in ${end - start}ms`);
-    expect(end - start).toBeLessThan(50); // Should be very fast
+  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+  const maxFilterTime = 50 * PERF_TIME_MULTIPLIER;
+  expect(end - start).toBeLessThan(maxFilterTime); // Should be very fast
   });
 });
