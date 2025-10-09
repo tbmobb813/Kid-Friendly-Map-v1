@@ -371,13 +371,10 @@ export default function MapScreen() {
     router.push(`/(tabs)/transit` as any);
   };
 
-<<<<<<< HEAD
   const handleAdvancedRouteSelect = (unifiedRoute: any) => {
     selectUnifiedRoute(unifiedRoute);
     router.push(`/(tabs)/transit` as any);
-=======
     router.push('/(tabs)/transit');
->>>>>>> feat/transit
   };
 
   const handleSearchPress = () => {
