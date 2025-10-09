@@ -1,64 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Code coverage report for hooks/useSafeZoneMonitor.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-      .coverage-summary .sorter {
-        background-image: url(../sort-arrow-sprite.png);
-      }
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
     </style>
-  </head>
-
-  <body>
-    <div class="wrapper">
-      <div class="pad1">
-        <h1>
-          <a href="../index.html">All files</a> /
-          <a href="index.html">hooks</a> useSafeZoneMonitor.ts
-        </h1>
-        <div class="clearfix">
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Statements</span>
-            <span class="fraction">0/132</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Branches</span>
-            <span class="fraction">0/66</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Functions</span>
-            <span class="fraction">0/26</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Lines</span>
-            <span class="fraction">0/123</span>
-          </div>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">hooks</a> useSafeZoneMonitor.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/140</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/51</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/26</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/130</span>
+            </div>
+        
+            
         </div>
         <p class="quiet">
-          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
-          <em>p</em> or <em>k</em> for the previous block.
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-          <div class="quiet">
-            Filter:
-            <input type="search" id="fileSearch" />
-          </div>
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
         </template>
-      </div>
-      <div class="status-line low"></div>
-      <pre><table class="coverage">
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -405,14 +409,14 @@
 <a name='L344'></a><a href='#L344'>344</a>
 <a name='L345'></a><a href='#L345'>345</a>
 <a name='L346'></a><a href='#L346'>346</a>
-<a name='L347'></a><a href='#L347'>347</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L347'></a><a href='#L347'>347</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -751,14 +755,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, useEffect, useRef } from 'react';
-import * as Location from 'expo-location';
-import { Platform, Alert } from 'react-native';
-import { useParentalStore } from '@/stores/parentalStore';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { useState, useEffect, useRef } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import * as Location from 'expo-location';</span>
+<span class="cstat-no" title="statement not covered" >import { Platform, Alert } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import { useParentalStore } from '@/stores/parentalStore';</span>
 import { SafeZone } from '@/types/parental';
-import { showNotification, requestNotificationPermission } from '@/utils/notifications';
-import { startGeofencing } from '@/geofence';
-import Config from '@/utils/config';
+<span class="cstat-no" title="statement not covered" >import { showNotification, requestNotificationPermission } from '@/utils/notifications';</span>
+<span class="cstat-no" title="statement not covered" >import { startGeofencing } from '@/geofence';</span>
+<span class="cstat-no" title="statement not covered" >import Config from '@/utils/config';</span>
 &nbsp;
 type SafeZoneEvent = {
   safeZone: SafeZone;
@@ -792,7 +796,7 @@ const calculateDistance = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >  return R * c;</span>
 };
 &nbsp;
-export const useSafeZoneMonitor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >useSafeZoneMonitor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
   const { safeZones, settings, dashboardData, saveDashboardData } = <span class="cstat-no" title="statement not covered" >useParentalStore();</span>
   const [isMonitoring, setIsMonitoring] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const [currentLocation, setCurrentLocation] = <span class="cstat-no" title="statement not covered" >useState&lt;LocationState | null&gt;(null);</span>
@@ -802,11 +806,11 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   const geofencingStarted = <span class="cstat-no" title="statement not covered" >useRef(false);</span>
 &nbsp;
   // Initialize safe zone states
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (currentLocation &amp;&amp; safeZones.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (currentLocation &amp;&amp; safeZones.length &gt; 0) {</span>
       const initialStates: Record&lt;string, boolean&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
 <span class="cstat-no" title="statement not covered" >      safeZones.forEach(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (zone.isActive) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (zone.isActive) {</span>
           const distance = <span class="cstat-no" title="statement not covered" >calculateDistance(</span>
             currentLocation.latitude,
             currentLocation.longitude,
@@ -821,19 +825,19 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   }, [currentLocation, safeZones]);
 &nbsp;
   // Send notification for safe zone events
-  const sendSafeZoneNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (event: SafeZoneEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!settings.safeZoneAlerts) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const sendSafeZoneNotification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(event: SafeZoneEvent) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!settings.safeZoneAlerts) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const { safeZone, type } = <span class="cstat-no" title="statement not covered" >event;</span>
     const shouldNotify =
 <span class="cstat-no" title="statement not covered" >      type === 'entry' ? safeZone.notifications.onEntry : safeZone.notifications.onExit;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!shouldNotify) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!shouldNotify) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     // Prevent spam notifications (minimum 5 minutes between same zone notifications)
     const lastTime = <span class="cstat-no" title="statement not covered" >lastNotificationTime.current[`${safeZone.id}_${type}`] || 0;</span>
     const now = <span class="cstat-no" title="statement not covered" >Date.now();</span>
-<span class="cstat-no" title="statement not covered" >    if (now - lastTime &lt; 5 * 60 * 1000) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (now - lastTime &lt; 5 * 60 * 1000) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    lastNotificationTime.current[`${safeZone.id}_${type}`] = now;</span>
 &nbsp;
@@ -862,12 +866,12 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   };
 &nbsp;
   // Check safe zone status for current location
-  const checkSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (location: LocationState) =&gt; {</span>
+  const checkSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(location: LocationState) =&gt; {</span>
     const newStates: Record&lt;string, boolean&gt; = <span class="cstat-no" title="statement not covered" >{};</span>
     const events: SafeZoneEvent[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    safeZones.forEach(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (!zone.isActive) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!zone.isActive) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
       const distance = <span class="cstat-no" title="statement not covered" >calculateDistance(</span>
         location.latitude,
@@ -892,7 +896,7 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
             longitude: location.longitude,
           },
         });
-      } else <span class="cstat-no" title="statement not covered" >if (!isInside &amp;&amp; wasInside) {</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (!isInside &amp;&amp; wasInside) {</span>
 <span class="cstat-no" title="statement not covered" >        events.push({</span>
           safeZone: zone,
           type: 'exit',
@@ -914,14 +918,14 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   };
 &nbsp;
   // Start monitoring
-  const startMonitoring = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (isMonitoring) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const startMonitoring = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (isMonitoring) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Request permissions
 <span class="cstat-no" title="statement not covered" >      if (Platform.OS !== 'web') {</span>
         const { status: foregroundStatus } = <span class="cstat-no" title="statement not covered" >await Location.requestForegroundPermissionsAsync();</span>
-<span class="cstat-no" title="statement not covered" >        if (foregroundStatus !== 'granted') {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (foregroundStatus !== 'granted') {</span>
 <span class="cstat-no" title="statement not covered" >          Alert.alert(</span>
             'Location Permission Required',
             'Safe zone monitoring requires location access to work properly.',
@@ -932,7 +936,7 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
 &nbsp;
         // Request background permissions for better monitoring
         const { status: backgroundStatus } = <span class="cstat-no" title="statement not covered" >await Location.requestBackgroundPermissionsAsync();</span>
-<span class="cstat-no" title="statement not covered" >        if (backgroundStatus !== 'granted') {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (backgroundStatus !== 'granted') {</span>
 <span class="cstat-no" title="statement not covered" >          console.log('Background location permission not granted, monitoring will be limited');</span>
         }
 &nbsp;
@@ -968,7 +972,7 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
 <span class="cstat-no" title="statement not covered" >      setCurrentLocation(initialLocation);</span>
 <span class="cstat-no" title="statement not covered" >      await checkSafeZones(initialLocation);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (</span>
         Platform.OS !== 'web' &amp;&amp;
         Config.FEATURES.GEOFENCING &amp;&amp;
         safeZones.some(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span> &amp;&amp;
@@ -984,7 +988,7 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
               radius: zone.radius,
             }));
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          if (regions.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >          <span class="missing-if-branch" title="if path not taken" >I</span>if (regions.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >            await startGeofencing(regions);</span>
 <span class="cstat-no" title="statement not covered" >            geofencingStarted.current = true;</span>
 <span class="cstat-no" title="statement not covered" >            console.log('Geofencing initialized for safe zones');</span>
@@ -1033,7 +1037,7 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
         );
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        locationSubscription.current = {</span>
-          remove: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigator.geolocation.clearWatch(watchId),</span>
+          remove: <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >navigator.geolocation.clearWatch(watchId),</span>
         } as Location.LocationSubscription;
       }
 &nbsp;
@@ -1046,8 +1050,8 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   };
 &nbsp;
   // Stop monitoring
-  const stopMonitoring = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (locationSubscription.current) {</span>
+  const stopMonitoring = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (locationSubscription.current) {</span>
 <span class="cstat-no" title="statement not covered" >      locationSubscription.current.remove();</span>
 <span class="cstat-no" title="statement not covered" >      locationSubscription.current = null;</span>
     }
@@ -1057,8 +1061,8 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   };
 &nbsp;
   // Get current safe zone status
-  const getCurrentSafeZoneStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!currentLocation) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+  const getCurrentSafeZoneStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!currentLocation) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
     const activeSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >zone.isActive)</span>;</span>
     const insideZones = <span class="cstat-no" title="statement not covered" >activeSafeZones.filter(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >safeZoneStates[zone.id])</span>;</span>
@@ -1073,17 +1077,17 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
   };
 &nbsp;
   // Cleanup on unmount
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      stopMonitoring();</span>
     };
   }, []);
 &nbsp;
   // Auto-start monitoring when safe zones are available and settings allow
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (settings.safeZoneAlerts &amp;&amp; safeZones.length &gt; 0 &amp;&amp; !isMonitoring) {</span>
 <span class="cstat-no" title="statement not covered" >      startMonitoring();</span>
-    } else <span class="cstat-no" title="statement not covered" >if ((!settings.safeZoneAlerts || safeZones.length === 0) &amp;&amp; isMonitoring) {</span>
+    } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if ((!settings.safeZoneAlerts || safeZones.length === 0) &amp;&amp; isMonitoring) {</span>
 <span class="cstat-no" title="statement not covered" >      stopMonitoring();</span>
     }
   }, [settings.safeZoneAlerts, safeZones.length]);
@@ -1099,22 +1103,21 @@ export const useSafeZoneMonitor = <span class="cstat-no" title="statement not co
 };
 &nbsp;</pre></td></tr></table></pre>
 
-      <div class="push"></div>
-      <!-- for sticky footer -->
-    </div>
-    <!-- /wrapper -->
-    <div class="footer quiet pad2 space-top1 center small">
-      Code coverage generated by
-      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2025-10-08T20:36:02.866Z
-    </div>
-    <script src="../prettify.js"></script>
-    <script>
-      window.onload = function () {
-        prettyPrint();
-      };
-    </script>
-    <script src="../sorter.js"></script>
-    <script src="../block-navigation.js"></script>
-  </body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-09T00:32:30.297Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
 </html>
+    
