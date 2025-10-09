@@ -70,10 +70,10 @@ jobs:
           node-version: 20
       - name: Install dependencies (npm)
         run: npm ci
-      - name: Run bun tests (produce junit)
+      - name: Run bun smoke tests (produce junit)
         env:
           JEST_JUNIT_OUTPUT: bun-junit.xml
-        run: npm run test:bun -- --colors --reporters=default --reporters=jest-junit | tee bun.log
+        run: npm run test:bun -- --config=jest.bun.smoke.config.cjs --colors --reporters=default --reporters=jest-junit | tee bun.log
       - name: Upload bun log
         uses: actions/upload-artifact@v4
         with:
@@ -104,3 +104,11 @@ jobs:
           tail -n 200 logs/server-log/server.log || true
           echo "--- BUN ---"
           tail -n 200 logs/bun-log/bun.log || true
+      - name: Merge junit XMLs
+        run: |
+          node scripts/junit-merge.js merged-junit.xml logs/frontend-junit/frontend-junit.xml logs/server-junit/server-junit.xml logs/bun-junit/bun-junit.xml || true
+      - name: Upload merged junit
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-junit
+          path: merged-junit.xml
