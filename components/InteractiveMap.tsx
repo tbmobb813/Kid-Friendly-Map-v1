@@ -146,11 +146,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         </View>
       )}
 
-      {showTransitStations && (
-        <View>
-          <Text>Transit stations shown</Text>
-        </View>
-      )}
+      {/* Removed placeholder message for transit stations */}
     </Animated.View>
   );
 };
