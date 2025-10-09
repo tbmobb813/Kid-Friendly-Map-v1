@@ -45,7 +45,6 @@ You'll see something like:
 ### 3. 📱 Enable USB Debugging (Critical!)
 
 1. On your Android phone:
-
    - Go to **Settings** → **About phone**
 
    - Tap **Build number** 7 times rapidly
@@ -53,13 +52,11 @@ You'll see something like:
    - You'll see "You are now a developer!"
 
 1. Go back and find **Developer options**:
-
    - Usually in: Settings → System → Developer options
 
    - OR: Settings → Developer options
 
 1. Enable these settings:
-
    - ✅ **USB debugging** (REQUIRED)
 
    - ✅ **Stay awake** (helpful)
@@ -86,14 +83,14 @@ adb devices
 
 Before (what you have now):
 
-``` text
+```text
 Bus 001 Device 005: ID 0bda:b023 Realtek Semiconductor Corp.
 Bus 001 Device 004: ID 05e3:0610 Genesys Logic, Inc. Hub
 ```
 
 After (what you should see):
 
-``` text
+```text
 Bus 001 Device 006: ID 04e8:6860 Samsung Electronics Co., Ltd Galaxy (MTP)
                     ^^^^^^ This is a new device! (ID will vary)
 ```
@@ -102,21 +99,21 @@ Bus 001 Device 006: ID 04e8:6860 Samsung Electronics Co., Ltd Galaxy (MTP)
 
 Before (what you have now):
 
-``` text
+```text
 List of devices attached
 [empty]
 ```
 
 After (what you should see):
 
-``` text
+```text
 List of devices attached
 R58M4XXXXXX    unauthorized    ← First time, needs authorization
 ```
 
 Then after tapping "Allow" on your phone:
 
-``` text
+```text
 List of devices attached
 R58M4XXXXXX    device    ← Ready to use!
 ```
@@ -140,7 +137,7 @@ If after trying everything your device won't connect, let's use an Android emula
    ```bash
    # List available
    emulator -list-avds
-   
+
    # Start one (replace with actual name)
    emulator -avd Pixel_5_API_33 &
    ```
@@ -181,7 +178,6 @@ emulator -avd Pixel_5_API_33 &
 If USB just won't work, you can use WiFi!
 
 1. **Enable Wireless Debugging on phone:**
-
    - Settings → Developer options → Wireless debugging → ON
 
    - Tap "Pair device with pairing code"
@@ -193,10 +189,10 @@ If USB just won't work, you can use WiFi!
    ```bash
    adb pair <IP>:<PORT>
    # Enter the pairing code when prompted
-   
+
    # Then connect
    adb connect <IP>:<PORT>
-   
+
    # Verify
    adb devices
    ```

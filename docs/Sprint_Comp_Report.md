@@ -86,7 +86,7 @@
 
 ## 📁 New Modular Architecture Structure
 
-``` text
+```text
 src/
 ├── modules/
 │   ├── core/                 # Always loaded

@@ -46,7 +46,6 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 ### Steps to Get Device Connected
 
 1. **On your Android phone RIGHT NOW:**
-
    - Plug in USB cable
 
    - Pull down notification shade (swipe from top)
@@ -59,14 +58,14 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
 
 1. **Enable Developer Mode:**
 
-   ``` text
+   ```text
    Settings → About phone → Tap "Build number" 7 times
    You'll see "You are now a developer!"
    ```
 
 1. **Enable USB Debugging:**
 
-   ``` text
+   ```text
    Settings → Developer options → Toggle ON "USB debugging"
    ```
 
@@ -79,7 +78,6 @@ The "Couldn't find the prevent remove context" error is **GONE** after downgradi
    ```
 
 1. **Accept USB debugging on phone:**
-
    - Popup will appear: "Allow USB debugging?"
 
    - Check "Always allow from this computer"
@@ -224,28 +222,24 @@ Or let me know and I can help debug the store implementation!
 
 **Try in this order:**
 
-1. **OPTION 1 first** (2 minutes) - Fix USB mode on phone  
-
-   - If your device appears in `adb devices`, you're golden!  
+1. **OPTION 1 first** (2 minutes) - Fix USB mode on phone
+   - If your device appears in `adb devices`, you're golden!
 
    - Run `npx expo run:android` and you're done!
 
-1. **If USB fails, try OPTION 4** (5 minutes) - Use Expo Go  
-
-   - At least confirm navigation fix works  
+1. **If USB fails, try OPTION 4** (5 minutes) - Use Expo Go
+   - At least confirm navigation fix works
 
    - Test app functionality
 
-1. **Then fix disk space (OPTION 2)** if you want emulator  
+1. **Then fix disk space (OPTION 2)** if you want emulator
+   - Clean caches to free 3GB
 
-   - Clean caches to free 3GB  
-
-   - Create smaller emulator  
+   - Create smaller emulator
 
    - Run full native build
 
-1. **Meanwhile, let's fix the CategoryStore error**  
-
+1. **Meanwhile, let's fix the CategoryStore error**
    - This is blocking your app regardless of device
 
 ---
@@ -282,7 +276,7 @@ Or let me know and I can help debug the store implementation!
 
 **Right now, do these 3 things:**
 
-1. **Change your phone's USB mode to "File Transfer"**  
+1. **Change your phone's USB mode to "File Transfer"**
 
    (Pull down notification, tap USB notification, select File Transfer)
 
@@ -295,7 +289,6 @@ Or let me know and I can help debug the store implementation!
    ```
 
 1. **If that doesn't work in 2 minutes, tell me and we'll:**
-
    - Use Expo Go to test navigation works
 
    - Fix the CategoryStore error
@@ -332,7 +325,7 @@ Or let me know and I can help debug the store implementation!
 
 - A) Keep trying USB device connection
 
-- B) Free up space for emulator  
+- B) Free up space for emulator
 
 - C) Use Expo Go to test current fix
 

@@ -68,7 +68,7 @@ export async function withRetry<T>(
   for (let attempt = 1; attempt <= options.maxAttempts; attempt++) {
     try {
       log.debug(`Attempting ${context} (attempt ${attempt}/${options.maxAttempts})`);
-  const result = await Promise.resolve(operation());
+      const result = await Promise.resolve(operation());
 
       if (attempt > 1) {
         log.info(`${context} succeeded after ${attempt} attempts`);

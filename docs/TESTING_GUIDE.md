@@ -382,7 +382,7 @@ This guide covers comprehensive testing procedures for the KidMap application, i
 
 When reporting bugs, include:
 
-``` text
+```text
 **Bug Title:** Brief description
 
 **Environment:**

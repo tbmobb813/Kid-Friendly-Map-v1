@@ -1,10 +1,10 @@
 /**
  * Trip Planner Component Template
- * 
+ *
  * This template provides a starting point for creating kid-friendly trip planner
  * components for any city's transit system. Based on the Kid Trip Planner component
  * but adaptable to any transit system worldwide.
- * 
+ *
  * INSTRUCTIONS:
  * 1. Copy this file to components/YourCityTripPlanner.tsx (e.g., LondonTripPlanner.tsx)
  * 2. Replace all "REPLACE_" placeholders with your city's information
@@ -14,20 +14,20 @@
  * 6. Add city-specific trip planning features and educational content
  */
 
-import React, { useState, useEffect } from "react";
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  ScrollView, 
-  TextInput, 
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
   TouchableOpacity,
-  Alert 
-} from "react-native";
-import { 
-  MapPin, 
-  Navigation, 
-  Clock, 
+  Alert,
+} from 'react-native';
+import {
+  MapPin,
+  Navigation,
+  Clock,
   Star,
   Accessibility,
   AlertTriangle,
@@ -35,21 +35,21 @@ import {
   ArrowRight,
   RotateCcw,
   Calendar,
-  User
-} from "lucide-react-native";
-import Colors from "@/constants/colors";
+  User,
+} from 'lucide-react-native';
+import Colors from '@/constants/colors';
 
 type TripPreferences = {
-  prioritize: "fastest" | "easiest" | "accessible" | "educational";
+  prioritize: 'fastest' | 'easiest' | 'accessible' | 'educational';
   avoidTransfers: boolean;
   accessibleOnly: boolean;
-  timePreference: "now" | "depart" | "arrive";
+  timePreference: 'now' | 'depart' | 'arrive';
   customTime?: Date;
 };
 
 type RouteStep = {
   id: string;
-  type: "walk" | "rail" | "bus" | "transfer" | "wait";
+  type: 'walk' | 'rail' | 'bus' | 'transfer' | 'wait';
   instruction: string;
   duration: number; // minutes
   distance?: number; // meters
@@ -57,7 +57,7 @@ type RouteStep = {
     id: string;
     name: string;
     color: string;
-    type: "rail" | "bus" | "tram" | "ferry";
+    type: 'rail' | 'bus' | 'tram' | 'ferry';
   };
   from?: string;
   to?: string;
@@ -87,17 +87,17 @@ type YourCityTripPlannerProps = {
 };
 
 const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
-  initialFrom = "",
-  initialTo = "",
-  onRouteSelect
+  initialFrom = '',
+  initialTo = '',
+  onRouteSelect,
 }) => {
   const [fromLocation, setFromLocation] = useState(initialFrom);
   const [toLocation, setToLocation] = useState(initialTo);
   const [preferences, setPreferences] = useState<TripPreferences>({
-    prioritize: "easiest",
+    prioritize: 'easiest',
     avoidTransfers: false,
     accessibleOnly: false,
-    timePreference: "now"
+    timePreference: 'now',
   });
   const [routes, setRoutes] = useState<TripRoute[]>([]);
   const [loading, setLoading] = useState(false);
@@ -106,10 +106,7 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
 
   const planTrip = async () => {
     if (!fromLocation.trim() || !toLocation.trim()) {
-      Alert.alert(
-        "REPLACE_MISSING_INFO_TITLE",
-        "REPLACE_MISSING_INFO_MESSAGE"
-      );
+      Alert.alert('REPLACE_MISSING_INFO_TITLE', 'REPLACE_MISSING_INFO_MESSAGE');
       return;
     }
 
@@ -125,13 +122,13 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
         // Add any additional parameters your API needs
       };
 
-      const response = await fetch("REPLACE_TRIP_PLANNING_API_URL", {
-        method: "POST",
+      const response = await fetch('REPLACE_TRIP_PLANNING_API_URL', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           // Add any required API keys or headers
         },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -139,42 +136,46 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
       }
 
       const data = await response.json();
-      
+
       // Transform API response to match TripRoute type
-      const transformedRoutes: TripRoute[] = data.routes?.map((route: any) => ({
-        id: route.REPLACE_ROUTE_ID_FIELD,
-        totalDuration: route.REPLACE_DURATION_FIELD,
-        totalWalkingTime: route.REPLACE_WALKING_TIME_FIELD,
-        transferCount: route.REPLACE_TRANSFERS_FIELD || 0,
-        steps: route.REPLACE_STEPS_FIELD?.map((step: any) => ({
-          id: step.REPLACE_STEP_ID_FIELD,
-          type: step.REPLACE_STEP_TYPE_FIELD,
-          instruction: step.REPLACE_INSTRUCTION_FIELD,
-          duration: step.REPLACE_STEP_DURATION_FIELD,
-          distance: step.REPLACE_DISTANCE_FIELD,
-          line: step.REPLACE_LINE_FIELD ? {
-            id: step.REPLACE_LINE_FIELD.REPLACE_LINE_ID,
-            name: step.REPLACE_LINE_FIELD.REPLACE_LINE_NAME,
-            color: step.REPLACE_LINE_FIELD.REPLACE_LINE_COLOR,
-            type: step.REPLACE_LINE_FIELD.REPLACE_LINE_TYPE,
-          } : undefined,
-          from: step.REPLACE_FROM_FIELD,
-          to: step.REPLACE_TO_FIELD,
-          accessibility: {
-            wheelchairAccessible: step.REPLACE_ACCESSIBLE_FIELD === true,
-            elevatorRequired: step.REPLACE_ELEVATOR_FIELD === true,
-            kidFriendlyNote: step.REPLACE_KID_NOTE_FIELD,
-          },
-          educationalNote: step.REPLACE_EDUCATIONAL_FIELD,
-        })) || [],
-        accessibilityScore: route.REPLACE_ACCESSIBILITY_SCORE_FIELD || 3,
-        kidFriendlyScore: route.REPLACE_KID_SCORE_FIELD || 3,
-        recommendation: route.REPLACE_RECOMMENDATION_FIELD || "",
-      })) || [];
+      const transformedRoutes: TripRoute[] =
+        data.routes?.map((route: any) => ({
+          id: route.REPLACE_ROUTE_ID_FIELD,
+          totalDuration: route.REPLACE_DURATION_FIELD,
+          totalWalkingTime: route.REPLACE_WALKING_TIME_FIELD,
+          transferCount: route.REPLACE_TRANSFERS_FIELD || 0,
+          steps:
+            route.REPLACE_STEPS_FIELD?.map((step: any) => ({
+              id: step.REPLACE_STEP_ID_FIELD,
+              type: step.REPLACE_STEP_TYPE_FIELD,
+              instruction: step.REPLACE_INSTRUCTION_FIELD,
+              duration: step.REPLACE_STEP_DURATION_FIELD,
+              distance: step.REPLACE_DISTANCE_FIELD,
+              line: step.REPLACE_LINE_FIELD
+                ? {
+                    id: step.REPLACE_LINE_FIELD.REPLACE_LINE_ID,
+                    name: step.REPLACE_LINE_FIELD.REPLACE_LINE_NAME,
+                    color: step.REPLACE_LINE_FIELD.REPLACE_LINE_COLOR,
+                    type: step.REPLACE_LINE_FIELD.REPLACE_LINE_TYPE,
+                  }
+                : undefined,
+              from: step.REPLACE_FROM_FIELD,
+              to: step.REPLACE_TO_FIELD,
+              accessibility: {
+                wheelchairAccessible: step.REPLACE_ACCESSIBLE_FIELD === true,
+                elevatorRequired: step.REPLACE_ELEVATOR_FIELD === true,
+                kidFriendlyNote: step.REPLACE_KID_NOTE_FIELD,
+              },
+              educationalNote: step.REPLACE_EDUCATIONAL_FIELD,
+            })) || [],
+          accessibilityScore: route.REPLACE_ACCESSIBILITY_SCORE_FIELD || 3,
+          kidFriendlyScore: route.REPLACE_KID_SCORE_FIELD || 3,
+          recommendation: route.REPLACE_RECOMMENDATION_FIELD || '',
+        })) || [];
 
       setRoutes(transformedRoutes);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "REPLACE_GENERIC_ERROR_MESSAGE");
+      setError(err instanceof Error ? err.message : 'REPLACE_GENERIC_ERROR_MESSAGE');
     } finally {
       setLoading(false);
     }
@@ -188,15 +189,15 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
 
   const getStepIcon = (type: string, lineType?: string) => {
     switch (type) {
-      case "walk":
+      case 'walk':
         return <User size={16} color="#666666" />;
-      case "wait":
+      case 'wait':
         return <Clock size={16} color="#FF9800" />;
-      case "transfer":
+      case 'transfer':
         return <ArrowRight size={16} color="#2196F3" />;
-      case "bus":
+      case 'bus':
         return <MapPin size={16} color="#4CAF50" />;
-      case "rail":
+      case 'rail':
       default:
         return <Navigation size={16} color={Colors.primary} />;
     }
@@ -215,9 +216,9 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
   };
 
   const getRouteQualityColor = (score: number): string => {
-    if (score >= 4) return "#4CAF50";
-    if (score >= 3) return "#FF9800";
-    return "#F44336";
+    if (score >= 4) return '#4CAF50';
+    if (score >= 3) return '#FF9800';
+    return '#F44336';
   };
 
   const renderPreferencesPanel = () => {
@@ -226,29 +227,67 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
     return (
       <View style={styles.preferencesPanel}>
         <Text style={styles.preferencesTitle}>REPLACE_PREFERENCES_TITLE</Text>
-        
+
         <View style={styles.preferenceSection}>
           <Text style={styles.preferenceSectionTitle}>REPLACE_PRIORITIZE_TITLE</Text>
           <View style={styles.preferenceOptions}>
             {[
-              { key: "fastest", label: "REPLACE_FASTEST_LABEL", icon: <Clock size={16} color={preferences.prioritize === "fastest" ? "#FFFFFF" : Colors.primary} /> },
-              { key: "easiest", label: "REPLACE_EASIEST_LABEL", icon: <Star size={16} color={preferences.prioritize === "easiest" ? "#FFFFFF" : Colors.primary} /> },
-              { key: "accessible", label: "REPLACE_ACCESSIBLE_LABEL", icon: <Accessibility size={16} color={preferences.prioritize === "accessible" ? "#FFFFFF" : Colors.primary} /> },
-              { key: "educational", label: "REPLACE_EDUCATIONAL_LABEL", icon: <CheckCircle size={16} color={preferences.prioritize === "educational" ? "#FFFFFF" : Colors.primary} /> },
-            ].map(option => (
+              {
+                key: 'fastest',
+                label: 'REPLACE_FASTEST_LABEL',
+                icon: (
+                  <Clock
+                    size={16}
+                    color={preferences.prioritize === 'fastest' ? '#FFFFFF' : Colors.primary}
+                  />
+                ),
+              },
+              {
+                key: 'easiest',
+                label: 'REPLACE_EASIEST_LABEL',
+                icon: (
+                  <Star
+                    size={16}
+                    color={preferences.prioritize === 'easiest' ? '#FFFFFF' : Colors.primary}
+                  />
+                ),
+              },
+              {
+                key: 'accessible',
+                label: 'REPLACE_ACCESSIBLE_LABEL',
+                icon: (
+                  <Accessibility
+                    size={16}
+                    color={preferences.prioritize === 'accessible' ? '#FFFFFF' : Colors.primary}
+                  />
+                ),
+              },
+              {
+                key: 'educational',
+                label: 'REPLACE_EDUCATIONAL_LABEL',
+                icon: (
+                  <CheckCircle
+                    size={16}
+                    color={preferences.prioritize === 'educational' ? '#FFFFFF' : Colors.primary}
+                  />
+                ),
+              },
+            ].map((option) => (
               <TouchableOpacity
                 key={option.key}
                 style={[
                   styles.preferenceOption,
-                  preferences.prioritize === option.key && styles.activePreferenceOption
+                  preferences.prioritize === option.key && styles.activePreferenceOption,
                 ]}
                 onPress={() => setPreferences({ ...preferences, prioritize: option.key as any })}
               >
                 {option.icon}
-                <Text style={[
-                  styles.preferenceOptionText,
-                  preferences.prioritize === option.key && styles.activePreferenceOptionText
-                ]}>
+                <Text
+                  style={[
+                    styles.preferenceOptionText,
+                    preferences.prioritize === option.key && styles.activePreferenceOptionText,
+                  ]}
+                >
                   {option.label}
                 </Text>
               </TouchableOpacity>
@@ -260,37 +299,39 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
           <Text style={styles.preferenceSectionTitle}>REPLACE_OPTIONS_TITLE</Text>
           <View style={styles.toggleOptions}>
             <TouchableOpacity
-              style={[
-                styles.toggleOption,
-                preferences.avoidTransfers && styles.activeToggleOption
-              ]}
-              onPress={() => setPreferences({ 
-                ...preferences, 
-                avoidTransfers: !preferences.avoidTransfers 
-              })}
+              style={[styles.toggleOption, preferences.avoidTransfers && styles.activeToggleOption]}
+              onPress={() =>
+                setPreferences({
+                  ...preferences,
+                  avoidTransfers: !preferences.avoidTransfers,
+                })
+              }
             >
-              <Text style={[
-                styles.toggleOptionText,
-                preferences.avoidTransfers && styles.activeToggleOptionText
-              ]}>
+              <Text
+                style={[
+                  styles.toggleOptionText,
+                  preferences.avoidTransfers && styles.activeToggleOptionText,
+                ]}
+              >
                 REPLACE_AVOID_TRANSFERS_LABEL
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[
-                styles.toggleOption,
-                preferences.accessibleOnly && styles.activeToggleOption
-              ]}
-              onPress={() => setPreferences({ 
-                ...preferences, 
-                accessibleOnly: !preferences.accessibleOnly 
-              })}
+              style={[styles.toggleOption, preferences.accessibleOnly && styles.activeToggleOption]}
+              onPress={() =>
+                setPreferences({
+                  ...preferences,
+                  accessibleOnly: !preferences.accessibleOnly,
+                })
+              }
             >
-              <Text style={[
-                styles.toggleOptionText,
-                preferences.accessibleOnly && styles.activeToggleOptionText
-              ]}>
+              <Text
+                style={[
+                  styles.toggleOptionText,
+                  preferences.accessibleOnly && styles.activeToggleOptionText,
+                ]}
+              >
                 REPLACE_ACCESSIBLE_ONLY_LABEL
               </Text>
             </TouchableOpacity>
@@ -306,7 +347,7 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
         {getStepIcon(step.type, step.line?.type)}
         {!isLast && <View style={styles.stepConnector} />}
       </View>
-      
+
       <View style={styles.stepContent}>
         <View style={styles.stepHeader}>
           <Text style={styles.stepInstruction}>{step.instruction}</Text>
@@ -356,9 +397,7 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
         <View style={styles.routeInfo}>
           <Text style={styles.routeDuration}>{formatDuration(route.totalDuration)}</Text>
           <View style={styles.routeMeta}>
-            <Text style={styles.routeMetaText}>
-              {route.transferCount} REPLACE_TRANSFERS_TEXT
-            </Text>
+            <Text style={styles.routeMetaText}>{route.transferCount} REPLACE_TRANSFERS_TEXT</Text>
             <Text style={styles.routeMetaText}>
               {formatDuration(route.totalWalkingTime)} REPLACE_WALKING_TEXT
             </Text>
@@ -368,13 +407,17 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
         <View style={styles.routeScores}>
           <View style={styles.scoreContainer}>
             <Accessibility size={12} color={getRouteQualityColor(route.accessibilityScore)} />
-            <Text style={[styles.scoreText, { color: getRouteQualityColor(route.accessibilityScore) }]}>
+            <Text
+              style={[styles.scoreText, { color: getRouteQualityColor(route.accessibilityScore) }]}
+            >
               {route.accessibilityScore}/5
             </Text>
           </View>
           <View style={styles.scoreContainer}>
             <Star size={12} color={getRouteQualityColor(route.kidFriendlyScore)} />
-            <Text style={[styles.scoreText, { color: getRouteQualityColor(route.kidFriendlyScore) }]}>
+            <Text
+              style={[styles.scoreText, { color: getRouteQualityColor(route.kidFriendlyScore) }]}
+            >
               {route.kidFriendlyScore}/5
             </Text>
           </View>
@@ -388,8 +431,8 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
       )}
 
       <View style={styles.routeSteps}>
-        {route.steps.map((step, stepIndex) => 
-          renderRouteStep(step, stepIndex, stepIndex === route.steps.length - 1)
+        {route.steps.map((step, stepIndex) =>
+          renderRouteStep(step, stepIndex, stepIndex === route.steps.length - 1),
         )}
       </View>
     </TouchableOpacity>
@@ -440,7 +483,7 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
             disabled={loading}
           >
             <Text style={styles.planButtonText}>
-              {loading ? "REPLACE_PLANNING_TEXT" : "REPLACE_PLAN_TRIP_BUTTON"}
+              {loading ? 'REPLACE_PLANNING_TEXT' : 'REPLACE_PLAN_TRIP_BUTTON'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -458,9 +501,7 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
 
         {routes.length > 0 && (
           <View style={styles.routesContainer}>
-            <Text style={styles.routesTitle}>
-              {routes.length} REPLACE_ROUTES_FOUND_TEXT
-            </Text>
+            <Text style={styles.routesTitle}>{routes.length} REPLACE_ROUTES_FOUND_TEXT</Text>
             {routes.map(renderRoute)}
           </View>
         )}
@@ -480,25 +521,25 @@ const YourCityTripPlanner: React.FC<YourCityTripPlannerProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   inputSection: {
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: '#E0E0E0',
   },
   locationInputs: {
     gap: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    width: "100%",
+    width: '100%',
   },
   locationInput: {
     flex: 1,
@@ -510,14 +551,14 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#F5F5F5",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 2,
-    borderColor: "#FFFFFF",
+    borderColor: '#FFFFFF',
   },
   actionButtons: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
     marginTop: 16,
   },
@@ -528,11 +569,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.primary,
-    alignItems: "center",
+    alignItems: 'center',
   },
   preferencesButtonText: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
   },
   planButton: {
@@ -541,25 +582,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     backgroundColor: Colors.primary,
-    alignItems: "center",
+    alignItems: 'center',
   },
   planButtonDisabled: {
-    backgroundColor: "#CCCCCC",
+    backgroundColor: '#CCCCCC',
   },
   planButtonText: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#FFFFFF",
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   preferencesPanel: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: '#E0E0E0',
     padding: 20,
   },
   preferencesTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 16,
   },
@@ -568,24 +609,24 @@ const styles = StyleSheet.create({
   },
   preferenceSectionTitle: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 8,
   },
   preferenceOptions: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
   },
   preferenceOption: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   activePreferenceOption: {
     backgroundColor: Colors.primary,
@@ -597,20 +638,20 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   activePreferenceOptionText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   toggleOptions: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
   },
   toggleOption: {
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   activeToggleOption: {
     backgroundColor: Colors.primary,
@@ -621,43 +662,43 @@ const styles = StyleSheet.create({
     color: Colors.text,
   },
   activeToggleOptionText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   resultsSection: {
     flex: 1,
     padding: 20,
   },
   errorContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 20,
   },
   errorText: {
     marginTop: 8,
     fontSize: 14,
-    color: "#F44336",
-    textAlign: "center",
+    color: '#F44336',
+    textAlign: 'center',
   },
   routesContainer: {
     marginBottom: 20,
   },
   routesTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 16,
   },
   routeCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   routeHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   routeInfo: {
@@ -665,12 +706,12 @@ const styles = StyleSheet.create({
   },
   routeDuration: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.primary,
     marginBottom: 4,
   },
   routeMeta: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 12,
   },
   routeMetaText: {
@@ -678,53 +719,53 @@ const styles = StyleSheet.create({
     color: Colors.textLight,
   },
   routeScores: {
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     gap: 4,
   },
   scoreContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 4,
   },
   scoreText: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   recommendation: {
-    backgroundColor: "#E3F2FD",
+    backgroundColor: '#E3F2FD',
     padding: 8,
     borderRadius: 6,
     marginBottom: 12,
   },
   recommendationText: {
     fontSize: 12,
-    color: "#1976D2",
-    fontStyle: "italic",
+    color: '#1976D2',
+    fontStyle: 'italic',
   },
   routeSteps: {
     gap: 8,
   },
   stepContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   stepIconContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginRight: 12,
   },
   stepConnector: {
     width: 1,
     height: 24,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: '#E0E0E0',
     marginTop: 4,
   },
   stepContent: {
     flex: 1,
   },
   stepHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginBottom: 4,
   },
   stepInstruction: {
@@ -736,78 +777,78 @@ const styles = StyleSheet.create({
   stepDuration: {
     fontSize: 12,
     color: Colors.textLight,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   lineInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 4,
   },
   lineIndicator: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 8,
   },
   lineText: {
     fontSize: 10,
-    color: "#FFFFFF",
-    fontWeight: "700",
+    color: '#FFFFFF',
+    fontWeight: '700',
   },
   lineName: {
     fontSize: 12,
     color: Colors.textLight,
   },
   educationalNote: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#FFF8E1",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF8E1',
     padding: 6,
     borderRadius: 4,
     marginBottom: 4,
   },
   educationalText: {
     fontSize: 11,
-    color: "#F57C00",
+    color: '#F57C00',
     marginLeft: 4,
     flex: 1,
   },
   kidNote: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#E8F5E8",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#E8F5E8',
     padding: 6,
     borderRadius: 4,
     marginBottom: 4,
   },
   kidNoteText: {
     fontSize: 11,
-    color: "#2E7D32",
+    color: '#2E7D32',
     marginLeft: 4,
     flex: 1,
   },
   accessibilityWarning: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#FFEBEE",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFEBEE',
     padding: 6,
     borderRadius: 4,
   },
   warningText: {
     fontSize: 11,
-    color: "#C62828",
+    color: '#C62828',
     marginLeft: 4,
     flex: 1,
   },
   emptyState: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 60,
   },
   emptyStateText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.textLight,
     marginTop: 16,
   },
@@ -815,7 +856,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.textLight,
     marginTop: 4,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
 
@@ -823,7 +864,7 @@ export default YourCityTripPlanner;
 
 /*
  * CUSTOMIZATION CHECKLIST:
- * 
+ *
  * □ Replace component name: YourCityTripPlanner -> LondonTripPlanner, TokyoTripPlanner, etc.
  * □ Update API endpoint: REPLACE_TRIP_PLANNING_API_URL
  * □ Map API request/response to match your trip planning service

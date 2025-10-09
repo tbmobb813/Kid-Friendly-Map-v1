@@ -11,8 +11,8 @@
       "id": "REPLACE_STATION_ID_1",
       "name": "REPLACE_STATION_NAME_1",
       "coordinates": {
-        "lat": 0.0000,
-        "lng": 0.0000
+        "lat": 0.0,
+        "lng": 0.0
       },
       "lines": ["REPLACE_LINE_1", "REPLACE_LINE_2"],
       "accessibility": {
@@ -22,11 +22,7 @@
         "tactileGuidance": true,
         "audioAnnouncements": true
       },
-      "facilities": [
-        "REPLACE_FACILITY_1",
-        "REPLACE_FACILITY_2",
-        "REPLACE_FACILITY_3"
-      ],
+      "facilities": ["REPLACE_FACILITY_1", "REPLACE_FACILITY_2", "REPLACE_FACILITY_3"],
       "exits": [
         {
           "name": "REPLACE_EXIT_1",
@@ -34,7 +30,7 @@
           "accessible": true
         },
         {
-          "name": "REPLACE_EXIT_2", 
+          "name": "REPLACE_EXIT_2",
           "description": "REPLACE_EXIT_2_DESCRIPTION",
           "accessible": false
         }
@@ -43,18 +39,15 @@
         "nickname": "REPLACE_NICKNAME_1",
         "funFact": "REPLACE_FUN_FACT_1",
         "safetyTip": "REPLACE_SAFETY_TIP_1",
-        "whatToSee": [
-          "REPLACE_WHAT_TO_SEE_1",
-          "REPLACE_WHAT_TO_SEE_2"
-        ]
+        "whatToSee": ["REPLACE_WHAT_TO_SEE_1", "REPLACE_WHAT_TO_SEE_2"]
       }
     },
     {
       "id": "REPLACE_STATION_ID_2",
-      "name": "REPLACE_STATION_NAME_2", 
+      "name": "REPLACE_STATION_NAME_2",
       "coordinates": {
-        "lat": 0.0000,
-        "lng": 0.0000
+        "lat": 0.0,
+        "lng": 0.0
       },
       "lines": ["REPLACE_LINE_2"],
       "accessibility": {
@@ -64,13 +57,11 @@
         "tactileGuidance": false,
         "audioAnnouncements": true
       },
-      "facilities": [
-        "REPLACE_FACILITY_4"
-      ],
+      "facilities": ["REPLACE_FACILITY_4"],
       "exits": [
         {
           "name": "REPLACE_EXIT_3",
-          "description": "REPLACE_EXIT_3_DESCRIPTION", 
+          "description": "REPLACE_EXIT_3_DESCRIPTION",
           "accessible": false
         }
       ],
@@ -78,9 +69,7 @@
         "nickname": "REPLACE_NICKNAME_2",
         "funFact": "REPLACE_FUN_FACT_2",
         "safetyTip": "REPLACE_SAFETY_TIP_2",
-        "whatToSee": [
-          "REPLACE_WHAT_TO_SEE_3"
-        ]
+        "whatToSee": ["REPLACE_WHAT_TO_SEE_3"]
       }
     }
   ],
@@ -98,7 +87,7 @@
     },
     {
       "stationId": "REPLACE_STATION_ID_1",
-      "line": "REPLACE_LINE_1", 
+      "line": "REPLACE_LINE_1",
       "direction": "REPLACE_DIRECTION_1",
       "destination": "REPLACE_DESTINATION_1",
       "arrivalTime": "2024-01-01T12:07:00Z",
@@ -110,7 +99,7 @@
     {
       "stationId": "REPLACE_STATION_ID_1",
       "line": "REPLACE_LINE_2",
-      "direction": "REPLACE_DIRECTION_2", 
+      "direction": "REPLACE_DIRECTION_2",
       "destination": "REPLACE_DESTINATION_2",
       "arrivalTime": "2024-01-01T12:05:00Z",
       "minutesAway": 5,
@@ -123,7 +112,7 @@
       "stationId": "REPLACE_STATION_ID_2",
       "line": "REPLACE_LINE_2",
       "direction": "REPLACE_DIRECTION_3",
-      "destination": "REPLACE_DESTINATION_3", 
+      "destination": "REPLACE_DESTINATION_3",
       "arrivalTime": "2024-01-01T12:03:00Z",
       "minutesAway": 3,
       "status": "approaching",
@@ -145,7 +134,7 @@
       "type": "information"
     },
     {
-      "id": "REPLACE_ALERT_ID_2", 
+      "id": "REPLACE_ALERT_ID_2",
       "title": "REPLACE_ALERT_TITLE_2",
       "description": "REPLACE_ALERT_DESCRIPTION_2",
       "kidFriendlyMessage": "REPLACE_KID_FRIENDLY_MESSAGE_2",
@@ -166,7 +155,7 @@
         "message": "REPLACE_STATUS_MESSAGE_1"
       },
       {
-        "id": "REPLACE_LINE_2", 
+        "id": "REPLACE_LINE_2",
         "status": "delays",
         "message": "REPLACE_STATUS_MESSAGE_2"
       }
@@ -201,7 +190,7 @@
       "stationName": "Shibuya",
       "lines": ["yamanote", "hanzomon"],
       "direction": "clockwise",
-      "destination": "Osaki", 
+      "destination": "Osaki",
       "platform": "Platform 1",
       "kidNote": "This train passes the famous Shibuya crossing!"
     },

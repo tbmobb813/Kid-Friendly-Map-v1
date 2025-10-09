@@ -8,7 +8,7 @@ async function getTrip(tripId) {
      FROM trips t
      LEFT JOIN routes r ON t.route_id = r.route_id
      WHERE t.trip_id = $1`,
-    [tripId]
+    [tripId],
   );
   return rows[0];
 }
@@ -21,7 +21,7 @@ async function getNextStopsForTrip(tripId, count = 3) {
      WHERE st.trip_id = $1
      ORDER BY st.stop_sequence
      LIMIT $2`,
-     [tripId, count]
+    [tripId, count],
   );
   return rows;
 }
@@ -31,9 +31,9 @@ async function getPolylineForShape(shapeId) {
     `SELECT shape_pt_lat, shape_pt_lon FROM shapes
      WHERE shape_id = $1
      ORDER BY shape_pt_sequence`,
-    [shapeId]
+    [shapeId],
   );
-  return rows.map(r => [Number(r.shape_pt_lat), Number(r.shape_pt_lon)]);
+  return rows.map((r) => [Number(r.shape_pt_lat), Number(r.shape_pt_lon)]);
 }
 
 module.exports = { getTrip, getNextStopsForTrip, getPolylineForShape, pool };

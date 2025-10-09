@@ -107,15 +107,15 @@ These are normal in Expo Go:
 
 ## ❌ KNOWN LIMITATIONS IN EXPO GO
 
-| Feature | Expo Go | Native Build Required |
-|---------|---------|----------------------|
-| Navigation | ✅ Works | ✅ Works |
-| UI/UX | ✅ Works | ✅ Works |
-| Categories | ✅ Works | ✅ Works |
-| Weather | ✅ Works | ✅ Works |
-| Safe Zones | ✅ Works | ✅ Works |
-| **MapLibre** | ❌ No | ✅ Yes |
-| **MMKV Persistence** | ❌ No | ✅ Yes |
+| Feature              | Expo Go  | Native Build Required |
+| -------------------- | -------- | --------------------- |
+| Navigation           | ✅ Works | ✅ Works              |
+| UI/UX                | ✅ Works | ✅ Works              |
+| Categories           | ✅ Works | ✅ Works              |
+| Weather              | ✅ Works | ✅ Works              |
+| Safe Zones           | ✅ Works | ✅ Works              |
+| **MapLibre**         | ❌ No    | ✅ Yes                |
+| **MMKV Persistence** | ❌ No    | ✅ Yes                |
 
 ---
 
@@ -159,7 +159,6 @@ npx expo start --clear
 **Congratulations!** Your main issues are fixed. For full features:
 
 1. **Fix USB Connection** to build native APK:
-
    - Change phone to "File Transfer" mode
 
    - Enable USB debugging
@@ -167,7 +166,6 @@ npx expo start --clear
    - Run: `npx expo run:android --variant release`
 
 1. **OR Use EAS Cloud Build**:
-
    - Reset Expo password
 
    - Run: `eas build --platform android --profile preview`
@@ -184,15 +182,15 @@ npx expo start --clear
 
 ## 📊 PROGRESS SUMMARY
 
-| Issue | Status | Solution |
-|-------|--------|----------|
-| Navigation context error | ✅ Fixed | @react-navigation/native@7.1.8 |
-| CategoryStore undefined | ✅ Fixed | Added CategoryProvider |
-| ParentalStore undefined | ✅ Fixed | Added ParentalProvider |
-| QueryClient missing | ✅ Fixed | Added QueryClientProvider |
-| MapLibre not working | ⚠️ Expected | Needs native build |
-| MMKV not persisting | ⚠️ Expected | Needs native build |
-| USB not connecting | ⚠️ Pending | Needs USB mode fix |
+| Issue                    | Status      | Solution                       |
+| ------------------------ | ----------- | ------------------------------ |
+| Navigation context error | ✅ Fixed    | @react-navigation/native@7.1.8 |
+| CategoryStore undefined  | ✅ Fixed    | Added CategoryProvider         |
+| ParentalStore undefined  | ✅ Fixed    | Added ParentalProvider         |
+| QueryClient missing      | ✅ Fixed    | Added QueryClientProvider      |
+| MapLibre not working     | ⚠️ Expected | Needs native build             |
+| MMKV not persisting      | ⚠️ Expected | Needs native build             |
+| USB not connecting       | ⚠️ Pending  | Needs USB mode fix             |
 
 ---
 

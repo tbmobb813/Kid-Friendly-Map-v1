@@ -31,7 +31,6 @@ Building an APK from your Expo project requires either:
 **This is the fastest path to a working APK!**
 
 1. **On your Android phone:**
-
    - Plug in USB cable
 
    - Pull down notification shade
@@ -42,7 +41,7 @@ Building an APK from your Expo project requires either:
 
 1. **Enable USB Debugging:**
 
-   ``` text
+   ```text
    Settings → About phone → Tap "Build number" 7 times
    Settings → Developer options → Enable "USB debugging"
    ```
@@ -214,7 +213,6 @@ If local builds keep failing, build in the cloud:
 **TRACK B (Building - 5 minutes):**
 
 1. Try USB connection one more time
-
    - Change phone to "File Transfer" mode
 
    - Enable USB debugging
@@ -239,7 +237,7 @@ If your USB port or cable is truly broken:
 
 1. **On phone:**
 
-   ``` text
+   ```text
    Settings → Developer options → Wireless debugging → ON
    Tap "Pair device with pairing code"
    ```
@@ -249,7 +247,7 @@ If your USB port or cable is truly broken:
    ```bash
    adb pair <IP>:<PORT>
    # Enter pairing code
-   
+
    adb connect <IP>:<PORT>
    adb devices
    ```
@@ -264,13 +262,13 @@ If your USB port or cable is truly broken:
 
 ## Summary of Build Methods
 
-| Method | Time | Requirements | Success Rate |
-|--------|------|--------------|--------------|
-| USB Device | 5 min | Working USB + Debugging | ⭐⭐⭐⭐⭐ |
-| Wireless ADB | 10 min | Same WiFi + Android 11+ | ⭐⭐⭐⭐ |
-| Emulator | 15 min | 8GB+ free disk space | ⭐⭐⭐ |
-| EAS Cloud | 15 min | Valid Expo account | ⭐⭐⭐⭐ |
-| Expo Go | 2 min | WiFi only | ⭐⭐⭐⭐⭐ (testing only) |
+| Method       | Time   | Requirements            | Success Rate              |
+| ------------ | ------ | ----------------------- | ------------------------- |
+| USB Device   | 5 min  | Working USB + Debugging | ⭐⭐⭐⭐⭐                |
+| Wireless ADB | 10 min | Same WiFi + Android 11+ | ⭐⭐⭐⭐                  |
+| Emulator     | 15 min | 8GB+ free disk space    | ⭐⭐⭐                    |
+| EAS Cloud    | 15 min | Valid Expo account      | ⭐⭐⭐⭐                  |
+| Expo Go      | 2 min  | WiFi only               | ⭐⭐⭐⭐⭐ (testing only) |
 
 ---
 

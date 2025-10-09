@@ -35,7 +35,7 @@ Create a workflow `.github/workflows/deploy-transit-adapter.yml` in your repo wi
 name: Build and push transit adapter
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -141,4 +141,5 @@ traffic to the adapter over a private network. Use your certificate provider
 To require a client key for the adapter endpoints, set `API_AUTH_KEY` in the adapter environment and clients must include it as `x-adapter-key` header or `_key` query param.
 
 ---
+
 If you want, I can also scaffold the GitHub Actions workflow file in the repo (disabled by default) and a simple systemd unit file for a VM. Which do you prefer next?

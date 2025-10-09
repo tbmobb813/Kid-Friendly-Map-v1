@@ -1,12 +1,70 @@
 {
   "routes": [
-    { "id": "mta-subway-1", "name": "1", "systemId": "mta-subway", "status": "on-time", "nextArrival": 3, "direction": "Downtown", "destination": "South Ferry" },
-    { "id": "mta-subway-4", "name": "4", "systemId": "mta-subway", "status": "delayed", "nextArrival": 7, "direction": "Uptown", "destination": "Woodlawn", "delayReason": "Signal problems ahead" },
-    { "id": "mta-subway-6", "name": "6", "systemId": "mta-subway", "status": "on-time", "nextArrival": 5, "direction": "Downtown", "destination": "Brooklyn Bridge" },
-    { "id": "mta-subway-A", "name": "A", "systemId": "mta-subway", "status": "on-time", "nextArrival": 4, "direction": "Uptown", "destination": "Inwood-207th St" },
-    { "id": "mta-subway-L", "name": "L", "systemId": "mta-subway", "status": "on-time", "nextArrival": 2, "direction": "Eastbound", "destination": "Canarsie" },
-    { "id": "mta-subway-N", "name": "N", "systemId": "mta-subway", "status": "on-time", "nextArrival": 6, "direction": "Brooklyn-bound", "destination": "Coney Island" },
-    { "id": "mta-subway-Q", "name": "Q", "systemId": "mta-subway", "status": "service-change", "nextArrival": 8, "direction": "Brooklyn-bound", "destination": "Coney Island", "serviceNote": "Running on R line from 36th St to 59th St" }
+    {
+      "id": "mta-subway-1",
+      "name": "1",
+      "systemId": "mta-subway",
+      "status": "on-time",
+      "nextArrival": 3,
+      "direction": "Downtown",
+      "destination": "South Ferry"
+    },
+    {
+      "id": "mta-subway-4",
+      "name": "4",
+      "systemId": "mta-subway",
+      "status": "delayed",
+      "nextArrival": 7,
+      "direction": "Uptown",
+      "destination": "Woodlawn",
+      "delayReason": "Signal problems ahead"
+    },
+    {
+      "id": "mta-subway-6",
+      "name": "6",
+      "systemId": "mta-subway",
+      "status": "on-time",
+      "nextArrival": 5,
+      "direction": "Downtown",
+      "destination": "Brooklyn Bridge"
+    },
+    {
+      "id": "mta-subway-A",
+      "name": "A",
+      "systemId": "mta-subway",
+      "status": "on-time",
+      "nextArrival": 4,
+      "direction": "Uptown",
+      "destination": "Inwood-207th St"
+    },
+    {
+      "id": "mta-subway-L",
+      "name": "L",
+      "systemId": "mta-subway",
+      "status": "on-time",
+      "nextArrival": 2,
+      "direction": "Eastbound",
+      "destination": "Canarsie"
+    },
+    {
+      "id": "mta-subway-N",
+      "name": "N",
+      "systemId": "mta-subway",
+      "status": "on-time",
+      "nextArrival": 6,
+      "direction": "Brooklyn-bound",
+      "destination": "Coney Island"
+    },
+    {
+      "id": "mta-subway-Q",
+      "name": "Q",
+      "systemId": "mta-subway",
+      "status": "service-change",
+      "nextArrival": 8,
+      "direction": "Brooklyn-bound",
+      "destination": "Coney Island",
+      "serviceNote": "Running on R line from 36th St to 59th St"
+    }
   ],
   "schedules": [
     {
@@ -14,41 +72,83 @@
       "stationId": "times-sq-42",
       "stationName": "Times Sq-42nd St",
       "schedules": [
-        { "time": "2025-10-01T12:03:00Z", "route": "1", "destination": "South Ferry", "track": "1", "kidNote": "Next train to downtown Manhattan" },
-        { "time": "2025-10-01T12:05:00Z", "route": "6", "destination": "Brooklyn Bridge", "track": "2", "kidNote": "Train to the famous bridge" },
-        { "time": "2025-10-01T12:07:00Z", "route": "4", "destination": "Woodlawn", "track": "3", "kidNote": "Express train to the Bronx" },
-        { "time": "2025-10-01T12:08:00Z", "route": "N", "destination": "Coney Island", "track": "4", "kidNote": "Train to the beach and amusement park!" }
+        {
+          "time": "2025-10-01T12:03:00Z",
+          "route": "1",
+          "destination": "South Ferry",
+          "track": "1",
+          "kidNote": "Next train to downtown Manhattan"
+        },
+        {
+          "time": "2025-10-01T12:05:00Z",
+          "route": "6",
+          "destination": "Brooklyn Bridge",
+          "track": "2",
+          "kidNote": "Train to the famous bridge"
+        },
+        {
+          "time": "2025-10-01T12:07:00Z",
+          "route": "4",
+          "destination": "Woodlawn",
+          "track": "3",
+          "kidNote": "Express train to the Bronx"
+        },
+        {
+          "time": "2025-10-01T12:08:00Z",
+          "route": "N",
+          "destination": "Coney Island",
+          "track": "4",
+          "kidNote": "Train to the beach and amusement park!"
+        }
       ]
     },
     {
-      "systemId": "mta-subway", 
+      "systemId": "mta-subway",
       "stationId": "union-sq-14",
       "stationName": "Union Sq-14th St",
       "schedules": [
-        { "time": "2025-10-01T12:02:00Z", "route": "L", "destination": "8th Av", "track": "1", "kidNote": "Crosstown train to the west side" },
-        { "time": "2025-10-01T12:04:00Z", "route": "6", "destination": "Pelham Bay Park", "track": "2", "kidNote": "Local train uptown" },
-        { "time": "2025-10-01T12:06:00Z", "route": "N", "destination": "Astoria", "track": "3", "kidNote": "Train to Queens" }
+        {
+          "time": "2025-10-01T12:02:00Z",
+          "route": "L",
+          "destination": "8th Av",
+          "track": "1",
+          "kidNote": "Crosstown train to the west side"
+        },
+        {
+          "time": "2025-10-01T12:04:00Z",
+          "route": "6",
+          "destination": "Pelham Bay Park",
+          "track": "2",
+          "kidNote": "Local train uptown"
+        },
+        {
+          "time": "2025-10-01T12:06:00Z",
+          "route": "N",
+          "destination": "Astoria",
+          "track": "3",
+          "kidNote": "Train to Queens"
+        }
       ]
     }
   ],
   "alerts": [
-    { 
-      "id": "weekend-work-1", 
-      "systemId": "mta-subway", 
-      "type": "service-change", 
-      "message": "Weekend service changes on the 4, 5, 6 lines due to track work", 
-      "severity": "medium", 
+    {
+      "id": "weekend-work-1",
+      "systemId": "mta-subway",
+      "type": "service-change",
+      "message": "Weekend service changes on the 4, 5, 6 lines due to track work",
+      "severity": "medium",
       "affectedRoutes": ["4", "5", "6"],
       "kidFriendlyMessage": "Some trains are taking different routes this weekend while workers fix the tracks",
       "startTime": "2025-10-01T00:00:00Z",
       "endTime": "2025-10-01T23:59:00Z"
     },
-    { 
-      "id": "signal-delay-2", 
-      "systemId": "mta-subway", 
-      "type": "delay", 
-      "message": "Delays on the A and C lines due to signal problems at 59th St-Columbus Circle", 
-      "severity": "low", 
+    {
+      "id": "signal-delay-2",
+      "systemId": "mta-subway",
+      "type": "delay",
+      "message": "Delays on the A and C lines due to signal problems at 59th St-Columbus Circle",
+      "severity": "low",
       "affectedRoutes": ["A", "C"],
       "kidFriendlyMessage": "A and C trains are running a little late because of signal problems - like traffic lights for trains",
       "expectedDuration": "30 minutes"
@@ -91,7 +191,7 @@
     {
       "id": "central-park-59",
       "name": "59th St-Columbus Circle",
-      "borough": "Manhattan", 
+      "borough": "Manhattan",
       "lines": ["A", "B", "C", "D", "1"],
       "coordinates": { "lat": 40.7681, "lng": -73.9819 },
       "accessibility": {

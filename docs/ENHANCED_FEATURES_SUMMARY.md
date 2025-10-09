@@ -276,14 +276,14 @@ npx expo start --android # Test on Android
 
 ### 📊 Performance Comparison
 
-| Metric | AsyncStorage | MMKV |
-|--------|-------------|------|
-| Read Speed | 1x | 10x |
-| Write Speed | 1x | 10x |
-| API Type | Async | Sync |
-| Type Safety | No | Yes |
-| Encryption | External | Built-in |
-| Memory | Standard | Optimized |
+| Metric      | AsyncStorage | MMKV      |
+| ----------- | ------------ | --------- |
+| Read Speed  | 1x           | 10x       |
+| Write Speed | 1x           | 10x       |
+| API Type    | Async        | Sync      |
+| Type Safety | No           | Yes       |
+| Encryption  | External     | Built-in  |
+| Memory      | Standard     | Optimized |
 
 ### 🚀 Next Steps
 

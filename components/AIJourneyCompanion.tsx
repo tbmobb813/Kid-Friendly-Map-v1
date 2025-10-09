@@ -82,13 +82,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
           messages: [
             {
               role: 'system',
-              content: `You are Buddy, a friendly AI companion for kids using a navigation app. Create engaging, educational, and safe content for a journey to ${
-                destination.name
-              }. Keep responses short (1-2 sentences), age-appropriate, and encouraging. Focus on interesting facts, safety reminders, or fun observations about the area.${
-                routeContext
-                  ? ' Also mention relevant aspects of their chosen route when appropriate.'
-                  : ''
-              }`,
+              content: `You are Buddy, a friendly AI companion for kids using a navigation app. Create engaging, educational, and safe content for a journey to ${destination.name}. Keep responses short (1-2 sentences), age-appropriate, and encouraging. Focus on interesting facts, safety reminders, or fun observations about the area.${routeContext ? ' Also mention relevant aspects of their chosen route when appropriate.' : ''}`,
             },
             {
               role: 'user',
@@ -201,13 +195,7 @@ const AIJourneyCompanion: React.FC<AIJourneyCompanionProps> = ({
             },
             {
               role: 'user',
-              content: `Tell me something cool about this route: ${selectedRoute.name} with ${
-                selectedRoute.kidFriendlyScore
-              }% safety score, ${
-                selectedRoute.difficultyLevel
-              } difficulty, passing through ${selectedRoute.safetyFeatures
-                .slice(0, 2)
-                .join(' and ')}. Keep it to 1-2 sentences and make it exciting!`,
+              content: `Tell me something cool about this route: ${selectedRoute.name} with ${selectedRoute.kidFriendlyScore}% safety score, ${selectedRoute.difficultyLevel} difficulty, passing through ${selectedRoute.safetyFeatures.slice(0, 2).join(' and ')}. Keep it to 1-2 sentences and make it exciting!`,
             },
           ],
         }),

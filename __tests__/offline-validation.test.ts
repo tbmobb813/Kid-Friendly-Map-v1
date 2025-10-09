@@ -283,8 +283,7 @@ describe('Offline Validation Tests', () => {
     });
 
     it('should handle storage failures gracefully', async () => {
-      const originalSetItem = AsyncStorage.setItem;
-      (AsyncStorage.setItem as jest.Mock).mockRejectedValueOnce(new Error('Storage full'));
+      (AsyncStorage.setItem as jest.Mock).mockRejectedValue(new Error('Storage full'));
 
       // Should not throw
       await expect(

@@ -43,7 +43,7 @@ adb devices
 
 When you plug in your device with USB debugging enabled, you should see a popup on your phone:
 
-#### "Allow USB debugging?"
+**"Allow USB debugging?"**
 
 - ✅ Check "Always allow from this computer"
 
@@ -69,7 +69,7 @@ adb devices
 
 **Expected output:**
 
-``` text
+```
 List of devices attached
 ABC123456789    device
 ```
@@ -120,12 +120,12 @@ npx expo run:android
 
    - Click **Finish**
 
-1. **Start emulator:**
+3. **Start emulator:**
 
    ```bash
    # List available emulators
    emulator -list-avds
-   
+
    # Start an emulator
    emulator -avd Pixel_5_API_33 &
    ```

@@ -225,9 +225,9 @@ if (!locationValidation.isValid) {
 ```typescript
 // Example retry usage
 await withRetry(
-  () => Linking.openURL("tel:911"),
+  () => Linking.openURL('tel:911'),
   DEFAULT_RETRY_CONFIG.critical,
-  'Emergency 911 call'
+  'Emergency 911 call',
 );
 ```
 

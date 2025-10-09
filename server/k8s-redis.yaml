@@ -28,7 +28,7 @@ spec:
           image: redis:7
           ports:
             - containerPort: 6379
-          args: ["--save", "60", "1", "--loglevel", "warning"]
+          args: ['--save', '60', '1', '--loglevel', 'warning']
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -36,4 +36,4 @@ metadata:
   name: adapter-config
   namespace: default
 data:
-  REDIS_URL: "redis://redis:6379"
+  REDIS_URL: 'redis://redis:6379'
