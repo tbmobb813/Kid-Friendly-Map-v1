@@ -1,5 +1,13 @@
 const express = require('express');
-const { LRUCache } = require('lru-cache');
+// import lru-cache in a way that works with both CJS and ESM shapes
+let LRUCache = null;
+try {
+  const _lru = require('lru-cache');
+  // some versions export the constructor directly, others as { LRUCache }
+  LRUCache = _lru.LRUCache || _lru;
+} catch (e) {
+  LRUCache = null;
+}
 let redisClient = null;
 const redisUrl = process.env.REDIS_URL || '';
 if (redisUrl) {
@@ -50,21 +58,52 @@ function requireApiKey(req, res, next) {
   return next();
 }
 
-// Cache abstraction: Redis if available, else in-memory
-const cache = redisClient
-  ? {
-      async get(key) {
-        const val = await redisClient.get(key);
-        return val ? JSON.parse(val) : undefined;
-      },
-      async set(key, value, ttl = 10000) {
-        await redisClient.set(key, JSON.stringify(value), 'PX', ttl);
-      },
-      async has(key) {
-        return (await redisClient.exists(key)) === 1;
-      },
-    }
-  : new LRUCache({ max: 100, ttl: 10000 }); // 10s default
+// Cache abstraction: Redis if available, else an LRU cache or simple in-memory map
+let cache;
+if (redisClient) {
+  cache = {
+    async get(key) {
+      const val = await redisClient.get(key);
+      return val ? JSON.parse(val) : undefined;
+    },
+    async set(key, value, ttl = 10000) {
+      await redisClient.set(key, JSON.stringify(value), 'PX', ttl);
+    },
+    async has(key) {
+      return (await redisClient.exists(key)) === 1;
+    },
+  };
+} else if (LRUCache && typeof LRUCache === 'function') {
+  cache = new LRUCache({ max: 100, ttl: 10000 }); // 10s default
+} else {
+  // fallback simple in-memory cache with same API
+  const store = new Map();
+  cache = {
+    async get(key) {
+      const v = store.get(key);
+      if (!v) return undefined;
+      // entry = { value, expires }
+      if (v.expires && Date.now() > v.expires) {
+        store.delete(key);
+        return undefined;
+      }
+      return v.value;
+    },
+    async set(key, value, ttl = 10000) {
+      const expires = ttl ? Date.now() + (ttl || 0) : null;
+      store.set(key, { value, expires });
+    },
+    async has(key) {
+      const v = store.get(key);
+      if (!v) return false;
+      if (v.expires && Date.now() > v.expires) {
+        store.delete(key);
+        return false;
+      }
+      return true;
+    },
+  };
+}
 
 // Prometheus metrics
 const collectDefaultMetrics = promClient.collectDefaultMetrics;

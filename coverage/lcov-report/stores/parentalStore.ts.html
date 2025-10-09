@@ -1,63 +1,68 @@
+
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <title>Code coverage report for stores/parentalStore.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-      .coverage-summary .sorter {
-        background-image: url(../sort-arrow-sprite.png);
-      }
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
     </style>
-  </head>
-
-  <body>
-    <div class="wrapper">
-      <div class="pad1">
-        <h1>
-          <a href="../index.html">All files</a> / <a href="index.html">stores</a> parentalStore.ts
-        </h1>
-        <div class="clearfix">
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Statements</span>
-            <span class="fraction">0/120</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Branches</span>
-            <span class="fraction">0/23</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Functions</span>
-            <span class="fraction">0/29</span>
-          </div>
-
-          <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
-            <span class="quiet">Lines</span>
-            <span class="fraction">0/118</span>
-          </div>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">stores</a> parentalStore.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/123</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/16</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/29</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/121</span>
+            </div>
+        
+            
         </div>
         <p class="quiet">
-          Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>,
-          <em>p</em> or <em>k</em> for the previous block.
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
         <template id="filterTemplate">
-          <div class="quiet">
-            Filter:
-            <input type="search" id="fileSearch" />
-          </div>
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
         </template>
-      </div>
-      <div class="status-line low"></div>
-      <pre><table class="coverage">
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
 <a name='L3'></a><a href='#L3'>3</a>
@@ -401,9 +406,9 @@
 <a name='L341'></a><a href='#L341'>341</a>
 <a name='L342'></a><a href='#L342'>342</a>
 <a name='L343'></a><a href='#L343'>343</a>
-<a name='L344'></a><a href='#L344'>344</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L344'></a><a href='#L344'>344</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -744,9 +749,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import createContextHook from '@nkzw/create-context-hook';
-import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import createContextHook from '@nkzw/create-context-hook';</span>
+<span class="cstat-no" title="statement not covered" >import { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import AsyncStorage from '@react-native-async-storage/async-storage';</span>
 import {
   SafeZone,
   CheckInRequest,
@@ -786,7 +791,7 @@ const STORAGE_KEYS = <span class="cstat-no" title="statement not covered" >{</sp
   DEVICE_PINGS: 'kidmap_device_pings',
 };
 &nbsp;
-export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title="statement not covered" >createContextHook(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >[ParentalProvider, useParentalStore] = c</span>reateContextHook(<span class="fstat-no" title="function not covered" >() =</span>&gt; {
   const [settings, setSettings] = <span class="cstat-no" title="statement not covered" >useState&lt;ParentalSettings&gt;(DEFAULT_SETTINGS);</span>
   const [safeZones, setSafeZones] = <span class="cstat-no" title="statement not covered" >useState&lt;SafeZone[]&gt;([]);</span>
   const [checkInRequests, setCheckInRequests] = <span class="cstat-no" title="statement not covered" >useState&lt;CheckInRequest[]&gt;([]);</span>
@@ -800,8 +805,8 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
   const [isLoading, setIsLoading] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
 &nbsp;
   // Load data from storage
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+    const loadData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      try {</span>
         const [
           storedSettings,
@@ -817,19 +822,19 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
           AsyncStorage.getItem(STORAGE_KEYS.DEVICE_PINGS),
         ]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (storedSettings) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedSettings) {</span>
 <span class="cstat-no" title="statement not covered" >          setSettings(JSON.parse(storedSettings));</span>
         }
-<span class="cstat-no" title="statement not covered" >        if (storedSafeZones) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedSafeZones) {</span>
 <span class="cstat-no" title="statement not covered" >          setSafeZones(JSON.parse(storedSafeZones));</span>
         }
-<span class="cstat-no" title="statement not covered" >        if (storedCheckInRequests) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedCheckInRequests) {</span>
 <span class="cstat-no" title="statement not covered" >          setCheckInRequests(JSON.parse(storedCheckInRequests));</span>
         }
-<span class="cstat-no" title="statement not covered" >        if (storedDashboardData) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedDashboardData) {</span>
 <span class="cstat-no" title="statement not covered" >          setDashboardData(JSON.parse(storedDashboardData));</span>
         }
-<span class="cstat-no" title="statement not covered" >        if (storedDevicePings) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (storedDevicePings) {</span>
 <span class="cstat-no" title="statement not covered" >          setDevicePings(JSON.parse(storedDevicePings));</span>
         }
       } catch (error) {
@@ -843,7 +848,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
   }, []);
 &nbsp;
   // Save functions
-  const saveSettings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newSettings: ParentalSettings) =&gt; {</span>
+  const saveSettings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newSettings: ParentalSettings) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(newSettings));</span>
 <span class="cstat-no" title="statement not covered" >      setSettings(newSettings);</span>
@@ -852,7 +857,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
     }
   };
 &nbsp;
-  const saveSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newSafeZones: SafeZone[]) =&gt; {</span>
+  const saveSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newSafeZones: SafeZone[]) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.SAFE_ZONES, JSON.stringify(newSafeZones));</span>
 <span class="cstat-no" title="statement not covered" >      setSafeZones(newSafeZones);</span>
@@ -861,7 +866,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
     }
   };
 &nbsp;
-  const saveCheckInRequests = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newRequests: CheckInRequest[]) =&gt; {</span>
+  const saveCheckInRequests = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newRequests: CheckInRequest[]) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.CHECK_IN_REQUESTS, JSON.stringify(newRequests));</span>
 <span class="cstat-no" title="statement not covered" >      setCheckInRequests(newRequests);</span>
@@ -870,7 +875,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
     }
   };
 &nbsp;
-  const saveDashboardData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newData: ParentDashboardData) =&gt; {</span>
+  const saveDashboardData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newData: ParentDashboardData) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.DASHBOARD_DATA, JSON.stringify(newData));</span>
 <span class="cstat-no" title="statement not covered" >      setDashboardData(newData);</span>
@@ -879,7 +884,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
     }
   };
 &nbsp;
-  const saveDevicePings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (newPings: DevicePingRequest[]) =&gt; {</span>
+  const saveDevicePings = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(newPings: DevicePingRequest[]) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      await AsyncStorage.setItem(STORAGE_KEYS.DEVICE_PINGS, JSON.stringify(newPings));</span>
 <span class="cstat-no" title="statement not covered" >      setDevicePings(newPings);</span>
@@ -889,13 +894,13 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
   };
 &nbsp;
   // Parent mode authentication
-  const authenticateParentMode = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (pin: string): Promise&lt;boolean&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!settings.requirePinForParentMode) {</span>
+  const authenticateParentMode = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(pin: string): Promise&lt;boolean&gt; =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!settings.requirePinForParentMode) {</span>
 <span class="cstat-no" title="statement not covered" >      setIsParentMode(true);</span>
 <span class="cstat-no" title="statement not covered" >      return true;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (settings.parentPin === pin) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (settings.parentPin === pin) {</span>
 <span class="cstat-no" title="statement not covered" >      setIsParentMode(true);</span>
 <span class="cstat-no" title="statement not covered" >      return true;</span>
     }
@@ -903,17 +908,17 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    return false;</span>
   };
 &nbsp;
-  const exitParentMode = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const exitParentMode = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setIsParentMode(false);</span>
   };
 &nbsp;
-  const setParentPin = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (pin: string) =&gt; {</span>
+  const setParentPin = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(pin: string) =&gt; {</span>
     const newSettings = <span class="cstat-no" title="statement not covered" >{ ...settings, parentPin: pin };</span>
 <span class="cstat-no" title="statement not covered" >    await saveSettings(newSettings);</span>
   };
 &nbsp;
   // Safe zone management
-  const addSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (safeZone: Omit&lt;SafeZone, 'id' | 'createdAt'&gt;) =&gt; {</span>
+  const addSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(safeZone: Omit&lt;SafeZone, 'id' | 'createdAt'&gt;) =&gt; {</span>
     const newSafeZone: SafeZone = <span class="cstat-no" title="statement not covered" >{</span>
       ...safeZone,
       id: `safe_zone_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -925,20 +930,20 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    return newSafeZone;</span>
   };
 &nbsp;
-  const updateSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string, updates: Partial&lt;SafeZone&gt;) =&gt; {</span>
+  const updateSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string, updates: Partial&lt;SafeZone&gt;) =&gt; {</span>
     const updatedSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.map(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >      zone.id === id ? { ...zone, ...updates } : zone,</span>
     );
 <span class="cstat-no" title="statement not covered" >    await saveSafeZones(updatedSafeZones);</span>
   };
 &nbsp;
-  const deleteSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string) =&gt; {</span>
+  const deleteSafeZone = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string) =&gt; {</span>
     const updatedSafeZones = <span class="cstat-no" title="statement not covered" >safeZones.filter(<span class="fstat-no" title="function not covered" >(z</span>one) =&gt; <span class="cstat-no" title="statement not covered" >zone.id !== id)</span>;</span>
 <span class="cstat-no" title="statement not covered" >    await saveSafeZones(updatedSafeZones);</span>
   };
 &nbsp;
   // Check-in request management
-  const requestCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (message: string, isUrgent: boolean = <span class="branch-0 cbranch-no" title="branch not covered" >false)</span> =&gt; {</span>
+  const requestCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(message: string, isUrgent: boolean = <span class="branch-0 cbranch-no" title="branch not covered" >false)</span> =&gt; {</span>
     const newRequest: CheckInRequest = <span class="cstat-no" title="statement not covered" >{</span>
       id: `check_in_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       childId: 'current_child', // In a real app, this would be the actual child ID
@@ -953,7 +958,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    return newRequest;</span>
   };
 &nbsp;
-  const completeCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (</span>
+  const completeCheckIn = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(</span>
     requestId: string,
     location?: { latitude: number; longitude: number; placeName?: string },
   ) =&gt; {
@@ -966,7 +971,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
   };
 &nbsp;
   // Emergency contact management
-  const addEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (contact: Omit&lt;EmergencyContact, 'id'&gt;) =&gt; {</span>
+  const addEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(contact: Omit&lt;EmergencyContact, 'id'&gt;) =&gt; {</span>
     const newContact: EmergencyContact = <span class="cstat-no" title="statement not covered" >{</span>
       ...contact,
       id: `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -978,7 +983,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    return newContact;</span>
   };
 &nbsp;
-  const updateEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string, updates: Partial&lt;EmergencyContact&gt;) =&gt; {</span>
+  const updateEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string, updates: Partial&lt;EmergencyContact&gt;) =&gt; {</span>
     const updatedContacts = <span class="cstat-no" title="statement not covered" >settings.emergencyContacts.map(<span class="fstat-no" title="function not covered" >(c</span>ontact) =&gt;</span>
 <span class="cstat-no" title="statement not covered" >      contact.id === id ? { ...contact, ...updates } : contact,</span>
     );
@@ -986,14 +991,14 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    await saveSettings(newSettings);</span>
   };
 &nbsp;
-  const deleteEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (id: string) =&gt; {</span>
+  const deleteEmergencyContact = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(id: string) =&gt; {</span>
     const updatedContacts = <span class="cstat-no" title="statement not covered" >settings.emergencyContacts.filter(<span class="fstat-no" title="function not covered" >(c</span>ontact) =&gt; <span class="cstat-no" title="statement not covered" >contact.id !== id)</span>;</span>
     const newSettings = <span class="cstat-no" title="statement not covered" >{ ...settings, emergencyContacts: updatedContacts };</span>
 <span class="cstat-no" title="statement not covered" >    await saveSettings(newSettings);</span>
   };
 &nbsp;
   // Device ping management
-  const sendDevicePing = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (type: DevicePingRequest['type'], message?: string) =&gt; {</span>
+  const sendDevicePing = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(type: DevicePingRequest['type'], message?: string) =&gt; {</span>
     const newPing: DevicePingRequest = <span class="cstat-no" title="statement not covered" >{</span>
       id: `ping_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       type,
@@ -1007,7 +1012,7 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 <span class="cstat-no" title="statement not covered" >    return newPing;</span>
   };
 &nbsp;
-  const acknowledgePing = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (</span>
+  const acknowledgePing = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>(</span>
     pingId: string,
     location?: { latitude: number; longitude: number },
   ) =&gt; {
@@ -1089,22 +1094,21 @@ export const [ParentalProvider, useParentalStore] = <span class="cstat-no" title
 });
 &nbsp;</pre></td></tr></table></pre>
 
-      <div class="push"></div>
-      <!-- for sticky footer -->
-    </div>
-    <!-- /wrapper -->
-    <div class="footer quiet pad2 space-top1 center small">
-      Code coverage generated by
-      <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2025-10-08T20:36:02.866Z
-    </div>
-    <script src="../prettify.js"></script>
-    <script>
-      window.onload = function () {
-        prettyPrint();
-      };
-    </script>
-    <script src="../sorter.js"></script>
-    <script src="../block-navigation.js"></script>
-  </body>
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-10-09T02:27:42.561Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
 </html>
+    

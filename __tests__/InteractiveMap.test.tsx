@@ -104,7 +104,8 @@ describe('InteractiveMap', () => {
         showTransitStations={true}
       />,
     );
-    expect(getByText(/Transit stations shown/i)).toBeTruthy();
+    // Component no longer renders a placeholder message — assert the station toggle is present
+    expect(getByText(/Stations/i)).toBeTruthy();
   });
 
   it('calls onSelectLocation when map is tapped (web fallback)', () => {

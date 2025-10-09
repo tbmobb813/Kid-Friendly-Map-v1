@@ -3,7 +3,20 @@ import type { Feature, FeatureCollection, Geometry, LineString, Position } from 
 import Colors from '@/constants/colors';
 import { nycStations } from '@/config/transit/nyc-stations';
 import type { Place } from '@/types/navigation';
-import MapLibreMap, { MapLibreGL, isMapLibreAvailable } from './MapLibreMap';
+// MapLibreMap will be required lazily inside the component so tests can mock it
+// even if they import this module before calling jest.mock.
+import type * as MapLibreModule from '@maplibre/maplibre-react-native';
+// Lazy-load the MapLibre native module directly so tests that mock
+// '@maplibre/maplibre-react-native' are respected.
+function getMapLibreModule(): typeof MapLibreModule | null {
+  try {
+    // require is used to keep lazy loading behavior
+    const imported = require('@maplibre/maplibre-react-native');
+    return imported?.default ?? imported;
+  } catch (e) {
+    return null;
+  }
+}
 import Config from '@/utils/config';
 
 export type MapLibreRouteViewProps = {
@@ -163,16 +176,19 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
   showTransitStations = true,
   testID,
 }) => {
-  if (
-    !isMapLibreAvailable ||
-    !MapLibreGL ||
-    typeof MapLibreGL !== 'object' ||
-    !('MapView' in MapLibreGL)
-  ) {
+  const MapLibreModule = getMapLibreModule();
+
+  // Lazily resolve the MapLibreMap component so tests can mock '@/components/MapLibreMap'
+  // even if jest.mock was called after this file was imported.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const requiredMapLibreMap = require('@/components/MapLibreMap') as any;
+  const MapLibreMapComp = requiredMapLibreMap?.default ?? requiredMapLibreMap;
+
+  if (!MapLibreModule || typeof MapLibreModule !== 'object' || !('MapView' in MapLibreModule)) {
     return null;
   }
 
-  const MapLibre = MapLibreGL as any;
+  const MapLibre = MapLibreModule as any;
   const originCoord = useMemo(
     () => asLngLat(origin),
     [origin?.coordinates.latitude, origin?.coordinates.longitude],
@@ -223,8 +239,11 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
     [onStationPress],
   );
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore - required for test-time lazy require
   return (
-    <MapLibreMap centerCoordinate={centerCoordinate} testID={testID}>
+    // @ts-ignore
+    <MapLibreMapComp centerCoordinate={centerCoordinate} testID={testID}>
       {routeShape && MapLibre && (
         <MapLibre.ShapeSource id="route" shape={routeShape}>
           <MapLibre.LineLayer
@@ -272,7 +291,7 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
           />
         </MapLibre.ShapeSource>
       )}
-    </MapLibreMap>
+    </MapLibreMapComp>
   );
 };
 
