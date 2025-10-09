@@ -42,7 +42,7 @@ Successfully completed comprehensive MapLibre GL Native integration with the Kid
 
 ```tsx
 // Native platforms (iOS/Android)
-<MapLibreRouteView 
+<MapLibreRouteView
   origin={origin}
   destination={destination}
   routeGeoJSON={routeData.geojson}
@@ -50,7 +50,7 @@ Successfully completed comprehensive MapLibre GL Native integration with the Kid
 />
 
 // Web platform
-<InteractiveMap 
+<InteractiveMap
   origin={origin}
   destination={destination}
   route={routeData.geojson}
@@ -85,7 +85,7 @@ EXPO_PUBLIC_ORS_API_KEY=your_openrouteservice_api_key
 EXPO_PUBLIC_ORS_BASE_URL=https://api.openrouteservice.org
 EXPO_PUBLIC_DEFAULT_ROUTING_PROFILE=foot-walking
 
-# Map Configuration  
+# Map Configuration
 EXPO_PUBLIC_MAP_DEFAULT_LAT=40.7128
 EXPO_PUBLIC_MAP_DEFAULT_LNG=-74.006
 EXPO_PUBLIC_MAP_DEFAULT_ZOOM=13
@@ -102,8 +102,8 @@ Config.ROUTING = {
   ORS_API_KEY: process.env.EXPO_PUBLIC_ORS_API_KEY,
   DEFAULT_PROFILE: 'foot-walking',
   REQUEST_TIMEOUT: 15000,
-  INCLUDE_ETA: true
-}
+  INCLUDE_ETA: true,
+};
 ```
 
 ## 🧪 Testing Status
@@ -111,7 +111,6 @@ Config.ROUTING = {
 ### Test Suites Passing
 
 - ✅ **useRouteORS Hook**: 12/12 tests passing
-
   - Initial state validation
 
   - Route fetching with coordinates
@@ -125,7 +124,6 @@ Config.ROUTING = {
   - Custom profiles and ETA parsing
 
 - ✅ **MapLibreRouteView Component**: 11/11 tests passing
-
   - Component rendering
 
   - Route visualization
@@ -139,10 +137,9 @@ Config.ROUTING = {
   - Event handling
 
 - ✅ **Safety System**: 47/47 tests passing
-
   - Location validation
 
-  - Safe zone monitoring  
+  - Safe zone monitoring
 
   - Emergency contacts
 
@@ -199,11 +196,11 @@ TaskManager.defineTask(GEOFENCE_TASK_NAME, async ({ data, error }: TaskManagerTa
 
   if (data) {
     const { eventType, region } = data as GeofencingTaskData;
-    
+
     await showNotification({
       title: eventType === GeofencingEventType.Enter ? 'Entered Safe Zone' : 'Left Safe Zone',
       body: `${eventType === GeofencingEventType.Enter ? 'Entered' : 'Left'} ${region.identifier}`,
-      data: { zoneId: region.identifier, eventType }
+      data: { zoneId: region.identifier, eventType },
     });
   }
 });

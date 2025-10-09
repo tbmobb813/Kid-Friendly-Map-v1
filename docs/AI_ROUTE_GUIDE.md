@@ -54,10 +54,7 @@ Main AI engine for route generation and learning.
 import { aiRouteEngine } from '../utils/aiRouteEngine';
 
 // Generate smart routes
-const routes = await aiRouteEngine.generateSmartRoutes(
-  currentLocation,
-  destination
-);
+const routes = await aiRouteEngine.generateSmartRoutes(currentLocation, destination);
 
 // Update preferences
 aiRouteEngine.updatePreferences({
@@ -231,10 +228,10 @@ Total Score = (
 
 ```typescript
 interface RoutePreferences {
-  childAge: number;                    // 0-18 years
+  childAge: number; // 0-18 years
   timePreference: 'safety' | 'speed' | 'comfort';
-  maxWalkingDistance: number;          // meters
-  maxTransferCount: number;            // number of transfers
+  maxWalkingDistance: number; // meters
+  maxTransferCount: number; // number of transfers
   avoidBusyStreets: boolean;
   preferIndoorRoutes: boolean;
   voiceEnabled: boolean;
@@ -271,7 +268,7 @@ const prefs = aiRouteEngine.getPreferences();
 
    - Patterns identified over time
 
-1. **Pattern Analysis**
+2. **Pattern Analysis**
 
    ```typescript
    // Example learned patterns
@@ -299,7 +296,7 @@ interface JourneyHistory {
   routeType: 'safest' | 'fastest' | 'easiest' | 'scenic';
   timestamp: number;
   context: RouteContext;
-  satisfaction?: number;  // Optional user feedback
+  satisfaction?: number; // Optional user feedback
 }
 ```
 
@@ -352,7 +349,7 @@ challenging: red
 "You selected the Safest Route. This route has a 95 safety score!"
 
 // During navigation
-"Starting Safest Route. This journey will take about 15 minutes. 
+"Starting Safest Route. This journey will take about 15 minutes.
 Remember to look both ways before crossing!"
 ```
 
@@ -366,7 +363,7 @@ preferences.voiceEnabled = true;
 import { voiceManager, speakNavigation } from '../utils/voice';
 
 // Custom voice announcements
-await speakNavigation("Turn left at the safe zone ahead");
+await speakNavigation('Turn left at the safe zone ahead');
 ```
 
 ## 🗺️ Map Integration
@@ -375,7 +372,7 @@ await speakNavigation("Turn left at the safe zone ahead");
 
 ```typescript
 // Routes converted to map polylines
-const routePoints = smartRoute.steps.map(step => ({
+const routePoints = smartRoute.steps.map((step) => ({
   latitude: step.location.latitude,
   longitude: step.location.longitude,
   instruction: step.instruction,
@@ -383,8 +380,8 @@ const routePoints = smartRoute.steps.map(step => ({
 
 // Safe zones highlighted as circles
 const safeZones = smartRoute.steps
-  .filter(step => step.type === 'safe_zone')
-  .map(step => ({
+  .filter((step) => step.type === 'safe_zone')
+  .map((step) => ({
     center: step.location,
     radius: 100,
     color: '#00C800',
@@ -458,13 +455,13 @@ function CustomNav() {
 const location = await Location.getCurrentPositionAsync();
 
 // Generate routes
-const routes = await aiRouteEngine.generateSmartRoutes(
-  location,
-  { latitude: 40.7589, longitude: -73.9851 }
-);
+const routes = await aiRouteEngine.generateSmartRoutes(location, {
+  latitude: 40.7589,
+  longitude: -73.9851,
+});
 
 // Filter by type
-const safestRoute = routes.find(r => r.type === 'safest');
+const safestRoute = routes.find((r) => r.type === 'safest');
 
 // Get insights
 const insights = aiRouteEngine.getRouteInsights(safestRoute);
@@ -481,17 +478,17 @@ console.log('Insights:', insights);
 ```typescript
 // In aiRouteEngine.ts, modify scoring weights:
 const baseScore =
-  safety * 0.40 +    // Safety: 40% (default)
-  speed * 0.25 +     // Speed: 25% (default)
-  ease * 0.20 +      // Ease: 20% (default)
+  safety * 0.4 + // Safety: 40% (default)
+  speed * 0.25 + // Speed: 25% (default)
+  ease * 0.2 + // Ease: 20% (default)
   preference * 0.15; // Preference: 15% (default)
 
 // Adjust for your needs:
 const customScore =
-  safety * 0.50 +    // Increase safety priority
-  speed * 0.20 +     // Decrease speed priority
-  ease * 0.20 +
-  preference * 0.10;
+  safety * 0.5 + // Increase safety priority
+  speed * 0.2 + // Decrease speed priority
+  ease * 0.2 +
+  preference * 0.1;
 ```
 
 ### Adding Custom Route Types
@@ -507,7 +504,7 @@ async generateSmartRoutes() {
     // Add custom route type:
     await this.generateCustomRoute(),
   ];
-  
+
   return routes.sort((a, b) => b.score - a.score);
 }
 

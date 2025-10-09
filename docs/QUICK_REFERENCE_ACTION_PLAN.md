@@ -1,6 +1,6 @@
 # ⚡ KidMap: Quick Reference Action Plan
 
-**Last Updated:** October 1, 2025
+**Last Updated:** October 1, 2025  
 **Status:** Post-Strategic Review
 
 ---
@@ -119,7 +119,7 @@
 
 - [ ] Research privacy lawyer options
 
-#### Strategic Docs**
+#### Strategic Docs\*\*
 
 - [ ] Write `docs/strategy/UVP.md`
 
@@ -127,7 +127,7 @@
 
 - [ ] Create user personas
 
-#### Technical Prep**
+#### Technical Prep\*\*
 
 - [ ] Research Expo Speech API
 
@@ -137,7 +137,7 @@
 
 ### ✅ Week 2-4 Actions
 
-#### Research Execution**
+#### Research Execution\*\*
 
 - [ ] Conduct 15-20 parent interviews
 
@@ -147,7 +147,7 @@
 
 - [ ] Synthesize findings into priorities
 
-#### Compliance**
+#### Compliance\*\*
 
 - [ ] Complete COPPA checklist
 
@@ -157,7 +157,7 @@
 
 - [ ] Draft retention policies
 
-#### Voice Guidance**
+#### Voice Guidance\*\*
 
 - [ ] Prototype TTS implementation
 
@@ -165,7 +165,7 @@
 
 - [ ] User test with children
 
-#### Offline Testing**
+#### Offline Testing\*\*
 
 - [ ] Write `docs/OFFLINE_READINESS.md`
 
@@ -175,7 +175,7 @@
 
 ### ✅ Week 5-8 Actions
 
-#### Backend Development**
+#### Backend Development\*\*
 
 - [ ] Bootstrap Fastify project
 
@@ -187,7 +187,7 @@
 
 - [ ] Add Socket.io layer
 
-#### Educational Content**
+#### Educational Content\*\*
 
 - [ ] Design navigation lessons
 
@@ -197,7 +197,7 @@
 
 - [ ] Integrate with gamification
 
-#### Partnerships**
+#### Partnerships\*\*
 
 - [ ] Contact 10-15 schools/programs
 
@@ -207,7 +207,7 @@
 
 ### ✅ Week 9-12 Actions
 
-#### Backend Completion**
+#### Backend Completion\*\*
 
 - [ ] Finish all core endpoints
 
@@ -217,7 +217,7 @@
 
 - [ ] Documentation
 
-#### Progressive Independence**
+#### Progressive Independence\*\*
 
 - [ ] Implement level system
 
@@ -227,7 +227,7 @@
 
 - [ ] User testing
 
-#### Beta Preparation**
+#### Beta Preparation\*\*
 
 - [ ] Recruit 100+ beta families
 
@@ -429,5 +429,5 @@ A: TBD - options are freemium, subscription, or B2B2C. Decide after pilot progra
 
 ---
 
-*For detailed analysis, see `STRATEGIC_ROADMAP_ALIGNMENT.md`*
-*For current status, see `COMPREHENSIVE_PROJECT_STATUS.md`*
+_For detailed analysis, see `STRATEGIC_ROADMAP_ALIGNMENT.md`_  
+_For current status, see `COMPREHENSIVE_PROJECT_STATUS.md`_

@@ -82,10 +82,10 @@ const actionId = await offlineManager.queueAction(
   'PHOTO_CHECKIN',
   {
     photoUrl: 'file://photo.jpg',
-    location: { lat: 40.7128, lng: -74.0060 },
+    location: { lat: 40.7128, lng: -74.006 },
     timestamp: Date.now(),
   },
-  3 // maxRetries
+  3, // maxRetries
 );
 
 // Check pending actions
@@ -273,14 +273,10 @@ monitoring.clearUser();
 
 ```typescript
 // Add breadcrumbs for debugging
-monitoring.addBreadcrumb(
-  'User started navigation to Central Park',
-  'navigation',
-  {
-    destination: 'Central Park',
-    routeType: 'scenic',
-  }
-);
+monitoring.addBreadcrumb('User started navigation to Central Park', 'navigation', {
+  destination: 'Central Park',
+  routeType: 'scenic',
+});
 ```
 
 ### Statistics and Reporting
@@ -490,17 +486,13 @@ ENABLE_USER_TRACKING=true
 
 1. **Create Sentry Project**
 
-1. Go to <https://sentry.io>
-1. Create new React Native project
-1. Copy DSN
-
-1. **Install Sentry SDK**
+2. **Install Sentry SDK**
 
    ```bash
    npx expo install @sentry/react-native
    ```
 
-1. **Configure Sentry**
+3. **Configure Sentry**
 
    ```typescript
    await monitoring.initialize({
@@ -590,7 +582,7 @@ offlineManager.addNetworkListener((state) => {
 // In development, add debug view
 if (__DEV__) {
   console.log('Pending actions:', offlineManager.getPendingActionsCount());
-  
+
   // Force sync for testing
   await offlineManager.forcSync();
 }
@@ -602,15 +594,15 @@ if (__DEV__) {
 // Add health check component
 function HealthMonitor() {
   const [health, setHealth] = React.useState(monitoring.getSystemHealth());
-  
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       setHealth(monitoring.getSystemHealth());
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, []);
-  
+
   return (
     <View>
       <Text>Network: {health.networkStatus}</Text>

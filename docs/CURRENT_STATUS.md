@@ -90,7 +90,6 @@ Your server is running! Test the app immediately:
 If you want MapLibre and full native features:
 
 1. **Fix USB Connection:**
-
    - Plug in phone
 
    - Pull down notification → Tap USB → Change to "File Transfer"
@@ -111,7 +110,7 @@ If you want MapLibre and full native features:
    ```bash
    # APK will be at:
    android/app/build/outputs/apk/release/app-release.apk
-   
+
    # Copy to phone and install
    ```
 
@@ -122,7 +121,6 @@ If you want MapLibre and full native features:
 If USB won't work:
 
 1. **Reset Expo Password:**
-
    - Go to <https://expo.dev/>
 
    - Click "Forgot password"
@@ -142,7 +140,7 @@ If USB won't work:
 
 ## 📱 CURRENT SERVER STATUS
 
-``` text
+```text
 Metro Bundler: RUNNING
 Port: 8081
 Mode: Development Build (press 's' to switch to Expo Go)
@@ -177,7 +175,7 @@ QR Code: Available in terminal
 
 ### Gradle Build Error
 
-``` text
+```text
 A problem occurred evaluating settings 'android'.
 > Process 'command 'node'' finished with non-zero exit value 1
 ```
@@ -215,13 +213,13 @@ A problem occurred evaluating settings 'android'.
 
 ## 📊 COMPATIBILITY MATRIX
 
-| Feature | Expo Go | Native Build |
-|---------|---------|--------------|
-| Navigation | ✅ Works | ✅ Works |
-| UI/Components | ✅ Works | ✅ Works |
-| MapLibre | ❌ No | ✅ Yes |
-| MMKV Storage | ❌ No (in-memory) | ✅ Yes |
-| Testing Speed | ⚡ Instant | ⏱️ 5-15 min |
+| Feature       | Expo Go           | Native Build |
+| ------------- | ----------------- | ------------ |
+| Navigation    | ✅ Works          | ✅ Works     |
+| UI/Components | ✅ Works          | ✅ Works     |
+| MapLibre      | ❌ No             | ✅ Yes       |
+| MMKV Storage  | ❌ No (in-memory) | ✅ Yes       |
+| Testing Speed | ⚡ Instant        | ⏱️ 5-15 min  |
 
 ---
 

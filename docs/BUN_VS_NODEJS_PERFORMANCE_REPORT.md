@@ -14,60 +14,60 @@
 
 ### Simple Performance Tests (7 tests each)
 
-| Runtime | Execution Time | Startup Overhead |
-|---------|----------------|------------------|
-| **Bun** | 0.273s | ~0.2s |
-| **Node.js** | 4.393s | ~2.5s |
+| Runtime              | Execution Time | Startup Overhead       |
+| -------------------- | -------------- | ---------------------- |
+| **Bun**              | 0.273s         | ~0.2s                  |
+| **Node.js**          | 4.393s         | ~2.5s                  |
 | **Speed Difference** | **16x faster** | **12x faster startup** |
 
 ### Benchmark Tests (3 tests each)
 
-| Runtime | Execution Time | Test Runner Overhead |
-|---------|----------------|---------------------|
-| **Bun** | 0.292s | ~0.2s |
-| **Node.js** | 4.056s | ~2.5s |
+| Runtime              | Execution Time | Test Runner Overhead   |
+| -------------------- | -------------- | ---------------------- |
+| **Bun**              | 0.292s         | ~0.2s                  |
+| **Node.js**          | 4.056s         | ~2.5s                  |
 | **Speed Difference** | **14x faster** | **12x faster startup** |
 
 ### Complex Test Suite (Your existing performance.test.ts)
 
-| Runtime | Execution Time | Notes |
-|---------|----------------|--------|
-| **Bun** | Failed (compatibility issues) | React Native mocks incompatible |
-| **Node.js** | 14.941s | Full compatibility with Jest ecosystem |
+| Runtime     | Execution Time                | Notes                                  |
+| ----------- | ----------------------------- | -------------------------------------- |
+| **Bun**     | Failed (compatibility issues) | React Native mocks incompatible        |
+| **Node.js** | 14.941s                       | Full compatibility with Jest ecosystem |
 
 ## Individual Operation Performance
 
 ### Array Processing (100k items)
 
-| Runtime | Processing Time | Speed |
-|---------|----------------|--------|
-| **Bun** | ~23ms | Excellent |
-| **Node.js** | ~26ms | Very Good |
-| **Difference** | **13% faster** | Marginal |
+| Runtime        | Processing Time | Speed     |
+| -------------- | --------------- | --------- |
+| **Bun**        | ~23ms           | Excellent |
+| **Node.js**    | ~26ms           | Very Good |
+| **Difference** | **13% faster**  | Marginal  |
 
 ### JSON Operations (1k objects)
 
-| Runtime | Processing Time | Speed |
-|---------|----------------|--------|
-| **Bun** | ~2.4ms | Excellent |
-| **Node.js** | ~2.1ms | Excellent |
-| **Difference** | **Node.js 14% faster** | Marginal |
+| Runtime        | Processing Time        | Speed     |
+| -------------- | ---------------------- | --------- |
+| **Bun**        | ~2.4ms                 | Excellent |
+| **Node.js**    | ~2.1ms                 | Excellent |
+| **Difference** | **Node.js 14% faster** | Marginal  |
 
 ### Module Resolution
 
-| Runtime | Processing Time | Speed |
-|---------|----------------|--------|
-| **Bun** | ~26ms | Good |
-| **Node.js** | ~0.7ms | Excellent |
+| Runtime        | Processing Time        | Speed       |
+| -------------- | ---------------------- | ----------- |
+| **Bun**        | ~26ms                  | Good        |
+| **Node.js**    | ~0.7ms                 | Excellent   |
 | **Difference** | **Node.js 37x faster** | Significant |
 
 ### Data Processing (10k items)
 
-| Runtime | Processing Time | Speed |
-|---------|----------------|--------|
-| **Bun** | ~22ms | Excellent |
-| **Node.js** | ~22ms | Excellent |
-| **Difference** | **Tied** | Identical |
+| Runtime        | Processing Time | Speed     |
+| -------------- | --------------- | --------- |
+| **Bun**        | ~22ms           | Excellent |
+| **Node.js**    | ~22ms           | Excellent |
+| **Difference** | **Tied**        | Identical |
 
 ## Key Findings
 

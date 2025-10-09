@@ -31,8 +31,7 @@ Successfully integrated the **AI Journey Companion** ("Buddy") with the **AI Rou
 - New "Route Info" button (🛡️ icon)
 
 - Generates AI insights specifically about the selected route
-
-- Example: *"Your Safest Route is awesome! It has a 95% safety score and passes through the library. 🛡️"*
+- Example: _"Your Safest Route is awesome! It has a 95% safety score and passes through the library. 🛡️"_
 
 ### 3. Live Route Stats Card
 
@@ -61,8 +60,7 @@ Successfully integrated the **AI Journey Companion** ("Buddy") with the **AI Rou
 ### 5. Smart Fallback Messages
 
 - If API fails, uses route data for informative fallbacks
-
-- Example: *"You chose the Safest Route! With a 95% safety score, you're in good hands. Perfect for evening travel! 🌟"*
+- Example: _"You chose the Safest Route! With a 95% safety score, you're in good hands. Perfect for evening travel! 🌟"_
 
 ---
 
@@ -70,7 +68,7 @@ Successfully integrated the **AI Journey Companion** ("Buddy") with the **AI Rou
 
 ### Before Integration
 
-``` text
+```
 ┌─────────────────────────────────────────┐
 │  😊🤖  Buddy                        🔊 │
 │        Great choice going to the Museum! │
@@ -86,7 +84,7 @@ Successfully integrated the **AI Journey Companion** ("Buddy") with the **AI Rou
 
 ### After Integration
 
-``` text
+```
 ┌─────────────────────────────────────────┐
 │  🤩🤖  Buddy                        🔊 │
 │        Your Safest Route has 95% safety  │
@@ -124,19 +122,22 @@ type AIJourneyCompanionProps = {
   currentLocation: { latitude: number; longitude: number };
   destination?: Place;
   isNavigating: boolean;
-  selectedRoute?: SmartRoute;  // 🆕 NEW
+  selectedRoute?: SmartRoute; // 🆕 NEW
 };
 ```
 
-1. **Enhanced Message Types**
+2. **Enhanced Message Types**
 
 ```typescript
-type: 'story' | 'quiz' | 'encouragement' | 'safety' 
-    | 'route-insight'  // 🆕 NEW
-    | 'landmark';      // 🆕 NEW
+type: 'story' |
+  'quiz' |
+  'encouragement' |
+  'safety' |
+  'route-insight' | // 🆕 NEW
+  'landmark'; // 🆕 NEW
 ```
 
-1. **New Imports**
+3. **New Imports**
 
 ```typescript
 import { SmartRoute } from '../utils/aiRouteEngine';
@@ -144,7 +145,7 @@ import { speakMessage } from '../utils/voice';
 import { Shield, MapPin } from 'lucide-react-native';
 ```
 
-1. **New Function: generateRouteInsight()**
+4. **New Function: generateRouteInsight()**
 
 ```typescript
 const generateRouteInsight = async () => {
@@ -154,7 +155,7 @@ const generateRouteInsight = async () => {
 };
 ```
 
-1. **Enhanced generateJourneyContent()**
+5. **Enhanced generateJourneyContent()**
 
 ```typescript
 // Now includes route context in AI prompt:
@@ -171,7 +172,7 @@ if (selectedRoute) {
 }
 ```
 
-1. **New UI Components**
+6. **New UI Components**
 
 ```typescript
 // Route Info Button (conditional)
@@ -191,7 +192,7 @@ if (selectedRoute) {
 </View>
 ```
 
-1. **New Styles**
+7. **New Styles**
 
 ```typescript
 routeInfoCard: { /* Card styling */ },
@@ -336,25 +337,25 @@ function NavigationScreen() {
 
 ### Before (Generic)
 
-``` text
-"Central Park is amazing! Over 42 million people 
+```
+"Central Park is amazing! Over 42 million people
 visit each year. Have fun exploring! 🌳"
 ```
 
 ### After (Route-Aware)
 
-``` text
-"You chose the Safest Route to Central Park! 
-With a 95% safety score and passing through 
-3 safe zones, you're in great hands. The park 
+```
+"You chose the Safest Route to Central Park!
+With a 95% safety score and passing through
+3 safe zones, you're in great hands. The park
 has over 26,000 trees waiting for you! 🌳🛡️"
 ```
 
 ### Route Insight Example
 
-``` text
-"🗺️ Your Safest Route is super smart! It takes 
-you through well-lit streets and past the library. 
+```
+"🗺️ Your Safest Route is super smart! It takes
+you through well-lit streets and past the library.
 Perfect for your evening adventure! 🛡️✨"
 ```
 

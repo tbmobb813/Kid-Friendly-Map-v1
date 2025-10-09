@@ -23,8 +23,9 @@ export default function AIRouteSuggestions({
   const [routes, setRoutes] = useState<SmartRoute[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<string | null>(null);
-  // Use the new public getter instead of touching private field
-  const [preferences, setPreferences] = useState<RoutePreferences>(aiRouteEngine.preferences);
+  const [preferences, setPreferences] = useState<RoutePreferences>(
+    aiRouteEngine['userPreferences'],
+  );
 
   useEffect(() => {
     if (origin && destination) {
@@ -169,9 +170,7 @@ export default function AIRouteSuggestions({
                     </Text>
                   </View>
                   <View
-                    className={`px-3 py-1 rounded-full ${getDifficultyColor(
-                      route.difficultyLevel,
-                    )}`}
+                    className={`px-3 py-1 rounded-full ${getDifficultyColor(route.difficultyLevel)}`}
                   >
                     <Text className="text-xs font-semibold">
                       {route.difficultyLevel.toUpperCase()}

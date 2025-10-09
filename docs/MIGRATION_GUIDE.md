@@ -180,15 +180,15 @@ const safeZones = [
 
 ```typescript
 const route = [
-  { 
-    latitude: 40.7589, 
-    longitude: -73.9851, 
-    instruction: 'Start here' 
+  {
+    latitude: 40.7589,
+    longitude: -73.9851,
+    instruction: 'Start here',
   },
-  { 
-    latitude: 40.7614, 
-    longitude: -73.9776, 
-    instruction: 'Destination' 
+  {
+    latitude: 40.7614,
+    longitude: -73.9776,
+    instruction: 'Destination',
   },
 ];
 ```
@@ -216,14 +216,14 @@ const stored = mainStorage.get(StorageKeys.FAVORITE_PLACES);
 ### Available Keys
 
 ```typescript
-StorageKeys.USER_PROFILE
-StorageKeys.AUTH_TOKEN
-StorageKeys.EMERGENCY_CONTACTS
-StorageKeys.SAFE_ZONES
-StorageKeys.VOICE_ENABLED
-StorageKeys.RECENT_SEARCHES
-StorageKeys.FAVORITE_PLACES
-StorageKeys.ACHIEVEMENTS
+StorageKeys.USER_PROFILE;
+StorageKeys.AUTH_TOKEN;
+StorageKeys.EMERGENCY_CONTACTS;
+StorageKeys.SAFE_ZONES;
+StorageKeys.VOICE_ENABLED;
+StorageKeys.RECENT_SEARCHES;
+StorageKeys.FAVORITE_PLACES;
+StorageKeys.ACHIEVEMENTS;
 // ... and more
 ```
 
@@ -238,7 +238,7 @@ function SettingsScreen() {
   return (
     <ScrollView>
       {/* Your existing settings */}
-      
+
       {/* Add voice settings */}
       <VoiceSettings />
     </ScrollView>
@@ -254,10 +254,13 @@ function SettingsScreen() {
 
 ```typescript
 const cacheData = async (key, data) => {
-  await AsyncStorage.setItem(key, JSON.stringify({
-    data,
-    timestamp: Date.now(),
-  }));
+  await AsyncStorage.setItem(
+    key,
+    JSON.stringify({
+      data,
+      timestamp: Date.now(),
+    }),
+  );
 };
 
 const getCachedData = async (key, maxAge) => {
@@ -310,7 +313,7 @@ import { mainStorage } from '../utils/storage';
 const trackLocation = async () => {
   const location = await Location.getCurrentPositionAsync();
   setCurrentLocation(location.coords);
-  
+
   // Store with MMKV
   mainStorage.set('last_location', {
     lat: location.coords.latitude,
@@ -332,11 +335,11 @@ import MapView from 'expo-maps';
 
 export default function JourneyScreen() {
   const [route, setRoute] = useState([]);
-  
+
   const saveJourney = async (journey) => {
     await AsyncStorage.setItem('journey', JSON.stringify(journey));
   };
-  
+
   return (
     <View>
       <MapView />
@@ -357,28 +360,28 @@ import KidFriendlyMap from '../components/KidFriendlyMap';
 export default function JourneyScreen() {
   const [route, setRoute] = useState([]);
   const [safeZones, setSafeZones] = useState([]);
-  
+
   useEffect(() => {
     // Load saved data (synchronous!)
     const savedRoute = mainStorage.get(StorageKeys.JOURNEY_HISTORY);
     const savedZones = mainStorage.get(StorageKeys.SAFE_ZONES);
-    
+
     if (savedRoute) setRoute(savedRoute);
     if (savedZones) setSafeZones(savedZones);
   }, []);
-  
+
   const saveJourney = (journey) => {
     // No await needed!
     mainStorage.set(StorageKeys.JOURNEY_HISTORY, journey);
   };
-  
+
   const handleLocationChange = (location) => {
     mainStorage.set('current_location', location.coords);
   };
-  
+
   const handleSafeZoneEnter = async (zone) => {
     await speakSafety(`You're in ${zone.name}!`);
-    
+
     // Log entry
     const history = mainStorage.get('zone_history', []);
     history.push({
@@ -387,7 +390,7 @@ export default function JourneyScreen() {
     });
     mainStorage.set('zone_history', history);
   };
-  
+
   return (
     <View style={{ flex: 1 }}>
       <KidFriendlyMap

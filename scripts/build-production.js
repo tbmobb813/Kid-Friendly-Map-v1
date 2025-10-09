@@ -88,7 +88,9 @@ appJson.expo.ios.buildNumber = buildNumber;
 appJson.expo.android.versionCode = parseInt(buildNumber.replace(/\./g, ''));
 
 fs.writeFileSync(appJsonPath, JSON.stringify(appJson, null, 2));
-console.log(`✅ Updated build numbers: iOS ${buildNumber}, Android ${appJson.expo.android.versionCode}\n`);
+console.log(
+  `✅ Updated build numbers: iOS ${buildNumber}, Android ${appJson.expo.android.versionCode}\n`,
+);
 
 // 7. Create deployment checklist
 const checklistPath = path.join(__dirname, '..', 'DEPLOYMENT_CHECKLIST.md');

@@ -8,22 +8,22 @@ This runbook describes how Kid-Friendly Map monitors reliability, privacy-first 
 
 ## Tooling Summary
 
-| Capability | Primary Tool | Backup / Notes |
-|------------|--------------|----------------|
-| Error tracking | Sentry (expo + backend) | Console logs with redacted stack traces |
-| Performance metrics | Expo performance API, custom monitors | Pending Prometheus/Grafana integration |
-| Analytics | Plausible (EU region) | Redshift aggregate exports (monthly) |
-| Backend health | `/status` endpoints + heartbeat checks | Manual verification via runbooks |
+| Capability          | Primary Tool                           | Backup / Notes                          |
+| ------------------- | -------------------------------------- | --------------------------------------- |
+| Error tracking      | Sentry (expo + backend)                | Console logs with redacted stack traces |
+| Performance metrics | Expo performance API, custom monitors  | Pending Prometheus/Grafana integration  |
+| Analytics           | Plausible (EU region)                  | Redshift aggregate exports (monthly)    |
+| Backend health      | `/status` endpoints + heartbeat checks | Manual verification via runbooks        |
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `SENTRY_DSN` | Project-specific DSN issued by Sentry |
-| `SENTRY_ENVIRONMENT` | `development`, `staging`, or `production` |
-| `SENTRY_RELEASE` | Git SHA or semantic app version |
-| `PLAUSIBLE_API_KEY` | Server access for event forwarding |
-| `PLAUSIBLE_SITE_ID` | Domain/app identifier (e.g., `app.kidfriendlymap.example`) |
+| Variable             | Description                                                |
+| -------------------- | ---------------------------------------------------------- |
+| `SENTRY_DSN`         | Project-specific DSN issued by Sentry                      |
+| `SENTRY_ENVIRONMENT` | `development`, `staging`, or `production`                  |
+| `SENTRY_RELEASE`     | Git SHA or semantic app version                            |
+| `PLAUSIBLE_API_KEY`  | Server access for event forwarding                         |
+| `PLAUSIBLE_SITE_ID`  | Domain/app identifier (e.g., `app.kidfriendlymap.example`) |
 
 Store secrets in EAS environment configs and backend secret manager. Never commit DSNs or API keys to source control.
 
@@ -51,12 +51,12 @@ Provide read-only access to Product, Support, and Legal for transparency.
 
 ## Alert Policies
 
-| Alert | Threshold | Channel | Playbook |
-|-------|-----------|---------|----------|
-| Crash-free rate drop | <99% over 30 min | Pager + Slack `#alerts` | Investigate latest release, compare stack traces |
-| API latency spike | p95 > 1.5s for 15 min | Pager + Slack | Check backend health endpoints, scale workers |
-| Offline tile failures | >5% download errors in 1 hr | Slack mention Mobile lead | Inspect CDN logs, verify storage quotas |
-| Plausible opt-out anomalies | Opt-outs > opt-ins in 24 hr | Slack `#privacy` | Review consent flow, confirm bug vs real trend |
+| Alert                       | Threshold                   | Channel                   | Playbook                                         |
+| --------------------------- | --------------------------- | ------------------------- | ------------------------------------------------ |
+| Crash-free rate drop        | <99% over 30 min            | Pager + Slack `#alerts`   | Investigate latest release, compare stack traces |
+| API latency spike           | p95 > 1.5s for 15 min       | Pager + Slack             | Check backend health endpoints, scale workers    |
+| Offline tile failures       | >5% download errors in 1 hr | Slack mention Mobile lead | Inspect CDN logs, verify storage quotas          |
+| Plausible opt-out anomalies | Opt-outs > opt-ins in 24 hr | Slack `#privacy`          | Review consent flow, confirm bug vs real trend   |
 
 Escalation: If P0 unresolved after 30 min, notify CTO and Legal if user data risk present.
 
@@ -102,11 +102,11 @@ Escalation: If P0 unresolved after 30 min, notify CTO and Legal if user data ris
 
 ## Contacts
 
-| Role | Primary | Backup |
-|------|---------|--------|
-| On-call engineer | @mobile-oncall | @backend-oncall |
-| Privacy program manager | @privacy-pm | @legal-liaison |
-| DevOps lead | @devops-lead | @ops-escalation |
+| Role                    | Primary        | Backup          |
+| ----------------------- | -------------- | --------------- |
+| On-call engineer        | @mobile-oncall | @backend-oncall |
+| Privacy program manager | @privacy-pm    | @legal-liaison  |
+| DevOps lead             | @devops-lead   | @ops-escalation |
 
 Update contact list monthly. Include phone numbers in secure vault.
 
