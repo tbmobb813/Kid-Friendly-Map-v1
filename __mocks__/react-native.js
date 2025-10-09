@@ -6,5 +6,13 @@ module.exports = {
   Platform: { ...rn.Platform, OS: 'android' },
 };
 
-// Export all components
-module.exports = components;
+// Ensure we export the merged React Native object (previous line mistakenly tried to
+// export an undefined `components` variable).
+// Export the prepared mock object created above.
+// (This keeps real react-native exports and overrides Platform for tests.)
+// eslint-disable-next-line no-undef
+module.exports = {
+  ...rn,
+  StyleSheet: rn.StyleSheet,
+  Platform: { ...rn.Platform, OS: 'android' },
+};
