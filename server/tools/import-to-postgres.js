@@ -12,7 +12,7 @@ async function copyFromJson(file, table, columns) {
   if (!fs.existsSync(p)) return;
   const items = JSON.parse(fs.readFileSync(p, 'utf8'));
   // items is an object map - convert to rows
-  const rows = Object.values(items || {}).map(obj => columns.map(c => obj[c] || null));
+  const rows = Object.values(items || {}).map((obj) => columns.map((c) => obj[c] || null));
   if (!rows.length) return;
   const client = await pool.connect();
   try {
@@ -52,7 +52,12 @@ async function copyFromJson(file, table, columns) {
     console.error('DATABASE_URL is required');
     process.exit(1);
   }
-  await copyFromJson('routes.json', 'routes', ['route_id', 'route_short_name', 'route_long_name', 'route_type']);
+  await copyFromJson('routes.json', 'routes', [
+    'route_id',
+    'route_short_name',
+    'route_long_name',
+    'route_type',
+  ]);
   await copyFromJson('trips.json', 'trips', ['trip_id', 'route_id', 'service_id', 'trip_headsign']);
   await copyFromJson('stops.json', 'stops', ['stop_id', 'stop_name', 'stop_lat', 'stop_lon']);
   // Shapes: shape_points_by_shape.json is shape_id -> array of points; we insert incrementally (no staging swap due to volume & primary key uniqueness)
@@ -66,7 +71,12 @@ async function copyFromJson(file, table, columns) {
         for (const p of pts) {
           await client.query(
             'INSERT INTO shapes(shape_id, shape_pt_lat, shape_pt_lon, shape_pt_sequence) VALUES ($1,$2,$3,$4) ON CONFLICT DO NOTHING',
-            [shapeId, Number(p.shape_pt_lat), Number(p.shape_pt_lon), parseInt(p.shape_pt_sequence || '0', 10)]
+            [
+              shapeId,
+              Number(p.shape_pt_lat),
+              Number(p.shape_pt_lon),
+              parseInt(p.shape_pt_sequence || '0', 10),
+            ],
           );
         }
       }
@@ -82,7 +92,14 @@ async function copyFromJson(file, table, columns) {
     const stMap = JSON.parse(fs.readFileSync(stFile, 'utf8'));
     const rows = [];
     for (const [tripId, arr] of Object.entries(stMap)) {
-      for (const s of arr) rows.push([tripId, parseInt(s.stop_sequence || '0', 10), s.stop_id, s.arrival_time || null, s.departure_time || null]);
+      for (const s of arr)
+        rows.push([
+          tripId,
+          parseInt(s.stop_sequence || '0', 10),
+          s.stop_id,
+          s.arrival_time || null,
+          s.departure_time || null,
+        ]);
     }
     if (rows.length) {
       const client = await pool.connect();

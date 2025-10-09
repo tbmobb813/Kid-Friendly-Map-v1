@@ -2,11 +2,11 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, master, develop ]
+    branches: [main, master, develop]
   pull_request:
 
 env:
-  NODE_VERSION: '22'
+  NODE_VERSION: '20'
   BUN_VERSION: '1.1.30'
 
 jobs:
@@ -21,12 +21,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
       - name: TypeScript typecheck
         run: npx -y tsc --noEmit
 
@@ -44,26 +40,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Install server dependencies
-        run: |
-          cd server
-          npm ci --no-audit --no-fund
-      - name: Show runtime versions
-        run: |
-          node -v
-          bun --version || true
-          npm -v
+        run: npm ci
       - name: Run tests with coverage
-        run: npm run test:ci
+        run: npx -y jest --ci --colors --coverage --runInBand
         env:
           PLATFORM: ${{ matrix.platform }}
-          NODE_OPTIONS: --experimental-specifier-resolution=node
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
         if: matrix.platform == 'ios'
@@ -90,16 +72,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
       - name: Run safety-specific tests
-        run: npx -y jest __tests__/safety.test.ts --coverage --ci --colors
+        run: npx -y jest __tests__/safety.test.ts --ci --colors --runInBand
       - name: Validate error handling
-        run: npx -y jest __tests__/errorHandling.test.ts --coverage --ci --colors
+        run: npx -y jest __tests__/errorHandling.test.ts --ci --colors --runInBand
 
   performance:
     name: Performance Tests
@@ -112,18 +90,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
       - name: Bundle size analysis
         run: |
           echo "Analyzing bundle size..."
           node scripts/build-production-simple.js
       - name: Performance benchmarks
-        run: npx -y jest __tests__/performance.test.ts --ci --colors
+        run: npx -y jest __tests__/performance.test.ts --ci --colors --runInBand
 
   # Security and Compliance
   security:
@@ -136,18 +110,38 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
       - name: Run security audit
         run: bun audit || echo "Audit completed with warnings"
       - name: Check for vulnerabilities
         run: |
           echo "Checking for known vulnerabilities..."
           bun audit --audit-level moderate || echo "Moderate vulnerabilities found"
+
+  logic-tests:
+    name: Logic Tests (Bun)
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - name: Install dependencies (npm for logic tests)
+        run: npm ci
+      - name: Run logic tests (uses bun-test.sh wrapper when bun present)
+        run: bash ./scripts/bun-test.sh --ci || npm run test:logic || npx -y jest --ci --colors
 
   # Platform-specific builds (iOS/Android focus)
   build-ios:
@@ -162,12 +156,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
       - name: Validate iOS compatibility
         run: |
           echo "Validating iOS-specific code..."
@@ -185,12 +175,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
       - name: Validate Android compatibility
         run: |
           echo "Validating Android-specific code..."

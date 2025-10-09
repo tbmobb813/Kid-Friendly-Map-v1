@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/61</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/53</span>
+                <span class='fraction'>0/61</span>
             </div>
         
             
@@ -505,6 +505,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -513,15 +521,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -942,14 +942,14 @@
  * Demonstrates MMKV storage, Voice/TTS, react-native-maps, and AI route suggestions
  */
 &nbsp;
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
-import KidFriendlyMap, { SafeZone, RoutePoint, MapLocation } from '../components/KidFriendlyMap';
-import VoiceSettings from '../components/VoiceSettings';
+<span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { View, Text, ScrollView, Pressable, Alert } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import KidFriendlyMap, { SafeZone, RoutePoint, MapLocation } from '../components/KidFriendlyMap';</span>
+<span class="cstat-no" title="statement not covered" >import VoiceSettings from '../components/VoiceSettings';</span>
 import AIRouteSuggestions from '../components/AIRouteSuggestions';
-import SmartNavigationScreen from '../components/SmartNavigationScreen';
-import { mainStorage, cache, StorageKeys, StorageUtils } from '../utils/storage';
-import {
+<span class="cstat-no" title="statement not covered" >import SmartNavigationScreen from '../components/SmartNavigationScreen';</span>
+<span class="cstat-no" title="statement not covered" >import { mainStorage, cache, StorageKeys, StorageUtils } from '../utils/storage';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
   voiceManager,
   KidFriendlyPhrases,
   speakNavigation,
@@ -958,7 +958,7 @@ import {
 } from '../utils/voice';
 import * as Location from 'expo-location';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >EnhancedFeaturesDemo(</span>) {
+<span class="cstat-no" title="statement not covered" >export default function <span class="fstat-no" title="function not covered" >E</span>nhancedFeaturesDemo(</span>) {
   const [activeTab, setActiveTab] = <span class="cstat-no" title="statement not covered" >useState&lt;'map' | 'voice' | 'storage' | 'ai' | 'smart-nav'&gt;(</span>
     'smart-nav',
   );
@@ -1002,17 +1002,17 @@ export default function <span class="fstat-no" title="function not covered" >Enh
     },
   ];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    loadStorageInfo();</span>
 <span class="cstat-no" title="statement not covered" >    initializeDemoData();</span>
   }, []);
 &nbsp;
-  const loadStorageInfo = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const loadStorageInfo = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     const info = <span class="cstat-no" title="statement not covered" >StorageUtils.getStorageInfo();</span>
 <span class="cstat-no" title="statement not covered" >    setStorageInfo(info);</span>
   };
 &nbsp;
-  const initializeDemoData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const initializeDemoData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     // Demo: Store some data
 <span class="cstat-no" title="statement not covered" >    mainStorage.set(StorageKeys.FAVORITE_PLACES, [</span>
       { name: 'Home', lat: 40.7589, lng: -73.9851 },
@@ -1042,7 +1042,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
   };
 &nbsp;
   // Storage demos
-  const testStorageOperations = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const testStorageOperations = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     // Test MMKV operations
     const testKey = <span class="cstat-no" title="statement not covered" >'test_data';</span>
     const testValue = <span class="cstat-no" title="statement not covered" >{ message: 'Hello from MMKV!', timestamp: Date.now() };</span>
@@ -1058,32 +1058,32 @@ export default function <span class="fstat-no" title="function not covered" >Enh
 <span class="cstat-no" title="statement not covered" >    loadStorageInfo();</span>
   };
 &nbsp;
-  const clearCache = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearCache = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    cache.clearAll();</span>
 <span class="cstat-no" title="statement not covered" >    Alert.alert('Success', 'Cache cleared!');</span>
 <span class="cstat-no" title="statement not covered" >    loadStorageInfo();</span>
   };
 &nbsp;
-  const clearExpiredCache = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const clearExpiredCache = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     const cleared = <span class="cstat-no" title="statement not covered" >StorageUtils.clearExpired();</span>
 <span class="cstat-no" title="statement not covered" >    Alert.alert('Success', `Cleared ${cleared} expired entries`);</span>
 <span class="cstat-no" title="statement not covered" >    loadStorageInfo();</span>
   };
 &nbsp;
   // Voice demos
-  const testVoiceNavigation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const testVoiceNavigation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await speakNavigation('Turn left at the next corner', 50);</span>
   };
 &nbsp;
-  const testVoiceSafety = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const testVoiceSafety = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await speakSafety(KidFriendlyPhrases.safety.lookBothWays);</span>
   };
 &nbsp;
-  const testVoiceAchievement = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const testVoiceAchievement = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await speakAchievement(KidFriendlyPhrases.achievements.newBadge);</span>
   };
 &nbsp;
-  const testVoiceQueue = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const testVoiceQueue = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await voiceManager.speak('First message');</span>
 <span class="cstat-no" title="statement not covered" >    await voiceManager.speak('Second message');</span>
 <span class="cstat-no" title="statement not covered" >    await voiceManager.speak('Third message');</span>
@@ -1099,7 +1099,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
         className="bg-white border-b border-gray-200"
       &gt;
         &lt;Pressable
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('smart-nav')}</span>
+          onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('smart-nav')}</span>
           className={`p-4 ${activeTab === 'smart-nav' ? 'border-b-2 border-blue-500' : ''}`}
         &gt;
           &lt;Text
@@ -1112,7 +1112,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
         &lt;/Pressable&gt;
 &nbsp;
         &lt;Pressable
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('ai')}</span>
+          onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('ai')}</span>
           className={`p-4 ${activeTab === 'ai' ? 'border-b-2 border-blue-500' : ''}`}
         &gt;
           &lt;Text
@@ -1125,7 +1125,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
         &lt;/Pressable&gt;
 &nbsp;
         &lt;Pressable
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('map')}</span>
+          onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('map')}</span>
           className={`p-4 ${activeTab === 'map' ? 'border-b-2 border-blue-500' : ''}`}
         &gt;
           &lt;Text
@@ -1138,7 +1138,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
         &lt;/Pressable&gt;
 &nbsp;
         &lt;Pressable
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('voice')}</span>
+          onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('voice')}</span>
           className={`p-4 ${activeTab === 'voice' ? 'border-b-2 border-blue-500' : ''}`}
         &gt;
           &lt;Text
@@ -1151,7 +1151,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
         &lt;/Pressable&gt;
 &nbsp;
         &lt;Pressable
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('storage')}</span>
+          onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('storage')}</span>
           className={`p-4 ${activeTab === 'storage' ? 'border-b-2 border-blue-500' : ''}`}
         &gt;
           &lt;Text
@@ -1358,7 +1358,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
             &lt;/View&gt;
 &nbsp;
             &lt;Pressable
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('smart-nav')}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setActiveTab('smart-nav')}</span>
               className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-xl mt-4"
             &gt;
               &lt;Text className="text-white text-center font-semibold text-lg"&gt;
@@ -1381,7 +1381,7 @@ export default function <span class="fstat-no" title="function not covered" >Enh
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -28,20 +28,20 @@ Explicitly excluded:
 
 ### Key Standardization Actions
 
-| Category | Changes Applied |
-|----------|-----------------|
-| Heading structure | Normalized heading levels (MD001), removed duplicate H1s (MD025), converted emphasis to headings (MD036). |
-| Spacing & layout | Added required blank lines (MD022, MD032); removed extra blank lines (MD012). |
-| Lists | Fixed indentation (MD007/MD005), consistent ordered list style (MD029), ensured separation. |
-| Code fences | Added languages (MD040), enforced surrounding blank lines (MD031), standardized common languages (bash, typescript, http, text, yaml). |
-| Tables | Repaired split rows, ensured proper pipe usage; avoided multi-line cell hacks. |
-| Line length | Reflowed prose/table cells to <= 200 chars (MD013) for non-legal docs. |
-| Artifacts | Removed trailing spaces (MD009), added final newlines (MD047), removed hard tabs (MD010). |
-| Duplicates | Renamed duplicate headings (MD024) e.g. consolidated repeated "Test Coverage". |
-| URLs | Converted bare URLs to angle bracket or markdown links (MD034). |
-| Inline HTML | Eliminated unnecessary HTML (MD033). |
-| Suppressions | Local inline MD013 disable only for legal drafts to preserve counsel review format. |
-| Config | Added `.markdownlintignore` for `node_modules/`; kept relaxed MD013 limit (200). |
+| Category          | Changes Applied                                                                                                                        |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Heading structure | Normalized heading levels (MD001), removed duplicate H1s (MD025), converted emphasis to headings (MD036).                              |
+| Spacing & layout  | Added required blank lines (MD022, MD032); removed extra blank lines (MD012).                                                          |
+| Lists             | Fixed indentation (MD007/MD005), consistent ordered list style (MD029), ensured separation.                                            |
+| Code fences       | Added languages (MD040), enforced surrounding blank lines (MD031), standardized common languages (bash, typescript, http, text, yaml). |
+| Tables            | Repaired split rows, ensured proper pipe usage; avoided multi-line cell hacks.                                                         |
+| Line length       | Reflowed prose/table cells to <= 200 chars (MD013) for non-legal docs.                                                                 |
+| Artifacts         | Removed trailing spaces (MD009), added final newlines (MD047), removed hard tabs (MD010).                                              |
+| Duplicates        | Renamed duplicate headings (MD024) e.g. consolidated repeated "Test Coverage".                                                         |
+| URLs              | Converted bare URLs to angle bracket or markdown links (MD034).                                                                        |
+| Inline HTML       | Eliminated unnecessary HTML (MD033).                                                                                                   |
+| Suppressions      | Local inline MD013 disable only for legal drafts to preserve counsel review format.                                                    |
+| Config            | Added `.markdownlintignore` for `node_modules/`; kept relaxed MD013 limit (200).                                                       |
 
 ### Representative Fix Examples
 
@@ -54,8 +54,8 @@ Explicitly excluded:
 
 ### Exemptions & Rationale
 
-| Area | Exemption | Rationale |
-|------|-----------|-----------|
+| Area                                                      | Exemption             | Rationale                                                       |
+| --------------------------------------------------------- | --------------------- | --------------------------------------------------------------- |
 | Legal drafts (`privacy-policy.md`, `terms-of-service.md`) | MD013 disabled inline | Maintain original legal paragraph formatting for review cycles. |
 
 ### Lint Configuration Snapshot
@@ -96,4 +96,4 @@ Result: 0 violations (legal MD013 lines intentionally suppressed inline).
 
 ---
 
-*End of 2025-10-07 documentation standardization entry.*
+_End of 2025-10-07 documentation standardization entry._

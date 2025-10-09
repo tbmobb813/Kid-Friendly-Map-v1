@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/65</span>
+                <span class='fraction'>0/72</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/56</span>
+                <span class='fraction'>0/47</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/63</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
@@ -391,6 +391,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -425,20 +438,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -714,9 +714,9 @@
  * Kid-friendly map with safety zones, journey tracking, and voice integration
  */
 &nbsp;
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import MapView, {
+<span class="cstat-no" title="statement not covered" >import React, { useRef, useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import MapView, {</span>
   Marker,
   Polyline,
   Circle,
@@ -724,9 +724,9 @@ import MapView, {
   Region,
   MapMarker,
 } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { voiceManager, speakNavigation, KidFriendlyPhrases } from '../utils/voice';
-import { log } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import * as Location from 'expo-location';</span>
+<span class="cstat-no" title="statement not covered" >import { voiceManager, speakNavigation, KidFriendlyPhrases } from '../utils/voice';</span>
+<span class="cstat-no" title="statement not covered" >import { log } from '../utils/logger';</span>
 &nbsp;
 export interface MapLocation {
   latitude: number;
@@ -761,7 +761,7 @@ interface KidFriendlyMapProps {
   style?: any;
 }
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >KidFriendlyMap(</span>{
+<span class="cstat-no" title="statement not covered" >export default function <span class="fstat-no" title="function not covered" >K</span>idFriendlyMap(</span>{
   initialLocation,
   safeZones = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
   route = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span>
@@ -786,23 +786,23 @@ export default function <span class="fstat-no" title="function not covered" >Kid
   );
   const [insideSafeZones, setInsideSafeZones] = <span class="cstat-no" title="statement not covered" >useState&lt;Set&lt;string&gt;&gt;(new Set());</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setupLocationTracking();</span>
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (userLocation &amp;&amp; safeZones.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (userLocation &amp;&amp; safeZones.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      checkSafeZones();</span>
     }
   }, [userLocation, safeZones]);
 &nbsp;
-  const setupLocationTracking = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+  const setupLocationTracking = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async </span>() =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { status } = <span class="cstat-no" title="statement not covered" >await Location.requestForegroundPermissionsAsync();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (status !== 'granted') {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (status !== 'granted') {</span>
 <span class="cstat-no" title="statement not covered" >        log.warn('Location permission not granted');</span>
-<span class="cstat-no" title="statement not covered" >        if (enableVoiceGuidance) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (enableVoiceGuidance) {</span>
 <span class="cstat-no" title="statement not covered" >          await voiceManager.speak(KidFriendlyPhrases.errors.locationError);</span>
         }
 <span class="cstat-no" title="statement not covered" >        return;</span>
@@ -817,7 +817,7 @@ export default function <span class="fstat-no" title="function not covered" >Kid
 <span class="cstat-no" title="statement not covered" >      onLocationChange?.(location);</span>
 &nbsp;
       // Center map on user location
-<span class="cstat-no" title="statement not covered" >      if (mapRef.current &amp;&amp; !initialLocation) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (mapRef.current &amp;&amp; !initialLocation) {</span>
 <span class="cstat-no" title="statement not covered" >        mapRef.current.animateToRegion({</span>
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -843,8 +843,8 @@ export default function <span class="fstat-no" title="function not covered" >Kid
     }
   };
 &nbsp;
-  const checkSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!userLocation) <span class="cstat-no" title="statement not covered" >return;</span></span>
+  const checkSafeZones = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userLocation) <span class="cstat-no" title="statement not covered" >return;</span></span>
 &nbsp;
     const currentLoc = <span class="cstat-no" title="statement not covered" >{</span>
       latitude: userLocation.coords.latitude,
@@ -861,10 +861,10 @@ export default function <span class="fstat-no" title="function not covered" >Kid
 <span class="cstat-no" title="statement not covered" >        setInsideSafeZones(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; <span class="cstat-no" title="statement not covered" >new Set(prev).add(zone.id))</span>;</span>
 <span class="cstat-no" title="statement not covered" >        onSafeZoneEnter?.(zone);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (enableVoiceGuidance) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (enableVoiceGuidance) {</span>
 <span class="cstat-no" title="statement not covered" >          voiceManager.speak(KidFriendlyPhrases.safety.safeZone);</span>
         }
-      } else <span class="cstat-no" title="statement not covered" >if (!isInside &amp;&amp; wasInside) {</span>
+      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (!isInside &amp;&amp; wasInside) {</span>
         // Exited safe zone
 <span class="cstat-no" title="statement not covered" >        setInsideSafeZones(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; {</span>
           const newSet = <span class="cstat-no" title="statement not covered" >new Set(prev);</span>
@@ -891,8 +891,8 @@ export default function <span class="fstat-no" title="function not covered" >Kid
 <span class="cstat-no" title="statement not covered" >    return R * c;</span>
   };
 &nbsp;
-  const centerOnUser = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (userLocation &amp;&amp; mapRef.current) {</span>
+  const centerOnUser = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (userLocation &amp;&amp; mapRef.current) {</span>
 <span class="cstat-no" title="statement not covered" >      mapRef.current.animateToRegion({</span>
         latitude: userLocation.coords.latitude,
         longitude: userLocation.coords.longitude,
@@ -902,8 +902,8 @@ export default function <span class="fstat-no" title="function not covered" >Kid
     }
   };
 &nbsp;
-  const fitToRoute = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (route.length &gt; 0 &amp;&amp; mapRef.current) {</span>
+  const fitToRoute = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (route.length &gt; 0 &amp;&amp; mapRef.current) {</span>
 <span class="cstat-no" title="statement not covered" >      mapRef.current.fitToCoordinates(route, {</span>
         edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
         animated: true,
@@ -1039,7 +1039,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

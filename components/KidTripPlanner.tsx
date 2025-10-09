@@ -353,8 +353,8 @@ const KidTripPlanner: React.FC<KidTripPlannerProps> = ({ onTripReady, userLocati
               {segment.type === 'walk'
                 ? 'Walk'
                 : segment.type === 'subway'
-                ? `${segment.line} Train`
-                : `${segment.line} Bus`}
+                  ? `${segment.line} Train`
+                  : `${segment.line} Bus`}
             </Text>
             <Text style={styles.segmentRoute}>
               {segment.from} → {segment.to}

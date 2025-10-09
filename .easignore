@@ -1,0 +1,40 @@
+# Node modules and package manager files
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build outputs
+android/build/
+ios/build/
+build/
+dist/
+*.apk
+*.aab
+
+# Coverage and test reports
+coverage/
+*.lcov
+*.log
+
+# IDE and OS files
+.DS_Store
+*.swp
+*.tmp
+
+# Expo and Metro cache
+.expo/
+.expo-shared/
+.cache/
+metro-cache/
+
+# Logs
+*.log
+*.log.*
+
+# Misc
+*.tgz
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z

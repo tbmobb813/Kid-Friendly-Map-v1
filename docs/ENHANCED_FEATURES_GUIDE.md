@@ -5,10 +5,8 @@
 This document details the implementation of three major enhancements to the Kid-Friendly Map application:
 
 1. **MMKV Storage** - High-performance key-value storage
-
-1. **Voice/TTS** - Text-to-speech with expo-speech
-
-1. **React Native Maps** - Native map integration
+2. **Voice/TTS** - Text-to-speech with expo-speech
+3. **React Native Maps** - Native map integration
 
 ## 🚀 Installed Packages
 
@@ -24,18 +22,13 @@ expo-speech@~13.1.7            # Already installed, now integrated
 ### Features
 
 - **10x faster** than AsyncStorage
-
 - **Synchronous** operations (no await needed)
-
 - **Type-safe** API
-
 - **Encryption** support for sensitive data
-
 - **Smaller** memory footprint
-
 - **Automatic** cache expiration
 
-### MMKV Usage
+### Usage
 
 #### Basic Operations
 
@@ -46,7 +39,7 @@ import { mainStorage, cache, StorageKeys } from '../utils/storage';
 mainStorage.set(StorageKeys.USER_PROFILE, {
   name: 'John',
   age: 10,
-  favoriteColor: 'blue'
+  favoriteColor: 'blue',
 });
 
 // Retrieve data
@@ -90,10 +83,7 @@ mainStorage.setBatch({
 });
 
 // Get multiple values
-const values = mainStorage.getBatch([
-  StorageKeys.THEME,
-  StorageKeys.LANGUAGE,
-]);
+const values = mainStorage.getBatch([StorageKeys.THEME, StorageKeys.LANGUAGE]);
 ```
 
 #### Migration from AsyncStorage
@@ -108,39 +98,33 @@ await migrateFromAsyncStorage();
 ### Available Storage Keys
 
 ```typescript
-StorageKeys.USER_PROFILE          // User data
-StorageKeys.AUTH_TOKEN            // Auth token
-StorageKeys.EMERGENCY_CONTACTS    // Emergency contacts
-StorageKeys.SAFE_ZONES            // Safe zones
-StorageKeys.VOICE_ENABLED         // Voice settings
-StorageKeys.VOICE_RATE            // Speech rate
-StorageKeys.VOICE_PITCH           // Speech pitch
-StorageKeys.RECENT_SEARCHES       // Search history
-StorageKeys.FAVORITE_PLACES       // Favorites
-StorageKeys.ACHIEVEMENTS          // Achievements
-StorageKeys.TRANSIT_DATA          // Transit cache
+StorageKeys.USER_PROFILE; // User data
+StorageKeys.AUTH_TOKEN; // Auth token
+StorageKeys.EMERGENCY_CONTACTS; // Emergency contacts
+StorageKeys.SAFE_ZONES; // Safe zones
+StorageKeys.VOICE_ENABLED; // Voice settings
+StorageKeys.VOICE_RATE; // Speech rate
+StorageKeys.VOICE_PITCH; // Speech pitch
+StorageKeys.RECENT_SEARCHES; // Search history
+StorageKeys.FAVORITE_PLACES; // Favorites
+StorageKeys.ACHIEVEMENTS; // Achievements
+StorageKeys.TRANSIT_DATA; // Transit cache
 // ... and more (see utils/storage.ts)
 ```
 
 ## 🎤 2. Voice/TTS with Expo Speech
 
-### Voice/TTS Features
+### Features
 
 - **Kid-friendly** voice selection
-
 - **Priority-based** speech queue
-
 - **Configurable** rate and pitch
-
 - **Predefined** kid-friendly phrases
-
 - **Navigation** integration
-
 - **Safety** reminders
-
 - **Achievement** announcements
 
-### Usage (Voice/TTS)
+### Usage
 
 #### Basic Speech
 
@@ -165,7 +149,7 @@ await voiceManager.speak('Turn left ahead', {
 import { speakNavigation } from '../utils/voice';
 
 // Distance-aware navigation
-await speakNavigation('Turn left', 50);  // "In a few steps, turn left"
+await speakNavigation('Turn left', 50); // "In a few steps, turn left"
 await speakNavigation('Turn left', 150); // "Soon, turn left"
 await speakNavigation('Turn left', 500); // "Up ahead, turn left"
 ```
@@ -196,8 +180,8 @@ import { voiceManager } from '../utils/voice';
 
 // Update settings
 voiceManager.updateSettings({
-  rate: 0.9,      // 0.5 to 2.0 (slower = kid-friendly)
-  pitch: 1.1,     // 0.5 to 2.0 (higher = kid-friendly)
+  rate: 0.9, // 0.5 to 2.0 (slower = kid-friendly)
+  pitch: 1.1, // 0.5 to 2.0 (higher = kid-friendly)
   language: 'en-US',
   enabled: true,
 });
@@ -225,26 +209,26 @@ voiceManager.stop();
 import { KidFriendlyPhrases } from '../utils/voice';
 
 // Navigation
-KidFriendlyPhrases.nav.turnLeft
-KidFriendlyPhrases.nav.turnRight
-KidFriendlyPhrases.nav.arrived
-KidFriendlyPhrases.nav.almostThere
+KidFriendlyPhrases.nav.turnLeft;
+KidFriendlyPhrases.nav.turnRight;
+KidFriendlyPhrases.nav.arrived;
+KidFriendlyPhrases.nav.almostThere;
 
 // Safety
-KidFriendlyPhrases.safety.stayClose
-KidFriendlyPhrases.safety.lookBothWays
-KidFriendlyPhrases.safety.holdHand
-KidFriendlyPhrases.safety.safeZone
+KidFriendlyPhrases.safety.stayClose;
+KidFriendlyPhrases.safety.lookBothWays;
+KidFriendlyPhrases.safety.holdHand;
+KidFriendlyPhrases.safety.safeZone;
 
 // Transit
-KidFriendlyPhrases.transit.boarding
-KidFriendlyPhrases.transit.exiting
-KidFriendlyPhrases.transit.holdOn
+KidFriendlyPhrases.transit.boarding;
+KidFriendlyPhrases.transit.exiting;
+KidFriendlyPhrases.transit.holdOn;
 
 // Encouragement
-KidFriendlyPhrases.encouragement.goodJob
-KidFriendlyPhrases.encouragement.keepGoing
-KidFriendlyPhrases.encouragement.wellDone
+KidFriendlyPhrases.encouragement.goodJob;
+KidFriendlyPhrases.encouragement.keepGoing;
+KidFriendlyPhrases.encouragement.wellDone;
 ```
 
 ### Voice Settings Component
@@ -258,21 +242,16 @@ import VoiceSettings from '../components/VoiceSettings';
 
 ## 🗺️ 3. React Native Maps
 
-### Map Features (Core Map)
+### Features
 
 - **Native** map rendering (Google Maps on Android)
-
 - **Safe zone** detection and visualization
-
 - **Route** visualization with polylines
-
 - **Location** tracking
-
 - **Custom** markers
-
 - **Voice** integration for zone events
 
-### Usage (Maps)
+### Usage
 
 #### Basic Map
 
@@ -321,20 +300,20 @@ const safeZones = [
 
 ```typescript
 const route = [
-  { 
-    latitude: 40.7589, 
-    longitude: -73.9851, 
-    instruction: 'Start at home' 
+  {
+    latitude: 40.7589,
+    longitude: -73.9851,
+    instruction: 'Start at home'
   },
-  { 
-    latitude: 40.7600, 
-    longitude: -73.9820, 
-    instruction: 'Turn left at the corner' 
+  {
+    latitude: 40.7600,
+    longitude: -73.9820,
+    instruction: 'Turn left at the corner'
   },
-  { 
-    latitude: 40.7614, 
-    longitude: -73.9776, 
-    instruction: 'Arrive at school' 
+  {
+    latitude: 40.7614,
+    longitude: -73.9776,
+    instruction: 'Arrive at school'
   },
 ];
 
@@ -363,11 +342,8 @@ const route = [
 ### Map Features
 
 - **📍 My Location** - Center map on user location
-
 - **🗺️ Show Route** - Fit map to show entire route
-
 - **✅ Safe Zone Indicator** - Visual feedback when in safe zone
-
 - **🔊 Voice Guidance** - Automatic announcements
 
 ## 🎨 Complete Integration Example
@@ -388,7 +364,7 @@ export default function JourneyScreen() {
   React.useEffect(() => {
     const savedRoute = mainStorage.get(StorageKeys.JOURNEY_HISTORY);
     const savedZones = mainStorage.get(StorageKeys.SAFE_ZONES);
-    
+
     if (savedRoute) setRoute(savedRoute);
     if (savedZones) setSafeZones(savedZones);
   }, []);
@@ -405,7 +381,7 @@ export default function JourneyScreen() {
   const handleSafeZoneEnter = (zone) => {
     // Speak safety message
     speakSafety(`You're now in ${zone.name}. Stay safe!`);
-    
+
     // Log to MMKV
     const history = mainStorage.get('zone_history', []);
     history.push({
@@ -466,78 +442,58 @@ npx expo start --web
 The app.json has been configured with:
 
 - ✅ expo-speech plugin configuration
-
 - ✅ Location permissions for maps
-
 - ✅ Background audio for voice (iOS)
-
 - ✅ All necessary permissions
 
 ### Required Permissions
 
 - **Location**: For map and navigation
-
 - **Speech**: For TTS/voice features
-
 - **Storage**: Automatic (MMKV)
 
 ## 🎯 Key Benefits
 
 ### MMKV vs AsyncStorage
 
-| Feature | MMKV | AsyncStorage |
-|---------|------|--------------|
-| Speed | 10x faster | Baseline |
-| API | Synchronous | Async/await |
-| Types | Type-safe | String only |
-| Size | Smaller | Larger |
-| Encryption | Built-in | External |
+| Feature    | MMKV        | AsyncStorage |
+| ---------- | ----------- | ------------ |
+| Speed      | 10x faster  | Baseline     |
+| API        | Synchronous | Async/await  |
+| Types      | Type-safe   | String only  |
+| Size       | Smaller     | Larger       |
+| Encryption | Built-in    | External     |
 
-### Voice/TTS Features (Capabilities)
+### Voice/TTS Features
 
 - ✅ Kid-friendly voice selection
-
 - ✅ Priority queue management
-
 - ✅ Navigation integration
-
 - ✅ Safety announcements
-
 - ✅ Configurable settings
-
 - ✅ Offline support
 
 ### React Native Maps
 
 - ✅ Native performance
-
 - ✅ Safe zone detection
-
 - ✅ Route visualization
-
 - ✅ Custom styling
-
 - ✅ Voice integration
-
 - ✅ Battery efficient
 
 ## 🚀 Next Steps
 
 1. **Test on Device**: Maps and voice work best on physical devices
-
-1. **Customize Voices**: Explore available voices and pick kid-friendly ones
-
-1. **Add More Routes**: Integrate with transit data
-
-1. **Safe Zones**: Let users create custom safe zones
-
-1. **Analytics**: Track usage with MMKV storage
-
-1. **Offline Mode**: Cache map tiles and routes
+2. **Customize Voices**: Explore available voices and pick kid-friendly ones
+3. **Add More Routes**: Integrate with transit data
+4. **Safe Zones**: Let users create custom safe zones
+5. **Analytics**: Track usage with MMKV storage
+6. **Offline Mode**: Cache map tiles and routes
 
 ## 📚 File Structure
 
-``` text
+```
 utils/
 ├── storage.ts           # MMKV storage manager
 ├── voice.ts             # Voice/TTS manager
@@ -555,33 +511,25 @@ components/
 ### MMKV Issues
 
 - Ensure `react-native-mmkv` is properly installed
-
 - Run `npx expo prebuild` if needed
-
 - Check that the app rebuilds after installation
 
 ### Voice Issues
 
 - Test on physical device (simulators may have limited voices)
-
 - Check permissions in device settings
-
 - Verify voice is enabled in settings
 
 ### Map Issues
 
 - Google Maps requires API key for Android (production)
-
 - Test on physical device for best results
-
 - Check location permissions
 
 ## 📖 Resources
 
 - [MMKV Documentation](https://github.com/mrousavy/react-native-mmkv)
-
 - [Expo Speech Docs](https://docs.expo.dev/versions/latest/sdk/speech/)
-
 - [React Native Maps](https://github.com/react-native-maps/react-native-maps)
 
 ---

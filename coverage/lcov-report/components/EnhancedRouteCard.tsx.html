@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/36</span>
+                <span class='fraction'>0/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/77</span>
+                <span class='fraction'>0/68</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -500,34 +500,17 @@
 <a name='L435'></a><a href='#L435'>435</a>
 <a name='L436'></a><a href='#L436'>436</a>
 <a name='L437'></a><a href='#L437'>437</a>
-<a name='L438'></a><a href='#L438'>438</a>
-<a name='L439'></a><a href='#L439'>439</a>
-<a name='L440'></a><a href='#L440'>440</a>
-<a name='L441'></a><a href='#L441'>441</a>
-<a name='L442'></a><a href='#L442'>442</a>
-<a name='L443'></a><a href='#L443'>443</a>
-<a name='L444'></a><a href='#L444'>444</a>
-<a name='L445'></a><a href='#L445'>445</a>
-<a name='L446'></a><a href='#L446'>446</a>
-<a name='L447'></a><a href='#L447'>447</a>
-<a name='L448'></a><a href='#L448'>448</a>
-<a name='L449'></a><a href='#L449'>449</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L438'></a><a href='#L438'>438</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -538,9 +521,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -624,8 +604,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -958,18 +936,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Enhanced RouteCard with ORS/OTP2 Integration
  * Shows safety scores, kid-friendly ratings, and service source
  */
 &nbsp;
 import React from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable } from 'react-native';</span>
 import { Route } from '@/types/navigation';
 import { UnifiedRoute } from '@/utils/unifiedRoutingService';
-import Colors from '@/constants/colors';
-import {
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
   Clock,
   ArrowRight,
   Shield,
@@ -979,16 +957,7 @@ import {
   MapPin,
   Zap,
 } from 'lucide-react-native';
-import TransitStepIndicator from './TransitStepIndicator';
-&nbsp;
-// Local utility – formats meters to km with one decimal place. If distance is
-// already in km just returns fixed precision. (Added to satisfy TS error where
-// formatDistanceKm was previously referenced but not defined.)
-function <span class="fstat-no" title="function not covered" >formatDistanceKm(</span>distanceMeters: number | undefined): string {
-<span class="cstat-no" title="statement not covered" >  if (distanceMeters == null || isNaN(distanceMeters as number)) <span class="cstat-no" title="statement not covered" >return '0';</span></span>
-  const km = <span class="cstat-no" title="statement not covered" >distanceMeters / 1000;</span>
-<span class="cstat-no" title="statement not covered" >  return km.toFixed(km &lt; 10 ? 1 : 0);</span>
-}
+<span class="cstat-no" title="statement not covered" >import TransitStepIndicator from './TransitStepIndicator';</span>
 &nbsp;
 type EnhancedRouteCardProps = {
   route: Route;
@@ -1012,7 +981,7 @@ const ScoreIndicator: React.FC&lt;{
 );
 &nbsp;
 const AlertBadge: React.FC&lt;{ alerts: string[] }&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> alerts }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (!alerts.length) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!alerts.length) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.alertBadge}&gt;
@@ -1044,8 +1013,8 @@ const getServiceColor = <span class="cstat-no" title="statement not covered" ><s
 };
 &nbsp;
 const getScoreColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>core: number): string =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (score &gt;= 80) <span class="cstat-no" title="statement not covered" >return '#4CAF50'; </span></span>// Green
-<span class="cstat-no" title="statement not covered" >  if (score &gt;= 60) <span class="cstat-no" title="statement not covered" >return '#FF9800'; </span></span>// Orange
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 80) <span class="cstat-no" title="statement not covered" >return '#4CAF50'; </span></span>// Green
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (score &gt;= 60) <span class="cstat-no" title="statement not covered" >return '#FF9800'; </span></span>// Orange
 <span class="cstat-no" title="statement not covered" >  return '#F44336'; </span>// Red
 };
 &nbsp;
@@ -1071,7 +1040,7 @@ const EnhancedRouteCard: React.FC&lt;EnhancedRouteCardProps&gt; = <span class="c
         pressed &amp;&amp; styles.pressed,
         hasEnhancedData &amp;&amp; styles.enhanced,
       ]}
-      onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onPress(route)}</span>
+      onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >onPress(route)}</span>
     &gt;
       {/* Header with duration and service badge */}
       &lt;View style={styles.header}&gt;
@@ -1087,7 +1056,7 @@ const EnhancedRouteCard: React.FC&lt;EnhancedRouteCardProps&gt; = <span class="c
           )}
           {unifiedRoute &amp;&amp; (
             &lt;Text style={styles.distanceText}&gt;
-              {formatDistanceKm(unifiedRoute.summary.distance)} km
+              {Math.round((unifiedRoute.summary.distance / 1000) * 10) / 10} km
             &lt;/Text&gt;
           )}
         &lt;/View&gt;
@@ -1172,9 +1141,7 @@ const EnhancedRouteCard: React.FC&lt;EnhancedRouteCardProps&gt; = <span class="c
           &lt;Text style={styles.transferText}&gt;
             {unifiedRoute.summary.transfers === 0
               ? 'Direct route'
-              : `${unifiedRoute.summary.transfers} transfer${
-                  unifiedRoute.summary.transfers &gt; 1 ? 's' : ''
-                }`}
+              : `${unifiedRoute.summary.transfers} transfer${unifiedRoute.summary.transfers &gt; 1 ? 's' : ''}`}
           &lt;/Text&gt;
         &lt;/View&gt;
       )}
@@ -1182,7 +1149,7 @@ const EnhancedRouteCard: React.FC&lt;EnhancedRouteCardProps&gt; = <span class="c
       {/* Steps container */}
       &lt;View style={styles.stepsContainer}&gt;
         {route.steps.map(<span class="fstat-no" title="function not covered" >(s</span>tep, index) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;View key={step.id} style={styles.stepRow}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;View key={step.id} s</span>tyle={styles.stepRow}&gt;
             &lt;TransitStepIndicator step={step} /&gt;
             {index &lt; route.steps.length - 1 &amp;&amp; (
               &lt;ArrowRight size={14} color={Colors.textLight} style={styles.arrowIcon} /&gt;
@@ -1406,7 +1373,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default EnhancedRouteCard;
+<span class="cstat-no" title="statement not covered" >export default EnhancedRouteCard;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1414,7 +1381,7 @@ export default EnhancedRouteCard;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

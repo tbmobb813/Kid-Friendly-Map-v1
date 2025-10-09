@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
@@ -192,12 +192,12 @@
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
 <a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L130'></a><a href='#L130'>130</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -320,13 +320,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
-import Colors from '@/constants/colors';
-import SearchBar from './SearchBar';
-import { MapPin, Clock, Star } from 'lucide-react-native';
-import { useDebounce } from '@/hooks/useDebounce';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import SearchBar from './SearchBar';</span>
+<span class="cstat-no" title="statement not covered" >import { MapPin, Clock, Star } from 'lucide-react-native';</span>
+<span class="cstat-no" title="statement not covered" >import { useDebounce } from '@/hooks/useDebounce';</span>
 import { Place } from '@/types/navigation';
 &nbsp;
 type SearchSuggestion = {
@@ -354,7 +354,7 @@ const SearchWithSuggestions: React.FC&lt;SearchWithSuggestionsProps&gt; = <span 
   const [showSuggestions, setShowSuggestions] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
   const debouncedValue = <span class="cstat-no" title="statement not covered" >useDebounce(value, 300);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setShowSuggestions(debouncedValue.length &gt; 0 &amp;&amp; suggestions.length &gt; 0);</span>
   }, [debouncedValue, suggestions]);
 &nbsp;
@@ -374,7 +374,7 @@ const SearchWithSuggestions: React.FC&lt;SearchWithSuggestionsProps&gt; = <span 
   const renderSuggestion = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item }: { item: SearchSuggestion }) =&gt; (</span>
 <span class="cstat-no" title="statement not covered" >    &lt;Pressable</span>
       style={styles.suggestionItem}
-      onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+      onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; {
 <span class="cstat-no" title="statement not covered" >        onSelectSuggestion(item);</span>
 <span class="cstat-no" title="statement not covered" >        setShowSuggestions(false);</span>
       }}
@@ -391,7 +391,7 @@ const SearchWithSuggestions: React.FC&lt;SearchWithSuggestionsProps&gt; = <span 
       &lt;SearchBar
         value={value}
         onChangeText={onChangeText}
-        onClear={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+        onClear={<span class="fstat-no" title="function not covered" >() =</span>&gt; {
 <span class="cstat-no" title="statement not covered" >          onChangeText('');</span>
 <span class="cstat-no" title="statement not covered" >          setShowSuggestions(false);</span>
         }}
@@ -449,7 +449,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default SearchWithSuggestions;
+<span class="cstat-no" title="statement not covered" >export default SearchWithSuggestions;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -457,7 +457,7 @@ export default SearchWithSuggestions;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

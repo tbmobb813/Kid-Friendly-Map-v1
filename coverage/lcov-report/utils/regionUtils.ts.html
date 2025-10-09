@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/32</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -287,7 +287,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RegionConfig } from '@/types/region';
 &nbsp;
-export const formatCurrency = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>mount: number, currency: string): string =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >formatCurrency = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>a</span>mount: number, currency: string): string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    return new Intl.NumberFormat('en-US', {</span>
       style: 'currency',
@@ -298,16 +298,16 @@ export const formatCurrency = <span class="cstat-no" title="statement not covere
   }
 };
 &nbsp;
-export const formatDistance = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(m</span>eters: number, units: 'metric' | 'imperial'): string =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >formatDistance = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>m</span>eters: number, units: 'metric' | 'imperial'): string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  if (units === 'imperial') {</span>
     const feet = <span class="cstat-no" title="statement not covered" >meters * 3.28084;</span>
-<span class="cstat-no" title="statement not covered" >    if (feet &lt; 1000) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (feet &lt; 1000) {</span>
 <span class="cstat-no" title="statement not covered" >      return `${Math.round(feet)} ft`;</span>
     }
     const miles = <span class="cstat-no" title="statement not covered" >feet / 5280;</span>
 <span class="cstat-no" title="statement not covered" >    return `${miles.toFixed(1)} mi`;</span>
   } else {
-<span class="cstat-no" title="statement not covered" >    if (meters &lt; 1000) {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (meters &lt; 1000) {</span>
 <span class="cstat-no" title="statement not covered" >      return `${Math.round(meters)} m`;</span>
     }
     const kilometers = <span class="cstat-no" title="statement not covered" >meters / 1000;</span>
@@ -315,15 +315,15 @@ export const formatDistance = <span class="cstat-no" title="statement not covere
   }
 };
 &nbsp;
-export const formatTemperature = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>elsius: number, units: 'metric' | 'imperial'): string =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (units === 'imperial') {</span>
+export const <span class="cstat-no" title="statement not covered" >formatTemperature = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>c</span>elsius: number, units: 'metric' | 'imperial'): string =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (units === 'imperial') {</span>
     const fahrenheit = <span class="cstat-no" title="statement not covered" >(celsius * 9) / 5 + 32;</span>
 <span class="cstat-no" title="statement not covered" >    return `${Math.round(fahrenheit)}°F`;</span>
   }
 <span class="cstat-no" title="statement not covered" >  return `${Math.round(celsius)}°C`;</span>
 };
 &nbsp;
-export const getLocalizedTime = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ate: Date, timezone: string): string =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >getLocalizedTime = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>d</span>ate: Date, timezone: string): string =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    return new Intl.DateTimeFormat('en-US', {</span>
       timeZone: timezone,
@@ -336,7 +336,7 @@ export const getLocalizedTime = <span class="cstat-no" title="statement not cove
   }
 };
 &nbsp;
-export const validateRegionConfig = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>onfig: RegionConfig): boolean =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >validateRegionConfig = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>c</span>onfig: RegionConfig): boolean =&gt; {</span>
   const required = <span class="cstat-no" title="statement not covered" >[</span>
     'id',
     'name',
@@ -350,12 +350,12 @@ export const validateRegionConfig = <span class="cstat-no" title="statement not 
   ];
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return required.every(<span class="fstat-no" title="function not covered" >(f</span>ield) =&gt; {</span>
-    const value = <span class="cstat-no" title="statement not covered" >(config as any)[field];</span>
+    const value = (<span class="cstat-no" title="statement not covered" >config as any)[field];</span>
 <span class="cstat-no" title="statement not covered" >    return value !== undefined &amp;&amp; value !== null &amp;&amp; value !== '';</span>
   });
 };
 &nbsp;
-export const generateRegionFromTemplate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
+export const <span class="cstat-no" title="statement not covered" >generateRegionFromTemplate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span></span>
   name: string,
   country: string,
   coordinates: { latitude: number; longitude: number },
@@ -403,7 +403,7 @@ export const generateRegionFromTemplate = <span class="cstat-no" title="statemen
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -14,12 +14,8 @@ import Colors from '@/constants/colors';
 const { height: screenHeight } = Dimensions.get('window');
 
 export default function MapWithInfoPanel() {
-  const bottomSheetRef = useRef<any>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
   const panelAnim = useRef(new Animated.Value(0)).current;
-
-  // allow passing ref to the BottomSheet component when types are incomplete
-  const BottomSheetAny = BottomSheet as any;
-
   // Sound effect on panel open
   const playPanelOpenSound = async () => {
     try {
@@ -74,8 +70,7 @@ export default function MapWithInfoPanel() {
   ];
 
   // Animate panel open
-  // Animate panel open — accept index to satisfy BottomSheet onChange type
-  const handleSheetOpen = (index?: number) => {
+  const handleSheetOpen = () => {
     Animated.timing(panelAnim, {
       toValue: 1,
       duration: 400,
@@ -99,11 +94,10 @@ export default function MapWithInfoPanel() {
           setMascotHint={setMascotHint}
         />
       </View>
-      <BottomSheetAny
+      <BottomSheet
         ref={bottomSheetRef}
         index={1}
         snapPoints={snapPoints}
-        backgroundStyle={styles.sheetBackground}
         onChange={handleSheetOpen}
       >
         <Animated.View
@@ -170,7 +164,7 @@ export default function MapWithInfoPanel() {
             </View>
           </ScrollView>
         </Animated.View>
-      </BottomSheetAny>
+      </BottomSheet>
     </View>
   );
 }

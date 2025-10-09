@@ -18,7 +18,10 @@ async function maybeExtract() {
     const tmpDir = path.join(__dirname, '..', 'tmp', `gtfs-${Date.now()}`);
     fs.mkdirSync(tmpDir, { recursive: true });
     await new Promise((resolve, reject) => {
-      fs.createReadStream(input).pipe(unzipper.Extract({ path: tmpDir })).on('close', resolve).on('error', reject);
+      fs.createReadStream(input)
+        .pipe(unzipper.Extract({ path: tmpDir }))
+        .on('close', resolve)
+        .on('error', reject);
     });
     gtfsDir = tmpDir;
     extractedTmp = tmpDir;
@@ -65,7 +68,9 @@ for (const st of stop_times) {
 
 // Sort stop_times by sequence
 for (const k of Object.keys(stopTimesByTrip)) {
-  stopTimesByTrip[k].sort((a, b) => (parseInt(a.stop_sequence || '0', 10) - parseInt(b.stop_sequence || '0', 10)));
+  stopTimesByTrip[k].sort(
+    (a, b) => parseInt(a.stop_sequence || '0', 10) - parseInt(b.stop_sequence || '0', 10),
+  );
 }
 
 // Shapes: grouped list of lat/lon points per shape_id sorted by sequence
@@ -77,19 +82,25 @@ for (const sh of shapes) {
   shapePointsByShape[sid].push(sh);
 }
 for (const sid of Object.keys(shapePointsByShape)) {
-  shapePointsByShape[sid].sort((a,b)=> (parseInt(a.shape_pt_sequence||'0',10) - parseInt(b.shape_pt_sequence||'0',10)));
+  shapePointsByShape[sid].sort(
+    (a, b) => parseInt(a.shape_pt_sequence || '0', 10) - parseInt(b.shape_pt_sequence || '0', 10),
+  );
 }
 fs.writeFileSync(path.join(outDir, 'routes.json'), JSON.stringify(routesById));
 fs.writeFileSync(path.join(outDir, 'trips.json'), JSON.stringify(tripsById));
 fs.writeFileSync(path.join(outDir, 'stops.json'), JSON.stringify(stopsById));
 fs.writeFileSync(path.join(outDir, 'stop_times_by_trip.json'), JSON.stringify(stopTimesByTrip));
-fs.writeFileSync(path.join(outDir, 'shape_points_by_shape.json'), JSON.stringify(shapePointsByShape));
+fs.writeFileSync(
+  path.join(outDir, 'shape_points_by_shape.json'),
+  JSON.stringify(shapePointsByShape),
+);
 
 console.log('GTFS import complete to', outDir);
 
 if (!keep && extractedTmp) {
-  try { fs.rmSync(extractedTmp, { recursive: true }); } catch (e) { }
+  try {
+    fs.rmSync(extractedTmp, { recursive: true });
+  } catch (e) {}
 }
 
 // If extraction happened, call cleanup unless --keep passed
-

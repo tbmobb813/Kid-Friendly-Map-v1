@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/79</span>
+                <span class='fraction'>0/85</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/49</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/56</span>
+                <span class='fraction'>0/62</span>
             </div>
         
             
@@ -510,11 +510,11 @@
 <a name='L445'></a><a href='#L445'>445</a>
 <a name='L446'></a><a href='#L446'>446</a>
 <a name='L447'></a><a href='#L447'>447</a>
-<a name='L448'></a><a href='#L448'>448</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L448'></a><a href='#L448'>448</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -956,12 +956,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
-import Colors from '@/constants/colors';
-import { Heart, Star, MapPin, Zap } from 'lucide-react-native';
-import { useGamificationStore } from '@/stores/gamificationStore';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useState, useEffect } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { Heart, Star, MapPin, Zap } from 'lucide-react-native';</span>
+<span class="cstat-no" title="statement not covered" >import { useGamificationStore } from '@/stores/gamificationStore';</span>
 &nbsp;
 type PetType = 'dragon' | 'unicorn' | 'robot' | 'phoenix';
 &nbsp;
@@ -999,13 +999,13 @@ const VirtualPetCompanion: React.FC&lt;VirtualPetCompanionProps&gt; = <span clas
   const [bounceAnim] = <span class="cstat-no" title="statement not covered" >useState(new Animated.Value(1));</span>
   const [glowAnim] = <span class="cstat-no" title="statement not covered" >useState(new Animated.Value(0));</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (visible) {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (visible) {</span>
 <span class="cstat-no" title="statement not covered" >      startAnimations();</span>
     }
   }, [visible]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     // Update pet based on user progress
 <span class="cstat-no" title="statement not covered" >    setPet(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
@@ -1015,7 +1015,7 @@ const VirtualPetCompanion: React.FC&lt;VirtualPetCompanionProps&gt; = <span clas
     }));
   }, [userStats.totalPoints]);
 &nbsp;
-  const startAnimations = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const startAnimations = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     // Bounce animation
 <span class="cstat-no" title="statement not covered" >    Animated.loop(</span>
       Animated.sequence([
@@ -1049,43 +1049,43 @@ const VirtualPetCompanion: React.FC&lt;VirtualPetCompanionProps&gt; = <span clas
     ).start();
   };
 &nbsp;
-  const getPetEmoji = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: string =&gt; {</span>
+  const getPetEmoji = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): string =</span>&gt; {</span>
     const stage = <span class="cstat-no" title="statement not covered" >pet.evolutionStage;</span>
 <span class="cstat-no" title="statement not covered" >    switch (pet.type) {</span>
       case 'dragon':
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🐲'; </span></span>// Ancient Dragon
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🐉'; </span></span>// Mature Dragon
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🦎'; </span></span>// Young Dragon
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🐲'; </span></span>// Ancient Dragon
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🐉'; </span></span>// Mature Dragon
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🦎'; </span></span>// Young Dragon
 <span class="cstat-no" title="statement not covered" >        return '🥚'; </span>// Dragon Egg
       case 'unicorn':
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🦄'; </span></span>// Majestic Unicorn
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🐴'; </span></span>// Magic Horse
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🐎'; </span></span>// Young Unicorn
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🦄'; </span></span>// Majestic Unicorn
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🐴'; </span></span>// Magic Horse
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🐎'; </span></span>// Young Unicorn
 <span class="cstat-no" title="statement not covered" >        return '🥚'; </span>// Unicorn Egg
       case 'robot':
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🤖'; </span></span>// Advanced Robot
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '⚙️'; </span></span>// Mechanical Pet
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🔧'; </span></span>// Robot Parts
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🤖'; </span></span>// Advanced Robot
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '⚙️'; </span></span>// Mechanical Pet
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🔧'; </span></span>// Robot Parts
 <span class="cstat-no" title="statement not covered" >        return '🥚'; </span>// Robot Egg
       case 'phoenix':
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🔥'; </span></span>// Phoenix Fire
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🦅'; </span></span>// Fire Bird
-<span class="cstat-no" title="statement not covered" >        if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🐣'; </span></span>// Phoenix Chick
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return '🔥'; </span></span>// Phoenix Fire
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return '🦅'; </span></span>// Fire Bird
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return '🐣'; </span></span>// Phoenix Chick
 <span class="cstat-no" title="statement not covered" >        return '🥚'; </span>// Phoenix Egg
       default:
 <span class="cstat-no" title="statement not covered" >        return '🐾';</span>
     }
   };
 &nbsp;
-  const getPetStage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span>: string =&gt; {</span>
+  const getPetStage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(): string =</span>&gt; {</span>
     const stage = <span class="cstat-no" title="statement not covered" >pet.evolutionStage;</span>
-<span class="cstat-no" title="statement not covered" >    if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return 'Legendary';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return 'Evolved';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return 'Growing';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 3) <span class="cstat-no" title="statement not covered" >return 'Legendary';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 2) <span class="cstat-no" title="statement not covered" >return 'Evolved';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (stage &gt;= 1) <span class="cstat-no" title="statement not covered" >return 'Growing';</span></span>
 <span class="cstat-no" title="statement not covered" >    return 'Baby';</span>
   };
 &nbsp;
-  const feedPet = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const feedPet = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setPet(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
       happiness: Math.min(100, prev.happiness + 10),
@@ -1095,7 +1095,7 @@ const VirtualPetCompanion: React.FC&lt;VirtualPetCompanionProps&gt; = <span clas
 <span class="cstat-no" title="statement not covered" >    addPoints(5);</span>
   };
 &nbsp;
-  const playWithPet = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const playWithPet = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setPet(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       ...prev,
       happiness: Math.min(100, prev.happiness + 15),
@@ -1104,19 +1104,19 @@ const VirtualPetCompanion: React.FC&lt;VirtualPetCompanionProps&gt; = <span clas
 <span class="cstat-no" title="statement not covered" >    addPoints(10);</span>
   };
 &nbsp;
-  const getHappinessColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (pet.happiness &gt;= 80) <span class="cstat-no" title="statement not covered" >return '#4CAF50';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (pet.happiness &gt;= 50) <span class="cstat-no" title="statement not covered" >return '#FF9800';</span></span>
+  const getHappinessColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (pet.happiness &gt;= 80) <span class="cstat-no" title="statement not covered" >return '#4CAF50';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (pet.happiness &gt;= 50) <span class="cstat-no" title="statement not covered" >return '#FF9800';</span></span>
 <span class="cstat-no" title="statement not covered" >    return '#F44336';</span>
   };
 &nbsp;
-  const getEnergyColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (pet.energy &gt;= 70) <span class="cstat-no" title="statement not covered" >return '#2196F3';</span></span>
-<span class="cstat-no" title="statement not covered" >    if (pet.energy &gt;= 40) <span class="cstat-no" title="statement not covered" >return '#FF9800';</span></span>
+  const getEnergyColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (pet.energy &gt;= 70) <span class="cstat-no" title="statement not covered" >return '#2196F3';</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (pet.energy &gt;= 40) <span class="cstat-no" title="statement not covered" >return '#FF9800';</span></span>
 <span class="cstat-no" title="statement not covered" >    return '#F44336';</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!visible) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!visible) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.overlay}&gt;
@@ -1403,7 +1403,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   },
 });
 &nbsp;
-export default VirtualPetCompanion;
+<span class="cstat-no" title="statement not covered" >export default VirtualPetCompanion;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1411,7 +1411,7 @@ export default VirtualPetCompanion;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

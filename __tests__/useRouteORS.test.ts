@@ -207,6 +207,9 @@ describe('useRouteORS', () => {
     // Change coordinates before first request completes
     rerender({ start: start2, end: end2 });
 
+    // Use real timers before resolving the mocked fetch so waitFor works with testing-library
+    jest.useRealTimers();
+
     // Resolve first request (should be ignored due to abort)
     resolveFirstFetch!({
       ok: true,

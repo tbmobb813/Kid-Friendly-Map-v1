@@ -61,34 +61,34 @@ Edit `config/cities/london-bus-routes.ts`:
 Create `config/cities/london.ts`:
 
 ```typescript
-import { City } from "@/types/city";
-import { londonTransitLines } from "./london-lines";
-import { londonBusRoutes } from "./london-bus-routes";
+import { City } from '@/types/city';
+import { londonTransitLines } from './london-lines';
+import { londonBusRoutes } from './london-bus-routes';
 
 export const london: City = {
-  id: "london",
-  name: "London",
-  country: "United Kingdom",
-  timezone: "Europe/London",
-  currency: "GBP",
-  languages: ["en"],
-  
+  id: 'london',
+  name: 'London',
+  country: 'United Kingdom',
+  timezone: 'Europe/London',
+  currency: 'GBP',
+  languages: ['en'],
+
   transitSystems: {
     rail: {
-      name: "London Underground",
-      shortName: "Tube",
-      operator: "Transport for London",
+      name: 'London Underground',
+      shortName: 'Tube',
+      operator: 'Transport for London',
       lines: londonTransitLines,
       // ... rest of configuration
     },
     bus: {
-      name: "London Buses", 
-      operator: "Transport for London",
+      name: 'London Buses',
+      operator: 'Transport for London',
       routes: londonBusRoutes,
       // ... rest of configuration
-    }
+    },
   },
-  
+
   // ... rest of city configuration
 };
 ```
@@ -181,20 +181,20 @@ Key customizations for London:
 
 #### 4.1 Transport for London (TfL) API Setup
 
-1. Register for TfL API key: <https://api.tfl.gov.uk/>
+1. Register for TfL API key: https://api.tfl.gov.uk/
 2. Create `utils/tfl-api.ts`:
 
 ```typescript
-const TFL_API_BASE = "https://api.tfl.gov.uk";
+const TFL_API_BASE = 'https://api.tfl.gov.uk';
 const TFL_APP_KEY = process.env.TFL_API_KEY; // Add to your .env
 
 export const tflApi = {
-  getArrivals: (stationId: string) => 
+  getArrivals: (stationId: string) =>
     fetch(`${TFL_API_BASE}/StopPoint/${stationId}/Arrivals?app_key=${TFL_APP_KEY}`),
-  
+
   getJourneyPlan: (from: string, to: string) =>
     fetch(`${TFL_API_BASE}/Journey/JourneyResults/${from}/to/${to}?app_key=${TFL_APP_KEY}`),
-    
+
   // Add other endpoints as needed
 };
 ```
@@ -225,11 +225,11 @@ Verify your data structures:
 
 ```typescript
 // Create a simple validation script
-import { london } from "@/config/cities/london";
+import { london } from '@/config/cities/london';
 
-console.log("London config validation:");
-console.log("Transit lines:", london.transitSystems.rail.lines.length);
-console.log("Bus routes:", london.transitSystems.bus.routes.length);
+console.log('London config validation:');
+console.log('Transit lines:', london.transitSystems.rail.lines.length);
+console.log('Bus routes:', london.transitSystems.bus.routes.length);
 ```
 
 #### 5.3 Accessibility Testing
@@ -247,8 +247,8 @@ Add your city to the main cities configuration:
 
 ```typescript
 // In config/cities/index.ts
-import { london } from "./london";
-import { newYork } from "./newYork";
+import { london } from './london';
+import { newYork } from './newYork';
 
 export const cities = {
   london,
@@ -308,21 +308,21 @@ import LondonLiveArrivals from "@/components/LondonLiveArrivals";
 // In your city config
 export const paris: City = {
   // ... other config
-  languages: ["fr", "en"],
+  languages: ['fr', 'en'],
   localization: {
     fr: {
       education: {
-        title: "Guide du Métro de Paris",
+        title: 'Guide du Métro de Paris',
         // ... French content
-      }
+      },
     },
     en: {
       education: {
-        title: "Paris Metro Guide",
+        title: 'Paris Metro Guide',
         // ... English content
-      }
-    }
-  }
+      },
+    },
+  },
 };
 ```
 

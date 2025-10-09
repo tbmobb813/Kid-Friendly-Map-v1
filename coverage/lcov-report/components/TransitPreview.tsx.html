@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -106,10 +106,10 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -148,21 +148,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import useTransitFeed from '../hooks/useTransitFeed';
+<span class="cstat-no" title="statement not covered" >import { View, Text, ScrollView } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import useTransitFeed from '../hooks/useTransitFeed';</span>
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >TransitPreview(</span>) {
+<span class="cstat-no" title="statement not covered" >export default function <span class="fstat-no" title="function not covered" >T</span>ransitPreview(</span>) {
   const { data, error, isLoading } = <span class="cstat-no" title="statement not covered" >useTransitFeed({ mock: true, refetchInterval: 8000 });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (isLoading) <span class="cstat-no" title="statement not covered" >return &lt;Text&gt;Loading transit feed...&lt;/Text&gt;;</span></span>
-<span class="cstat-no" title="statement not covered" >  if (error) <span class="cstat-no" title="statement not covered" >return &lt;Text&gt;Transit feed error: {String(error)}&lt;/Text&gt;;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (isLoading) <span class="cstat-no" title="statement not covered" >return &lt;Text&gt;Loading transit feed...&lt;/Text&gt;;</span></span>
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (error) <span class="cstat-no" title="statement not covered" >return &lt;Text&gt;Transit feed error: {String(error)}&lt;/Text&gt;;</span></span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;ScrollView style={{ padding: 12 }}&gt;
       &lt;Text style={{ fontWeight: 'bold', marginBottom: 8 }}&gt;Transit Preview&lt;/Text&gt;
       {data?.routes &amp;&amp; data.routes.length ? (
         data.routes.map(<span class="fstat-no" title="function not covered" >(r</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;View key={r.id} style={{ marginBottom: 8 }}&gt;</span>
+<span class="cstat-no" title="statement not covered" >          &lt;View key={r.id} s</span>tyle={{ marginBottom: 8 }}&gt;
             &lt;Text&gt;
               {r.name} — {r.status} — next in {r.nextArrival ?? 'N/A'} min
             &lt;/Text&gt;
@@ -182,7 +182,7 @@ export default function <span class="fstat-no" title="function not covered" >Tra
         &lt;View style={{ marginTop: 12 }}&gt;
           &lt;Text style={{ fontWeight: 'bold' }}&gt;Alerts&lt;/Text&gt;
           {data.alerts.map(<span class="fstat-no" title="function not covered" >(a</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;Text key={a.id}&gt;{a.message}&lt;/Text&gt;</span>
+<span class="cstat-no" title="statement not covered" >            &lt;Text key={a.id}&gt;{a</span>.message}&lt;/Text&gt;
           ))}
         &lt;/View&gt;
       ) : null}
@@ -196,7 +196,7 @@ export default function <span class="fstat-no" title="function not covered" >Tra
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

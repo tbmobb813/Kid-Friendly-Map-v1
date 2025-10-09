@@ -5,7 +5,7 @@ const glob = require('glob');
 
 function fixFile(filePath) {
   const original = fs.readFileSync(filePath, 'utf8');
-  const lines = original.replace(/\r\n/g,'\n').split('\n');
+  const lines = original.replace(/\r\n/g, '\n').split('\n');
   const out = [];
   let inFence = false;
   let fenceChar = '```';
@@ -20,7 +20,7 @@ function fixFile(filePath) {
       if (!inFence) {
         // opening fence
         // ensure blank line before fence if not at top and previous isn't blank
-        if (out.length > 0 && out[out.length-1].trim() !== '') out.push('');
+        if (out.length > 0 && out[out.length - 1].trim() !== '') out.push('');
         // if rest (language) is empty or only spaces, add 'text'
         const lang = rest.trim();
         if (lang === '') {
@@ -33,7 +33,7 @@ function fixFile(filePath) {
         out.push(line);
         inFence = false;
         // ensure blank line after fence if next line exists and not blank
-        const next = lines[i+1];
+        const next = lines[i + 1];
         if (next !== undefined && next.trim() !== '') out.push('');
       }
       continue;
@@ -46,7 +46,7 @@ function fixFile(filePath) {
 
     // Headings: ensure blank line before ATX heading (unless it's the first line)
     if (/^\s{0,3}#{1,6}\s+/.test(line)) {
-      if (out.length > 0 && out[out.length-1].trim() !== '') out.push('');
+      if (out.length > 0 && out[out.length - 1].trim() !== '') out.push('');
       out.push(line);
       continue;
     }
@@ -55,7 +55,7 @@ function fixFile(filePath) {
     const isListItem = /^\s{0,3}([-*+]\s+|\d+\.\s+)/.test(line);
     if (isListItem) {
       // if previous line exists and not blank, insert blank
-      if (out.length > 0 && out[out.length-1].trim() !== '') out.push('');
+      if (out.length > 0 && out[out.length - 1].trim() !== '') out.push('');
       // convert ordered list numbers to '1.' style
       const orderedMatch = line.match(/^(\s*)(\d+)\.(\s+)(.*)$/);
       if (orderedMatch) {
@@ -70,19 +70,19 @@ function fixFile(filePath) {
     }
 
     // Ensure blank line after list block end: if previous line was a list item and current is non-blank and not another list item
-    const prevWasList = out.length>0 && /^\s{0,3}([-*+]\s+|\d+\.\s+)/.test(out[out.length-1]);
+    const prevWasList = out.length > 0 && /^\s{0,3}([-*+]\s+|\d+\.\s+)/.test(out[out.length - 1]);
     if (prevWasList && line.trim() !== '' && !isListItem) {
       out.push('');
     }
 
     // Remove trailing spaces
-    if (line.endsWith(' ')) line = line.replace(/[ \t]+$/,'');
+    if (line.endsWith(' ')) line = line.replace(/[ \t]+$/, '');
 
     out.push(line);
   }
 
   // Ensure file ends with single newline
-  while (out.length>0 && out[out.length-1] === '') out.pop();
+  while (out.length > 0 && out[out.length - 1] === '') out.pop();
   out.push('');
   const fixed = out.join('\n');
   if (fixed !== original) {
@@ -93,7 +93,7 @@ function fixFile(filePath) {
 }
 
 function run() {
-  const files = require('glob').sync('docs/**/*.md', {nodir: true});
+  const files = require('glob').sync('docs/**/*.md', { nodir: true });
   let changed = 0;
   for (const f of files) {
     try {

@@ -32,27 +32,33 @@ function normalizeFeedMessage(feed, systemId) {
   for (const entity of feed.entity) {
     if (entity.trip_update) {
       const tu = entity.trip_update;
-      const routeId = tu.trip && tu.trip.route_id ? tu.trip.route_id : (tu.vehicle && tu.vehicle.trip && tu.vehicle.trip.route_id) || null;
+      const routeId =
+        tu.trip && tu.trip.route_id
+          ? tu.trip.route_id
+          : (tu.vehicle && tu.vehicle.trip && tu.vehicle.trip.route_id) || null;
       let nextArrival = null;
       if (tu.stop_time_update && tu.stop_time_update.length) {
         const now = Math.floor(Date.now() / 1000);
-        const next = tu.stop_time_update.find(stu => stu.arrival && stu.arrival.time && stu.arrival.time > now);
+        const next = tu.stop_time_update.find(
+          (stu) => stu.arrival && stu.arrival.time && stu.arrival.time > now,
+        );
         if (next) {
           nextArrival = Math.max(0, Math.floor((next.arrival.time - now) / 60));
         }
       }
 
-      const tripId = (tu.trip && tu.trip.trip_id) || entity.id || Math.random().toString(36).slice(2);
+      const tripId =
+        (tu.trip && tu.trip.trip_id) || entity.id || Math.random().toString(36).slice(2);
       const routeObj = {
         id: `${systemId}-${tripId}`,
         tripId,
         name: routeId || tu.trip.route_id || 'unknown',
         systemId,
-        status: nextArrival === null ? 'unknown' : (nextArrival > 5 ? 'delayed' : 'on-time'),
+        status: nextArrival === null ? 'unknown' : nextArrival > 5 ? 'delayed' : 'on-time',
         nextArrival,
         // enrich with static GTFS where possible
         destination: undefined,
-        nextStopName: undefined
+        nextStopName: undefined,
       };
 
       // populate nextStopName using stop_time_update + gtfsStore if available
@@ -86,9 +92,16 @@ function normalizeFeedMessage(feed, systemId) {
         id: entity.id || Math.random().toString(36).slice(2),
         systemId,
         type: 'alert',
-        message: a && a.header_text && a.header_text.translation && a.header_text.translation[0] && a.header_text.translation[0].text || 'Service alert',
+        message:
+          (a &&
+            a.header_text &&
+            a.header_text.translation &&
+            a.header_text.translation[0] &&
+            a.header_text.translation[0].text) ||
+          'Service alert',
         severity: 'low',
-        affectedRoutes: a && a.informed_entity ? a.informed_entity.map(e => e.route_id).filter(Boolean) : []
+        affectedRoutes:
+          a && a.informed_entity ? a.informed_entity.map((e) => e.route_id).filter(Boolean) : [],
       });
     }
   }

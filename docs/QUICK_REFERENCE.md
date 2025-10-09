@@ -76,11 +76,11 @@ function MyJourney() {
   const handleLocationChange = (location) => {
     mainStorage.set('last_location', location.coords);
   };
-  
+
   const handleSafeZoneEnter = (zone) => {
     speakNavigation(`You're in ${zone.name}!`);
   };
-  
+
   return (
     <KidFriendlyMap
       onLocationChange={handleLocationChange}
@@ -104,7 +104,5 @@ npx expo start --ios
 ## Benefits
 
 - ⚡ MMKV: 10x faster than AsyncStorage
-
 - 🎤 Voice: Kid-friendly TTS with queue management
-
 - 🗺️ Maps: Native performance with safe zones

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/78</span>
+                <span class='fraction'>0/86</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/60</span>
+                <span class='fraction'>0/55</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/69</span>
+                <span class='fraction'>0/77</span>
             </div>
         
             
@@ -387,14 +387,14 @@
 <a name='L322'></a><a href='#L322'>322</a>
 <a name='L323'></a><a href='#L323'>323</a>
 <a name='L324'></a><a href='#L324'>324</a>
-<a name='L325'></a><a href='#L325'>325</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L325'></a><a href='#L325'>325</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -710,15 +710,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useMemo, useState, useCallback } from 'react';
-import { StyleSheet, Text, View, Pressable, ScrollView, ActivityIndicator } from 'react-native';
-import Colors from '@/constants/colors';
-import { Cloud, Sun, CloudRain, Users, Clock, Zap, MapPin, Heart } from 'lucide-react-native';
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import React, { useMemo, useState, useCallback } from 'react';</span>
+<span class="cstat-no" title="statement not covered" >import { StyleSheet, Text, View, Pressable, ScrollView, ActivityIndicator } from 'react-native';</span>
+<span class="cstat-no" title="statement not covered" >import Colors from '@/constants/colors';</span>
+<span class="cstat-no" title="statement not covered" >import { Cloud, Sun, CloudRain, Users, Clock, Zap, MapPin, Heart } from 'lucide-react-native';</span>
 import { Place } from '@/types/navigation';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { handleApiError, smartRoutesApi, SmartSuggestionDTO } from '@/utils/api';
-import { useAuth } from '@/hooks/useAuth';
+<span class="cstat-no" title="statement not covered" >import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';</span>
+<span class="cstat-no" title="statement not covered" >import { handleApiError, smartRoutesApi, SmartSuggestionDTO } from '@/utils/api';</span>
+<span class="cstat-no" title="statement not covered" >import { useAuth } from '@/hooks/useAuth';</span>
 &nbsp;
 export type WeatherCondition = 'sunny' | 'cloudy' | 'rainy' | 'stormy';
 export type CrowdLevel = 'low' | 'medium' | 'high';
@@ -764,21 +764,21 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
   const { toggleLikedSuggestion } = <span class="cstat-no" title="statement not covered" >useAuth();</span>
   const [crowdLevel, setCrowdLevel] = <span class="cstat-no" title="statement not covered" >useState&lt;CrowdLevel&gt;('medium');</span>
 &nbsp;
-  const simulateCrowdLevel = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const simulateCrowdLevel = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
     const hour = <span class="cstat-no" title="statement not covered" >new Date().getHours();</span>
 <span class="cstat-no" title="statement not covered" >    if ((hour &gt;= 7 &amp;&amp; hour &lt;= 9) || (hour &gt;= 17 &amp;&amp; hour &lt;= 19)) <span class="cstat-no" title="statement not covered" >setCrowdLevel('high');</span></span>
     else <span class="cstat-no" title="statement not covered" >if (hour &gt;= 10 &amp;&amp; hour &lt;= 16) <span class="cstat-no" title="statement not covered" >setCrowdLevel('medium');</span></span>
     else <span class="cstat-no" title="statement not covered" >setCrowdLevel('low');</span>
   }, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    simulateCrowdLevel();</span>
     const id = <span class="cstat-no" title="statement not covered" >setInterval(simulateCrowdLevel, 60000);</span>
-<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >clearInterval(id);</span></span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >clearInterval(id);</span></span>
   }, [simulateCrowdLevel]);
 &nbsp;
   const queryKey = <span class="cstat-no" title="statement not covered" >useMemo(</span>
-<span class="fstat-no" title="function not covered" >    ()</span> =&gt; <span class="cstat-no" title="statement not covered" >[</span>
+<span class="fstat-no" title="function not covered" >    () =</span>&gt; <span class="cstat-no" title="statement not covered" >[</span>
       'smartSuggestions',
       destination.id,
       currentLocation.latitude,
@@ -799,7 +799,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
 &nbsp;
   const suggestionsQuery = <span class="cstat-no" title="statement not covered" >useQuery({</span>
     queryKey,
-    queryFn: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
+    queryFn: <span class="fstat-no" title="function not covered" >async </span>() =&gt; {
       const res = <span class="cstat-no" title="statement not covered" >await smartRoutesApi.getSuggestions({</span>
         destId: destination.id,
         destLat: destination.coordinates.latitude,
@@ -809,19 +809,19 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
         weather,
         timeOfDay,
       });
-<span class="cstat-no" title="statement not covered" >      if (!res.success) <span class="cstat-no" title="statement not covered" >throw new Error(res.message ?? 'Failed to load suggestions');</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!res.success) <span class="cstat-no" title="statement not covered" >throw new Error(res.message ?? 'Failed to load suggestions');</span></span>
 <span class="cstat-no" title="statement not covered" >      return res.data;</span>
     },
     staleTime: 2 * 60 * 1000,
   });
 &nbsp;
   const likeMutation = <span class="cstat-no" title="statement not covered" >useMutation({</span>
-    mutationFn: <span class="fstat-no" title="function not covered" >as</span>ync ({ id, liked }: { id: string; liked: boolean }) =&gt; {
+    mutationFn: <span class="fstat-no" title="function not covered" >async </span>({ id, liked }: { id: string; liked: boolean }) =&gt; {
       const res = <span class="cstat-no" title="statement not covered" >await smartRoutesApi.likeSuggestion(id, liked);</span>
-<span class="cstat-no" title="statement not covered" >      if (!res.success) <span class="cstat-no" title="statement not covered" >throw new Error(res.message ?? 'Failed to save');</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!res.success) <span class="cstat-no" title="statement not covered" >throw new Error(res.message ?? 'Failed to save');</span></span>
 <span class="cstat-no" title="statement not covered" >      return res.data;</span>
     },
-    onMutate: <span class="fstat-no" title="function not covered" >as</span>ync ({ id, liked }) =&gt; {
+    onMutate: <span class="fstat-no" title="function not covered" >async </span>({ id, liked }) =&gt; {
 <span class="cstat-no" title="statement not covered" >      await qc.cancelQueries({ queryKey });</span>
       const prev = <span class="cstat-no" title="statement not covered" >qc.getQueryData&lt;SmartSuggestionDTO[]&gt;(queryKey);</span>
       const next = <span class="cstat-no" title="statement not covered" >prev?.map(<span class="fstat-no" title="function not covered" >(s</span>) =&gt; (<span class="cstat-no" title="statement not covered" >s.id === id ? { ...s, liked } : s)</span>) ?? [];</span>
@@ -829,7 +829,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
       // Optimistically sync into profile cache if present
       const profileKey = <span class="cstat-no" title="statement not covered" >['userProfile'];</span>
       const prevProfile = <span class="cstat-no" title="statement not covered" >qc.getQueryData&lt;any&gt;(profileKey);</span>
-<span class="cstat-no" title="statement not covered" >      if (prevProfile) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (prevProfile) {</span>
         const likedIds: string[] = <span class="cstat-no" title="statement not covered" >Array.isArray(prevProfile.likedSuggestions)</span>
           ? prevProfile.likedSuggestions
           : [];
@@ -841,25 +841,25 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
 <span class="cstat-no" title="statement not covered" >      return { prev, prevProfile };</span>
     },
     onError: <span class="fstat-no" title="function not covered" >(e</span>rr, _vars, ctx) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (ctx?.prev) <span class="cstat-no" title="statement not covered" >qc.setQueryData(queryKey, ctx.prev);</span></span>
-<span class="cstat-no" title="statement not covered" >      if (ctx?.prevProfile) <span class="cstat-no" title="statement not covered" >qc.setQueryData(['userProfile'], ctx.prevProfile);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (ctx?.prev) <span class="cstat-no" title="statement not covered" >qc.setQueryData(queryKey, ctx.prev);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (ctx?.prevProfile) <span class="cstat-no" title="statement not covered" >qc.setQueryData(['userProfile'], ctx.prevProfile);</span></span>
       const e = <span class="cstat-no" title="statement not covered" >handleApiError(err);</span>
 <span class="cstat-no" title="statement not covered" >      console.log('like error', e.message);</span>
     },
-    onSuccess: <span class="fstat-no" title="function not covered" >as</span>ync ({ id, liked }) =&gt; {
+    onSuccess: <span class="fstat-no" title="function not covered" >async </span>({ id, liked }) =&gt; {
 <span class="cstat-no" title="statement not covered" >      try {</span>
 <span class="cstat-no" title="statement not covered" >        await toggleLikedSuggestion(id, liked);</span>
       } catch (e) {
 <span class="cstat-no" title="statement not covered" >        console.log('Failed to sync like to profile', e);</span>
       }
     },
-    onSettled: <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+    onSettled: <span class="fstat-no" title="function not covered" >() =</span>&gt; {
 <span class="cstat-no" title="statement not covered" >      qc.invalidateQueries({ queryKey });</span>
 <span class="cstat-no" title="statement not covered" >      qc.invalidateQueries({ queryKey: ['userProfile'] });</span>
     },
   });
 &nbsp;
-  const getWeatherIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getWeatherIcon = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (weather) {</span>
       case 'sunny':
 <span class="cstat-no" title="statement not covered" >        return Sun;</span>
@@ -872,7 +872,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
     }
   };
 &nbsp;
-  const getCrowdColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const getCrowdColor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    switch (crowdLevel) {</span>
       case 'low':
 <span class="cstat-no" title="statement not covered" >        return '#4CAF50';</span>
@@ -924,7 +924,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
 <span class="cstat-no" title="statement not covered" >            &lt;Pressable</span>
               key={suggestion.id}
               style={styles.suggestionCard}
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onSelectRoute(suggestion)}</span>
+              onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >onSelectRoute(suggestion)}</span>
               testID={`suggestion-${suggestion.id}`}
             &gt;
               &lt;View style={styles.suggestionHeader}&gt;
@@ -933,7 +933,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
                 &lt;/View&gt;
                 &lt;Text style={styles.suggestionTitle}&gt;{suggestion.title}&lt;/Text&gt;
                 &lt;Pressable
-                  onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt;
+                  onPress={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >                    likeMutation.mutate({ id: suggestion.id, liked: !(suggestion.liked ?? false) })</span>
                   }
                   hitSlop={8}
@@ -942,7 +942,7 @@ const SmartRouteSuggestions: React.FC&lt;SmartRouteSuggestionsProps&gt; = <span 
                 &gt;
                   &lt;Heart
                     size={18}
-                    color={suggestion.liked ?? false ? Colors.secondary : Colors.textLight}
+                    color={(suggestion.liked ?? false) ? Colors.secondary : Colors.textLight}
                   /&gt;
                 &lt;/Pressable&gt;
               &lt;/View&gt;
@@ -1034,7 +1034,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
   errorText: { color: Colors.textLight },
 });
 &nbsp;
-export default SmartRouteSuggestions;
+<span class="cstat-no" title="statement not covered" >export default SmartRouteSuggestions;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1042,7 +1042,7 @@ export default SmartRouteSuggestions;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-10-08T20:36:02.866Z
+                at 2025-10-09T02:27:42.561Z
             </div>
         <script src="../prettify.js"></script>
         <script>

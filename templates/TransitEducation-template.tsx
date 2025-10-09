@@ -1,10 +1,10 @@
 /**
  * Transit Education Component Template
- * 
+ *
  * This template provides a starting point for creating educational components
  * about transit systems for any city. Based on the MTA Education component
  * but adaptable to any transit system worldwide.
- * 
+ *
  * INSTRUCTIONS:
  * 1. Copy this file to components/YourCityEducation.tsx (e.g., LondonEducation.tsx)
  * 2. Replace all "REPLACE_" placeholders with your city's information
@@ -13,31 +13,31 @@
  * 5. Customize colors and icons to match your transit authority's branding
  */
 
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
-import { 
-  Train, 
-  Bus, 
-  Shield, 
-  Lightbulb, 
-  Map, 
-  Clock, 
-  Users, 
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  Train,
+  Bus,
+  Shield,
+  Lightbulb,
+  Map,
+  Clock,
+  Users,
   AlertTriangle,
   CheckCircle,
   Info,
-  X 
-} from "lucide-react-native";
-import Colors from "@/constants/colors";
+  X,
+} from 'lucide-react-native';
+import Colors from '@/constants/colors';
 
 type YourCityEducationProps = {
   onClose?: () => void;
 };
 
-type EducationSection = "overview" | "rail" | "bus" | "safety" | "tips";
+type EducationSection = 'overview' | 'rail' | 'bus' | 'safety' | 'tips';
 
 const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
-  const [activeSection, setActiveSection] = useState<EducationSection>("overview");
+  const [activeSection, setActiveSection] = useState<EducationSection>('overview');
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   const renderSectionButton = (section: EducationSection, icon: React.ReactNode, title: string) => (
@@ -46,7 +46,12 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
       onPress={() => setActiveSection(section)}
     >
       {icon}
-      <Text style={[styles.sectionButtonText, activeSection === section && styles.activeSectionButtonText]}>
+      <Text
+        style={[
+          styles.sectionButtonText,
+          activeSection === section && styles.activeSectionButtonText,
+        ]}
+      >
         {title}
       </Text>
     </TouchableOpacity>
@@ -54,21 +59,17 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
 
   const renderExpandableCard = (title: string, content: React.ReactNode, cardKey: string) => {
     const isExpanded = expandedCard === cardKey;
-    
+
     return (
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.educationCard}
         onPress={() => setExpandedCard(isExpanded ? null : cardKey)}
       >
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{title}</Text>
-          <Text style={styles.expandIcon}>{isExpanded ? "−" : "+"}</Text>
+          <Text style={styles.expandIcon}>{isExpanded ? '−' : '+'}</Text>
         </View>
-        {isExpanded && (
-          <View style={styles.cardContent}>
-            {content}
-          </View>
-        )}
+        {isExpanded && <View style={styles.cardContent}>{content}</View>}
       </TouchableOpacity>
     );
   };
@@ -131,7 +132,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
       {/* e.g., "The Underground" for London, "Metro" for Paris, "Subway" for NYC */}
 
       {renderExpandableCard(
-        "REPLACE_SERVICE_TYPE_CARD_TITLE", // e.g., "District vs Circle Lines", "Local vs Express"
+        'REPLACE_SERVICE_TYPE_CARD_TITLE', // e.g., "District vs Circle Lines", "Local vs Express"
         <View>
           <Text style={styles.explanationText}>
             REPLACE_SERVICE_TYPE_EXPLANATION
@@ -145,11 +146,11 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             </Text>
           </View>
         </View>,
-        "service-types"
+        'service-types',
       )}
 
       {renderExpandableCard(
-        "REPLACE_DIRECTIONS_CARD_TITLE", // e.g., "Northbound vs Southbound", "Inbound vs Outbound"
+        'REPLACE_DIRECTIONS_CARD_TITLE', // e.g., "Northbound vs Southbound", "Inbound vs Outbound"
         <View>
           <Text style={styles.explanationText}>
             REPLACE_DIRECTIONS_EXPLANATION
@@ -163,11 +164,11 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             </Text>
           </View>
         </View>,
-        "directions"
+        'directions',
       )}
 
       {renderExpandableCard(
-        "How to Transfer Between Lines",
+        'How to Transfer Between Lines',
         <View>
           <Text style={styles.explanationText}>
             REPLACE_TRANSFER_EXPLANATION
@@ -181,15 +182,15 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             </Text>
           </View>
         </View>,
-        "transfers"
+        'transfers',
       )}
 
       {renderExpandableCard(
-        "Popular Lines",
+        'Popular Lines',
         <View>
           {/* Add 2-3 popular lines from your city */}
           <View style={styles.lineCard}>
-            <View style={[styles.lineIndicator, { backgroundColor: "REPLACE_LINE_COLOR_1" }]}>
+            <View style={[styles.lineIndicator, { backgroundColor: 'REPLACE_LINE_COLOR_1' }]}>
               <Text style={styles.lineNumber}>REPLACE_LINE_ID_1</Text>
             </View>
             <View style={styles.lineInfo}>
@@ -200,7 +201,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
           </View>
 
           <View style={styles.lineCard}>
-            <View style={[styles.lineIndicator, { backgroundColor: "REPLACE_LINE_COLOR_2" }]}>
+            <View style={[styles.lineIndicator, { backgroundColor: 'REPLACE_LINE_COLOR_2' }]}>
               <Text style={styles.lineNumber}>REPLACE_LINE_ID_2</Text>
             </View>
             <View style={styles.lineInfo}>
@@ -210,7 +211,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             </View>
           </View>
         </View>,
-        "popular-lines"
+        'popular-lines',
       )}
     </ScrollView>
   );
@@ -221,7 +222,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
       {/* e.g., "London Buses", "City Buses", "Metro Bus" */}
 
       {renderExpandableCard(
-        "Types of Buses",
+        'Types of Buses',
         <View>
           <View style={styles.busTypeCard}>
             <Text style={styles.busTypeName}>REPLACE_BUS_TYPE_1</Text>
@@ -236,17 +237,17 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             <Text style={styles.busTypeExplanation}>REPLACE_BUS_TYPE_3_EXPLANATION</Text>
           </View>
         </View>,
-        "bus-types"
+        'bus-types',
       )}
 
       {renderExpandableCard(
-        "How to Ride the Bus",
+        'How to Ride the Bus',
         <View>
           <Text style={styles.explanationText}>
             REPLACE_HOW_TO_RIDE_EXPLANATION
             {/* e.g., "Riding the bus is easy when you know the steps!" */}
           </Text>
-          
+
           <View style={styles.stepCard}>
             <View style={styles.stepNumber}>
               <Text style={styles.stepNumberText}>1</Text>
@@ -275,11 +276,11 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             <Text style={styles.stepText}>REPLACE_STEP_4</Text>
           </View>
         </View>,
-        "how-to-ride"
+        'how-to-ride',
       )}
 
       {renderExpandableCard(
-        "Cool Bus Features",
+        'Cool Bus Features',
         <View>
           <View style={styles.featureCard}>
             <Text style={styles.featureText}>REPLACE_FEATURE_1</Text>
@@ -294,7 +295,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
             <Text style={styles.featureText}>REPLACE_FEATURE_4</Text>
           </View>
         </View>,
-        "bus-features"
+        'bus-features',
       )}
     </ScrollView>
   );
@@ -302,7 +303,7 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
   const renderSafetySection = () => (
     <ScrollView style={styles.sectionContent} showsVerticalScrollIndicator={false}>
       <Text style={styles.sectionTitle}>Safety First!</Text>
-      
+
       <View style={styles.safetyTipCard}>
         <AlertTriangle size={20} color="#FF9800" />
         <Text style={styles.safetyTipText}>REPLACE_SAFETY_TIP_1</Text>
@@ -378,12 +379,18 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
 
   const renderContent = () => {
     switch (activeSection) {
-      case "overview": return renderOverviewSection();
-      case "rail": return renderRailSection();
-      case "bus": return renderBusSection();
-      case "safety": return renderSafetySection();
-      case "tips": return renderTipsSection();
-      default: return renderOverviewSection();
+      case 'overview':
+        return renderOverviewSection();
+      case 'rail':
+        return renderRailSection();
+      case 'bus':
+        return renderBusSection();
+      case 'safety':
+        return renderSafetySection();
+      case 'tips':
+        return renderTipsSection();
+      default:
+        return renderOverviewSection();
     }
   };
 
@@ -400,11 +407,31 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
 
       <View style={styles.sectionButtons}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {renderSectionButton("overview", <Info size={16} color={activeSection === "overview" ? "#FFFFFF" : Colors.primary} />, "Overview")}
-          {renderSectionButton("rail", <Train size={16} color={activeSection === "rail" ? "#FFFFFF" : Colors.primary} />, "REPLACE_RAIL_TAB_NAME")}
-          {renderSectionButton("bus", <Bus size={16} color={activeSection === "bus" ? "#FFFFFF" : Colors.primary} />, "REPLACE_BUS_TAB_NAME")}
-          {renderSectionButton("safety", <Shield size={16} color={activeSection === "safety" ? "#FFFFFF" : Colors.primary} />, "Safety")}
-          {renderSectionButton("tips", <Lightbulb size={16} color={activeSection === "tips" ? "#FFFFFF" : Colors.primary} />, "Tips")}
+          {renderSectionButton(
+            'overview',
+            <Info size={16} color={activeSection === 'overview' ? '#FFFFFF' : Colors.primary} />,
+            'Overview',
+          )}
+          {renderSectionButton(
+            'rail',
+            <Train size={16} color={activeSection === 'rail' ? '#FFFFFF' : Colors.primary} />,
+            'REPLACE_RAIL_TAB_NAME',
+          )}
+          {renderSectionButton(
+            'bus',
+            <Bus size={16} color={activeSection === 'bus' ? '#FFFFFF' : Colors.primary} />,
+            'REPLACE_BUS_TAB_NAME',
+          )}
+          {renderSectionButton(
+            'safety',
+            <Shield size={16} color={activeSection === 'safety' ? '#FFFFFF' : Colors.primary} />,
+            'Safety',
+          )}
+          {renderSectionButton(
+            'tips',
+            <Lightbulb size={16} color={activeSection === 'tips' ? '#FFFFFF' : Colors.primary} />,
+            'Tips',
+          )}
         </ScrollView>
       </View>
 
@@ -417,46 +444,46 @@ const YourCityEducation: React.FC<YourCityEducationProps> = ({ onClose }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: '#E0E0E0',
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.primary,
   },
   closeButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#F5F5F5",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   sectionButtons: {
     paddingVertical: 16,
     paddingLeft: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#E0E0E0",
+    borderBottomColor: '#E0E0E0',
   },
   sectionButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 10,
     marginRight: 12,
     borderRadius: 20,
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   activeSectionButton: {
     backgroundColor: Colors.primary,
@@ -465,37 +492,37 @@ const styles = StyleSheet.create({
   sectionButtonText: {
     marginLeft: 8,
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
   },
   activeSectionButtonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   sectionContent: {
     flex: 1,
     paddingHorizontal: 20,
   },
   heroSection: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 32,
   },
   heroTitle: {
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.primary,
     marginTop: 16,
-    textAlign: "center",
+    textAlign: 'center',
   },
   heroSubtitle: {
     fontSize: 16,
     color: Colors.textLight,
     marginTop: 8,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 22,
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: "700",
+    fontWeight: '700',
     color: Colors.text,
     marginVertical: 16,
   },
@@ -503,9 +530,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   factCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F8F9FA",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
@@ -516,7 +543,7 @@ const styles = StyleSheet.create({
   },
   factTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
@@ -526,48 +553,48 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   safetyHighlight: {
-    backgroundColor: "#FFF3E0",
+    backgroundColor: '#FFF3E0',
     padding: 20,
     borderRadius: 12,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 24,
   },
   safetyTitle: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#F57C00",
+    fontWeight: '700',
+    color: '#F57C00',
     marginTop: 12,
   },
   safetyText: {
     fontSize: 14,
-    color: "#E65100",
-    textAlign: "center",
+    color: '#E65100',
+    textAlign: 'center',
     marginTop: 8,
     lineHeight: 20,
   },
   educationCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
   },
   cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     flex: 1,
   },
   expandIcon: {
     fontSize: 20,
     color: Colors.primary,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   cardContent: {
     paddingHorizontal: 16,
@@ -580,44 +607,44 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   tipBox: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#FFF8E1",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF8E1',
     padding: 12,
     borderRadius: 8,
     marginTop: 8,
   },
   tipText: {
     fontSize: 13,
-    color: "#F57C00",
+    color: '#F57C00',
     marginLeft: 8,
     flex: 1,
     lineHeight: 18,
   },
   lineCard: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 16,
   },
   lineIndicator: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   lineNumber: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   lineInfo: {
     flex: 1,
   },
   lineName: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.text,
     marginBottom: 4,
   },
@@ -630,17 +657,17 @@ const styles = StyleSheet.create({
   lineFact: {
     fontSize: 12,
     color: Colors.primary,
-    fontStyle: "italic",
+    fontStyle: 'italic',
   },
   busTypeCard: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: '#F8F9FA',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   busTypeName: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
     marginBottom: 4,
   },
@@ -650,8 +677,8 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   stepCard: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: 12,
   },
   stepNumber: {
@@ -659,14 +686,14 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     backgroundColor: Colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   stepNumberText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   stepText: {
     fontSize: 14,
@@ -683,34 +710,34 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   safetyTipCard: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#FFF3E0",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF3E0',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   safetyTipText: {
     fontSize: 13,
-    color: "#E65100",
+    color: '#E65100',
     marginLeft: 8,
     flex: 1,
     lineHeight: 18,
   },
   etiquetteCard: {
-    backgroundColor: "#F1F8E9",
+    backgroundColor: '#F1F8E9',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   etiquetteText: {
     fontSize: 14,
-    color: "#2E7D32",
+    color: '#2E7D32',
     lineHeight: 20,
   },
   planningTip: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 12,
   },
   planningText: {
@@ -722,20 +749,20 @@ const styles = StyleSheet.create({
   },
   accessibilityTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: Colors.primary,
     marginBottom: 12,
-    textAlign: "center",
+    textAlign: 'center',
   },
   accessibilityFeature: {
-    backgroundColor: "#E8F5E8",
+    backgroundColor: '#E8F5E8',
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   accessibilityText: {
     fontSize: 14,
-    color: "#2E7D32",
+    color: '#2E7D32',
     lineHeight: 20,
   },
 });
@@ -744,7 +771,7 @@ export default YourCityEducation;
 
 /*
  * CUSTOMIZATION CHECKLIST:
- * 
+ *
  * □ Replace component name: YourCityEducation -> LondonEducation, TokyoEducation, etc.
  * □ Update all "REPLACE_" placeholders with your city's information
  * □ Customize tab names: "REPLACE_RAIL_TAB_NAME" (e.g., "Underground", "Metro", "Subway")

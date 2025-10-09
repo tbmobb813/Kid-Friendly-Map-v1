@@ -27,6 +27,7 @@ const getLog = (): Logger => {
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mockedModule = require('./logger');
     const resolvedLog: Logger = mockedModule?.log ?? mockedModule?.default ?? cachedLog;
 
@@ -50,6 +51,7 @@ const logger = {
 };
 let offlineManager: any;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const offlineModule = require('./offlineManager');
   offlineManager = offlineModule?.offlineManager || offlineModule?.default || offlineModule;
 } catch (error) {
@@ -82,6 +84,7 @@ if (
 
 let backendHealthMonitor: any;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const apiModule = require('./api');
   backendHealthMonitor =
     apiModule?.backendHealthMonitor || apiModule?.default?.backendHealthMonitor || apiModule;
@@ -97,6 +100,7 @@ if (!backendHealthMonitor || typeof backendHealthMonitor.getHealthStatus !== 'fu
 
 let Device: any;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   Device = require('expo-device');
 } catch (error) {
   Device = {
@@ -548,34 +552,7 @@ class ApplicationMonitoring {
    * Get system health status
    */
   getSystemHealth(): SystemHealth {
-    // Some tests mock `offlineManager` or `backendHealthMonitor` after this
-    // module has been imported. Re-resolve them if the expected methods are
-    // not present so tests that call monitoring.getSystemHealth still work.
-    // In test environments Jest may mock modules after this module is loaded.
-    // Try to re-require the dependencies and prefer any exports that implement
-    // the expected functions. Do this defensively so real runtime behavior
-    // remains unchanged but tests get the mocked implementations.
-    try {
-      const offlineModule = require('./offlineManager');
-      const candidate = offlineModule?.offlineManager ?? offlineModule?.default ?? offlineModule;
-      if (candidate && typeof candidate.getNetworkState === 'function') {
-        offlineManager = candidate;
-      }
-    } catch (e) {
-      // ignore resolution errors
-    }
-
-    try {
-      const apiModule = require('./api');
-      const candidateApi =
-        apiModule?.backendHealthMonitor ?? apiModule?.default?.backendHealthMonitor ?? apiModule;
-      if (candidateApi && typeof candidateApi.getHealthStatus === 'function') {
-        backendHealthMonitor = candidateApi;
-      }
-    } catch (e) {
-      // ignore resolution errors
-    }
-
+    // Defensive calls: some test mocks may not implement all functions
     const networkState =
       offlineManager && typeof offlineManager.getNetworkState === 'function'
         ? offlineManager.getNetworkState()
@@ -584,38 +561,22 @@ class ApplicationMonitoring {
     const networkQuality =
       offlineManager && typeof offlineManager.getNetworkQuality === 'function'
         ? offlineManager.getNetworkQuality()
-        : 'excellent';
+        : 'online';
 
-    // Call the health status provider but coerce to safe defaults. Jest's
-    // automocks can create functions that return undefined which would
-    // otherwise leak into tests and assertions.
-    let backendStatusRaw = 'healthy';
-    try {
-      if (backendHealthMonitor && typeof backendHealthMonitor.getHealthStatus === 'function') {
-        backendStatusRaw = backendHealthMonitor.getHealthStatus();
-      }
-    } catch (e) {
-      // ignore and fallback
-      backendStatusRaw = 'healthy';
-    }
+    const backendStatusRaw =
+      backendHealthMonitor && typeof backendHealthMonitor.getHealthStatus === 'function'
+        ? backendHealthMonitor.getHealthStatus()
+        : 'healthy';
 
-    const allowedBackendStatuses = ['healthy', 'degraded', 'down'];
-    const backendStatus = allowedBackendStatuses.includes(backendStatusRaw)
-      ? (backendStatusRaw as SystemHealth['backendStatus'])
+    // Normalize backend status to allowed set
+    const backendStatus = ['healthy', 'degraded', 'down'].includes(backendStatusRaw)
+      ? (backendStatusRaw as 'healthy' | 'degraded' | 'down')
       : 'healthy';
 
-    let pendingSyncActionsRaw = 0;
-    try {
-      if (offlineManager && typeof offlineManager.getPendingActionsCount === 'function') {
-        // Some mocks may return undefined; coerce to number
-
-        pendingSyncActionsRaw = offlineManager.getPendingActionsCount();
-      }
-    } catch (e) {
-      pendingSyncActionsRaw = 0;
-    }
-
-    const pendingSyncActions = Number(pendingSyncActionsRaw) || 0;
+    const pendingSyncActions =
+      offlineManager && typeof offlineManager.getPendingActionsCount === 'function'
+        ? Number(offlineManager.getPendingActionsCount()) || 0
+        : 0;
     const memoryPressure = this.calculateMemoryPressure();
 
     if (memoryPressure === 'high') {
