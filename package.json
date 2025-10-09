@@ -116,7 +116,8 @@
     "ts-jest": "^29.4.4",
     "tsx": "^4.20.6",
     "typescript": "~5.9.2",
-    "jest-junit": "^13.0.0"
+    "jest-junit": "^13.0.0",
+    "@xmldom/xmldom": "^0.8.4"
   },
   "private": true
 }
