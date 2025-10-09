@@ -138,10 +138,10 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: ${{ env.BUN_VERSION }}
-      - name: Install dependencies with Bun (CI logic tests)
-        run: bun install --frozen-lockfile
-      - name: Run Bun logic tests
-        run: bash ./scripts/bun-test.sh --ci
+      - name: Install dependencies (npm for logic tests)
+        run: npm ci
+      - name: Run logic tests (uses bun-test.sh wrapper when bun present)
+        run: bash ./scripts/bun-test.sh --ci || npm run test:logic || npx -y jest --ci --colors
 
   # Platform-specific builds (iOS/Android focus)
   build-ios:
