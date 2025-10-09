@@ -1,0 +1,128 @@
+
+> expo-app@1.0.0 test:server
+> jest --config=jest.server.config.cjs --colors
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+  [2mconsole.log[22m
+    Background feed refresh disabled (FEED_REFRESH_ENABLED=false)
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:369:15)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mshapes.test.js[22m
+  Shapes endpoint
+    [32m✓[39m [2mreturns shape polyline (211 ms)[22m
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+  [2mconsole.log[22m
+    Starting background feed refresh loop every 1s
+[2m[22m
+[2m      [2mat log ([22m[2mserver/index.js[2m:390:11)[22m[2m[22m
+
+  [2mconsole.info[22m
+    {"ts":"2025-10-09T21:15:27.809Z","msg":"transit_adapter.refresh","system":"mta-subway","region":"nyc","url":"https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace","duration_ms":1,"entity_count":0}
+[2m[22m
+[2m      [2mat Timeout.info ([22m[2mserver/index.js[2m:407:19)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/unit/[22m[1mrefresh.worker.test.js[22m
+  Background refresh worker
+    [32m✓[39m [2minvokes fetchGtfsRt on interval (1201 ms)[22m
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+  [2mconsole.info[22m
+    {"ts":"2025-10-09T21:15:28.648Z","msg":"transit_adapter.enriched","region":"nyc","system":"mta-subway","enrichedRoutes":0}
+[2m[22m
+[2m      [2mat info ([22m[2mserver/index.js[2m:254:15)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mversioned.api.test.js[22m
+  Versioned API
+    [32m✓[39m [2mv1 feed returns version field (22 ms)[22m
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mfailure.paths.test.js[22m
+  Failure paths
+    [32m✓[39m [2munknown region returns 404 (20 ms)[22m
+    [32m✓[39m [2mauth required when API_AUTH_KEY set (46 ms)[22m
+
+  [2mconsole.log[22m
+    Redis cache enabled: redis://test
+[2m[22m
+[2m      [2mat Object.log ([22m[2mserver/index.js[2m:18:13)[22m[2m[22m
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+  [2mconsole.info[22m
+    {"ts":"2025-10-09T21:15:29.580Z","msg":"transit_adapter.enriched","region":"nyc","system":"mta-subway","enrichedRoutes":0}
+[2m[22m
+[2m      [2mat info ([22m[2mserver/index.js[2m:254:15)[22m[2m[22m
+
+  [2mconsole.info[22m
+    {"ts":"2025-10-09T21:15:29.604Z","msg":"transit_adapter.enriched","region":"nyc","system":"mta-subway","enrichedRoutes":0}
+[2m[22m
+[2m      [2mat info ([22m[2mserver/index.js[2m:254:15)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/unit/[22m[1mredis.cache.test.js[22m
+  Redis cache integration
+    [32m✓[39m [2mfetchGtfsRt called once for same feed (cache hit) (118 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mimporter.test.js[22m
+  GTFS Importer
+    [32m✓[39m [2mshould import static GTFS to JSON (173 ms)[22m
+
+  [2mconsole.log[22m
+    Transit adapter listening on port 3001
+[2m[22m
+[2m      [2mat Server.log ([22m[2mserver/index.js[2m:362:13)[22m[2m[22m
+
+  [2mconsole.info[22m
+    {"ts":"2025-10-09T21:15:30.480Z","msg":"transit_adapter.enriched","region":"nyc","system":"mta-subway","enrichedRoutes":0}
+[2m[22m
+[2m      [2mat info ([22m[2mserver/index.js[2m:254:15)[22m[2m[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mapi.test.js[22m
+  Transit Adapter API
+    [32m✓[39m [2mGET /feeds/:region/:system.json should return routes array (mock) (7 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/unit/[22m[1menrichment.test.js[22m
+  normalizeFeedMessage
+    [32m✓[39m [2mshould normalize a minimal GTFS-RT feed (1 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/unit/[22m[1mcache.test.js[22m
+  Cache
+    [32m✓[39m [2mshould store and retrieve values (2 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/integration/[22m[1mpostgres.enrichment.test.js[22m
+  Postgres enrichment (mocked)
+    [32m✓[39m [2menriches with headsign + next stop (9 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/[22m[1madapter.enrichment.test.js[22m
+  adapter enrichment
+    [32m✓[39m [2mnormalizeFeedMessageAsync enriches destination and nextStopName (3 ms)[22m
+
+[0m[7m[1m[32m PASS [39m[22m[27m[0m [2mserver/__tests__/e2e/[22m[1madapter.e2e.test.js[22m
+  Transit Adapter E2E
+    [32m✓[39m [2mskipped e2e placeholder (2 ms)[22m
+
+[1mTest Suites: [22m[1m[32m12 passed[39m[22m, 12 total
+[1mTests:       [22m[1m[32m13 passed[39m[22m, 13 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        6.9 s, estimated 7 s
+[2mRan all test suites[22m[2m.[22m

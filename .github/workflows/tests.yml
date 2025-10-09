@@ -1,0 +1,106 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  frontend:
+    name: Frontend tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies (npm)
+        run: npm ci
+      - name: Run frontend tests (produce junit)
+        env:
+          JEST_JUNIT_OUTPUT: frontend-junit.xml
+        run: npm test -- --colors --reporters=default --reporters=jest-junit | tee frontend.log
+      - name: Upload frontend log
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-log
+          path: frontend.log
+      - name: Upload frontend junit
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-junit
+          path: frontend-junit.xml
+
+  server:
+    name: Server tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies (npm)
+        run: npm ci
+      - name: Run server tests (produce junit)
+        env:
+          JEST_JUNIT_OUTPUT: server-junit.xml
+        run: npm run test:server -- --colors --reporters=default --reporters=jest-junit | tee server.log
+      - name: Upload server log
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-log
+          path: server.log
+      - name: Upload server junit
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-junit
+          path: server-junit.xml
+
+  bun:
+    name: Bun-style logic tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies (npm)
+        run: npm ci
+      - name: Run bun tests (produce junit)
+        env:
+          JEST_JUNIT_OUTPUT: bun-junit.xml
+        run: npm run test:bun -- --colors --reporters=default --reporters=jest-junit | tee bun.log
+      - name: Upload bun log
+        uses: actions/upload-artifact@v4
+        with:
+          name: bun-log
+          path: bun.log
+      - name: Upload bun junit
+        uses: actions/upload-artifact@v4
+        with:
+          name: bun-junit
+          path: bun-junit.xml
+
+  summary:
+    name: Consolidated summary
+    runs-on: ubuntu-latest
+    needs: [frontend, server, bun]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download logs
+        uses: actions/download-artifact@v4
+        with:
+          path: logs
+      - name: Show short summary
+        run: |
+          echo "Consolidated test logs downloaded into ./logs"
+          echo "--- FRONTEND ---"
+          tail -n 200 logs/frontend-log/frontend.log || true
+          echo "--- SERVER ---"
+          tail -n 200 logs/server-log/server.log || true
+          echo "--- BUN ---"
+          tail -n 200 logs/bun-log/bun.log || true
