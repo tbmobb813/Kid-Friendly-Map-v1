@@ -88,100 +88,7 @@ const ExpoMapView = (props: any) => (
 );
 
 // FAB bullet/burger menu: single main FAB that toggles small action buttons above it
-const FloatingMenu = ({ onRecenter, onHelp, onToggleAccessibility }: any) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <View style={{ alignItems: 'center' }}>
-      {open && (
-        <View style={{ marginBottom: 8, alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => {
-              onRecenter?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Recenter map"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#4F8EF7',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <Navigation color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              onHelp?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Help"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#F7B500',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <HelpCircle color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              onToggleAccessibility?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Toggle accessibility mode"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#98DDA1',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <Accessibility color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <TouchableOpacity onPress={() => setOpen((o) => !o)} accessibilityLabel="Open menu">
-        <View
-          style={{
-            width: 64,
-            height: 64,
-            borderRadius: 32,
-            backgroundColor: '#2D3748',
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 12,
-          }}
-        >
-          <Menu color="#fff" size={28} />
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import FloatingMenu from '@/components/FloatingMenu';
 // Removed local BottomSheet placeholder to avoid naming conflict
 const RouteInfoPanel = ({ route, unifiedRoute }: any) => {
   if (!route && !unifiedRoute) {
@@ -402,7 +309,12 @@ export default function MapScreen() {
   const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
 
   const mapLibreSupported = useMemo(() => {
-    if (!isMapLibreAvailable) {
+    try {
+      // call the runtime function to check availability without forcing require at import time
+      if (!isMapLibreAvailable()) {
+        return false;
+      }
+    } catch {
       return false;
     }
 
@@ -493,17 +405,76 @@ export default function MapScreen() {
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
           {/* AnimatedConfetti overlays everything */}
           <AnimatedConfetti />
+          {/* Debug badge showing which map implementation is active */}
+          <View
+            style={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              zIndex: 1200,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              borderRadius: 6,
+            }}
+            pointerEvents="none"
+          >
+            <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>
+              {`Map: ${mapImplementation}`}
+            </Text>
+          </View>
           {/* MapView fills space above bottom sheet */}
           <View style={{ flex: 1 }}>
-            <MapLibreMapView
-              origin={origin}
-              destination={destination}
-              route={selectedRoute}
-              showTransitStations={true}
-              stations={nearbyStations}
-              mapStyle={Config.MAP.STYLE_URL ?? 'https://demotiles.maplibre.org/style.json'}
-              onStationPress={handleStationPress}
-            />
+            {/* Use MapLibreRouteView which accepts GeoJSON for route rendering.
+                Prefer ORS geojson (real-time routing) when available, otherwise
+                fall back to unified route geometry (converted to a FeatureCollection).
+            */}
+            {
+              // Log the route GeoJSON before passing to the map for easier tracing in tests/dev
+            }
+            {(() => {
+              const routeToPass =
+                orsRouteGeoJSON ??
+                (selectedUnifiedRoute && selectedUnifiedRoute.geometry
+                  ? {
+                      type: 'FeatureCollection',
+                      features: [
+                        {
+                          type: 'Feature',
+                          id: selectedUnifiedRoute.id,
+                          properties: {},
+                          geometry: selectedUnifiedRoute.geometry,
+                        },
+                      ],
+                    }
+                  : null);
+
+              // Lightweight defensive logging so test harnesses can assert logs
+              try {
+                // Avoid circulars; stringify minimal info
+                const summary = routeToPass
+                  ? {
+                      type: routeToPass.type,
+                      features: (routeToPass.features || []).map((f: any) => ({ id: f.id, type: f.geometry?.type })),
+                    }
+                  : null;
+                // eslint-disable-next-line no-console
+                console.debug('[MapScreen] routeGeoJSON before MapLibreRouteView:', summary);
+              } catch (e) {
+                // ignore logging errors
+              }
+
+              return (
+                <MapLibreRouteView
+                  origin={origin ?? undefined}
+                  destination={destination ?? undefined}
+                  routeGeoJSON={routeToPass}
+                  onStationPress={handleStationPress}
+                  showTransitStations={true}
+                  testID="maplibre-route-view"
+                />
+              );
+            })()}
           </View>
           {/* FloatingControls float above map, not inside it */}
           <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>

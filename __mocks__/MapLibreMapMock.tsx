@@ -25,7 +25,9 @@ export const MapLibreGL = {
   CircleLayer: MockCircleLayer,
 };
 
-export const isMapLibreAvailable = true;
+export const isMapLibreAvailable = () => true;
+// also export a boolean for backwards compatibility
+export const isMapLibreAvailableBoolean = true;
 
 // Attach properties to the main component for compatibility
 MockMapLibreMap.ShapeSource = MockShapeSource;

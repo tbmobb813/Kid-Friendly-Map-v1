@@ -437,8 +437,20 @@ if (require.main === module) {
   startServer();
 }
 
+// Express-compatible request handler for supertest: forward incoming req/res to Fastify
+function requestHandler(req, res) {
+  // ensure fastify is ready then emit the request on the underlying server
+  fastify.ready().then(() => {
+    fastify.server.emit('request', req, res);
+  }).catch((err) => {
+    res.statusCode = 500;
+    res.end(String(err));
+  });
+}
+
 module.exports = {
-  app: fastify.server,
+  // `app` is compatible with supertest (function handler), keep for test-suite compatibility
+  app: requestHandler,
   fastify,
   startServer,
   _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore },

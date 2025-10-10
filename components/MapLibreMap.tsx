@@ -35,7 +35,20 @@ function getMapLibreModule(): MapLibreModule | null {
 }
 
 export const MapLibreGL: MapLibreModule | null = null; // Will be loaded lazily
-export const isMapLibreAvailable = false; // Will be checked at runtime
+
+/**
+ * Check at runtime whether the native MapLibre module is available.
+ * This is a function (not a boolean) to avoid forcing a native require at module-load
+ * time which would break in environments like Expo Go or tests.
+ */
+export function isMapLibreAvailable(): boolean {
+  try {
+    const m = getMapLibreModule();
+    return !!(m && typeof m === 'object' && 'MapView' in m);
+  } catch {
+    return false;
+  }
+}
 
 // MapLibre will be loaded lazily when component renders
 

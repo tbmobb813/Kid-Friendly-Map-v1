@@ -632,9 +632,54 @@ class UnifiedRoutingService {
   }
 
   private decodePolyline(encoded: string): [number, number][] {
-    // Simplified polyline decoding - in production, use a proper library
-    // This is a placeholder that returns empty coordinates
-    return [];
+    // Decode an encoded polyline string to [lng, lat] pairs.
+    // Supports standard Google/Mapbox precision (5) and polyline6 precision.
+    if (!encoded || typeof encoded !== 'string') return [];
+
+    const decode = (str: string, precision: number) => {
+      const coordinates: [number, number][] = [];
+      let index = 0;
+      let lat = 0;
+      let lng = 0;
+
+      const factor = Math.pow(10, precision);
+
+      while (index < str.length) {
+        let result = 1;
+        let shift = 0;
+        let b: number;
+        do {
+          b = str.charCodeAt(index++) - 63 - 1;
+          result += b << shift;
+          shift += 5;
+        } while (b >= 0x1f);
+        lat += (result & 1) ? ~(result >> 1) : result >> 1;
+
+        result = 1;
+        shift = 0;
+        do {
+          b = str.charCodeAt(index++) - 63 - 1;
+          result += b << shift;
+          shift += 5;
+        } while (b >= 0x1f);
+        lng += (result & 1) ? ~(result >> 1) : result >> 1;
+
+        coordinates.push([lng / factor, lat / factor]);
+      }
+
+      return coordinates;
+    };
+
+    // Heuristic: if string contains non-ASCII safe chars unlikely, still attempt default
+    // Try precision 5 first, if that yields coordinates length 1, try precision 6
+    try {
+      const coords5 = decode(encoded, 5);
+      if (coords5.length > 1) return coords5;
+      const coords6 = decode(encoded, 6);
+      return coords6;
+    } catch (e) {
+      return [];
+    }
   }
 
   private generateORSDescription(route: any, type: string): string {
