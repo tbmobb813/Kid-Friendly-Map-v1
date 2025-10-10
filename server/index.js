@@ -1,4 +1,4 @@
-const express = require('express');
+const Fastify = require('fastify');
 // import lru-cache in a way that works with both CJS and ESM shapes
 let LRUCache = null;
 try {
@@ -46,16 +46,25 @@ function reloadStaticStore() {
   }
 }
 
-const app = express();
+const fastify = Fastify({ logger: false });
+// fastify.register(require('@fastify/formbody'));
+// custom JSON parser (Fastify default also works, but we keep explicit parsing limit semantics)
+fastify.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body, done) {
+  try {
+    const json = body && body.length ? JSON.parse(body) : {};
+    done(null, json);
+  } catch (err) {
+    done(err, undefined);
+  }
+});
 const port = process.env.PORT || 3001;
 
 // Simple API key middleware: reads API_AUTH_KEY dynamically so tests can toggle after startup
-function requireApiKey(req, res, next) {
+async function requireApiKey(request, reply) {
   const apiAuthKey = process.env.API_AUTH_KEY; // dynamic lookup
-  if (!apiAuthKey) return next();
-  const v = req.headers['x-adapter-key'] || req.query._key;
-  if (!v || v !== apiAuthKey) return res.status(401).json({ error: 'unauthorized' });
-  return next();
+  if (!apiAuthKey) return;
+  const v = request.headers['x-adapter-key'] || request.query._key;
+  if (!v || v !== apiAuthKey) return reply.code(401).send({ error: 'unauthorized' });
 }
 
 // Cache abstraction: Redis if available, else an LRU cache or simple in-memory map
@@ -180,21 +189,22 @@ function listFeedEntries() {
 }
 
 // Internal handler used by versioned + unversioned endpoints
-async function handleFeedRequest(req, res) {
+async function handleFeedRequest(req, reply) {
   try {
-    const { region, system } = req.params;
+    const { region, system } = req.params || req.params;
     const regionMap = feedMap[region];
-    if (!regionMap) return res.status(404).json({ error: 'region not found' });
+    if (!regionMap) return reply.code(404).send({ error: 'region not found' });
 
     const entry = regionMap[system];
-    if (!entry || !entry.url) return res.status(404).json({ error: 'system or feed not found' });
+    if (!entry || !entry.url) return reply.code(404).send({ error: 'system or feed not found' });
 
     const apiKey = entry.apiKeyEnv ? process.env[entry.apiKeyEnv] : undefined;
     const apiKeyHeader = entry.apiKeyHeader || 'x-api-key';
 
     // Demo helper: if ?mock=1 is present, use local mock feed instead of fetching remote GTFS-RT
     let feed;
-    if (req.query && (req.query.mock === '1' || req.query.mock === 'true')) {
+  const query = req.query || (req.raw && req.raw.url && {});
+  if (req.query && (req.query.mock === '1' || req.query.mock === 'true')) {
       try {
         const mockPath = path.join(__dirname, '..', 'config', 'mock-feeds', `${system}.json`);
         if (fs.existsSync(mockPath)) {
@@ -283,7 +293,7 @@ async function handleFeedRequest(req, res) {
       }
     }
 
-    return res.json({
+    return reply.send({
       routes: normalized.routes,
       alerts: normalized.alerts,
       lastModified: new Date().toISOString(),
@@ -291,17 +301,17 @@ async function handleFeedRequest(req, res) {
     });
   } catch (err) {
     console.error('Adapter error:', err);
-    return res.status(500).json({ error: String(err) });
+    return reply.code(500).send({ error: String(err) });
   }
 }
 
 // GET /feeds/:region/:system.json (legacy, no version path)
-app.get('/feeds/:region/:system.json', requireApiKey, handleFeedRequest);
+fastify.get('/feeds/:region/:system.json', { preHandler: requireApiKey }, handleFeedRequest);
 // Versioned path
-app.get('/v1/feeds/:region/:system.json', requireApiKey, handleFeedRequest);
+fastify.get('/v1/feeds/:region/:system.json', { preHandler: requireApiKey }, handleFeedRequest);
 
 // Shape lookup endpoint (raw polyline points) /v1/shapes/:shapeId
-app.get('/v1/shapes/:shapeId', requireApiKey, async (req, res) => {
+fastify.get('/v1/shapes/:shapeId', { preHandler: requireApiKey }, async (req, reply) => {
   const { shapeId } = req.params;
   // ensure store loaded
   if (!staticStore) {
@@ -332,34 +342,65 @@ app.get('/v1/shapes/:shapeId', requireApiKey, async (req, res) => {
         /* ignore */
       }
     }
-    if (!pts || !pts.length) return res.status(404).json({ error: 'shape not found' });
-    return res.json({
+    if (!pts || !pts.length) return reply.code(404).send({ error: 'shape not found' });
+    return reply.send({
       shapeId,
       points: pts,
       count: pts.length,
       source: staticStore && pts ? 'static' : pgStore ? 'postgres' : 'file',
     });
   } catch (e) {
-    return res.status(500).json({ error: String(e) });
+    return reply.code(500).send({ error: String(e) });
   }
 });
 
 // Health endpoint
-app.get('/health', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
+fastify.get('/health', async (req, reply) => reply.send({ ok: true, uptime: process.uptime() }));
 
 // Metrics endpoint for Prometheus
-app.get('/metrics', async (req, res) => {
+fastify.get('/metrics', async (req, reply) => {
   try {
-    res.set('Content-Type', promClient.register.contentType);
-    res.end(await promClient.register.metrics());
+    reply.header('Content-Type', promClient.register.contentType);
+    reply.send(await promClient.register.metrics());
   } catch (err) {
-    res.status(500).end(err.message);
+    reply.code(500).send(err.message);
   }
 });
 
+// Mount sync routes (minimal sync API)
+try {
+  const syncPlugin = require('./routes/sync');
+  fastify.register(syncPlugin, { prefix: '/v1/sync' });
+  // Note: will still honor requireApiKey inside client calls if needed
+} catch (e) {
+  // ignore if not present
+}
+
+// Optional realtime: initialize Socket.IO if ENABLE_REALTIME=1
+if (process.env.ENABLE_REALTIME === '1' || process.env.ENABLE_REALTIME === 'true') {
+  try {
+    const { initSockets } = require('./sockets');
+    const originalStart = startServer;
+    startServer = function () {
+      const server = originalStart();
+      try {
+        // fastify.server is the underlying http.Server
+        initSockets(server);
+        console.log('Realtime sockets enabled');
+      } catch (e) {
+        console.warn('Failed to enable realtime sockets', e);
+      }
+      return server;
+    };
+  } catch (e) {
+    console.warn('Realtime support not available', e);
+  }
+}
+
 function startServer() {
-  const server = app.listen(port, () => {
-    console.log(`Transit adapter listening on port ${port}`);
+  const started = fastify.listen({ port }, (err, address) => {
+    if (err) throw err;
+    console.log(`Transit adapter listening on ${address}`);
     if (
       feedRefreshEnabled &&
       (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')
@@ -369,7 +410,8 @@ function startServer() {
       console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
     }
   });
-  return server;
+  // return the underlying http.Server for socket usage
+  return fastify.server;
 }
 
 if (require.main === module) {
@@ -377,7 +419,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  app,
+  app: fastify,
   startServer,
   _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore },
 };
