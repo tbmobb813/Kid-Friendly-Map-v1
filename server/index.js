@@ -48,15 +48,7 @@ function reloadStaticStore() {
 
 const fastify = Fastify({ logger: false });
 fastify.register(require('@fastify/jwt'), { secret: process.env.JWT_SECRET || 'changeme' });
-// custom JSON parser (Fastify default also works, but we keep explicit parsing limit semantics)
-fastify.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body, done) {
-  try {
-    const json = body && body.length ? JSON.parse(body) : {};
-    done(null, json);
-  } catch (err) {
-    done(err, undefined);
-  }
-});
+// Use Fastify's default JSON parser
 const port = process.env.PORT || 3001;
 
 // Simple API key middleware: reads API_AUTH_KEY dynamically so tests can toggle after startup
@@ -374,6 +366,16 @@ fastify.get('/v1/shapes/:shapeId', { preHandler: requireApiKey }, async (req, re
 // Health endpoint
 fastify.get('/health', async (req, reply) => reply.send({ ok: true, uptime: process.uptime() }));
 
+// Root/info endpoint to help quick checks (avoids 404 on GET /)
+fastify.get('/', async (req, reply) => {
+  return reply.send({
+    name: 'transit-adapter',
+    ok: true,
+    uptime: process.uptime(),
+    endpoints: ['/health', '/metrics', '/v1/feeds/:region/:system.json', '/v1/sync'],
+  });
+});
+
 // Metrics endpoint for Prometheus
 fastify.get('/metrics', async (req, reply) => {
   try {
@@ -417,20 +419,22 @@ if (process.env.ENABLE_REALTIME === '1' || process.env.ENABLE_REALTIME === 'true
 function startServer(opts = {}) {
   // allow tests to pass a port; when running under NODE_ENV=test default to 0 (random free port)
   const usePort = typeof opts.port !== 'undefined' ? opts.port : process.env.PORT || (process.env.NODE_ENV === 'test' ? 0 : 3001);
-  const started = fastify.listen({ port: usePort }, (err, address) => {
-    if (err) throw err;
-    console.log(`Transit adapter listening on ${address}`);
-    if (
-      feedRefreshEnabled &&
-      (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')
-    ) {
-      startBackgroundRefresh();
-    } else if (!feedRefreshEnabled) {
-      console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
-    }
-  });
-  // return the underlying http.Server for socket usage
-  return fastify.server;
+    return new Promise((resolve, reject) => {
+      fastify.listen({ port: usePort }, (err, address) => {
+        if (err) return reject(err);
+        console.log(`Transit adapter listening on ${address}`);
+        if (
+          feedRefreshEnabled &&
+          (process.env.NODE_ENV !== 'test' || process.env.TEST_ENABLE_REFRESH === '1')
+        ) {
+          startBackgroundRefresh();
+        } else if (!feedRefreshEnabled) {
+          console.log('Background feed refresh disabled (FEED_REFRESH_ENABLED=false)');
+        }
+        // resolve with underlying http server
+        resolve(fastify.server);
+      });
+    });
 }
 
 if (require.main === module) {

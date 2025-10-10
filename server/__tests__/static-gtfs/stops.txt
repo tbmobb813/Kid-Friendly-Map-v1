@@ -1,0 +1,2 @@
+stop_id,stop_name,stop_lat,stop_lon
+S1,Stop 1,40.1,-73.9
