@@ -79,7 +79,7 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
   testID,
 }) => {
   // Lazy load MapLibre module
-  const MapLibre = getMapLibreModule();
+  const MapLibre: any = getMapLibreModule();
 
   if (!MapLibre || typeof MapLibre !== 'object' || !(MapLibre as any).MapView) {
     if (__DEV__) {
