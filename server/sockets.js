@@ -8,12 +8,25 @@ function initSockets(httpServer, opts = {}) {
   if (ioInstance) return ioInstance;
   const io = new Server(httpServer, opts);
 
-  // Simple auth middleware: expects token in query or auth header (you should replace with real JWT validation)
+  // JWT auth middleware: expects token in handshake.auth.token
+  const jwtSecret = process.env.JWT_SECRET;
   io.use((socket, next) => {
     const token = socket.handshake.auth && socket.handshake.auth.token;
-    // For demo allow any token; map token -> userId if needed
-    socket.userId = token || null;
-    return next();
+    if (!token) return next();
+    if (!jwtSecret) {
+      // if no secret configured, attach raw token as userId (dev only)
+      socket.userId = token;
+      return next();
+    }
+    try {
+      const jwt = require('jsonwebtoken');
+      const decoded = jwt.verify(token, jwtSecret);
+      // prefer sub or userId in payload
+      socket.userId = decoded.sub || decoded.userId || null;
+      return next();
+    } catch (e) {
+      return next(new Error('unauthorized'));
+    }
   });
 
   io.on('connection', (socket) => {
