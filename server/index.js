@@ -47,7 +47,7 @@ function reloadStaticStore() {
 }
 
 const fastify = Fastify({ logger: false });
-// fastify.register(require('@fastify/formbody'));
+fastify.register(require('@fastify/jwt'), { secret: process.env.JWT_SECRET || 'changeme' });
 // custom JSON parser (Fastify default also works, but we keep explicit parsing limit semantics)
 fastify.addContentTypeParser('application/json', { parseAs: 'string' }, function (req, body, done) {
   try {
@@ -65,6 +65,23 @@ async function requireApiKey(request, reply) {
   if (!apiAuthKey) return;
   const v = request.headers['x-adapter-key'] || request.query._key;
   if (!v || v !== apiAuthKey) return reply.code(401).send({ error: 'unauthorized' });
+}
+
+// Authenticate JWT for REST endpoints: sets request.user if provided
+async function authenticate(request, reply) {
+  const auth = request.headers && request.headers.authorization;
+  if (!auth) return; // not authenticated
+  const parts = String(auth).split(' ');
+  if (parts.length !== 2) return;
+  const scheme = parts[0];
+  const token = parts[1];
+  if (!/^Bearer$/i.test(scheme)) return;
+  try {
+    const decoded = await request.jwtVerify(token);
+    request.user = decoded;
+  } catch (e) {
+    // ignore invalid token: leave request.user undefined
+  }
 }
 
 // Cache abstraction: Redis if available, else an LRU cache or simple in-memory map
@@ -370,7 +387,7 @@ fastify.get('/metrics', async (req, reply) => {
 // Mount sync routes (minimal sync API)
 try {
   const syncPlugin = require('./routes/sync');
-  fastify.register(syncPlugin, { prefix: '/v1/sync' });
+  fastify.register(syncPlugin, { prefix: '/v1/sync', preHandler: [requireApiKey, authenticate] });
   // Note: will still honor requireApiKey inside client calls if needed
 } catch (e) {
   // ignore if not present
@@ -397,8 +414,10 @@ if (process.env.ENABLE_REALTIME === '1' || process.env.ENABLE_REALTIME === 'true
   }
 }
 
-function startServer() {
-  const started = fastify.listen({ port }, (err, address) => {
+function startServer(opts = {}) {
+  // allow tests to pass a port; when running under NODE_ENV=test default to 0 (random free port)
+  const usePort = typeof opts.port !== 'undefined' ? opts.port : process.env.PORT || (process.env.NODE_ENV === 'test' ? 0 : 3001);
+  const started = fastify.listen({ port: usePort }, (err, address) => {
     if (err) throw err;
     console.log(`Transit adapter listening on ${address}`);
     if (
@@ -419,7 +438,8 @@ if (require.main === module) {
 }
 
 module.exports = {
-  app: fastify,
+  app: fastify.server,
+  fastify,
   startServer,
   _internal: { startBackgroundRefresh, stopBackgroundRefresh, reloadStaticStore },
 };
