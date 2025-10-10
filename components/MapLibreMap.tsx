@@ -5,30 +5,22 @@ import { log } from '@/utils/logger';
 
 type MapLibreModule = typeof import('@maplibre/maplibre-react-native');
 
-let mapLibreModule: MapLibreModule | null = null;
-let mapLibreLoadAttempted = false;
+let mapLibreModule = null;
 
-// Lazy load MapLibre to avoid Expo Go errors
-function getMapLibreModule(): MapLibreModule | null {
-  if (mapLibreLoadAttempted) {
+function getMapLibreModule() {
+  // If we've already attempted to load/register MapLibre, return the cached result.
+  // This prevents "Tried to register two views with the same name MLRNCamera".
+  // Use a global flag so hot reload / multiple requires don't re-run native registration.
+  if ((global as any).__maplibreLoadAttempted) {
     return mapLibreModule;
   }
-
-  mapLibreLoadAttempted = true;
+  (global as any).__maplibreLoadAttempted = true;
 
   try {
     const imported = require('@maplibre/maplibre-react-native');
     mapLibreModule = imported?.default ?? imported;
   } catch (error) {
     mapLibreModule = null;
-    if (__DEV__) {
-      log.warn('MapLibre native module not available (expected in Expo Go)', {
-        error:
-          error instanceof Error
-            ? { name: error.name, message: error.message }
-            : { message: String(error) },
-      });
-    }
   }
 
   return mapLibreModule;
