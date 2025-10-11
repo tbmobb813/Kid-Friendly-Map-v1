@@ -1,8 +1,0 @@
-route_id,route_short_name,route_long_name,route_type
-1,1,Local,1
-4,4,Express,1
-6,6,Local,1
-A,A,8th Ave Express,1
-L,L,Canarsie Local,1
-N,N,Broadway Express,1
-Q,Q,Broadway Express,1

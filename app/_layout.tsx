@@ -1,14 +1,14 @@
+import 'react-native-gesture-handler';
+import { enableScreens } from 'react-native-screens';
+enableScreens();
+
+import React from 'react';
 import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CategoryProvider } from '@/stores/categoryStore';
 import { ParentalProvider } from '@/stores/parentalStore';
 import { AuthProvider } from '@/hooks/useAuth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import 'react-native-gesture-handler';
-
-// Enable screens before any navigation
-import { enableScreens } from 'react-native-screens';
-enableScreens();
 
 // Create a client
 const queryClient = new QueryClient({

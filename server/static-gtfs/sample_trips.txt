@@ -1,8 +1,0 @@
-route_id,service_id,trip_id,trip_headsign
-1,WKD,trip1,South Ferry
-4,WKD,trip4,Woodlawn
-6,WKD,trip6,Brooklyn Bridge
-A,WKD,tripA,Inwood-207th St
-L,WKD,tripL,Canarsie
-N,WKD,tripN,Coney Island
-Q,WKD,tripQ,Coney Island

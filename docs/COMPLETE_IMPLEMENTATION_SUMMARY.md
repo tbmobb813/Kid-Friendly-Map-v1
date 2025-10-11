@@ -99,7 +99,7 @@ voiceManager.speak('Second message');
 
 ### 3. 🗺️ React Native Maps Integration
 
-**Package**: `react-native-maps@1.20.1`
+**Package**: `@maplibre/maplibre-react-native` (MapLibre)
 
 **Files Created**:
 

@@ -183,3 +183,40 @@ CI runs the strict performance checks with `PERF_TIME_MULTIPLIER=1` by default; 
 ## License
 
 Add a license file (e.g., MIT) if you intend to open-source this project.
+
+## Enabling MapLibre in Expo / EAS builds
+
+This project uses the native MapLibre React Native module for mobile builds. MapLibre will not be available in the stock Expo Go app — you must create a development or production build that includes the native module.
+
+Minimal steps (EAS / Expo):
+
+- Install the native dependency (already listed in package.json):
+
+```bash
+npm install @maplibre/maplibre-react-native
+```
+
+- Create an EAS dev build to include the native module (recommended for development):
+
+```bash
+# login to EAS if you haven't
+npx eas login
+
+# create a dev build for Android
+npx eas build --profile development --platform android
+
+# or for iOS (requires proper credentials / Apple account)
+npx eas build --profile development --platform ios
+```
+
+- For production, run a normal EAS build:
+
+```bash
+npx eas build --profile production --platform all
+```
+
+Notes:
+- In local dev you can still run the JS-only fallback (OpenStreetMap-based InteractiveMap) in Expo Go. To use MapLibre you must run an EAS development build or a bare React Native build that includes native modules.
+- iOS: run `cd ios && pod install` inside a bare project or when using a local native workspace.
+- Android: Gradle autolinking will pick up the module; ensure your `android/` gradle configuration matches Expo/EAS expectations.
+- If you want a short checklist added to this README for CI/EAS credentials or app signing, I can add that.
