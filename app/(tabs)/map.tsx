@@ -422,6 +422,21 @@ export default function MapScreen() {
             <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>
               {`Map: ${mapImplementation}`}
             </Text>
+            {__DEV__ ? (
+              <TouchableOpacity
+                onPress={() => router.push('/(tabs)/dev/native-debug')}
+                style={{
+                  marginTop: 6,
+                  pointerEvents: 'auto',
+                  backgroundColor: 'rgba(255,255,255,0.08)',
+                  paddingHorizontal: 6,
+                  paddingVertical: 4,
+                  borderRadius: 4,
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 11 }}>Debug</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
           {/* MapView fills space above bottom sheet */}
           <View style={{ flex: 1 }}>
