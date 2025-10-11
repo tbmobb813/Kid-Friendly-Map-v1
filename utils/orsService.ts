@@ -6,6 +6,7 @@
 import { log } from './logger';
 import { monitoring } from './monitoring';
 import { offlineStorage } from './api';
+import { timeoutSignal } from './abortSignal';
 
 // ORS Configuration
 export interface ORSConfig {
@@ -319,7 +320,7 @@ class OpenRouteService {
           Authorization: this.config.apiKey,
         },
         body: JSON.stringify(body),
-        signal: AbortSignal.timeout(this.config.timeout),
+        signal: timeoutSignal(this.config.timeout),
       });
 
       if (!response.ok) {
@@ -367,7 +368,7 @@ class OpenRouteService {
           Accept: 'application/json',
           Authorization: this.config.apiKey,
         },
-        signal: AbortSignal.timeout(this.config.timeout),
+        signal: timeoutSignal(this.config.timeout),
       });
 
       if (!response.ok) {
@@ -416,7 +417,7 @@ class OpenRouteService {
           Authorization: this.config.apiKey,
         },
         body: JSON.stringify(body),
-        signal: AbortSignal.timeout(this.config.timeout),
+        signal: timeoutSignal(this.config.timeout),
       });
 
       if (!response.ok) {
@@ -477,7 +478,7 @@ class OpenRouteService {
             Authorization: this.config.apiKey,
           },
           body: JSON.stringify(body),
-          signal: AbortSignal.timeout(this.config.timeout),
+          signal: timeoutSignal(this.config.timeout),
         });
 
         if (!response.ok) {
