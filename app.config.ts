@@ -101,9 +101,8 @@ const baseConfig: ExpoConfig = {
         microphonePermission: 'Allow $(PRODUCT_NAME) to access your microphone',
       },
     ],
-    'expo-font',
-    'expo-maps',
-    'expo-web-browser',
+  'expo-font',
+  'expo-web-browser',
   ],
   experiments: {
     typedRoutes: false,
@@ -266,9 +265,7 @@ const config: ExpoConfig = {
     routing: routingExtras,
   },
   // Merge plugins from app.json (baseConfig.plugins) with any programmatic additions
-  plugins: Array.isArray(baseConfig.plugins)
-    ? [...baseConfig.plugins, ['expo-maps']]
-    : [['expo-maps']],
+  plugins: Array.isArray(baseConfig.plugins) ? [...baseConfig.plugins] : [],
   // Ensure fields that are not otherwise derived are present so EAS can read them
   orientation: baseConfig.orientation ?? 'portrait',
   icon: baseConfig.icon ?? baseConfig.icon,

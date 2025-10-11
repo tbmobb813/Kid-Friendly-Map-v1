@@ -158,4 +158,4 @@ if ((global as any).ErrorUtils && Platform.OS !== 'web') {
 }
 
 export default logger;
-      const originalHandler = (ErrorUtils as any)?.getGlobalHandler?.();
+

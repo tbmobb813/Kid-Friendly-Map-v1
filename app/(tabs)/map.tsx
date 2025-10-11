@@ -80,12 +80,8 @@ const MapLibreMapView = ({
       ))}
   </MapLibreGL.MapView>
 );
-// Placeholder implementations for missing components
-const ExpoMapView = (props: any) => (
-  <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}>
-    <Text>ExpoMapView</Text>
-  </View>
-);
+// Note: Expo-maps removed. We prefer MapLibre; a standalone ExpoMapView wrapper
+// now exists in `components/ExpoMapView.tsx` which itself prefers MapLibre.
 
 // FAB bullet/burger menu: single main FAB that toggles small action buttons above it
 import FloatingMenu from '@/components/FloatingMenu';
@@ -207,7 +203,7 @@ import { Route } from '@/types/navigation';
 import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from 'lucide-react-native';
 import useLocation from '@/hooks/useLocation';
 import { findStationById, findNearestStations } from '@/config/transit/nyc-stations';
-import MapLibreRouteView from '@/components/MapLibreRouteView';
+import MapViewWrapper from '@/components/MapViewWrapper';
 import { isMapLibreAvailable } from '@/components/MapLibreMap';
 import { useRouteORS } from '@/hooks/useRouteORS';
 import Config from '@/utils/config';
@@ -332,35 +328,19 @@ export default function MapScreen() {
     });
   }, []);
 
-  // Check if expo-maps is available (only in development builds)
-  const expoMapsSupported = useMemo(() => {
-    // Expo Maps requires a development build - not available in Expo Go
-    // Use a safe check that doesn't try to load the module
-    try {
-      // Check if expo-modules-core has the native module registered
-      const ExpoModulesCore = require('expo-modules-core');
-      const hasExpoMaps = ExpoModulesCore.NativeModulesProxy?.ExpoMaps != null;
-      // Only support on Android for now since our implementation is Android-specific
-      return hasExpoMaps && Platform.OS === 'android';
-    } catch {
-      return false;
-    }
-  }, []);
 
   useEffect(() => {
-    if (!mapLibreSupported && !expoMapsSupported) {
+    if (!mapLibreSupported) {
       console.warn(
-        'Advanced mapping modules not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre or Expo Maps.',
+        'MapLibre not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre.',
       );
     }
-  }, [mapLibreSupported, expoMapsSupported]);
+  }, [mapLibreSupported]);
 
-  // Priority: MapLibre > Expo Maps > Interactive Map (OpenStreetMap)
+  // Priority: MapLibre > Interactive Map (OpenStreetMap)
   const mapImplementation = useMemo(() => {
-    if (mapLibreSupported) return 'maplibre';
-    if (expoMapsSupported) return 'expo-maps';
-    return 'interactive';
-  }, [mapLibreSupported, expoMapsSupported]);
+    return mapLibreSupported ? 'maplibre' : 'interactive';
+  }, [mapLibreSupported]);
 
   const originCoord = useMemo(
     () =>
@@ -480,13 +460,13 @@ export default function MapScreen() {
               }
 
               return (
-                <MapLibreRouteView
+                <MapViewWrapper
                   origin={origin ?? undefined}
                   destination={destination ?? undefined}
-                  routeGeoJSON={routeToPass}
+                  route={routeToPass}
                   onStationPress={handleStationPress}
                   showTransitStations={true}
-                  testID="maplibre-route-view"
+                  testId="maplibre-route-view"
                 />
               );
             })()}

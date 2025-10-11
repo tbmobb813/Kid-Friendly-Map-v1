@@ -353,6 +353,15 @@ class UnifiedRoutingService {
   }
 
   /**
+   * Generate a description for ORS routes
+   */
+  private generateORSDescription(route: any, type: string): string {
+    const duration = Math.round(route.summary.duration / 60);
+    const distance = Math.round((route.summary.distance / 1000) * 10) / 10;
+    return `${duration} min ${type} (${distance} km)`;
+  }
+
+  /**
    * Convert OTP2 itinerary to unified format
    */
   private convertOTP2ToUnifiedRoute(
@@ -643,25 +652,27 @@ class UnifiedRoutingService {
       let lng = 0;
 
       const factor = Math.pow(10, precision);
+      const POLYLINE_OFFSET = 63;
+      const POLYLINE_CONTINUATION_BIT = 0x1f;
 
       while (index < str.length) {
         let result = 1;
         let shift = 0;
         let b: number;
         do {
-          b = str.charCodeAt(index++) - 63 - 1;
+          b = str.charCodeAt(index++) - POLYLINE_OFFSET - 1;
           result += b << shift;
           shift += 5;
-        } while (b >= 0x1f);
+        } while (b >= POLYLINE_CONTINUATION_BIT);
         lat += (result & 1) ? ~(result >> 1) : result >> 1;
 
         result = 1;
         shift = 0;
         do {
-          b = str.charCodeAt(index++) - 63 - 1;
+          b = str.charCodeAt(index++) - POLYLINE_OFFSET - 1;
           result += b << shift;
           shift += 5;
-        } while (b >= 0x1f);
+        } while (b >= POLYLINE_CONTINUATION_BIT);
         lng += (result & 1) ? ~(result >> 1) : result >> 1;
 
         coordinates.push([lng / factor, lat / factor]);
@@ -738,6 +749,24 @@ class UnifiedRoutingService {
             }
           : undefined,
       })) || []
+    );
+  }
+
+  private convertORSInstructions(route: any): RouteInstruction[] {
+    // Simplified instruction conversion for ORS
+    return (
+      route.segments?.flatMap((segment: any) =>
+        segment.steps?.map((step: any) => ({
+          type: 'walk' as const,
+          text: step.instruction,
+          distance: step.distance,
+          duration: step.duration,
+          location: {
+            lat: step.maneuver?.location?.[1] || 0,
+            lng: step.maneuver?.location?.[0] || 0,
+          },
+        }))
+      ) || []
     );
   }
 

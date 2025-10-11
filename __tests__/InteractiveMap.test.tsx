@@ -14,11 +14,7 @@ jest.mock('react-native/Libraries/StyleSheet/StyleSheet', () => ({
 import React from 'react';
 // Mocks must be above all imports
 import { View } from 'react-native';
-jest.mock('../components/ExpoMapView', () => ({
-  __esModule: true,
-  default: (props: any) => <View {...props} />,
-}));
-jest.mock('../components/MapLibreRouteView', () => ({
+jest.mock('../components/MapViewWrapper', () => ({
   __esModule: true,
   default: (props: any) => <View {...props} />,
 }));

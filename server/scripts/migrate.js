@@ -33,9 +33,7 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
-const { Pool } = require('pg');
-const fs = require('fs');
-const path = require('path');
+
 
 async function run() {
   const sqlPath = path.join(__dirname, '..', 'db', '001_create_sync_tables.sql');
