@@ -96,7 +96,7 @@ const baseConfig: ExpoConfig = {
       },
     ],
     [
-      'expo-av',
+      'expo-audio',
       {
         microphonePermission: 'Allow $(PRODUCT_NAME) to access your microphone',
       },

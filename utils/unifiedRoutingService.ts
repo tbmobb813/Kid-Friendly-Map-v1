@@ -693,36 +693,12 @@ class UnifiedRoutingService {
     }
   }
 
-  private generateORSDescription(route: any, type: string): string {
-    const duration = Math.round(route.summary.duration / 60);
-    const distance = Math.round((route.summary.distance / 1000) * 10) / 10;
-    return `${duration} min ${type} (${distance} km)`;
-  }
-
   private generateOTP2Description(itinerary: any): string {
     const duration = Math.round(itinerary.duration / 60);
     const transfers = itinerary.transfers;
     const transferText =
       transfers === 0 ? 'no transfers' : `${transfers} transfer${transfers > 1 ? 's' : ''}`;
     return `${duration} min transit (${transferText})`;
-  }
-
-  private convertORSInstructions(route: any): RouteInstruction[] {
-    // Simplified instruction conversion
-    return (
-      route.segments?.flatMap((segment: any) =>
-        segment.steps?.map((step: any) => ({
-          type: 'walk' as const,
-          text: step.instruction,
-          distance: step.distance,
-          duration: step.duration,
-          location: {
-            lat: step.maneuver?.location?.[1] || 0,
-            lng: step.maneuver?.location?.[0] || 0,
-          },
-        })),
-      ) || []
-    );
   }
 
   private convertOTP2Instructions(itinerary: any): RouteInstruction[] {
