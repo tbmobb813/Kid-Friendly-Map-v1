@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, UIManager, NativeModules } from 'react-native';
 import Config from '@/utils/config';
 import { log } from '@/utils/logger';
 
@@ -8,10 +8,26 @@ type MapLibreModule = typeof import('@maplibre/maplibre-react-native');
 let mapLibreModule: any = null;
 
 function getMapLibreModule() {
-  if ((global as any).__maplibreLoadAttempted) return mapLibreModule;
-  (global as any).__maplibreLoadAttempted = true;
+  if (mapLibreModule) return mapLibreModule;
+
+  // If the native view is already registered, skip requiring a second copy
+  try {
+    const hasViewManager =
+      typeof UIManager.getViewManagerConfig === 'function' &&
+      !!UIManager.getViewManagerConfig('MLRNCamera');
+    if (hasViewManager) {
+      // If there is a registered native view, prefer the existing native module.
+      // Attempt to reuse any existing native module from NativeModules if exposed,
+      // otherwise return null (fallback UI will be used).
+      mapLibreModule = NativeModules?.MapLibreModule ?? null;
+      return mapLibreModule;
+    }
+  } catch {
+    // fall through and try require
+  }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const imported = require('@maplibre/maplibre-react-native');
     mapLibreModule = imported?.default ?? imported;
   } catch (e) {
