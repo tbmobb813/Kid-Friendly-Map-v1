@@ -1,3 +1,0 @@
-stop_id,stop_name,stop_lat,stop_lon
-times-sq-42,Times Sq-42nd St,40.7549,-73.9872
-union-sq-14,Union Sq-14th St,40.7347,-73.9903

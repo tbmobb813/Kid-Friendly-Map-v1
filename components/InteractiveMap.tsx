@@ -6,8 +6,7 @@ import { Place, Route } from '@/types/navigation';
 import { nycStations } from '@/config/transit/nyc-stations';
 import MapPlaceholder from './MapPlaceholder';
 import { Crosshair, Train } from 'lucide-react-native';
-import ExpoMapView from './ExpoMapView';
-import MapLibreRouteView from './MapLibreRouteView';
+import MapViewWrapper from './MapViewWrapper';
 import { isMapLibreAvailable } from './MapLibreMap';
 
 type LatLng = { latitude: number; longitude: number };
@@ -117,7 +116,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
       // @ts-ignore allow onMessage in test environment
       onMessage={handleMessage}
     >
-      <ExpoMapView
+      <MapViewWrapper
         origin={origin}
         destination={destination}
         route={route}

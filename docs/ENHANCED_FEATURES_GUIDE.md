@@ -13,7 +13,7 @@ This document details the implementation of three major enhancements to the Kid-
 ```bash
 # Packages installed
 react-native-mmkv@3.3.3        # High-performance storage
-react-native-maps@1.20.1       # Native maps (SDK 53 compatible)
+MapLibre (via @maplibre/maplibre-react-native)       # Native maps (MapLibre)
 expo-speech@~13.1.7            # Already installed, now integrated
 ```
 

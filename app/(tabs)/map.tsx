@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 // (View, Text already imported below)
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native';
@@ -80,108 +81,11 @@ const MapLibreMapView = ({
       ))}
   </MapLibreGL.MapView>
 );
-// Placeholder implementations for missing components
-const ExpoMapView = (props: any) => (
-  <View style={{ flex: 1, backgroundColor: '#e0e0e0' }}>
-    <Text>ExpoMapView</Text>
-  </View>
-);
+// Note: Expo-maps removed. We prefer MapLibre; a standalone ExpoMapView wrapper
+// now exists in `components/ExpoMapView.tsx` which itself prefers MapLibre.
 
 // FAB bullet/burger menu: single main FAB that toggles small action buttons above it
-const FloatingMenu = ({ onRecenter, onHelp, onToggleAccessibility }: any) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <View style={{ alignItems: 'center' }}>
-      {open && (
-        <View style={{ marginBottom: 8, alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={() => {
-              onRecenter?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Recenter map"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#4F8EF7',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <Navigation color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              onHelp?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Help"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#F7B500',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <HelpCircle color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              onToggleAccessibility?.();
-              setOpen(false);
-            }}
-            style={{ marginVertical: 6 }}
-            accessibilityLabel="Toggle accessibility mode"
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: '#98DDA1',
-                alignItems: 'center',
-                justifyContent: 'center',
-                elevation: 8,
-              }}
-            >
-              <Accessibility color="#fff" size={22} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <TouchableOpacity onPress={() => setOpen((o) => !o)} accessibilityLabel="Open menu">
-        <View
-          style={{
-            width: 64,
-            height: 64,
-            borderRadius: 32,
-            backgroundColor: '#2D3748',
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 12,
-          }}
-        >
-          <Menu color="#fff" size={28} />
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import FloatingMenu from '@/components/FloatingMenu';
 // Removed local BottomSheet placeholder to avoid naming conflict
 const RouteInfoPanel = ({ route, unifiedRoute }: any) => {
   if (!route && !unifiedRoute) {
@@ -300,7 +204,7 @@ import { Route } from '@/types/navigation';
 import { Navigation, MapPin, Search, X, Settings, AlertCircle, Zap } from 'lucide-react-native';
 import useLocation from '@/hooks/useLocation';
 import { findStationById, findNearestStations } from '@/config/transit/nyc-stations';
-import MapLibreRouteView from '@/components/MapLibreRouteView';
+import MapViewWrapper from '@/components/MapViewWrapper';
 import { isMapLibreAvailable } from '@/components/MapLibreMap';
 import { useRouteORS } from '@/hooks/useRouteORS';
 import Config from '@/utils/config';
@@ -402,7 +306,12 @@ export default function MapScreen() {
   const selectedStation = selectedStationId ? findStationById(selectedStationId) : null;
 
   const mapLibreSupported = useMemo(() => {
-    if (!isMapLibreAvailable) {
+    try {
+      // call the runtime function to check availability without forcing require at import time
+      if (!isMapLibreAvailable()) {
+        return false;
+      }
+    } catch {
       return false;
     }
 
@@ -420,35 +329,19 @@ export default function MapScreen() {
     });
   }, []);
 
-  // Check if expo-maps is available (only in development builds)
-  const expoMapsSupported = useMemo(() => {
-    // Expo Maps requires a development build - not available in Expo Go
-    // Use a safe check that doesn't try to load the module
-    try {
-      // Check if expo-modules-core has the native module registered
-      const ExpoModulesCore = require('expo-modules-core');
-      const hasExpoMaps = ExpoModulesCore.NativeModulesProxy?.ExpoMaps != null;
-      // Only support on Android for now since our implementation is Android-specific
-      return hasExpoMaps && Platform.OS === 'android';
-    } catch {
-      return false;
-    }
-  }, []);
 
   useEffect(() => {
-    if (!mapLibreSupported && !expoMapsSupported) {
+    if (!mapLibreSupported) {
       console.warn(
-        'Advanced mapping modules not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre or Expo Maps.',
+        'MapLibre not detected. Using fallback OpenStreetMap. For better performance, run a development build with MapLibre.',
       );
     }
-  }, [mapLibreSupported, expoMapsSupported]);
+  }, [mapLibreSupported]);
 
-  // Priority: MapLibre > Expo Maps > Interactive Map (OpenStreetMap)
+  // Priority: MapLibre > Interactive Map (OpenStreetMap)
   const mapImplementation = useMemo(() => {
-    if (mapLibreSupported) return 'maplibre';
-    if (expoMapsSupported) return 'expo-maps';
-    return 'interactive';
-  }, [mapLibreSupported, expoMapsSupported]);
+    return mapLibreSupported ? 'maplibre' : 'interactive';
+  }, [mapLibreSupported]);
 
   const originCoord = useMemo(
     () =>
@@ -493,17 +386,91 @@ export default function MapScreen() {
         <View style={{ flex: 1, backgroundColor: '#fff' }}>
           {/* AnimatedConfetti overlays everything */}
           <AnimatedConfetti />
+          {/* Debug badge showing which map implementation is active */}
+          <View
+            style={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              zIndex: 1200,
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              borderRadius: 6,
+            }}
+            pointerEvents="none"
+          >
+            <Text style={{ color: '#fff', fontSize: 12, fontWeight: '600' }}>
+              {`Map: ${mapImplementation}`}
+            </Text>
+            {__DEV__ ? (
+              <TouchableOpacity
+                onPress={() => router.push('/(tabs)/dev/native-debug')}
+                style={{
+                  marginTop: 6,
+                  pointerEvents: 'auto',
+                  backgroundColor: 'rgba(255,255,255,0.08)',
+                  paddingHorizontal: 6,
+                  paddingVertical: 4,
+                  borderRadius: 4,
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 11 }}>Debug</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
           {/* MapView fills space above bottom sheet */}
           <View style={{ flex: 1 }}>
-            <MapLibreMapView
-              origin={origin}
-              destination={destination}
-              route={selectedRoute}
-              showTransitStations={true}
-              stations={nearbyStations}
-              mapStyle={Config.MAP.STYLE_URL ?? 'https://demotiles.maplibre.org/style.json'}
-              onStationPress={handleStationPress}
-            />
+            {/* Use MapLibreRouteView which accepts GeoJSON for route rendering.
+                Prefer ORS geojson (real-time routing) when available, otherwise
+                fall back to unified route geometry (converted to a FeatureCollection).
+            */}
+            {
+              // Log the route GeoJSON before passing to the map for easier tracing in tests/dev
+            }
+            {(() => {
+              const routeToPass =
+                orsRouteGeoJSON ??
+                (selectedUnifiedRoute && selectedUnifiedRoute.geometry
+                  ? {
+                      type: 'FeatureCollection',
+                      features: [
+                        {
+                          type: 'Feature',
+                          id: selectedUnifiedRoute.id,
+                          properties: {},
+                          geometry: selectedUnifiedRoute.geometry,
+                        },
+                      ],
+                    }
+                  : null);
+
+              // Lightweight defensive logging so test harnesses can assert logs
+              try {
+                // Avoid circulars; stringify minimal info
+                const summary = routeToPass
+                  ? {
+                      type: routeToPass.type,
+                      features: (routeToPass.features || []).map((f: any) => ({ id: f.id, type: f.geometry?.type })),
+                    }
+                  : null;
+                // eslint-disable-next-line no-console
+                console.debug('[MapScreen] routeGeoJSON before MapLibreRouteView:', summary);
+              } catch (e) {
+                // ignore logging errors
+              }
+
+              return (
+                <MapViewWrapper
+                  origin={origin ?? undefined}
+                  destination={destination ?? undefined}
+                  route={routeToPass}
+                  onStationPress={handleStationPress}
+                  showTransitStations={true}
+                  testId="maplibre-route-view"
+                />
+              );
+            })()}
           </View>
           {/* FloatingControls float above map, not inside it */}
           <View style={{ position: 'absolute', bottom: 240, right: 24, zIndex: 10 }}>
