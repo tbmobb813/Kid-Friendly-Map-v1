@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Pressable, Platform } from "react-native";
 import Colors from "@/constants/colors";
 import { Mic, Volume2 } from "lucide-react-native";
 import * as Speech from "expo-speech";
-import { Audio } from "expo-av";
+import { Audio } from "@/utils/expoAudioBridge";
 import { useToast } from "@/hooks/useToast";
 const VoiceNavigation = ({ currentStep = "Walk to Main Street Station", onVoiceCommand, testId, }) => {
     const [isListening, setIsListening] = useState(false);

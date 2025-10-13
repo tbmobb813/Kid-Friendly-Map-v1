@@ -1,6 +1,6 @@
 import React, { useRef, useMemo } from 'react';
 import { View, StyleSheet, Dimensions, ScrollView, Animated } from 'react-native';
-import { Audio } from 'expo-av';
+import { Audio } from '@/utils/expoAudioBridge';
 import BottomSheet from '@gorhom/bottom-sheet';
 import AchievementBadge from '@/components/AchievementBadge';
 import InteractiveMap from '@/components/InteractiveMap';

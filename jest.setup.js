@@ -56,3 +56,27 @@ try {
 } catch (e) {
   // ignore; tests that import directly will still work
 }
+
+// Inform React testing utilities that we're in an act() environment
+try {
+  global.IS_REACT_ACT_ENVIRONMENT = true;
+} catch (e) {
+  // ignore
+}
+
+// Suppress noisy, well-known warnings in test output
+const _origConsoleError = console.error;
+console.error = (...args) => {
+  try {
+    const msg = typeof args[0] === 'string' ? args[0] : '' + args[0];
+    if (
+      msg.includes('react-test-renderer is deprecated') ||
+      msg.includes('The current testing environment is not configured to support act')
+    ) {
+      return;
+    }
+  } catch (e) {
+    // fallthrough
+  }
+  _origConsoleError.apply(console, args);
+};

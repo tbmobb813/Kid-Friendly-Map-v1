@@ -1,18 +1,22 @@
 /**
- * Enhanced Map Component using react-native-maps
- * Kid-friendly map with safety zones, journey tracking, and voice integration
+ * Kid-friendly map using MapLibre (native)
+ * Replaces previous react-native-maps usage. This component keeps location tracking,
+ * safe-zone detection and basic route controls. Rendering of shapes/lines using
+ * MapLibre should be implemented in a follow-up (ShapeSource/Layer or annotations).
  */
 
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Pressable, Platform, StyleSheet } from 'react-native';
-import MapView, {
-  Marker,
-  Polyline,
-  Circle,
-  PROVIDER_GOOGLE,
-  Region,
-  MapMarker,
-} from 'react-native-maps';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import MapLibreMap from './MapLibreMap';
+// Lazy require MapLibre native module for ShapeSource/Layer rendering
+function getMapLibreModule() {
+  try {
+    const imported = require('@maplibre/maplibre-react-native');
+    return imported?.default ?? imported;
+  } catch {
+    return null;
+  }
+}
 import * as Location from 'expo-location';
 import { voiceManager, speakNavigation, KidFriendlyPhrases } from '../utils/voice';
 import { log } from '../utils/logger';
@@ -61,9 +65,11 @@ export default function KidFriendlyMap({
   enableVoiceGuidance = true,
   style,
 }: KidFriendlyMapProps) {
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef<any>(null);
+  const mapLibreModule = getMapLibreModule();
   const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
-  const [currentRegion, setCurrentRegion] = useState<Region | undefined>(
+  // Using a lightweight region shape here — we no longer depend on react-native-maps' Region type.
+  const [currentRegion, setCurrentRegion] = useState<any>(
     initialLocation
       ? {
           latitude: initialLocation.latitude,
@@ -105,9 +111,10 @@ export default function KidFriendlyMap({
       setUserLocation(location);
       onLocationChange?.(location);
 
-      // Center map on user location
-      if (mapRef.current && !initialLocation) {
-        mapRef.current.animateToRegion({
+      // Centering for MapLibre will be implemented using an imperative Camera API.
+      // For now we update currentRegion and leave actual camera movement to the MapLibre wrapper.
+      if (!initialLocation) {
+        setCurrentRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           latitudeDelta: 0.01,
@@ -132,39 +139,6 @@ export default function KidFriendlyMap({
     }
   };
 
-  const checkSafeZones = () => {
-    if (!userLocation) return;
-
-    const currentLoc = {
-      latitude: userLocation.coords.latitude,
-      longitude: userLocation.coords.longitude,
-    };
-
-    safeZones.forEach((zone) => {
-      const distance = calculateDistance(currentLoc, zone.center);
-      const isInside = distance <= zone.radius;
-      const wasInside = insideSafeZones.has(zone.id);
-
-      if (isInside && !wasInside) {
-        // Entered safe zone
-        setInsideSafeZones((prev) => new Set(prev).add(zone.id));
-        onSafeZoneEnter?.(zone);
-
-        if (enableVoiceGuidance) {
-          voiceManager.speak(KidFriendlyPhrases.safety.safeZone);
-        }
-      } else if (!isInside && wasInside) {
-        // Exited safe zone
-        setInsideSafeZones((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(zone.id);
-          return newSet;
-        });
-        onSafeZoneExit?.(zone);
-      }
-    });
-  };
-
   const calculateDistance = (loc1: MapLocation, loc2: MapLocation): number => {
     const R = 6371e3; // Earth's radius in meters
     const φ1 = (loc1.latitude * Math.PI) / 180;
@@ -180,9 +154,93 @@ export default function KidFriendlyMap({
     return R * c;
   };
 
+  // Check user location against configured safe zones and trigger enter/exit events
+  function checkSafeZones() {
+    if (!userLocation || safeZones.length === 0) return;
+
+    const newSet = new Set(insideSafeZones);
+
+    safeZones.forEach((zone) => {
+      const userLoc: MapLocation = {
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+      };
+
+      const distance = calculateDistance(userLoc, zone.center);
+      const isInside = distance <= zone.radius;
+
+      if (isInside && !newSet.has(zone.id)) {
+        newSet.add(zone.id);
+        onSafeZoneEnter?.(zone);
+        if (enableVoiceGuidance) {
+          void voiceManager.speak(KidFriendlyPhrases.safety.safeZone).catch(() => {});
+        }
+      } else if (!isInside && newSet.has(zone.id)) {
+        newSet.delete(zone.id);
+        onSafeZoneExit?.(zone);
+      }
+    });
+
+    setInsideSafeZones(newSet);
+  }
+
+  // Generate a polygon approximating a circle (GeoJSON Polygon) around a center point
+  const circleToPolygon = (center: MapLocation, radiusMeters: number, points = 64) => {
+    const coords: [number, number][] = [];
+    const { latitude: lat, longitude: lng } = center;
+    const R = 6371e3; // meters
+
+    for (let i = 0; i < points; i++) {
+      const theta = (i / points) * 2 * Math.PI;
+      // destination point given distance and bearing
+      const δ = radiusMeters / R; // angular distance in radians
+      const bearing = theta; // radians
+
+      const φ1 = (lat * Math.PI) / 180;
+      const λ1 = (lng * Math.PI) / 180;
+
+      const φ2 = Math.asin(Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(bearing));
+      const λ2 =
+        λ1 +
+        Math.atan2(
+          Math.sin(bearing) * Math.sin(δ) * Math.cos(φ1),
+          Math.cos(δ) - Math.sin(φ1) * Math.sin(φ2),
+        );
+
+      const lat2 = (φ2 * 180) / Math.PI;
+      const lng2 = (λ2 * 180) / Math.PI;
+      coords.push([lng2, lat2]);
+    }
+
+    // close polygon by repeating first coordinate
+    if (coords.length > 0) coords.push(coords[0]);
+
+    return {
+      type: 'Feature',
+      geometry: { type: 'Polygon', coordinates: [coords] },
+      properties: {},
+    };
+  };
+
   const centerOnUser = () => {
-    if (userLocation && mapRef.current) {
-      mapRef.current.animateToRegion({
+    if (userLocation) {
+      const lngLat: [number, number] = [userLocation.coords.longitude, userLocation.coords.latitude];
+      // If MapLibre Camera ref or API is available, call it
+      try {
+        if (mapRef.current && typeof mapRef.current.setCamera === 'function') {
+          mapRef.current.setCamera({ centerCoordinate: lngLat, zoomLevel: 15, animationDuration: 700 });
+          return;
+        }
+        if (mapLibreModule && mapLibreModule.Camera && mapRef.current?.getMap) {
+          const map = mapRef.current.getMap?.();
+          map?.setCamera?.({ centerCoordinate: lngLat, zoomLevel: 15, animationDuration: 700 });
+          return;
+        }
+      } catch (e) {
+        // fallback to updating region state
+      }
+
+      setCurrentRegion({
         latitude: userLocation.coords.latitude,
         longitude: userLocation.coords.longitude,
         latitudeDelta: 0.01,
@@ -192,60 +250,116 @@ export default function KidFriendlyMap({
   };
 
   const fitToRoute = () => {
-    if (route.length > 0 && mapRef.current) {
-      mapRef.current.fitToCoordinates(route, {
-        edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-        animated: true,
+    if (route.length > 0) {
+      // Build bounds from route coordinates
+      const lats = route.map((r) => r.latitude).filter((n) => Number.isFinite(n));
+      const lngs = route.map((r) => r.longitude).filter((n) => Number.isFinite(n));
+      if (lats.length === 0 || lngs.length === 0) return;
+      const minLat = Math.min(...lats);
+      const maxLat = Math.max(...lats);
+      const minLng = Math.min(...lngs);
+      const maxLng = Math.max(...lngs);
+
+      const centerLat = (minLat + maxLat) / 2;
+      const centerLng = (minLng + maxLng) / 2;
+
+      try {
+        if (mapRef.current && typeof mapRef.current.fitBounds === 'function') {
+          mapRef.current.fitBounds([minLng, minLat], [maxLng, maxLat], { padding: 50, animationDuration: 700 });
+          return;
+        }
+        if (mapRef.current && typeof mapRef.current.setCamera === 'function') {
+          mapRef.current.setCamera({ centerCoordinate: [centerLng, centerLat], zoomLevel: 12, animationDuration: 700 });
+          return;
+        }
+      } catch (e) {
+        // fallback to region update
+      }
+
+      setCurrentRegion({
+        latitude: centerLat,
+        longitude: centerLng,
+        latitudeDelta: Math.max(0.05, (maxLat - minLat) * 1.5),
+        longitudeDelta: Math.max(0.05, (maxLng - minLng) * 1.5),
       });
     }
   };
 
   return (
     <View style={[styles.container, style]}>
-      <MapView
+      {/* Render MapLibreMap — children rendering for shapes/markers needs MapLibre implementations
+          (ShapeSource / Layers / SymbolLayer or native annotations). For now we pass a centerCoordinate
+          and zoomLevel derived from currentRegion or initialLocation. */}
+      <MapLibreMap
+        // @ts-ignore - MapLibreMap accepts centerCoordinate/zoomLevel but not typed as ref props
         ref={mapRef}
-        style={styles.map}
-        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
-        initialRegion={currentRegion}
-        showsUserLocation={showUserLocation}
-        showsMyLocationButton={false}
-        showsCompass={true}
-        showsScale={true}
-        rotateEnabled={false}
-        pitchEnabled={false}
+        testID="kidfriendly-map"
+        centerCoordinate={
+          currentRegion
+            ? [currentRegion.longitude, currentRegion.latitude]
+            : initialLocation
+            ? [initialLocation.longitude, initialLocation.latitude]
+            : undefined
+        }
+        zoomLevel={12}
       >
-        {/* Safe Zones */}
-        {safeZones.map((zone) => (
-          <Circle
-            key={zone.id}
-            center={zone.center}
-            radius={zone.radius}
-            fillColor={zone.color ? `${zone.color}30` : 'rgba(0, 200, 0, 0.2)'}
-            strokeColor={zone.color || '#00C800'}
-            strokeWidth={2}
-          />
-        ))}
+        {/* Render safe zones as GeoJSON circles (approximate) */}
+        {mapLibreModule && safeZones.length > 0 && (
+          (() => {
+            const features = safeZones.map((z) => ({
+              ...circleToPolygon(z.center, z.radius, 64),
+              id: z.id,
+              properties: { id: z.id, name: z.name, color: z.color || '#00C800' },
+            }));
 
-        {/* Route Polyline */}
-        {route.length > 1 && (
-          <Polyline
-            coordinates={route}
-            strokeColor="#2563EB"
-            strokeWidth={4}
-            lineDashPattern={[1]}
-          />
+            const geo = { type: 'FeatureCollection', features };
+
+            return (
+              <mapLibreModule.ShapeSource id="safezones" shape={geo}>
+                <mapLibreModule.FillLayer
+                  id="safezones-fill"
+                  style={{ fillColor: ['get', 'color'], fillOpacity: 0.12 }}
+                />
+                <mapLibreModule.LineLayer
+                  id="safezones-stroke"
+                  style={{ lineColor: ['get', 'color'], lineWidth: 2, lineOpacity: 0.9 }}
+                />
+              </mapLibreModule.ShapeSource>
+            );
+          })()
         )}
 
-        {/* Route Markers */}
-        {route.map((point, index) => (
-          <Marker
-            key={`route-${index}`}
-            coordinate={point}
-            title={point.instruction || `Point ${index + 1}`}
-            pinColor={index === 0 ? 'green' : index === route.length - 1 ? 'red' : 'blue'}
-          />
-        ))}
-      </MapView>
+        {/* Render route as a LineLayer */}
+        {mapLibreModule && route.length > 1 && (
+          (() => {
+            const coords = route.map((p) => [p.longitude, p.latitude]);
+            const geojson = { type: 'FeatureCollection', features: [{ type: 'Feature', id: 'route', properties: {}, geometry: { type: 'LineString', coordinates: coords } }] };
+            return (
+              <mapLibreModule.ShapeSource id="route" shape={geojson}>
+                <mapLibreModule.LineLayer id="route-line" style={{ lineColor: '#2563EB', lineWidth: 4, lineOpacity: 0.95 }} />
+              </mapLibreModule.ShapeSource>
+            );
+          })()
+        )}
+
+        {/* Route markers */}
+        {mapLibreModule && route.length > 0 && (
+          (() => {
+            const features = route.map((p, i) => ({
+              type: 'Feature',
+              id: `route-${i}`,
+              properties: { index: i },
+              geometry: { type: 'Point', coordinates: [p.longitude, p.latitude] },
+            }));
+            const geo = { type: 'FeatureCollection', features };
+            return (
+              <mapLibreModule.ShapeSource id="route-points" shape={geo}>
+                <mapLibreModule.CircleLayer id="route-points-layer" style={{ circleRadius: 6, circleColor: '#2563EB', circleStrokeColor: '#fff', circleStrokeWidth: 2 }} />
+              </mapLibreModule.ShapeSource>
+            );
+          })()
+        )}
+      </MapLibreMap>
 
       {/* Control Buttons */}
       <View style={styles.controls}>
