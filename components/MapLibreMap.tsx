@@ -10,20 +10,35 @@ let mapLibreModule: any = null;
 function getMapLibreModule() {
   if (mapLibreModule) return mapLibreModule;
 
-  // If the native view is already registered, skip requiring a second copy
+  // Log all possible MapLibre view managers for debugging
+  const viewManagerNames = ['MLRNCamera', 'RCTMGLMapView', 'MapLibreGLMapView'];
+  if (typeof UIManager.getViewManagerConfig === 'function') {
+    viewManagerNames.forEach((name) => {
+      const config = UIManager.getViewManagerConfig(name);
+      log.debug(`[MapLibreMap] UIManager.getViewManagerConfig('${name}')`, config);
+    });
+  } else {
+    log.debug('[MapLibreMap] UIManager.getViewManagerConfig is not a function');
+  }
+
+  // Try to detect any registered MapLibre view manager
   try {
-    const hasViewManager =
-      typeof UIManager.getViewManagerConfig === 'function' &&
-      !!UIManager.getViewManagerConfig('MLRNCamera');
-    if (hasViewManager) {
-      // If there is a registered native view, prefer the existing native module.
-      // Attempt to reuse any existing native module from NativeModules if exposed,
-      // otherwise return null (fallback UI will be used).
+    const found = viewManagerNames.find((name) => {
+      try {
+        return !!UIManager.getViewManagerConfig(name);
+      } catch {
+        return false;
+      }
+    });
+    if (found) {
+      log.debug(`[MapLibreMap] Found registered view manager: ${found}`);
       mapLibreModule = NativeModules?.MapLibreModule ?? null;
       return mapLibreModule;
+    } else {
+      log.debug('[MapLibreMap] No MapLibre view manager registered');
     }
-  } catch {
-    // fall through and try require
+  } catch (e) {
+    log.warn('[MapLibreMap] Error checking UIManager view managers', { error: e });
   }
 
   try {
@@ -58,7 +73,8 @@ type MapLibreMapProps = {
   testID?: string;
 };
 
-const fallbackStyleUrl = Config.MAP.FALLBACK_STYLE_URL ?? 'https://demotiles.maplibre.org/style.json';
+const fallbackStyleUrl =
+  Config.MAP.FALLBACK_STYLE_URL ?? 'https://demotiles.maplibre.org/style.json';
 
 const defaultCenter: [number, number] = [
   Config.MAP.DEFAULT_CENTER.longitude,
@@ -79,8 +95,30 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
   const MapLibre: any = getMapLibreModule();
 
   if (!MapLibre || typeof MapLibre !== 'object' || !(MapLibre as any).MapView) {
-    if (__DEV__) log.debug('MapLibre not available, rendering null');
-    return null;
+    log.debug('[MapLibreMap] MapLibre not available, rendering InteractiveMap fallback');
+    // Platform-specific fallback logging
+    if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+      log.debug('[MapLibreMap] Platform: React Native');
+    } else if (typeof window !== 'undefined') {
+      log.debug('[MapLibreMap] Platform: Web');
+    } else {
+      log.debug('[MapLibreMap] Platform: Unknown');
+    }
+    // Fallback: render InteractiveMap (OpenStreetMap or web-based)
+    const InteractiveMap = require('./InteractiveMap').default;
+    return (
+      <View style={styles.container} testID={testID ?? 'interactive-map-fallback'}>
+        <InteractiveMap
+          centerCoordinate={centerCoordinate}
+          zoomLevel={zoomLevel}
+          onMapReady={onMapReady}
+          onSelectLocation={onPress}
+          testId={testID ?? 'interactive-map-fallback'}
+        >
+          {children}
+        </InteractiveMap>
+      </View>
+    );
   }
 
   useEffect(() => {
@@ -93,7 +131,10 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
         (MapLibre as any).setAccessToken(Config.MAP.ACCESS_TOKEN ?? null);
       } catch (error) {
         log.warn('Unable to set MapLibre access token', {
-          error: error instanceof Error ? { name: error.name, message: error.message } : { message: String(error) },
+          error:
+            error instanceof Error
+              ? { name: error.name, message: error.message }
+              : { message: String(error) },
         });
       }
     }
@@ -126,7 +167,8 @@ const MapLibreMap: React.FC<MapLibreMapProps> = ({
     (event: any) => {
       if (!onPress) return;
       const [longitude, latitude] = event?.geometry?.coordinates ?? [];
-      if (typeof longitude === 'number' && typeof latitude === 'number') onPress([longitude, latitude]);
+      if (typeof longitude === 'number' && typeof latitude === 'number')
+        onPress([longitude, latitude]);
     },
     [onPress],
   );
