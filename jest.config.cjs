@@ -4,7 +4,7 @@ module.exports = {
   globals: {
     'ts-jest': {},
   },
-  testPathIgnorePatterns: ['/node_modules/', '/bun-tests/', '/server/__tests__/'],
+  testPathIgnorePatterns: ['/node_modules/', '/bun-tests/', '/server/__tests__/', '/jest.setup.disable-dev-logs.js'],
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|expo|@expo|@unimodules|unimodules|sentry-expo|native-base|react-clone-referenced-element|@react-native-community|expo-router|@expo/vector-icons|react-native-svg|react-native-reanimated|@react-navigation|lucide-react-native|@react-native-async-storage)/)',
   ],
@@ -41,6 +41,6 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'ts-jest',
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
-  setupFiles: ['<rootDir>/jest.setup.cjs'],
+  setupFiles: ['<rootDir>/jest.setup.cjs', '<rootDir>/jest.setup.disable-dev-logs.js'],
   testEnvironment: 'jsdom',
 };

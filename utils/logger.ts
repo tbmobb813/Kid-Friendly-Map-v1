@@ -50,8 +50,9 @@ class Logger {
       this.logs = this.logs.slice(-this.maxLogs);
     }
 
-    // Console output in development
-    if (Config.isDev) {
+    // Console output in development, but suppress during tests to avoid noisy slowdowns
+    const isTest = process.env.NODE_ENV === 'test' || typeof process.env.JEST_WORKER_ID !== 'undefined';
+    if (Config.isDev && !isTest) {
       const formattedMessage = this.formatMessage(level, message, context);
 
       switch (level) {
@@ -79,9 +80,13 @@ class Logger {
   private async sendToCrashReporting(logEntry: LogEntry, error?: Error) {
     try {
       // In a real app, you'd send to services like Sentry, Bugsnag, etc.
-      console.error('Production Error:', logEntry, error);
+      // During tests avoid writing to console to keep output clean.
+      const isTest = process.env.NODE_ENV === 'test' || typeof process.env.JEST_WORKER_ID !== 'undefined';
+      if (!isTest) {
+        console.error('Production Error:', logEntry, error);
+      }
     } catch (e) {
-      console.error('Failed to send crash report:', e);
+      if (process.env.NODE_ENV !== 'test') console.error('Failed to send crash report:', e);
     }
   }
 
