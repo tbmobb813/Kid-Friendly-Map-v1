@@ -209,7 +209,8 @@ All guides available in your project:
 3. `USB_DEBUG_GUIDE.md` - Detailed USB troubleshooting
 4. `COMPLETE_SOLUTION_SUMMARY.md` - Full status & options
 5. `BUILD_APK_GUIDE.md` - APK building methods
-6. `CURRENT_STATUS.md` - This file!
+6. `docs/GRADLE_USAGE_GUIDE.md` - Gradle commands and dependency checking
+7. `CURRENT_STATUS.md` - This file!
 
 ---
 
