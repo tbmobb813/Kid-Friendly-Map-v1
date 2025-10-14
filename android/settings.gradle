@@ -62,6 +62,11 @@ if (autolinkingPkgPath != null) {
 //apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir.parentFile).text.trim(), "../scripts/autolinking.gradle")
 // Use a local stub to avoid compiling plugin sources from node_modules
 apply from: file("autolinking-stub.gradle")
-useExpoModules()
+
+// Minimal inline stub to prevent autolinking from including node_modules plugin sources.
+// Must be defined before useExpoModules() is invoked.
+def useExpoModules() {
+  println "Stubbed useExpoModules(): skipping includeBuild of expo plugin sources."
+}
 
 include ':app'
