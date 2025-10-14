@@ -20,6 +20,10 @@ android {
     namespace 'app.kid_friendly_map_transit_navigator'
     defaultConfig {
         applicationId 'app.kid_friendly_map_transit_navigator'
+    // Export applicationId for autolinking fallback
+    project.ext.reactNativeAppId = 'app.kid_friendly_map_transit_navigator'
+    // Set system property for autolinking fallback
+    System.setProperty('react.native.packageName', 'app.kid_friendly_map_transit_navigator')
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
