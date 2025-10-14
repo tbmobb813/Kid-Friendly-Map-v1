@@ -35,7 +35,13 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "build:android:dev": "eas build --platform android --profile development",
-    "check:native-view-managers": "adb logcat -s NativeCheck:I *:S"
+    "check:native-view-managers": "adb logcat -s NativeCheck:I *:S",
+    "gradle": "./gradlew",
+    "gradle:tasks": "./gradlew tasks",
+    "gradle:dependencies": "./gradlew dependencies",
+    "gradle:dependencyUpdates": "./gradlew dependencyUpdates",
+    "gradle:clean": "./gradlew clean",
+    "gradle:build": "./gradlew build"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
