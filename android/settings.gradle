@@ -3,6 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+    // JetBrains Compose plugin repository (helps resolve Kotlin Compose Gradle plugin artifacts)
+    maven { url "https://maven.pkg.jetbrains.space/public/p/compose/dev" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 
@@ -41,11 +43,8 @@ if (rnPkgPath != null) {
   }
 }
 
-// NOTE: don't include the expo-modules-autolinking/expo-gradle-plugin build from node_modules.
-// Compiling that included build from sources often fails. Use the published plugin instead.
-//
-// The block below was intentionally commented out to avoid includeBuild of expo's plugin source.
-/*
+// Include the expo-modules-autolinking/expo-gradle-plugin build from node_modules so the
+// expo Gradle plugin and extensions (expoLibs, etc) are available during configuration.
 def autolinkingPkgPath = nodeResolve("expo-modules-autolinking")
 if (autolinkingPkgPath != null) {
   def autolinkingDir = new File(autolinkingPkgPath).parentFile
@@ -56,17 +55,17 @@ if (autolinkingPkgPath != null) {
     if (file(autolinkingDir.absolutePath).exists()) includeBuild(autolinkingDir.absolutePath)
   }
 }
-*/
 
-// Replace the external autolinking apply (which triggers includeBuild of node_modules sources)
-//apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir.parentFile).text.trim(), "../scripts/autolinking.gradle")
-// Use a local stub to avoid compiling plugin sources from node_modules
-apply from: file("autolinking-stub.gradle")
+// Apply Expo's autolinking script from the package so it can configure the project and
+// register plugin-provided extensions such as expoLibs.
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir.parentFile).text.trim(), "../scripts/autolinking.gradle")
 
-// Minimal inline stub to prevent autolinking from including node_modules plugin sources.
-// Must be defined before useExpoModules() is invoked.
-def useExpoModules() {
-  println "Stubbed useExpoModules(): skipping includeBuild of expo plugin sources."
+// Enable autolinking: this will resolve expo modules, include their projects and
+// add plugin classpaths so extensions like `expoLibs` become available in build.gradle.
+try {
+  useExpoModules()
+} catch (ignored) {
+  println "useExpoModules() not available; skipping autolinking invocation"
 }
 
 include ':app'

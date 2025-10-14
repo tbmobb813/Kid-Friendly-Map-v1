@@ -2,8 +2,14 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.facebook.react")
-    id("expo.modules.kotlin-dsl") version "1.0.0" // or the latest version
+    // id("expo.modules.kotlin-dsl") version "1.0.0" // disabled: plugin not present in included builds or plugin repositories
 }
+
+// Provide safe defaults for optional project properties referenced below
+def enableMinifyInReleaseBuilds = (findProperty('android.enableMinifyInReleaseBuilds') ?: 'false').toBoolean()
+def enableMinifyInDebugBuilds = (findProperty('android.enableMinifyInDebugBuilds') ?: 'false').toBoolean()
+def enableShrinkResourcesInReleaseBuilds = (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false').toBoolean()
+
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -84,17 +90,30 @@ dependencies {
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
 
+    // expoLibs is normally provided by the Expo Gradle plugin during autolinking.
+    // Provide a safe fallback so the project can be configured even if the plugin
+    // hasn't registered the extension yet.
+    def frescoVersionFallback = '2.6.0'
+    def frescoVersion = frescoVersionFallback
+    try {
+        if (ext.has('expoLibs') && expoLibs?.versions?.fresco != null) {
+            frescoVersion = expoLibs.versions.fresco.get()
+        }
+    } catch (ignored) {
+        // keep fallback
+    }
+
     if (isGifEnabled) {
         // For animated gif support
-        implementation("com.facebook.fresco:animated-gif:${expoLibs.versions.fresco.get()}")
+        implementation("com.facebook.fresco:animated-gif:${frescoVersion}")
     }
 
     if (isWebpEnabled) {
         // For webp support
-        implementation("com.facebook.fresco:webpsupport:${expoLibs.versions.fresco.get()}")
+        implementation("com.facebook.fresco:webpsupport:${frescoVersion}")
         if (isWebpAnimatedEnabled) {
             // Animated webp support
-            implementation("com.facebook.fresco:animated-webp:${expoLibs.versions.fresco.get()}")
+            implementation("com.facebook.fresco:animated-webp:${frescoVersion}")
         }
     }
 

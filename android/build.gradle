@@ -14,6 +14,8 @@ buildscript {
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        // JetBrains Compose plugin repository - needed to resolve Kotlin Compose Gradle plugin
+        maven { url "https://maven.pkg.jetbrains.space/public/p/compose/dev" }
     }
     dependencies {
         classpath("com.android.tools.build:gradle:8.1.1")
