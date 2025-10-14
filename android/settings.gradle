@@ -1,39 +1,58 @@
 pluginManagement {
-  def reactNativeGradlePlugin = new File(
-    providers.exec {
-      workingDir(rootDir)
-      commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
-    }.standardOutput.asText.get().trim()
-  ).getParentFile().absolutePath
-  includeBuild(reactNativeGradlePlugin)
-  
-  def expoPluginsPath = new File(
-    providers.exec {
-      workingDir(rootDir)
-      commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
-    }.standardOutput.asText.get().trim(),
-    "../android/expo-gradle-plugin"
-  ).absolutePath
-  includeBuild(expoPluginsPath)
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    // Ensure included builds can resolve Kotlin and Android Gradle plugins
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10")
+            }
+            if (requested.id.id == "com.android.application" || requested.id.id == "com.android.library") {
+                useModule("com.android.tools.build:gradle:8.1.1")
+            }
+        }
+    }
 }
 
-plugins {
-  id("com.facebook.react.settings")
-  id("expo-autolinking-settings")
+rootProject.name = "Kid-Friendly Map & Transit Navigator"
+
+// Helper to run node from the project root (parent of android/)
+def nodeResolve(String pkg) {
+  def proc = providers.exec {
+    workingDir(rootDir.parentFile) // <- run from project root where node_modules lives
+    commandLine("node", "--print", "require.resolve('${pkg}/package.json')")
+  }
+  return proc.standardOutput.asText.orNull?.trim()
 }
 
-extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
-  if (System.getenv('EXPO_USE_COMMUNITY_AUTOLINKING') == '1') {
-    ex.autolinkLibrariesFromCommand()
-  } else {
-    ex.autolinkLibrariesFromCommand(expoAutolinking.rnConfigCommand)
+// include @react-native/gradle-plugin (if present)
+def rnPkgPath = nodeResolve("@react-native/gradle-plugin")
+if (rnPkgPath != null) {
+  def rnDir = new File(rnPkgPath).parentFile.absolutePath
+  if (file(rnDir).exists()) {
+    includeBuild(rnDir)
   }
 }
-expoAutolinking.useExpoModules()
 
-rootProject.name = 'Kid-Friendly Map & Transit Navigator'
+// include expo-gradle-plugin (if present inside expo-modules-autolinking)
+def autolinkingPkgPath = nodeResolve("expo-modules-autolinking")
+if (autolinkingPkgPath != null) {
+  def autolinkingDir = new File(autolinkingPkgPath).parentFile
+  def expoPluginsPath = new File(autolinkingDir, "android/expo-gradle-plugin").absolutePath
+  if (file(expoPluginsPath).exists()) {
+    includeBuild(expoPluginsPath)
+  } else {
+    // fallback: try autolinking package itself (some versions expose plugin differently)
+    if (file(autolinkingDir.absolutePath).exists()) includeBuild(autolinkingDir.absolutePath)
+  }
+}
 
-expoAutolinking.useExpoVersionCatalog()
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir.parentFile).text.trim(), "../scripts/autolinking.gradle")
+useExpoModules()
 
 include ':app'
-includeBuild(expoAutolinking.reactNativeGradlePlugin)
