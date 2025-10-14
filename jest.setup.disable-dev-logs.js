@@ -3,7 +3,7 @@
 global.__DEV__ = false;
 
 // Silence console methods but preserve errors and warns if desired
-const noop = () => {};
+const noop = () => { };
 console.log = noop;
 console.info = noop;
 console.debug = noop;

@@ -11,8 +11,8 @@ describe('Performance Tests', () => {
       const endTime = performance.now();
       const renderTime = endTime - startTime;
 
-  // Allow extra headroom in CI/dev machines
-  expect(renderTime).toBeLessThan(300);
+      // Allow extra headroom in CI/dev machines
+      expect(renderTime).toBeLessThan(300);
     });
 
     it('should handle large lists efficiently', async () => {
@@ -31,8 +31,8 @@ describe('Performance Tests', () => {
       const endTime = performance.now();
       const processingTime = endTime - startTime;
 
-  // Allow extra headroom for JS processing during tests
-  expect(processingTime).toBeLessThan(200);
+      // Allow extra headroom for JS processing during tests
+      expect(processingTime).toBeLessThan(200);
     });
   });
 
@@ -104,8 +104,8 @@ describe('Performance Tests', () => {
       const endTime = performance.now();
       const requestTime = endTime - startTime;
 
-  // API calls should complete within 400ms (including mock delay)
-  expect(requestTime).toBeLessThan(400);
+      // API calls should complete within 400ms (including mock delay)
+      expect(requestTime).toBeLessThan(400);
     });
 
     it('should batch multiple requests efficiently', async () => {
@@ -122,8 +122,8 @@ describe('Performance Tests', () => {
       const endTime = performance.now();
       const totalTime = endTime - startTime;
 
-  // Batched requests should complete faster than sequential
-  expect(totalTime).toBeLessThan(200); // Much less than 5 * 20ms
+      // Batched requests should complete faster than sequential
+      expect(totalTime).toBeLessThan(200); // Much less than 5 * 20ms
     });
   });
 
@@ -155,8 +155,8 @@ describe('Performance Tests', () => {
       const endTime = performance.now();
       const storageTime = endTime - startTime;
 
-  // 200 storage operations should complete within 300ms
-  expect(storageTime).toBeLessThan(300);
+      // 200 storage operations should complete within 300ms
+      expect(storageTime).toBeLessThan(300);
     });
   });
 
@@ -180,8 +180,8 @@ describe('Performance Tests', () => {
 
       const frameTime = mockAnimationFrame();
 
-  // Animation frame should complete within a couple frames on CI
-  expect(frameTime).toBeLessThan(frameDuration * 4);
+      // Animation frame should complete within a couple frames on CI
+      expect(frameTime).toBeLessThan(frameDuration * 4);
     });
   });
 });

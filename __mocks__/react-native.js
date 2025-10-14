@@ -36,7 +36,7 @@ const Animated = {
   createAnimatedComponent: (c) => c,
   // Minimal Value implementation
   Value: function (initialValue) {
-  this._value = typeof initialValue === 'number' ? initialValue : 0;
+    this._value = typeof initialValue === 'number' ? initialValue : 0;
     this._listeners = {};
     this.setValue = (v) => {
       this._value = v;
@@ -56,19 +56,19 @@ const Animated = {
     this.interpolate = (config) => ({ __isInterpolated: true, config });
     this.__getValue = () => this._value;
   },
-    timing: (value, config) => ({
-      start: (cb) => {
-        // apply end value synchronously to keep tests deterministic
-        try {
-          if (value && typeof value.setValue === 'function') {
-            value.setValue(config.toValue);
-          }
-          if (cb) cb();
-        } catch (e) {
-          if (cb) cb(e);
+  timing: (value, config) => ({
+    start: (cb) => {
+      // apply end value synchronously to keep tests deterministic
+      try {
+        if (value && typeof value.setValue === 'function') {
+          value.setValue(config.toValue);
         }
-      },
-    }),
+        if (cb) cb();
+      } catch (e) {
+        if (cb) cb(e);
+      }
+    },
+  }),
 };
 
 const Easing = {

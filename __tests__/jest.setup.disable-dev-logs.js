@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'production';
 global.__DEV__ = false;
 
 // Silence console methods optionally (keep errors)
-const noop = () => {};
+const noop = () => { };
 console.log = noop;
 console.info = noop;
 console.debug = noop;

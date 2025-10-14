@@ -6,10 +6,16 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-  classpath('com.android.tools.build:gradle:8.1.2')
+  classpath('com.android.tools.build:gradle:8.5.0')
     classpath('com.facebook.react:react-native-gradle-plugin')
-    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    // Pin Kotlin Gradle plugin to a version compatible with Gradle 8.5 and newer Kotlin APIs
+    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20')
   }
+}
+
+// Project-wide static values (keep minimal) - ensure NDK version aligns with local NDK install
+ext {
+  ndkVersion = "28.2.13676358"
 }
 
 allprojects {
@@ -17,6 +23,36 @@ allprojects {
     google()
     mavenCentral()
     maven { url 'https://www.jitpack.io' }
+  }
+}
+
+// Ensure all Java/Kotlin compilation targets are set to Java 17 and Kotlin JVM toolchain 17
+subprojects { subproj ->
+  afterEvaluate {
+    // Java compile options
+    subproj.tasks.withType(org.gradle.api.tasks.compile.JavaCompile).configureEach { JavaCompile jc ->
+      jc.sourceCompatibility = JavaVersion.VERSION_17.toString()
+      jc.targetCompatibility = JavaVersion.VERSION_17.toString()
+    }
+
+    // Kotlin jvm toolchain for Kotlin Gradle Plugin 1.8+ compatibility
+    try {
+      subproj.plugins.withId('org.jetbrains.kotlin.jvm') {
+        subproj.extensions.findByName('kotlin')?.with {
+          // Use the jvmToolchain API if available
+          try {
+            it.jvmToolchain(17)
+          } catch (e) {
+            // Fallback: set kotlinOptions if jvmToolchain not available
+            subproj.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kt ->
+              kt.kotlinOptions.jvmTarget = '17'
+            }
+          }
+        }
+      }
+    } catch (ignored) {
+      // Best-effort only; don't fail configuration
+    }
   }
 }
 

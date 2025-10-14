@@ -14,8 +14,8 @@ module.exports = {
     'hooks/**/*.{ts,tsx}',
     'stores/**/*.{ts,tsx}',
     'utils/**/*.{ts,tsx}',
-  '!**/*.d.ts',
-  '!**/node_modules/**'
+    '!**/*.d.ts',
+    '!**/node_modules/**'
   ],
   coverageThreshold: {
     global: {
@@ -27,9 +27,9 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
-  '^react-native$': '<rootDir>/__mocks__/react-native.js',
-  '^react-native/jest/mock$': '<rootDir>/__mocks__/react-native-jest-mock.js',
-  '^react-native/jest/setup$': '<rootDir>/__mocks__/react-native-jest-setup.js',
+    '^react-native$': '<rootDir>/__mocks__/react-native.js',
+    '^react-native/jest/mock$': '<rootDir>/__mocks__/react-native-jest-mock.js',
+    '^react-native/jest/setup$': '<rootDir>/__mocks__/react-native-jest-setup.js',
     '^expo-constants$': '<rootDir>/__mocks__/expo-constants.js',
     '^lucide-react-native$': '<rootDir>/__mocks__/lucide-react-native.js',
     '^react-native-svg$': '<rootDir>/__mocks__/react-native-svg.js',
