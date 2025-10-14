@@ -141,6 +141,26 @@ npm start
 
 ## 🛠️ Troubleshooting
 
+### Running Gradle Commands
+
+If you need to check Android dependencies or run Gradle tasks:
+
+```bash
+# Check Gradle version
+./gradlew --version
+
+# List available tasks
+npm run gradle:tasks
+
+# Check for outdated dependencies
+npm run gradle:dependencyUpdates  # Requires plugin installation
+
+# View dependency tree
+npm run gradle:dependencies
+```
+
+See [docs/GRADLE_USAGE_GUIDE.md](docs/GRADLE_USAGE_GUIDE.md) for detailed information.
+
 ### Clear caches if things break:
 
 ```bash

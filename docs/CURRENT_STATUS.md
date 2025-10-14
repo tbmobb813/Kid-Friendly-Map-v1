@@ -237,6 +237,8 @@ All guides available in your project:
 
 1. `BUILD_APK_GUIDE.md` - APK building methods
 
+1. `GRADLE_USAGE_GUIDE.md` - Gradle commands and dependency checking
+
 1. `CURRENT_STATUS.md` - This file!
 
 ---
