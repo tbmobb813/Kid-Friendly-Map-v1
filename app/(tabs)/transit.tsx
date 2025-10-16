@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Switch } from 'react-native';
 import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from 'react-native';
 import Colors from '@/constants/colors';
 import { subwayLines } from '@/mocks/transit';
@@ -17,6 +18,8 @@ type SubwayStatus = {
 };
 
 export default function TransitScreen() {
+  const [largeText, setLargeText] = useState(false);
+  const [highContrast, setHighContrast] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLine, setSelectedLine] = useState<string | null>(null);
   const [selectedStation, setSelectedStation] = useState<string | null>('main-st-station');
@@ -116,13 +119,92 @@ export default function TransitScreen() {
     );
   };
 
+  // Dynamic styles for accessibility
+  const dynamicStyles = {
+    sectionTitle: {
+      fontSize: largeText ? 24 : 18,
+      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      color: highContrast ? '#000' : Colors.text,
+      marginBottom: 16,
+    },
+    lineText: {
+      color: '#FFFFFF',
+      fontSize: largeText ? 20 : 16,
+      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+    },
+    statusText: {
+      fontSize: largeText ? 18 : 14,
+      color: highContrast ? '#000' : Colors.text,
+    },
+    detailsTitle: {
+      fontSize: largeText ? 20 : 16,
+      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      color: highContrast ? '#000' : Colors.text,
+      marginBottom: 12,
+    },
+    trainTimeText: {
+      fontSize: largeText ? 20 : 16,
+      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      color: highContrast ? '#000' : Colors.primary,
+      marginBottom: 4,
+    },
+    trainDirectionText: {
+      fontSize: largeText ? 16 : 12,
+      color: highContrast ? '#000' : Colors.textLight,
+    },
+    stationButtonText: {
+      fontSize: largeText ? 18 : 14,
+      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      color: highContrast ? '#000' : Colors.text,
+      marginBottom: 4,
+    },
+    quickActionText: {
+      fontSize: largeText ? 16 : 12,
+      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      color: highContrast ? '#000' : Colors.text,
+      textAlign: 'center',
+    },
+    alertText: {
+      flex: 1,
+      fontSize: largeText ? 18 : 14,
+      color: highContrast ? '#000' : Colors.text,
+    },
+    timeText: {
+      fontSize: largeText ? 16 : 12,
+      color: highContrast ? '#000' : Colors.textLight,
+      marginLeft: 4,
+    },
+    stationDistance: {
+      fontSize: largeText ? 16 : 12,
+      color: highContrast ? '#000' : Colors.textLight,
+    },
+  };
+
+  // Friendly alert/status messages
+  const friendlyStatusMessage = (msg: string) => {
+    if (msg.includes('Delays')) return 'Trains are running a bit late.';
+    if (msg.includes('Service changes')) return 'Trains are taking a new path this weekend!';
+    if (msg.includes('Good service')) return 'Trains are running smoothly!';
+    return msg;
+  };
+
   return (
     <ScrollView
-      style={styles.container}
+      style={[styles.container, highContrast && { backgroundColor: '#FFF' }]}
       contentContainerStyle={styles.scrollContent}
       showsVerticalScrollIndicator={false}
       bounces={true}
     >
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, gap: 16 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Text style={dynamicStyles.sectionTitle}>A+</Text>
+          <Switch value={largeText} onValueChange={setLargeText} accessibilityLabel="Large Text" />
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Text style={dynamicStyles.sectionTitle}>🌙</Text>
+          <Switch value={highContrast} onValueChange={setHighContrast} accessibilityLabel="High Contrast" />
+        </View>
+      </View>
       <View style={styles.searchContainer}>
         <SearchBar
           value={searchQuery}
@@ -132,14 +214,27 @@ export default function TransitScreen() {
         />
       </View>
 
-      <Text style={styles.sectionTitle}>Live Arrivals</Text>
+  <Text style={dynamicStyles.sectionTitle}>Live Arrivals</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.stationsScroll}
         contentContainerStyle={styles.stationsContainer}
       >
-        {nearbyStations.map(renderStationButton)}
+        {nearbyStations.map((station) => (
+          <Pressable
+            key={station.id}
+            style={[styles.stationButton, selectedStation === station.id && styles.selectedStationButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}
+            onPress={() => setSelectedStation(station.id)}
+          >
+            <Text
+              style={[dynamicStyles.stationButtonText, selectedStation === station.id && { color: '#FFF' }]}
+            >
+              {station.name}
+            </Text>
+            <Text style={dynamicStyles.stationDistance}>{station.distance}</Text>
+          </Pressable>
+        ))}
       </ScrollView>
 
       {selectedStation && (
@@ -154,62 +249,82 @@ export default function TransitScreen() {
       )}
 
       <View style={styles.quickActionsContainer}>
-        <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <Text style={dynamicStyles.sectionTitle}>Quick Actions</Text>
         <View style={styles.quickActions}>
-          <Pressable style={styles.quickActionButton}>
-            <Bell size={20} color={Colors.primary} />
-            <Text style={styles.quickActionText}>Set Alerts</Text>
+          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+            <Bell size={20} color={highContrast ? '#000' : Colors.primary} />
+            <Text style={dynamicStyles.quickActionText}>Set Alerts</Text>
           </Pressable>
-          <Pressable style={styles.quickActionButton}>
-            <MapPin size={20} color={Colors.primary} />
-            <Text style={styles.quickActionText}>Find Station</Text>
+          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+            <MapPin size={20} color={highContrast ? '#000' : Colors.primary} />
+            <Text style={dynamicStyles.quickActionText}>Find Station</Text>
           </Pressable>
-          <Pressable style={styles.quickActionButton}>
-            <Clock size={20} color={Colors.primary} />
-            <Text style={styles.quickActionText}>Schedule</Text>
+          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+            <Clock size={20} color={highContrast ? '#000' : Colors.primary} />
+            <Text style={dynamicStyles.quickActionText}>Schedule</Text>
           </Pressable>
         </View>
       </View>
 
-      <View style={styles.statusSummaryContainer}>
+      <View style={[styles.statusSummaryContainer, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
         <View style={styles.statusHeader}>
-          <Text style={styles.sectionTitle}>Subway Status</Text>
+          <Text style={dynamicStyles.sectionTitle}>Subway Status</Text>
           <View style={styles.timeContainer}>
-            <Clock size={14} color={Colors.textLight} />
-            <Text style={styles.timeText}>Updated 5 min ago</Text>
+            <Clock size={14} color={highContrast ? '#000' : Colors.textLight} />
+            <Text style={dynamicStyles.timeText}>Updated 5 min ago</Text>
           </View>
         </View>
 
-        <View style={styles.alertContainer}>
-          <AlertCircle size={20} color={Colors.warning} style={styles.alertIcon} />
-          <Text style={styles.alertText}>
+        <View style={[styles.alertContainer, highContrast && { backgroundColor: '#FFD700' }]}> 
+          <AlertCircle size={20} color={highContrast ? '#000' : Colors.warning} style={styles.alertIcon} />
+          <Text style={dynamicStyles.alertText}>
             Some lines are experiencing delays or service changes
           </Text>
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>Subway Lines</Text>
-      <View style={styles.linesContainer}>{subwayLines.map(renderLineItem)}</View>
+      <Text style={dynamicStyles.sectionTitle}>Subway Lines</Text>
+      <View style={styles.linesContainer}>{subwayLines.map((item) => {
+        const status = subwayStatus.find((s) => s.id === item.id);
+        return (
+          <Pressable
+            key={item.id}
+            style={[styles.lineItem, selectedLine === item.id && styles.selectedLine, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}
+            onPress={() => setSelectedLine(item.id)}
+          >
+            <View style={[styles.lineCircle, { backgroundColor: item.color }]}>
+              <Text style={dynamicStyles.lineText}>{item.name}</Text>
+            </View>
+            <View style={styles.statusContainer}>
+              <View
+                style={[styles.statusDot, { backgroundColor: getStatusColor(status?.status || 'normal') }]}
+              />
+              <Text style={dynamicStyles.statusText}>{friendlyStatusMessage(status?.message || 'No information available')}</Text>
+            </View>
+          </Pressable>
+        );
+      })}
+      </View>
 
       {selectedLine && (
-        <View style={styles.lineDetailsContainer}>
-          <Text style={styles.detailsTitle}>
+        <View style={[styles.lineDetailsContainer, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+          <Text style={dynamicStyles.detailsTitle}>
             Line {subwayLines.find((l) => l.id === selectedLine)?.name} Details
           </Text>
           <View style={styles.nextTrainsContainer}>
             <Text style={styles.nextTrainsTitle}>Next trains:</Text>
             <View style={styles.trainTimesContainer}>
               <View style={styles.trainTime}>
-                <Text style={styles.trainTimeText}>3 min</Text>
-                <Text style={styles.trainDirectionText}>Uptown</Text>
+                <Text style={dynamicStyles.trainTimeText}>3 min</Text>
+                <Text style={dynamicStyles.trainDirectionText}>Uptown</Text>
               </View>
               <View style={styles.trainTime}>
-                <Text style={styles.trainTimeText}>7 min</Text>
-                <Text style={styles.trainDirectionText}>Downtown</Text>
+                <Text style={dynamicStyles.trainTimeText}>7 min</Text>
+                <Text style={dynamicStyles.trainDirectionText}>Downtown</Text>
               </View>
               <View style={styles.trainTime}>
-                <Text style={styles.trainTimeText}>12 min</Text>
-                <Text style={styles.trainDirectionText}>Uptown</Text>
+                <Text style={dynamicStyles.trainTimeText}>12 min</Text>
+                <Text style={dynamicStyles.trainDirectionText}>Uptown</Text>
               </View>
             </View>
           </View>
