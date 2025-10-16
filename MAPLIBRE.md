@@ -108,6 +108,22 @@ Troubleshooting
 - Runtime errors in app about missing view managers:
   - Check `UIManager.getViewManagerConfig` for `MapLibreGLMapView` or `RCTMGLMapView`. If absent, the native module wasn't linked or the build doesn't include it.
 
+- App crashes or fails to start with MapLibre import errors:
+  - **Issue**: Direct imports of `@maplibre/maplibre-react-native` at the top of files cause module resolution to fail when the native module is unavailable (e.g., in Expo Go or web).
+  - **Solution**: Use dynamic `require()` statements wrapped in try-catch blocks instead of static imports. The app already implements this pattern in `MapLibreMap.tsx`, `MapViewWrapper.tsx`, and other map components.
+  - **Example**: Instead of `import MapLibreGL from '@maplibre/maplibre-react-native'`, use:
+    ```typescript
+    function getMapLibreModule() {
+      try {
+        const imported = require('@maplibre/maplibre-react-native');
+        return imported?.default ?? imported;
+      } catch (e) {
+        return null;
+      }
+    }
+    ```
+  - The app automatically falls back to `InteractiveMap` (OpenStreetMap-based) when MapLibre is unavailable.
+
 Options comparison (short)
 
 - EAS dev builds (recommended for Expo projects):
