@@ -198,4 +198,4 @@ The solution is **minimal, non-breaking, and maintains all existing functionalit
 1. `Fix MapLibreGL direct import issue in map.tsx` - Removed problematic imports and dead code
 2. `Add troubleshooting docs for MapLibre import patterns` - Enhanced documentation
 
-**Total changes**: 2 files modified, 1 file deleted, 112 lines removed, 16 lines added to docs
+**Total changes**: 1 file added, 2 files modified, 1 file deleted
