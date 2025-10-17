@@ -241,6 +241,7 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
 
   // @ts-ignore - required for test-time lazy require
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     <MapLibreMapComp centerCoordinate={centerCoordinate} testID={testID}>
       {routeShape && MapLibre && (
