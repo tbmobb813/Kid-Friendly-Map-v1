@@ -1,13 +1,11 @@
 module.exports = {
   testEnvironment: 'node',
-  roots: ['<rootDir>/bun-tests'],
+  roots: ['<rootDir>/__tests__'],
   testMatch: ['**/?(*.)+(test).[jt]s'],
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  moduleNameMapper: {
-    '^bun:test$': '<rootDir>/__mocks__/bun-test-shim.js',
-  },
+  // No moduleNameMapper required; bun-specific tests were migrated to __tests__
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   verbose: true,
 };

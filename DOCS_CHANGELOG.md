@@ -18,7 +18,7 @@ Applied to all first-party markdown under:
 - `docs/`
 - `server/` (Markdown files only)
 - `templates/`
-- `bun-tests/`
+  (removed `bun-tests/` — tests consolidated under `__tests__/`)
 - Root-level project status / reports
 
 Explicitly excluded:
@@ -50,7 +50,7 @@ Explicitly excluded:
 - `templates/IMPLEMENTATION_GUIDE.md`: Added spacing; code fence languages; removed trailing spaces.
 - `docs/OFFLINE_MONITORING_IMPLEMENTATION.md`: Resolved duplicate heading; added language to stats block.
 - `docs/conversation-summary-2025-10-01.md`: Fixed split table row; abbreviated long cell.
-- `bun-tests/README.md`: Added fence languages; clarified structure.
+- `bun-tests/README.md`: (removed) tests consolidated under `__tests__/`.
 
 ### Exemptions & Rationale
 
@@ -83,7 +83,7 @@ node_modules/
 
 ### Recommended Next Steps
 
-1. Add CI job: `npx markdownlint-cli "docs/**/*.md" "server/**/*.md" "templates/**/*.md" "bun-tests/**/*.md" -c .markdownlint.json`.
+1. Add CI job: `npx markdownlint-cli "docs/**/*.md" "server/**/*.md" "templates/**/*.md" -c .markdownlint.json`.
 2. Consider `lint-staged` hook to lint only changed markdown files.
 3. Revisit MD013 legal suppressions post counsel approval for wrapped formatting.
 4. Add `STYLE_GUIDE.md` (headings, code fence languages, tables, line length guidance).
@@ -91,7 +91,7 @@ node_modules/
 
 ### Verification
 
-Executed full lint across: `docs/`, `server/`, `templates/`, `bun-tests/`.
+Executed full lint across: `docs/`, `server/`, `templates/`.
 Result: 0 violations (legal MD013 lines intentionally suppressed inline).
 
 ---
