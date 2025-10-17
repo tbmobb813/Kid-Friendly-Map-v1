@@ -6,7 +6,7 @@
 export function timeoutSignal(ms: number): AbortSignal {
   // Use built-in when available (Node 18+ / modern runtimes)
   // Cast to any to avoid TS complaining when lib.dom types don't include timeout.
-  const native: any = (AbortSignal as unknown) as any;
+  const native: any = AbortSignal as unknown as any;
   if (native && typeof native.timeout === 'function') {
     try {
       return native.timeout(ms);

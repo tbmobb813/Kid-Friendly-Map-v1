@@ -71,7 +71,7 @@ const MTAStationFinder: React.FC<MTAStationFinderProps> = ({ userLocation, onSta
   const COORD_CENTRAL_PARK_59 = { lat: 40.7681, lng: -73.9819 };
   const COORD_BROOKLYN_BRIDGE_CITY_HALL = { lat: 40.7127, lng: -74.0059 };
   const COORD_14TH_ST_UNION_SQ = { lat: 40.7348, lng: -73.9897 };
-  const COORD_14TH_ST_1ST_AV_BUS = { lat: 40.7323, lng: -73.9860 };
+  const COORD_14TH_ST_1ST_AV_BUS = { lat: 40.7323, lng: -73.986 };
   const mockStations: StationInfo[] = [
     {
       id: 'times-sq-42',

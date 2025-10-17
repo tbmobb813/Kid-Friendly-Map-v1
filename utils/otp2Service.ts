@@ -412,7 +412,9 @@ class OpenTripPlanner2 {
 
     try {
       const routerId = this.config.routerId || 'default';
-      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(stopId)}`;
+      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(
+        stopId,
+      )}`;
 
       const response = await fetch(url, {
         headers: {
@@ -453,7 +455,9 @@ class OpenTripPlanner2 {
 
     try {
       const routerId = this.config.routerId || 'default';
-      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(stopId)}/stoptimes`;
+      const url = `${this.config.baseUrl}/otp/routers/${routerId}/index/stops/${encodeURIComponent(
+        stopId,
+      )}/stoptimes`;
 
       const params = new URLSearchParams({
         timeRange: timeRange.toString(),
@@ -600,7 +604,9 @@ class OpenTripPlanner2 {
    * Create cache key for plan request
    */
   private createCacheKey(request: OTP2PlanRequest): string {
-    const key = `otp2_${request.fromPlace}_${request.toPlace}_${request.mode || 'default'}_${request.time || 'now'}_${request.date || 'today'}`;
+    const key = `otp2_${request.fromPlace}_${request.toPlace}_${request.mode || 'default'}_${
+      request.time || 'now'
+    }_${request.date || 'today'}`;
     return key.replace(/[^a-zA-Z0-9_-]/g, '_');
   }
 

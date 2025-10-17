@@ -34,7 +34,9 @@ export function NativeViewManagersDebug({ names = DEFAULT_NAMES }: { names?: str
       ))}
 
       <View style={styles.footer}>
-        <Text style={styles.note}>Tip: Rebuild dev-client after removing native packages to update results.</Text>
+        <Text style={styles.note}>
+          Tip: Rebuild dev-client after removing native packages to update results.
+        </Text>
       </View>
     </ScrollView>
   );
@@ -47,7 +49,14 @@ const styles = StyleSheet.create({
   subtitle: { color: '#444', marginBottom: 12 },
   row: { marginBottom: 12, padding: 10, borderWidth: 1, borderColor: '#eee', borderRadius: 8 },
   name: { fontWeight: '700' },
-  badge: { marginTop: 6, alignSelf: 'flex-start', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 6, color: '#fff' },
+  badge: {
+    marginTop: 6,
+    alignSelf: 'flex-start',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 6,
+    color: '#fff',
+  },
   ok: { backgroundColor: '#22c55e' },
   missing: { backgroundColor: '#ef4444' },
   details: { marginTop: 8, fontFamily: 'monospace', color: '#111' },

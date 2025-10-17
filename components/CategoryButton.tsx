@@ -137,8 +137,8 @@ const CategoryButton: React.FC<CategoryButtonProps> = ({
   const displayName = customCategory
     ? customCategory.name
     : category
-      ? category.charAt(0).toUpperCase() + category.slice(1)
-      : 'Other';
+    ? category.charAt(0).toUpperCase() + category.slice(1)
+    : 'Other';
   const iconName = customCategory ? customCategory.icon : getDefaultIcon(category || 'other');
   const backgroundColor = customCategory
     ? customCategory.color

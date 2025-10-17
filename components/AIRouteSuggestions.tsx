@@ -170,7 +170,9 @@ export default function AIRouteSuggestions({
                     </Text>
                   </View>
                   <View
-                    className={`px-3 py-1 rounded-full ${getDifficultyColor(route.difficultyLevel)}`}
+                    className={`px-3 py-1 rounded-full ${getDifficultyColor(
+                      route.difficultyLevel,
+                    )}`}
                   >
                     <Text className="text-xs font-semibold">
                       {route.difficultyLevel.toUpperCase()}

@@ -107,9 +107,9 @@ const RouteInfoPanel = ({ route, unifiedRoute }: any) => {
         {route?.name ?? unifiedRoute?.name ?? 'Selected route'}
       </Text>
       {summary && (
-        <Text
-          style={{ color: '#374151', marginTop: 6 }}
-        >{`Distance: ${Math.round(((summary.distance ?? 0) / 1000) * 10) / 10} km · Duration: ${Math.round((summary.duration ?? 0) / 60)} min`}</Text>
+        <Text style={{ color: '#374151', marginTop: 6 }}>{`Distance: ${
+          Math.round(((summary.distance ?? 0) / 1000) * 10) / 10
+        } km · Duration: ${Math.round((summary.duration ?? 0) / 60)} min`}</Text>
       )}
     </View>
   );
@@ -185,7 +185,6 @@ let BottomSheetView: any = null;
 let BottomSheetHandle: any = null;
 let BottomSheetModalProvider: any = ({ children }: any) => children;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const _bs = require('@gorhom/bottom-sheet');
   BottomSheet = _bs.default ?? _bs;
   BottomSheetView = _bs.BottomSheetView ?? _bs.BottomSheetView;
@@ -329,7 +328,6 @@ export default function MapScreen() {
     });
   }, []);
 
-
   useEffect(() => {
     if (!mapLibreSupported) {
       console.warn(
@@ -451,10 +449,13 @@ export default function MapScreen() {
                 const summary = routeToPass
                   ? {
                       type: routeToPass.type,
-                      features: (routeToPass.features || []).map((f: any) => ({ id: f.id, type: f.geometry?.type })),
+                      features: (routeToPass.features || []).map((f: any) => ({
+                        id: f.id,
+                        type: f.geometry?.type,
+                      })),
                     }
                   : null;
-                // eslint-disable-next-line no-console
+
                 console.debug('[MapScreen] routeGeoJSON before MapLibreRouteView:', summary);
               } catch (e) {
                 // ignore logging errors

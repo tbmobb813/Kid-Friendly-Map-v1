@@ -24,15 +24,15 @@ describe('Performance Critical Operations', () => {
       );
 
       const end = performance.now();
-  const processingTime = end - start;
+      const processingTime = end - start;
 
-  // Allow scaling of performance thresholds via PERF_TIME_MULTIPLIER env var.
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  // Relaxed base thresholds to be tolerant on typical CI/dev hardware
-  const maxFilterTime = 300 * PERF_TIME_MULTIPLIER;
+      // Allow scaling of performance thresholds via PERF_TIME_MULTIPLIER env var.
+      const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+      // Relaxed base thresholds to be tolerant on typical CI/dev hardware
+      const maxFilterTime = 300 * PERF_TIME_MULTIPLIER;
 
-  expect(safeNearbyPlaygrounds.length).toBeGreaterThan(0);
-  expect(processingTime).toBeLessThan(maxFilterTime); // Should be very fast
+      expect(safeNearbyPlaygrounds.length).toBeGreaterThan(0);
+      expect(processingTime).toBeLessThan(maxFilterTime); // Should be very fast
 
       console.log(`Bun: Filtered ${locations.length} locations in ${processingTime.toFixed(2)}ms`);
       console.log(`Found ${safeNearbyPlaygrounds.length} safe nearby playgrounds`);
@@ -68,9 +68,9 @@ describe('Performance Critical Operations', () => {
 
       expect(sorted.length).toBe(20000);
       expect(Object.keys(grouped).length).toBe(4);
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  const maxSortTime = 250 * PERF_TIME_MULTIPLIER;
-  expect(processingTime).toBeLessThan(maxSortTime);
+      const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+      const maxSortTime = 250 * PERF_TIME_MULTIPLIER;
+      expect(processingTime).toBeLessThan(maxSortTime);
 
       console.log(
         `Bun: Sorted and grouped ${locations.length} items in ${processingTime.toFixed(2)}ms`,
@@ -120,9 +120,9 @@ describe('Performance Critical Operations', () => {
       expect(parsed.locations.length).toBe(5000);
       expect(summary.totalLocations).toBe(5000);
       expect(Object.keys(summary.byType).length).toBeGreaterThan(0);
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  const maxJsonTime = 200 * PERF_TIME_MULTIPLIER;
-  expect(processingTime).toBeLessThan(maxJsonTime);
+      const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+      const maxJsonTime = 200 * PERF_TIME_MULTIPLIER;
+      expect(processingTime).toBeLessThan(maxJsonTime);
 
       console.log(
         `Bun: JSON ops on ${data.locations.length} records in ${processingTime.toFixed(2)}ms`,
@@ -174,9 +174,9 @@ describe('Performance Critical Operations', () => {
 
       expect(distances.length).toBe(10000);
       expect(averageDistance).toBeGreaterThan(0);
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  const maxDistanceTime = 150 * PERF_TIME_MULTIPLIER; // ms (relaxed)
-  expect(processingTime).toBeLessThan(maxDistanceTime);
+      const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+      const maxDistanceTime = 150 * PERF_TIME_MULTIPLIER; // ms (relaxed)
+      expect(processingTime).toBeLessThan(maxDistanceTime);
 
       console.log(
         `Bun: Calculated ${distances.length} distances in ${processingTime.toFixed(2)}ms`,
@@ -193,7 +193,9 @@ describe('Performance Critical Operations', () => {
       const texts = Array.from(
         { length: 5000 },
         (_, i) =>
-          `<p>Location ${i} has <b>great</b> amenities! Visit ${i}@example.com or call (555) ${String(i).padStart(4, '0')}</p>`,
+          `<p>Location ${i} has <b>great</b> amenities! Visit ${i}@example.com or call (555) ${String(
+            i,
+          ).padStart(4, '0')}</p>`,
       );
 
       // Process text: sanitize HTML, extract emails and phones
@@ -218,18 +220,20 @@ describe('Performance Critical Operations', () => {
 
       expect(processed.length).toBe(5000);
       expect(totalWords).toBeGreaterThan(0);
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  const maxTextTime = 200 * PERF_TIME_MULTIPLIER;
-  expect(processingTime).toBeLessThan(maxTextTime);
+      const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+      const maxTextTime = 200 * PERF_TIME_MULTIPLIER;
+      expect(processingTime).toBeLessThan(maxTextTime);
 
       console.log(
-        `Bun: Processed ${texts.length} texts (${totalWords} words) in ${processingTime.toFixed(2)}ms`,
+        `Bun: Processed ${texts.length} texts (${totalWords} words) in ${processingTime.toFixed(
+          2,
+        )}ms`,
       );
       console.log(`Found ${withContacts} entries with contact info`);
     });
   });
 });
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 // Deterministic performance tests migrated from bun-tests/performance
 // Use a seeded PRNG so timings are more stable across environments
 function mulberry32(a: number) {
@@ -261,7 +265,8 @@ describe('Performance Critical Operations', () => {
       }));
 
       const safeNearbyPlaygrounds = locations.filter(
-        (loc) => loc.isSafe && loc.category === 'playground' && loc.distance < 5000 && loc.rating > 3.5,
+        (loc) =>
+          loc.isSafe && loc.category === 'playground' && loc.distance < 5000 && loc.rating > 3.5,
       );
 
       const end = performance.now();
@@ -335,8 +340,10 @@ describe('Performance Critical Operations', () => {
           return acc;
         }, {}),
         averageAmenities:
-          parsed.locations.reduce((sum: number, loc: any) => sum + loc.details.amenities.length, 0) /
-          parsed.locations.length,
+          parsed.locations.reduce(
+            (sum: number, loc: any) => sum + loc.details.amenities.length,
+            0,
+          ) / parsed.locations.length,
       };
 
       const end = performance.now();
@@ -404,11 +411,12 @@ describe('Performance Critical Operations', () => {
     test('should handle bulk text processing', () => {
       const start = performance.now();
 
-      const texts = Array.from({ length: 5000 }, (_, i) =>
-        `<p>Location ${i} has <b>great</b> amenities! Visit ${i}@example.com or call (555) ${String(i).padStart(
-          4,
-          '0',
-        )}</p>`,
+      const texts = Array.from(
+        { length: 5000 },
+        (_, i) =>
+          `<p>Location ${i} has <b>great</b> amenities! Visit ${i}@example.com or call (555) ${String(
+            i,
+          ).padStart(4, '0')}</p>`,
       );
 
       const processed = texts.map((text) => {

@@ -119,7 +119,9 @@ class Logger {
   }
 
   exportLogs(): string {
-    return this.logs.map((log) => this.formatMessage(log.level, log.message, log.context)).join('\n');
+    return this.logs
+      .map((log) => this.formatMessage(log.level, log.message, log.context))
+      .join('\n');
   }
 }
 
@@ -129,7 +131,8 @@ export const log = {
   debug: (message: string, context?: Record<string, any>) => logger.debug(message, context),
   info: (message: string, context?: Record<string, any>) => logger.info(message, context),
   warn: (message: string, context?: Record<string, any>) => logger.warn(message, context),
-  error: (message: string, error?: Error, context?: Record<string, any>) => logger.error(message, error, context),
+  error: (message: string, error?: Error, context?: Record<string, any>) =>
+    logger.error(message, error, context),
   time: (label: string) => logger.time(label),
   timeEnd: (label: string) => logger.timeEnd(label),
 };
@@ -137,12 +140,16 @@ export const log = {
 // Safe global error handler setup (only when ErrorUtils exists)
 if ((global as any).ErrorUtils && Platform.OS !== 'web') {
   const errUtils = (global as any).ErrorUtils;
-  const originalHandler = typeof errUtils.getGlobalHandler === 'function' ? errUtils.getGlobalHandler() : undefined;
+  const originalHandler =
+    typeof errUtils.getGlobalHandler === 'function' ? errUtils.getGlobalHandler() : undefined;
 
   if (typeof errUtils.setGlobalHandler === 'function') {
     try {
       errUtils.setGlobalHandler((error: any, isFatal?: boolean) => {
-        logger.error(`Global ${isFatal ? 'Fatal' : 'Non-Fatal'} Error`, error, { isFatal, stack: error?.stack });
+        logger.error(`Global ${isFatal ? 'Fatal' : 'Non-Fatal'} Error`, error, {
+          isFatal,
+          stack: error?.stack,
+        });
         if (typeof originalHandler === 'function') {
           try {
             originalHandler(error, isFatal);
@@ -158,4 +165,3 @@ if ((global as any).ErrorUtils && Platform.OS !== 'web') {
 }
 
 export default logger;
-
