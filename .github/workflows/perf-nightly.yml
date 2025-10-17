@@ -21,7 +21,8 @@ jobs:
         env:
           PERF_TIME_MULTIPLIER: 1
           JEST_JUNIT_OUTPUT: bun-perf-junit.xml
-        run: npm run test:bun -- --config=jest.bun.config.cjs --colors --reporters=default --reporters=jest-junit | tee bun-perf.log
+        # NOTE: remove duplicate `--config` to avoid jest argument parsing errors
+        run: npm run test:bun -- --colors --reporters=default --reporters=jest-junit | tee bun-perf.log
       - name: Upload perf log
         uses: actions/upload-artifact@v4
         with:

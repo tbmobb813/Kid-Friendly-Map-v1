@@ -14,8 +14,7 @@ export default [
       '.expo/**',
       '.build/**',
       'dist/**',
-      'templates/**',
-      'bun-tests/**',
+  'templates/**',
     ],
   },
   {

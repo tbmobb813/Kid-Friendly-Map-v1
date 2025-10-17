@@ -7,8 +7,7 @@ module.exports = [
       '.expo/**',
       '.build/**',
       'dist/**',
-      'templates/**',
-      'bun-tests/**',
+  'templates/**',
     ],
   },
   {
