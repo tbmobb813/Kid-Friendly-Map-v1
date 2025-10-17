@@ -5,7 +5,8 @@ jest.mock('react-native-gesture-handler', () => {
     GestureHandlerRootView: ({ children, ...props }: any) =>
       React.createElement('GestureHandlerRootView', { ...props }, children),
     // Provide any other named exports used by the app as noop components
-    GestureDetector: ({ children, ...props }: any) => React.createElement('GestureDetector', { ...props }, children),
+    GestureDetector: ({ children, ...props }: any) =>
+      React.createElement('GestureDetector', { ...props }, children),
   };
 });
 
@@ -67,7 +68,8 @@ jest.mock('expo-router', () => ({
 // Mock lucide-react-native icons to simple components
 jest.mock('lucide-react-native', () => {
   const React = require('react');
-  const Icon = ({ children, ...props }: any) => React.createElement('Icon', props, children || null);
+  const Icon = ({ children, ...props }: any) =>
+    React.createElement('Icon', props, children || null);
   return {
     __esModule: true,
     default: Icon,
@@ -108,18 +110,27 @@ import { render, waitFor } from '@testing-library/react-native';
 jest.mock('@maplibre/maplibre-react-native', () => ({
   __esModule: true,
   default: {
-    MapView: ({ children, ...props }: any) => React.createElement('MapView', { testID: 'mock-mapview', ...props }, children),
+    MapView: ({ children, ...props }: any) =>
+      React.createElement('MapView', { testID: 'mock-mapview', ...props }, children),
     Camera: (props: any) => React.createElement('Camera', { testID: 'mock-camera', ...props }),
-    ShapeSource: ({ children, ...props }: any) => React.createElement('ShapeSource', { testID: `mock-shapesource-${props.id}`, ...props }, children),
-    LineLayer: (props: any) => React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) => React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
+    ShapeSource: ({ children, ...props }: any) =>
+      React.createElement(
+        'ShapeSource',
+        { testID: `mock-shapesource-${props.id}`, ...props },
+        children,
+      ),
+    LineLayer: (props: any) =>
+      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
+    CircleLayer: (props: any) =>
+      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
   },
 }));
 
 // Mock MapLibreMap wrapper used by MapLibreRouteView
 jest.mock('@/components/MapLibreMap', () => ({
   __esModule: true,
-  default: ({ children, testID }: any) => React.createElement('MockMapLibreMap', { testID: testID || 'mock-maplibre-map' }, children),
+  default: ({ children, testID }: any) =>
+    React.createElement('MockMapLibreMap', { testID: testID || 'mock-maplibre-map' }, children),
 }));
 
 // Capture the routeGeoJSON passed into MapLibreRouteView by mocking the component
@@ -129,7 +140,10 @@ jest.mock('@/components/MapLibreRouteView', () => {
   return ({ routeGeoJSON, showTransitStations, testID }: any) => {
     lastReceivedRouteGeoJSON = routeGeoJSON;
     lastShowTransitStations = typeof showTransitStations === 'boolean' ? showTransitStations : null;
-    return React.createElement('MockMapLibreRouteView', { testID: testID || 'mock-maplibre-route-view', showTransitStations });
+    return React.createElement('MockMapLibreRouteView', {
+      testID: testID || 'mock-maplibre-route-view',
+      showTransitStations,
+    });
   };
 });
 
@@ -144,7 +158,13 @@ jest.mock('@/utils/orsService', () => ({
           type: 'Feature',
           id: 'ors-route-1',
           properties: {},
-          geometry: { type: 'LineString', coordinates: [[-74.006, 40.7128], [-74.004, 40.7142]] },
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [-74.006, 40.7128],
+              [-74.004, 40.7142],
+            ],
+          },
         },
       ],
     }),
@@ -169,7 +189,13 @@ const mockRouteGeoJSON = {
       type: 'Feature',
       id: 'mock-ors-route',
       properties: {},
-      geometry: { type: 'LineString', coordinates: [[-74.006, 40.7128], [-74.004, 40.7142]] },
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [-74.006, 40.7128],
+          [-74.004, 40.7142],
+        ],
+      },
     },
   ],
 };
@@ -204,7 +230,7 @@ describe('MapScreen E2E (mocked services)', () => {
     const TestHarness = () => {
       const { geojson: orsRouteGeoJSON } = useRouteORS();
 
-  const selectedUnifiedRoute: any = null; // empty for this test
+      const selectedUnifiedRoute: any = null; // empty for this test
 
       const routeToPass =
         orsRouteGeoJSON ??

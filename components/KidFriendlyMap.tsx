@@ -199,7 +199,9 @@ export default function KidFriendlyMap({
       const φ1 = (lat * Math.PI) / 180;
       const λ1 = (lng * Math.PI) / 180;
 
-      const φ2 = Math.asin(Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(bearing));
+      const φ2 = Math.asin(
+        Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(bearing),
+      );
       const λ2 =
         λ1 +
         Math.atan2(
@@ -224,11 +226,18 @@ export default function KidFriendlyMap({
 
   const centerOnUser = () => {
     if (userLocation) {
-      const lngLat: [number, number] = [userLocation.coords.longitude, userLocation.coords.latitude];
+      const lngLat: [number, number] = [
+        userLocation.coords.longitude,
+        userLocation.coords.latitude,
+      ];
       // If MapLibre Camera ref or API is available, call it
       try {
         if (mapRef.current && typeof mapRef.current.setCamera === 'function') {
-          mapRef.current.setCamera({ centerCoordinate: lngLat, zoomLevel: 15, animationDuration: 700 });
+          mapRef.current.setCamera({
+            centerCoordinate: lngLat,
+            zoomLevel: 15,
+            animationDuration: 700,
+          });
           return;
         }
         if (mapLibreModule && mapLibreModule.Camera && mapRef.current?.getMap) {
@@ -265,11 +274,18 @@ export default function KidFriendlyMap({
 
       try {
         if (mapRef.current && typeof mapRef.current.fitBounds === 'function') {
-          mapRef.current.fitBounds([minLng, minLat], [maxLng, maxLat], { padding: 50, animationDuration: 700 });
+          mapRef.current.fitBounds([minLng, minLat], [maxLng, maxLat], {
+            padding: 50,
+            animationDuration: 700,
+          });
           return;
         }
         if (mapRef.current && typeof mapRef.current.setCamera === 'function') {
-          mapRef.current.setCamera({ centerCoordinate: [centerLng, centerLat], zoomLevel: 12, animationDuration: 700 });
+          mapRef.current.setCamera({
+            centerCoordinate: [centerLng, centerLat],
+            zoomLevel: 12,
+            animationDuration: 700,
+          });
           return;
         }
       } catch (e) {
@@ -304,7 +320,8 @@ export default function KidFriendlyMap({
         zoomLevel={12}
       >
         {/* Render safe zones as GeoJSON circles (approximate) */}
-        {mapLibreModule && safeZones.length > 0 && (
+        {mapLibreModule &&
+          safeZones.length > 0 &&
           (() => {
             const features = safeZones.map((z) => ({
               ...circleToPolygon(z.center, z.radius, 64),
@@ -326,24 +343,37 @@ export default function KidFriendlyMap({
                 />
               </mapLibreModule.ShapeSource>
             );
-          })()
-        )}
+          })()}
 
         {/* Render route as a LineLayer */}
-        {mapLibreModule && route.length > 1 && (
+        {mapLibreModule &&
+          route.length > 1 &&
           (() => {
             const coords = route.map((p) => [p.longitude, p.latitude]);
-            const geojson = { type: 'FeatureCollection', features: [{ type: 'Feature', id: 'route', properties: {}, geometry: { type: 'LineString', coordinates: coords } }] };
+            const geojson = {
+              type: 'FeatureCollection',
+              features: [
+                {
+                  type: 'Feature',
+                  id: 'route',
+                  properties: {},
+                  geometry: { type: 'LineString', coordinates: coords },
+                },
+              ],
+            };
             return (
               <mapLibreModule.ShapeSource id="route" shape={geojson}>
-                <mapLibreModule.LineLayer id="route-line" style={{ lineColor: '#2563EB', lineWidth: 4, lineOpacity: 0.95 }} />
+                <mapLibreModule.LineLayer
+                  id="route-line"
+                  style={{ lineColor: '#2563EB', lineWidth: 4, lineOpacity: 0.95 }}
+                />
               </mapLibreModule.ShapeSource>
             );
-          })()
-        )}
+          })()}
 
         {/* Route markers */}
-        {mapLibreModule && route.length > 0 && (
+        {mapLibreModule &&
+          route.length > 0 &&
           (() => {
             const features = route.map((p, i) => ({
               type: 'Feature',
@@ -354,11 +384,18 @@ export default function KidFriendlyMap({
             const geo = { type: 'FeatureCollection', features };
             return (
               <mapLibreModule.ShapeSource id="route-points" shape={geo}>
-                <mapLibreModule.CircleLayer id="route-points-layer" style={{ circleRadius: 6, circleColor: '#2563EB', circleStrokeColor: '#fff', circleStrokeWidth: 2 }} />
+                <mapLibreModule.CircleLayer
+                  id="route-points-layer"
+                  style={{
+                    circleRadius: 6,
+                    circleColor: '#2563EB',
+                    circleStrokeColor: '#fff',
+                    circleStrokeWidth: 2,
+                  }}
+                />
               </mapLibreModule.ShapeSource>
             );
-          })()
-        )}
+          })()}
       </MapLibreMap>
 
       {/* Control Buttons */}

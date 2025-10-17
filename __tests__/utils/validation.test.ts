@@ -67,10 +67,10 @@ describe('Array and Object Processing (Performance Critical)', () => {
 
     expect(safePlaygrounds.length).toBeGreaterThan(0);
     console.log(`Bun: Filtered ${locations.length} locations in ${end - start}ms`);
-  // Allow a higher threshold by default to avoid flakiness on CI/dev machines
-  const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
-  const maxFilterTime = 150 * PERF_TIME_MULTIPLIER; // ms
-  expect(end - start).toBeLessThan(maxFilterTime); // Should be very fast
+    // Allow a higher threshold by default to avoid flakiness on CI/dev machines
+    const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1');
+    const maxFilterTime = 150 * PERF_TIME_MULTIPLIER; // ms
+    expect(end - start).toBeLessThan(maxFilterTime); // Should be very fast
   });
 });
 // Deterministic validation tests migrated from bun-tests/utils

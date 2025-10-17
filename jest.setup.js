@@ -41,7 +41,7 @@ if (typeof jest !== 'undefined' && typeof jest.setTimeout === 'function') {
 // Some older JS tests call error handling helpers without importing them.
 // Make the common error handling utilities available globally to avoid fragile test order dependencies.
 try {
-  // eslint-disable-next-line global-require
+   
   const errorHandling = require('./utils/errorHandling');
 
   if (errorHandling) {

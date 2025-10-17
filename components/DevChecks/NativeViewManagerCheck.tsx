@@ -11,12 +11,11 @@ const NativeViewManagerCheck: React.FC = () => {
 
     // Also print to console so adb logcat picks it up
     // Tag logs with 'NativeCheck' to make them easy to filter
-    // eslint-disable-next-line no-console
+
     console.info('[NativeCheck] View manager check results:', res);
   }, []);
 
   const handleLog = () => {
-    // eslint-disable-next-line no-console
     console.info('[NativeCheck] Manual dump:', results);
     alert('Native view manager check logged to console (tag: NativeCheck)');
   };
@@ -24,7 +23,9 @@ const NativeViewManagerCheck: React.FC = () => {
   return (
     <ScrollView contentContainerStyle={styles.container} testID="native-view-manager-check">
       <Text style={styles.title}>Native View Manager Check</Text>
-      <Text style={styles.subtitle}>This screen checks for native map view managers on the device.</Text>
+      <Text style={styles.subtitle}>
+        This screen checks for native map view managers on the device.
+      </Text>
 
       {results.map((r) => (
         <View key={r.name} style={styles.row}>
@@ -46,7 +47,13 @@ const styles = StyleSheet.create({
   container: { padding: 16 },
   title: { fontSize: 20, fontWeight: '700', marginBottom: 8 },
   subtitle: { color: '#666', marginBottom: 12 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#eee' },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
   name: { fontSize: 14 },
   status: { fontWeight: '700' },
   ok: { color: 'green' },

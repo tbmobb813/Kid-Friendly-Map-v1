@@ -189,8 +189,8 @@ const SystemHealthMonitor: React.FC<SystemHealthMonitorProps> = ({ testId }) => 
             {overallStatus === 'healthy'
               ? 'Healthy'
               : overallStatus === 'warning'
-                ? 'Issues Detected'
-                : 'Errors Found'}
+              ? 'Issues Detected'
+              : 'Errors Found'}
           </Text>
         </View>
 

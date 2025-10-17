@@ -99,7 +99,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
   const handleMessage = (event: any) => {
     try {
-      const data = typeof event?.nativeEvent?.data === 'string' ? JSON.parse(event.nativeEvent.data) : null;
+      const data =
+        typeof event?.nativeEvent?.data === 'string' ? JSON.parse(event.nativeEvent.data) : null;
       if (data?.type === 'tap' && typeof data.lat === 'number' && typeof data.lng === 'number') {
         onSelectLocation?.({ latitude: data.lat, longitude: data.lng });
       }

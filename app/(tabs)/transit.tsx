@@ -206,7 +206,11 @@ export default function TransitScreen() {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text style={dynamicStyles.sectionTitle}>🌙</Text>
-          <Switch value={highContrast} onValueChange={setHighContrast} accessibilityLabel="High Contrast" />
+          <Switch
+            value={highContrast}
+            onValueChange={setHighContrast}
+            accessibilityLabel="High Contrast"
+          />
         </View>
       </View>
       <View style={styles.searchContainer}>
@@ -218,7 +222,7 @@ export default function TransitScreen() {
         />
       </View>
 
-  <Text style={dynamicStyles.sectionTitle}>Live Arrivals</Text>
+      <Text style={dynamicStyles.sectionTitle}>Live Arrivals</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -228,11 +232,18 @@ export default function TransitScreen() {
         {nearbyStations.map((station) => (
           <Pressable
             key={station.id}
-            style={[styles.stationButton, selectedStation === station.id && styles.selectedStationButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}
+            style={[
+              styles.stationButton,
+              selectedStation === station.id && styles.selectedStationButton,
+              highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+            ]}
             onPress={() => setSelectedStation(station.id)}
           >
             <Text
-              style={[dynamicStyles.stationButtonText, selectedStation === station.id && { color: '#FFF' }]}
+              style={[
+                dynamicStyles.stationButtonText,
+                selectedStation === station.id && { color: '#FFF' },
+              ]}
             >
               {station.name}
             </Text>
@@ -255,22 +266,42 @@ export default function TransitScreen() {
       <View style={styles.quickActionsContainer}>
         <Text style={dynamicStyles.sectionTitle}>Quick Actions</Text>
         <View style={styles.quickActions}>
-          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+          <Pressable
+            style={[
+              styles.quickActionButton,
+              highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+            ]}
+          >
             <Bell size={20} color={highContrast ? '#000' : Colors.primary} />
             <Text style={dynamicStyles.quickActionText}>Set Alerts</Text>
           </Pressable>
-          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+          <Pressable
+            style={[
+              styles.quickActionButton,
+              highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+            ]}
+          >
             <MapPin size={20} color={highContrast ? '#000' : Colors.primary} />
             <Text style={dynamicStyles.quickActionText}>Find Station</Text>
           </Pressable>
-          <Pressable style={[styles.quickActionButton, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+          <Pressable
+            style={[
+              styles.quickActionButton,
+              highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+            ]}
+          >
             <Clock size={20} color={highContrast ? '#000' : Colors.primary} />
             <Text style={dynamicStyles.quickActionText}>Schedule</Text>
           </Pressable>
         </View>
       </View>
 
-      <View style={[styles.statusSummaryContainer, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+      <View
+        style={[
+          styles.statusSummaryContainer,
+          highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+        ]}
+      >
         <View style={styles.statusHeader}>
           <Text style={dynamicStyles.sectionTitle}>Subway Status</Text>
           <View style={styles.timeContainer}>
@@ -279,8 +310,12 @@ export default function TransitScreen() {
           </View>
         </View>
 
-        <View style={[styles.alertContainer, highContrast && { backgroundColor: '#FFD700' }]}> 
-          <AlertCircle size={20} color={highContrast ? '#000' : Colors.warning} style={styles.alertIcon} />
+        <View style={[styles.alertContainer, highContrast && { backgroundColor: '#FFD700' }]}>
+          <AlertCircle
+            size={20}
+            color={highContrast ? '#000' : Colors.warning}
+            style={styles.alertIcon}
+          />
           <Text style={dynamicStyles.alertText}>
             Some lines are experiencing delays or service changes
           </Text>
@@ -288,30 +323,45 @@ export default function TransitScreen() {
       </View>
 
       <Text style={dynamicStyles.sectionTitle}>Subway Lines</Text>
-      <View style={styles.linesContainer}>{subwayLines.map((item) => {
-        const status = subwayStatus.find((s) => s.id === item.id);
-        return (
-          <Pressable
-            key={item.id}
-            style={[styles.lineItem, selectedLine === item.id && styles.selectedLine, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}
-            onPress={() => setSelectedLine(item.id)}
-          >
-            <View style={[styles.lineCircle, { backgroundColor: item.color }]}>
-              <Text style={dynamicStyles.lineText}>{item.name}</Text>
-            </View>
-            <View style={styles.statusContainer}>
-              <View
-                style={[styles.statusDot, { backgroundColor: getStatusColor(status?.status || 'normal') }]}
-              />
-              <Text style={dynamicStyles.statusText}>{friendlyStatusMessage(status?.message || 'No information available')}</Text>
-            </View>
-          </Pressable>
-        );
-      })}
+      <View style={styles.linesContainer}>
+        {subwayLines.map((item) => {
+          const status = subwayStatus.find((s) => s.id === item.id);
+          return (
+            <Pressable
+              key={item.id}
+              style={[
+                styles.lineItem,
+                selectedLine === item.id && styles.selectedLine,
+                highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+              ]}
+              onPress={() => setSelectedLine(item.id)}
+            >
+              <View style={[styles.lineCircle, { backgroundColor: item.color }]}>
+                <Text style={dynamicStyles.lineText}>{item.name}</Text>
+              </View>
+              <View style={styles.statusContainer}>
+                <View
+                  style={[
+                    styles.statusDot,
+                    { backgroundColor: getStatusColor(status?.status || 'normal') },
+                  ]}
+                />
+                <Text style={dynamicStyles.statusText}>
+                  {friendlyStatusMessage(status?.message || 'No information available')}
+                </Text>
+              </View>
+            </Pressable>
+          );
+        })}
       </View>
 
       {selectedLine && (
-        <View style={[styles.lineDetailsContainer, highContrast && { backgroundColor: '#FFD700', borderColor: '#000' }]}> 
+        <View
+          style={[
+            styles.lineDetailsContainer,
+            highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
+          ]}
+        >
           <Text style={dynamicStyles.detailsTitle}>
             Line {subwayLines.find((l) => l.id === selectedLine)?.name} Details
           </Text>

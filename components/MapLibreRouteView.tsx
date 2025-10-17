@@ -180,7 +180,7 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
 
   // Lazily resolve the MapLibreMap component so tests can mock '@/components/MapLibreMap'
   // even if jest.mock was called after this file was imported.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+
   const requiredMapLibreMap = require('@/components/MapLibreMap') as any;
   const MapLibreMapComp = requiredMapLibreMap?.default ?? requiredMapLibreMap;
 
@@ -239,7 +239,6 @@ const MapLibreRouteView: React.FC<MapLibreRouteViewProps> = ({
     [onStationPress],
   );
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore - required for test-time lazy require
   return (
     // @ts-ignore

@@ -27,7 +27,6 @@ const getLog = (): Logger => {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mockedModule = require('./logger');
     const resolvedLog: Logger = mockedModule?.log ?? mockedModule?.default ?? cachedLog;
 
@@ -51,7 +50,6 @@ const logger = {
 };
 let offlineManager: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const offlineModule = require('./offlineManager');
   offlineManager = offlineModule?.offlineManager || offlineModule?.default || offlineModule;
 } catch (error) {
@@ -84,7 +82,6 @@ if (
 
 let backendHealthMonitor: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const apiModule = require('./api');
   backendHealthMonitor =
     apiModule?.backendHealthMonitor || apiModule?.default?.backendHealthMonitor || apiModule;
@@ -100,7 +97,6 @@ if (!backendHealthMonitor || typeof backendHealthMonitor.getHealthStatus !== 'fu
 
 let Device: any;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   Device = require('expo-device');
 } catch (error) {
   Device = {
