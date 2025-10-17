@@ -165,10 +165,10 @@ Server-only tests:
 npm run test:server
 ```
 
-Performance suite:
+Logic test suite:
 
 ```bash
-npm run test:bun
+npm run test:logic
 ```
 
 Run all three locally in parallel with the helper script (it prints a
