@@ -85,6 +85,21 @@ The PR needed to merge the `feat/map` branch into `main` with the following requ
 
 ## ✅ CI Verification Results
 
+### CI-lite workflow
+
+We added a lightweight PR workflow (`.github/workflows/ci-lite.yml`) that runs TypeScript typecheck, ESLint, and the fast unit tests on every PR. Heavy suites (E2E and performance) are available as a manual `workflow_dispatch` job to keep PR feedback fast.
+
+### Triggering the ci-lite heavy job
+
+To run the heavy suite (E2E + performance) manually from the GitHub UI:
+
+1. Open the Actions tab for the repository.
+2. Select the _CI Lite_ workflow in the left column.
+3. Click _Run workflow_ (top-right) and select the branch you want to run against.
+4. Click _Run workflow_ to start the manual job. The job will execute `npm run test:e2e` and `npm run test:perf`.
+
+You can also trigger the workflow programmatically via the GitHub REST API by calling the `actions/workflows/ci-lite.yml/dispatches` endpoint with a branch name.
+
 ### TypeScript Typecheck
 ```bash
 $ npx tsc --noEmit
@@ -181,3 +196,17 @@ The PR is ready to be merged once reviewed.
 - `docs/MAPLIBRE_INTEGRATION_COMPLETE.md` - MapLibre integration details
 - `docs/DEPENDENCY_FIX_SUMMARY.md` - Previous dependency fixes
 - `.github/workflows/ci.yml` - CI configuration
+
+## 🧭 Active GitHub Actions workflows
+
+Below is a compact reference of the active workflows in `.github/workflows/` and their purpose so maintainers know what to run and when.
+
+| Filename | Triggers | Purpose | Run frequency / Notes |
+|---|---|---|---|
+| `.github/workflows/ci-lite.yml` | `pull_request` (main), `workflow_dispatch` | Lightweight PR checks: typecheck, lint, and fast unit tests. Manual heavy dispatch runs E2E & perf. | Runs on PRs. Heavy suite run manually via "Run workflow" |
+| `.github/workflows/ci.yml` | `push` (main), `pull_request` (main), `workflow_dispatch`, `schedule` (nightly) | Harmonized CI: quick checks, integration, heavy (E2E + perf), platform matrices, security and deployment readiness. | Mainline + scheduled nightly; heavy jobs run on dispatch or schedule |
+| `.github/workflows/tests.yml` | `push` (main), `pull_request` (main) | Separate frontend and server test suites producing logs & junit artifacts; consolidated summary step. | Runs on main branch and PRs against main |
+| `.github/workflows/ci-transit-adapter.yml` | `pull_request` (feat/transit) | Transit adapter smoke/integration: prepare GTFS, start server, smoke-test endpoint. | Runs on PRs targeting `feat/transit` branch |
+| `.github/workflows/ci-postgres-transit-adapter.yml` | `pull_request` (feat/transit) | Full transit adapter integration with Postgres service (imports GTFS, runs migrations, starts server, asserts enrichment). | Runs on PRs targeting `feat/transit` branch; useful for end-to-end validation |
+| `.github/workflows/nightly-gtfs-import.yml` | `schedule` (daily) and `workflow_dispatch` | Periodic GTFS import to JSON/Postgres (downloads GTFS, imports to JSON, optionally runs COPY import). | Nightly scheduled import; also manual dispatch |
+| `.github/workflows/perf-nightly.yml` | `schedule` (daily) and `workflow_dispatch` | Nightly performance benchmarks (historical runs, artifacts). Historically called Bun perf job; perf suite may be optional. | Nightly scheduled; can be dispatched manually |
