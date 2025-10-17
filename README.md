@@ -185,20 +185,20 @@ the workflow definition.
 Notes on performance-sensitive tests
 
 - PERF_TIME_MULTIPLIER: You can relax strict timing assertions locally by
-	setting the environment variable `PERF_TIME_MULTIPLIER`. For example, to
-	double allowed times:
+  setting the environment variable `PERF_TIME_MULTIPLIER`. For example, to
+  double allowed times:
 
-	```bash
-	PERF_TIME_MULTIPLIER=2 npm run test:bun
-	```
+  ```bash
+  PERF_TIME_MULTIPLIER=2 npm run test:bun
+  ```
 
 - FORCE_CONCURRENT: The concurrent runner defaults to sequential execution
-	for local stability. To force parallel runs locally (not recommended on
-	low-powered machines):
+  for local stability. To force parallel runs locally (not recommended on
+  low-powered machines):
 
-	```bash
-	FORCE_CONCURRENT=1 npm run test:concurrent
-	```
+  ```bash
+  FORCE_CONCURRENT=1 npm run test:concurrent
+  ```
 
 CI runs the strict performance checks with `PERF_TIME_MULTIPLIER=1` by
 default; if you see failures locally, increase `PERF_TIME_MULTIPLIER` for
@@ -219,38 +219,38 @@ Minimal steps (EAS / Expo):
 
 - Install the native dependency (already listed in package.json):
 
-	```bash
-	npm install @maplibre/maplibre-react-native
-	```
+  ```bash
+  npm install @maplibre/maplibre-react-native
+  ```
 
 - Create an EAS dev build to include the native module (recommended for
-	development):
+  development):
 
-	```bash
-	# login to EAS if you haven't
-	npx eas login
+  ```bash
+  # login to EAS if you haven't
+  npx eas login
 
-	# create a dev build for Android
-	npx eas build --profile development --platform android
+  # create a dev build for Android
+  npx eas build --profile development --platform android
 
-	# or for iOS (requires proper credentials / Apple account)
-	npx eas build --profile development --platform ios
-	```
+  # or for iOS (requires proper credentials / Apple account)
+  npx eas build --profile development --platform ios
+  ```
 
 - For production, run a normal EAS build:
 
-	```bash
-	npx eas build --profile production --platform all
-	```
+  ```bash
+  npx eas build --profile production --platform all
+  ```
 
 Notes:
 
 - In local dev you can still run the JS-only fallback (OpenStreetMap-based
-	InteractiveMap) in Expo Go. To use MapLibre you must run an EAS development
-	build or a bare React Native build that includes native modules.
+  InteractiveMap) in Expo Go. To use MapLibre you must run an EAS development
+  build or a bare React Native build that includes native modules.
 - iOS: run `cd ios && pod install` inside a bare project or when using a
-	local native workspace.
+  local native workspace.
 - Android: Gradle autolinking will pick up the module; ensure your
-	`android/` gradle configuration matches Expo/EAS expectations.
+  `android/` gradle configuration matches Expo/EAS expectations.
 - If you want a short checklist added to this README for CI/EAS credentials
-	or app signing, I can add that.
+  or app signing, I can add that.
