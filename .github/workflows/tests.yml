@@ -59,36 +59,12 @@ jobs:
           name: server-junit
           path: server-junit.xml
 
-  bun:
-    name: Bun-style logic tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install dependencies (npm)
-        run: npm ci
-      - name: Run bun smoke tests (produce junit)
-        env:
-          JEST_JUNIT_OUTPUT: bun-junit.xml
-        run: npm run test:bun -- --config=jest.bun.smoke.config.cjs --colors --reporters=default --reporters=jest-junit | tee bun.log
-      - name: Upload bun log
-        uses: actions/upload-artifact@v4
-        with:
-          name: bun-log
-          path: bun.log
-      - name: Upload bun junit
-        uses: actions/upload-artifact@v4
-        with:
-          name: bun-junit
-          path: bun-junit.xml
+  # bun job removed: logic tests consolidated under Jest in the frontend/server jobs
 
   summary:
     name: Consolidated summary
     runs-on: ubuntu-latest
-    needs: [frontend, server, bun]
+    needs: [frontend, server]
     steps:
       - uses: actions/checkout@v4
       - name: Download logs

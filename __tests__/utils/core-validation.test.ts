@@ -1,4 +1,5 @@
-import { test, expect, describe } from 'bun:test';
+// Converted from Bun-style test runner to Jest for compatibility
+// Original: import { test, expect, describe } from 'bun:test';
 
 // Import your actual validation functions
 // Note: We'll test the logic without React Native dependencies
