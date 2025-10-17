@@ -37,7 +37,7 @@ npm run test:monitoring # Monitoring tests
 npm run test:integration:watch
 ```
 
-### Logic Tests (Pure TypeScript - Use Bun)
+### Logic Tests (Pure TypeScript - Use Jest)
 
 ```bash
 # All logic tests (fast)
@@ -50,8 +50,8 @@ npm run test:logic:watch
 ### Run All Tests
 
 ```bash
-npm run test:all   # Both Jest and Bun tests
-npm run test:full  # Same as test:all
+npm run test:all   # Full Jest suite (integration + logic)
+npm run test:full  # Alias for full Jest run
 ```
 
 ## 🎯 Demo Scripts
@@ -80,27 +80,25 @@ npm run demo:offline
    - Pure logic tests: Use Bun → `npm run test:logic` ✅
 3. **For demo scripts**: They're already `.js` files → `npm run demo:integration` ✅
 
-### Issue: Bun can't run routing tests
+### Common Issues: TypeScript/Node execution errors
 
-**Problem**: Bun doesn't support React Native's Flow type syntax
+**Problem**: You're trying to run TypeScript files directly with Node.js
 
-**Solution**: Use Jest for React Native tests:
+**Solutions**:
 
-```bash
-npm run test:routing  # ✅ Works with Jest
-```
+1. **For Expo app**: Use `npm start` NOT `npm expo start` ❌
+2. **For tests**:
+  - React Native tests: Use Jest → `npm run test:integration` ✅
+  - Pure logic tests: Use Jest → `npm run test:logic` ✅
+3. **For demo scripts**: They're already `.js` files → `npm run demo:integration` ✅
 
 ## 📁 Test Directory Structure
 
 ```
-__tests__/          → React Native integration tests (use Jest)
+__tests__/          → React Native integration tests and pure logic tests (use Jest)
   ├── routing-integration.test.ts  ✅ 19/19 passing
   ├── offline-validation.test.ts
   └── monitoring.test.ts
-
-bun-tests/          → Pure logic tests (use Bun - faster)
-  ├── performance/
-  └── utils/
 ```
 
 ## 🔧 Development Workflow
@@ -191,8 +189,8 @@ npm --version    # Should be >= 9
 | -------------------------- | --------------------- | ----------- |
 | `npm start`                | Start Expo dev server | -           |
 | `npm run test:routing`     | Test routing features | Jest        |
-| `npm run test:logic`       | Test pure logic       | Bun         |
-| `npm run test:all`         | Run all tests         | Both        |
+| `npm run test:logic`       | Test pure logic       | Jest        |
+| `npm run test:all`         | Run all tests         | Jest        |
 | `npm run demo:integration` | Demo script           | Node.js     |
 
 ---
