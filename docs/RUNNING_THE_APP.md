@@ -37,7 +37,7 @@ npm run test:monitoring # Monitoring tests
 npm run test:integration:watch
 ```
 
-### Logic Tests (Pure TypeScript - Use Bun)
+### Logic Tests (Pure TypeScript - Use Jest)
 
 ```bash
 # All logic tests (fast)
@@ -101,7 +101,7 @@ __tests__/          → React Native integration tests (use Jest)
   ├── offline-validation.test.ts
   └── monitoring.test.ts
 
-bun-tests/          → Pure logic tests (use Bun - faster)
+__tests__/          → Pure logic tests and integration tests (use Jest)
   ├── performance/
   └── utils/
 ```

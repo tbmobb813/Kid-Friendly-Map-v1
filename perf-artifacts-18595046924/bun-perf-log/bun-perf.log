@@ -1,0 +1,4 @@
+
+> expo-app@1.0.0 test:bun
+> jest --config=jest.bun.config.cjs --config=jest.bun.config.cjs --colors --reporters=default --reporters=jest-junit
+

@@ -15,6 +15,7 @@ const Pressable = (props) => React.createElement('Pressable', props, props.child
 const TextInput = (props) => React.createElement('TextInput', props, props.children);
 const Image = (props) => React.createElement('Image', props, props.children);
 const Switch = (props) => React.createElement('Switch', props, props.children);
+const FlatList = (props) => React.createElement('FlatList', props, props.children);
 const ScrollView = (props) => React.createElement('ScrollView', props, props.children);
 const Modal = (props) => React.createElement('Modal', props, props.children);
 
