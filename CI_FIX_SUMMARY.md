@@ -210,3 +210,12 @@ Below is a compact reference of the active workflows in `.github/workflows/` and
 | `.github/workflows/ci-postgres-transit-adapter.yml` | `pull_request` (feat/transit) | Full transit adapter integration with Postgres service (imports GTFS, runs migrations, starts server, asserts enrichment). | Runs on PRs targeting `feat/transit` branch; useful for end-to-end validation |
 | `.github/workflows/nightly-gtfs-import.yml` | `schedule` (daily) and `workflow_dispatch` | Periodic GTFS import to JSON/Postgres (downloads GTFS, imports to JSON, optionally runs COPY import). | Nightly scheduled import; also manual dispatch |
 | `.github/workflows/perf-nightly.yml` | `schedule` (daily) and `workflow_dispatch` | Nightly performance benchmarks (historical runs, artifacts). Historically called Bun perf job; perf suite may be optional. | Nightly scheduled; can be dispatched manually |
+
+## ⚠️ Deprecated / legacy workflows
+
+The repository contains a few legacy workflow files or jobs that were left for historical reasons. They are safe to keep for auditability but are not required for normal PR validation:
+
+- Bun-specific performance job (historical): originally ran Bun-based perf suites; we've moved perf to optional, dispatchable jobs and now run tests under Jest/npm by default.
+- Any duplicate or legacy workflow fragments previously merged into `ci.yml` were cleaned when harmonizing workflows; if you find more legacy blocks, we can safely remove them after confirming no active consumers.
+
+If you'd like, I can prepare a small PR to remove legacy workflow files (or mark them `deprecated` by renaming to `.disabled.yml`) to reduce noise.
