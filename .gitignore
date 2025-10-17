@@ -89,13 +89,7 @@ yarn-error.*
 # local env files
 .env*.local
 
-# typescript
-*.tsbuildinfo
 
-<<<<<<< HEAD
-=======
 # Test coverage
 coverage/
-
->>>>>>> feat/transit
 # @end expo-cli
