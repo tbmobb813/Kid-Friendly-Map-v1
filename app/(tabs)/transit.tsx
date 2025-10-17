@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { TextStyle } from 'react-native';
-import { Switch } from 'react-native';
-import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform, Switch } from 'react-native';
 import globalStyles from '../../styles'; // Use globalStyles for shared styles
 
 // TODO: Move any shared/reusable styles to styles.ts and use globalStyles
