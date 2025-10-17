@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import type { TextStyle } from 'react-native';
 import { Switch } from 'react-native';
 import { StyleSheet, Text, View, ScrollView, Pressable, Dimensions, Platform } from 'react-native';
+import globalStyles from '../../styles'; // Use globalStyles for shared styles
+
+// TODO: Move any shared/reusable styles to styles.ts and use globalStyles
 import Colors from '@/constants/colors';
 import { subwayLines } from '@/mocks/transit';
 import SearchBar from '@/components/SearchBar';
@@ -120,17 +124,17 @@ export default function TransitScreen() {
   };
 
   // Dynamic styles for accessibility
-  const dynamicStyles = {
+  const dynamicStyles: Record<string, TextStyle> = {
     sectionTitle: {
       fontSize: largeText ? 24 : 18,
-      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: (largeText ? '700' : '600') as TextStyle['fontWeight'],
       color: highContrast ? '#000' : Colors.text,
       marginBottom: 16,
     },
     lineText: {
       color: '#FFFFFF',
       fontSize: largeText ? 20 : 16,
-      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: '700' as TextStyle['fontWeight'],
     },
     statusText: {
       fontSize: largeText ? 18 : 14,
@@ -138,13 +142,13 @@ export default function TransitScreen() {
     },
     detailsTitle: {
       fontSize: largeText ? 20 : 16,
-      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: '600' as TextStyle['fontWeight'],
       color: highContrast ? '#000' : Colors.text,
       marginBottom: 12,
     },
     trainTimeText: {
       fontSize: largeText ? 20 : 16,
-      fontWeight: '700' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: '700' as TextStyle['fontWeight'],
       color: highContrast ? '#000' : Colors.primary,
       marginBottom: 4,
     },
@@ -154,13 +158,13 @@ export default function TransitScreen() {
     },
     stationButtonText: {
       fontSize: largeText ? 18 : 14,
-      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: '600' as TextStyle['fontWeight'],
       color: highContrast ? '#000' : Colors.text,
       marginBottom: 4,
     },
     quickActionText: {
       fontSize: largeText ? 16 : 12,
-      fontWeight: '600' as React.ComponentProps<typeof Text>["style"]["fontWeight"],
+      fontWeight: '600' as TextStyle['fontWeight'],
       color: highContrast ? '#000' : Colors.text,
       textAlign: 'center',
     },
