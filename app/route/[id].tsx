@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native';
 import globalStyles from '../../styles'; // Use globalStyles for shared styles
+import transitStyles from '@/app/styles/transit';
 
 // TODO: Move any shared/reusable styles to styles.ts and use globalStyles
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -40,7 +41,7 @@ export default function RouteDetailScreen() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, transitStyles.container]}>
       <MapPlaceholder message={`Map showing route from ${origin.name} to ${destination.name}`} />
 
       <VoiceNavigation
@@ -108,7 +109,7 @@ export default function RouteDetailScreen() {
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Step by Step Directions</Text>
+  <Text style={[styles.sectionTitle, { ...transitStyles.sectionTitle } ]}>Step by Step Directions</Text>
 
         <View style={styles.stepsContainer}>
           {route.steps.map((step, index) => (
