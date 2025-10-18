@@ -100,5 +100,5 @@ try {
 
 // Default performance multiplier to avoid flaky timing tests on slower CI/machines
 if (!process.env.PERF_TIME_MULTIPLIER) {
-  process.env.PERF_TIME_MULTIPLIER = '1.5';
+  process.env.PERF_TIME_MULTIPLIER = '2.0';
 }

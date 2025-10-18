@@ -1,9 +1,12 @@
 // Converted from Bun-style test runner to Jest for compatibility
 // Original: import { test, expect, describe } from 'bun:test';
 
+import { measureAndRecord } from './perfHelper';
+
 describe('Performance Critical Operations', () => {
   describe('Large Dataset Processing', () => {
-    test('should filter large location datasets efficiently', () => {
+    test('should filter large location datasets efficiently', async () => {
+      await measureAndRecord('deterministic-filter-large-location-datasets', async () => {
       const start = performance.now();
 
       // Generate 50k test locations
@@ -23,8 +26,8 @@ describe('Performance Critical Operations', () => {
           loc.isSafe && loc.category === 'playground' && loc.distance < 5000 && loc.rating > 3.5,
       );
 
-      const end = performance.now();
-      const processingTime = end - start;
+  const end = performance.now();
+  const processingTime = end - start;
 
       // Allow scaling of performance thresholds via PERF_TIME_MULTIPLIER env var.
   const PERF_TIME_MULTIPLIER = Number(process.env.PERF_TIME_MULTIPLIER || '1.5');
@@ -36,6 +39,7 @@ describe('Performance Critical Operations', () => {
 
       console.log(`Bun: Filtered ${locations.length} locations in ${processingTime.toFixed(2)}ms`);
       console.log(`Found ${safeNearbyPlaygrounds.length} safe nearby playgrounds`);
+      });
     });
 
     test('should sort and group locations efficiently', () => {
@@ -250,7 +254,8 @@ const rng = mulberry32(SEED);
 
 describe('Deterministic Performance Critical Operations', () => {
   describe('Large Dataset Processing', () => {
-    test('should filter large location datasets efficiently', () => {
+    test('should filter large location datasets efficiently', async () => {
+      await measureAndRecord('deterministic-filter-large-location-datasets', async () => {
       const start = performance.now();
 
       // Generate 50k test locations deterministically
@@ -280,9 +285,11 @@ describe('Deterministic Performance Critical Operations', () => {
 
       console.log(`Filtered ${locations.length} locations in ${processingTime.toFixed(2)}ms`);
       console.log(`Found ${safeNearbyPlaygrounds.length} safe nearby playgrounds`);
+      });
     });
 
-    test('should sort and group locations efficiently', () => {
+    test('should sort and group locations efficiently', async () => {
+      await measureAndRecord('deterministic-sort-and-group-locations', async () => {
       const start = performance.now();
 
       const locations = Array.from({ length: 20000 }, (_, i) => ({
@@ -317,11 +324,13 @@ describe('Deterministic Performance Critical Operations', () => {
       console.log(
         `Sorted and grouped ${locations.length} items in ${processingTime.toFixed(2)}ms`,
       );
+      });
     });
   });
 
   describe('JSON and Data Transformation', () => {
-    test('should handle large JSON operations', () => {
+    test('should handle large JSON operations', async () => {
+      await measureAndRecord('deterministic-large-json-operations', async () => {
       const start = performance.now();
 
       const data = {
@@ -366,11 +375,13 @@ describe('Deterministic Performance Critical Operations', () => {
       console.log(
         `JSON ops on ${data.locations.length} records in ${processingTime.toFixed(2)}ms`,
       );
+      });
     });
   });
 
   describe('Mathematical Computations', () => {
-    test('should perform bulk distance calculations', () => {
+    test('should perform bulk distance calculations', async () => {
+      await measureAndRecord('deterministic-bulk-distance-calculations', async () => {
       const start = performance.now();
 
       const centerLat = 40.7128;
@@ -420,11 +431,13 @@ describe('Deterministic Performance Critical Operations', () => {
         `Calculated ${distances.length} distances in ${processingTime.toFixed(2)}ms`,
       );
       console.log(`Average distance: ${averageDistance.toFixed(2)}km, Nearby: ${nearbyPoints}`);
+      });
     });
   });
 
   describe('String Processing', () => {
-    test('should handle bulk text processing', () => {
+    test('should handle bulk text processing', async () => {
+      await measureAndRecord('deterministic-bulk-text-processing', async () => {
       const start = performance.now();
 
       const texts = Array.from(
@@ -466,6 +479,7 @@ describe('Deterministic Performance Critical Operations', () => {
         )}ms`,
       );
       console.log(`Found ${withContacts} entries with contact info`);
+      });
     });
   });
 });

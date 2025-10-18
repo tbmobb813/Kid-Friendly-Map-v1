@@ -25,6 +25,7 @@
     "test:fast": "npm run test:logic",
     "test:full": "npm run test:logic && jest __tests__",
     "test:concurrent": "bash ./scripts/run-tests-concurrent.sh",
+  "perf-check": "node ./tools/perfCheck.cjs",
     "demo:routing": "expo start --dev-client",
     "demo:offline": "node demo-offline-monitoring.js",
     "demo:integration": "node demo-integration.js",
