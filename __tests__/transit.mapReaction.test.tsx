@@ -1,7 +1,7 @@
 import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { useNavigationStore } from '@/stores/enhancedNavigationStore';
 import { nycStations } from '@/config/transit/nyc-stations';
-import { getMapViewWrapperMock, getLastFloatingMenuProps, getTestMapHost } from './test-utils';
+import { getMapViewWrapperMock, getLastFloatingMenuProps, getTestMapHost } from '../tests/test-utils';
 
 // Now require the screens after mocks are established
 // Mock MapLibre native library to avoid native modules in tests

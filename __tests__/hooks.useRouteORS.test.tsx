@@ -2,7 +2,7 @@ import React from 'react';
 import { render, act, waitFor } from '@testing-library/react-native';
 import { useRouteORS } from '@/hooks/useRouteORS';
 import Config from '@/utils/config';
-import { setORSApiKey, resetAll } from './test-utils';
+import { setORSApiKey, resetAll } from '../tests/test-utils';
 
 describe('useRouteORS', () => {
   const originalApiKey = Config.ROUTING.ORS_API_KEY;

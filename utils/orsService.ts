@@ -129,7 +129,7 @@ export interface ORSStep {
 
 class OpenRouteService {
   private config: ORSConfig;
-  private cache = new Map<string, ORSRouteResponse>();
+  private cache = new Map<string, { data: ORSRouteResponse; timestamp: number }>();
   private cacheTimeout = 5 * 60 * 1000; // 5 minutes
   private pendingRequests = new Map<string, Promise<ORSRouteResponse>>();
 
@@ -147,9 +147,23 @@ class OpenRouteService {
       // Create cache key
       const cacheKey = this.createCacheKey(request);
 
-      // Check cache first
+      // Check in-memory cache first (fast, avoids AsyncStorage race/failures)
+      const local = this.cache.get(cacheKey);
+      if (local && Date.now() - local.timestamp <= this.cacheTimeout) {
+        endTimer({ source: 'memory-cache' });
+        return local.data;
+      }
+
+      // Then check persistent/offline cache
       const cached = await this.getCachedRoute(cacheKey);
       if (cached) {
+        // Mirror persistent cache into in-memory cache for faster subsequent reads
+        try {
+          this.cache.set(cacheKey, { data: cached, timestamp: Date.now() });
+        } catch (e) {
+          // ignore memory cache set failures
+        }
+
         endTimer({ source: 'cache' });
         return cached;
       }
@@ -164,8 +178,16 @@ class OpenRouteService {
       // Make API request and store as pending
       const requestPromise = this.makeRouteRequest(request)
         .then(async (response) => {
-          // Cache response
+          // Cache response in persistent storage
           await this.cacheRoute(cacheKey, response);
+
+          // Also update in-memory cache for immediate availability
+          try {
+            this.cache.set(cacheKey, { data: response, timestamp: Date.now() });
+          } catch (e) {
+            // ignore
+          }
+
           // Clear pending
           this.pendingRequests.delete(cacheKey);
           return response;

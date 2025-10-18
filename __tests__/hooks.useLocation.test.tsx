@@ -1,4 +1,4 @@
-import { setExpoLocationStatus, resetAll } from './test-utils';
+import { setExpoLocationStatus, resetAll } from '../tests/test-utils';
 import React from 'react';
 import { render, waitFor } from '@testing-library/react-native';
 import useLocation from '@/hooks/useLocation';

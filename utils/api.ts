@@ -174,6 +174,9 @@ export const smartRoutesApi = {
 
 // Offline support
 export const offlineStorage = {
+  // In-memory fallback cache used when AsyncStorage operations fail (useful in tests)
+  _memoryCache: new Map<string, { data: any; timestamp: number }>(),
+
   async cacheResponse<T>(key: string, data: T): Promise<void> {
     try {
       await AsyncStorage.setItem(
@@ -183,8 +186,21 @@ export const offlineStorage = {
           timestamp: Date.now(),
         }),
       );
+      // Also update memory cache for immediate consistency
+      try {
+        offlineStorage._memoryCache.set(key, { data, timestamp: Date.now() });
+      } catch (e) {
+        // ignore memory cache failures
+      }
     } catch (error) {
-      console.warn('Failed to cache response:', error);
+      // AsyncStorage failed (e.g., storage full). Use in-memory cache as a fallback so
+      // tests and offline behaviour remain functional.
+      try {
+        offlineStorage._memoryCache.set(key, { data, timestamp: Date.now() });
+      } catch (e) {
+        // ignore
+      }
+      console.warn('Failed to cache response (AsyncStorage), falling back to memory cache:', error);
     }
   },
 
@@ -201,8 +217,19 @@ export const offlineStorage = {
 
       return data;
     } catch (error) {
-      console.warn('Failed to get cached response:', error);
-      return null;
+      // If AsyncStorage fails or parsing fails, fall back to in-memory cache if available
+      try {
+        const mem = offlineStorage._memoryCache.get(key);
+        if (!mem) return null;
+        if (Date.now() - mem.timestamp > maxAge) {
+          offlineStorage._memoryCache.delete(key);
+          return null;
+        }
+        return mem.data as T;
+      } catch (e) {
+        console.warn('Failed to get cached response (AsyncStorage+memory):', error, e);
+        return null;
+      }
     }
   },
 
@@ -211,6 +238,12 @@ export const offlineStorage = {
       const keys = await AsyncStorage.getAllKeys();
       const cacheKeys = keys.filter((key) => key.startsWith('cache_'));
       await AsyncStorage.multiRemove(cacheKeys);
+      // Clear in-memory fallback as well
+      try {
+        offlineStorage._memoryCache.clear();
+      } catch (e) {
+        // ignore
+      }
     } catch (error) {
       console.warn('Failed to clear cache:', error);
     }
