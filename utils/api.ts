@@ -367,18 +367,34 @@ export const createNetworkAwareApi = <T extends any[], R>(
   maxAge?: number,
 ) => {
   return async (...args: T): Promise<ApiResponse<R>> => {
+    // If a fresh cached response exists, return it immediately (cache-first).
     try {
-      // Check backend health if needed
+      const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
+      if (cached) {
+        return {
+          ...cached,
+          message: 'Showing cached data (from cache)',
+        };
+      }
+    } catch (cacheErr) {
+      // If cache read fails, continue to network request path.
+      console.warn('Error reading cache before network request:', cacheErr);
+    }
+
+    try {
+      // Check backend health if needed (non-blocking)
       if (backendHealthMonitor.shouldCheckHealth()) {
-        backendHealthMonitor.checkHealth();
+        // don't await to avoid delaying the request path
+        backendHealthMonitor.checkHealth().catch(() => {});
       }
 
-      // Try network request first
+      // Make the network request
       const response = await apiFunction(...args);
 
       // Cache successful response
-      if (response.success) {
-        await offlineStorage.cacheResponse(cacheKey, response);
+      if (response && (response as any).success) {
+        // Fire-and-forget cache write; don't block the response
+        offlineStorage.cacheResponse(cacheKey, response).catch(() => {});
       }
 
       return response;
@@ -387,14 +403,12 @@ export const createNetworkAwareApi = <T extends any[], R>(
       console.warn('Network request failed, trying cache:', errorInfo.message);
 
       // Try cache fallback for network errors
-      if (errorInfo.isNetworkError) {
-        const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
-        if (cached) {
-          return {
-            ...cached,
-            message: 'Showing cached data (offline)',
-          };
-        }
+      const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
+      if (cached) {
+        return {
+          ...cached,
+          message: 'Showing cached data (offline)',
+        };
       }
 
       // Return user-friendly error

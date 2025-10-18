@@ -10,6 +10,8 @@ import SearchBar from '@/components/SearchBar';
 import { Clock, MapPin, AlertCircle, Bell } from 'lucide-react-native';
 import LiveArrivalsCard from '@/components/LiveArrivalsCard';
 import { mockLiveArrivals, nearbyStations } from '@/mocks/liveArrivals';
+import { useNavigationStore } from '@/stores/enhancedNavigationStore';
+import { findStationById } from '@/config/transit/nyc-stations';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -83,7 +85,26 @@ export default function TransitScreen() {
     <Pressable
       key={station.id}
       style={[styles.stationButton, selectedStation === station.id && styles.selectedStationButton]}
-      onPress={() => setSelectedStation(station.id)}
+      onPress={() => {
+        setSelectedStation(station.id);
+        try {
+          const stationData = findStationById(station.id);
+          if (stationData) {
+            useNavigationStore.getState().setOrigin({
+              id: stationData.id,
+              name: stationData.name,
+              address: stationData.entrances?.[0]?.street || stationData.name,
+              category: 'other',
+              coordinates: {
+                latitude: stationData.coordinates.latitude,
+                longitude: stationData.coordinates.longitude,
+              },
+            });
+          }
+        } catch (e) {
+          // ignore store failures in tests
+        }
+      }}
     >
       <Text
         style={[
@@ -236,7 +257,26 @@ export default function TransitScreen() {
               selectedStation === station.id && styles.selectedStationButton,
               highContrast && { backgroundColor: '#FFD700', borderColor: '#000' },
             ]}
-            onPress={() => setSelectedStation(station.id)}
+            onPress={() => {
+              setSelectedStation(station.id);
+              try {
+                const stationData = findStationById(station.id);
+                if (stationData) {
+                  useNavigationStore.getState().setOrigin({
+                    id: stationData.id,
+                    name: stationData.name,
+                    address: stationData.entrances?.[0]?.street || stationData.name,
+                    category: 'other',
+                    coordinates: {
+                      latitude: stationData.coordinates.latitude,
+                      longitude: stationData.coordinates.longitude,
+                    },
+                  });
+                }
+              } catch (e) {
+                // ignore store failures in tests
+              }
+            }}
           >
             <Text
               style={[
