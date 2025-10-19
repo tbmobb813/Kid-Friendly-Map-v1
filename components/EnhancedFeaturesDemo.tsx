@@ -239,9 +239,7 @@ export default function EnhancedFeaturesDemo() {
           />
 
           <View className="absolute bottom-32 left-4 right-4 bg-white p-4 rounded-xl shadow-lg">
-            <Text className="text-lg font-bold text-gray-800 mb-2">
-              📍 MapLibre Integration
-            </Text>
+            <Text className="text-lg font-bold text-gray-800 mb-2">📍 MapLibre Integration</Text>
             <Text className="text-sm text-gray-600 mb-2">• Native map performance (MapLibre)</Text>
             <Text className="text-sm text-gray-600 mb-2">• Safe zone detection</Text>
             <Text className="text-sm text-gray-600 mb-2">• Route visualization</Text>

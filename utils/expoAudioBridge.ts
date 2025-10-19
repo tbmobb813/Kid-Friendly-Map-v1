@@ -13,12 +13,16 @@ import * as ExpoAudio from 'expo-audio';
 
 type AnyObject = Record<string, any>;
 
-const Recording = (ExpoAudio as any).Recording || (class {
-  async prepareToRecordAsync(_opts?: AnyObject) {}
-  async startAsync() {}
-  async stopAndUnloadAsync() {}
-  getURI() { return null; }
-});
+const Recording =
+  (ExpoAudio as any).Recording ||
+  class {
+    async prepareToRecordAsync(_opts?: AnyObject) {}
+    async startAsync() {}
+    async stopAndUnloadAsync() {}
+    getURI() {
+      return null;
+    }
+  };
 
 const Sound = (ExpoAudio as any).Sound || {
   async createAsync(_source: any, _options?: AnyObject) {
@@ -27,7 +31,8 @@ const Sound = (ExpoAudio as any).Sound || {
 };
 
 const requestPermissionsAsync = async () => {
-  if ((ExpoAudio as any).requestPermissionsAsync) return (ExpoAudio as any).requestPermissionsAsync();
+  if ((ExpoAudio as any).requestPermissionsAsync)
+    return (ExpoAudio as any).requestPermissionsAsync();
   return { granted: true };
 };
 
@@ -43,10 +48,14 @@ export const Audio = {
   requestPermissionsAsync,
   setAudioModeAsync,
   // constants fallbacks — some code references RECORDING_OPTION_* constants
-  RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4: (ExpoAudio as any).RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4 || 2,
-  RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC: (ExpoAudio as any).RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC || 3,
-  RECORDING_OPTION_IOS_OUTPUT_FORMAT_LINEARPCM: (ExpoAudio as any).RECORDING_OPTION_IOS_OUTPUT_FORMAT_LINEARPCM || 1,
-  RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH: (ExpoAudio as any).RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH || 0,
+  RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4:
+    (ExpoAudio as any).RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4 || 2,
+  RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC:
+    (ExpoAudio as any).RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC || 3,
+  RECORDING_OPTION_IOS_OUTPUT_FORMAT_LINEARPCM:
+    (ExpoAudio as any).RECORDING_OPTION_IOS_OUTPUT_FORMAT_LINEARPCM || 1,
+  RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH:
+    (ExpoAudio as any).RECORDING_OPTION_IOS_AUDIO_QUALITY_HIGH || 0,
 };
 
 export default Audio;

@@ -20,6 +20,7 @@ type MapViewWrapperProps = {
   onStationPress?: (stationId: string) => void;
   showTransitStations?: boolean;
   testId?: string;
+  cameraRef?: React.RefObject<any>;
 };
 
 // Helper: lazy-require MapLibre native module (keeps tests/mockability)
@@ -71,6 +72,7 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
   onStationPress,
   showTransitStations = false,
   testId,
+  cameraRef,
 }) => {
   const centerCoordinate = origin?.coordinates
     ? ([origin.coordinates.longitude, origin.coordinates.latitude] as [number, number])
@@ -78,7 +80,7 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
 
   // Lazy-load MapLibre and MapLibreMap component so tests can mock them
   const MapLibreModule: any = useMemo(() => getMapLibreModule(), []);
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+
   const MapLibreMapComp = useMemo(() => {
     try {
       const required = require('@/components/MapLibreMap');
@@ -98,7 +100,14 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
 
   const endpointFeatures = useMemo(
     () => buildEndpointFeatures(originCoord, destinationCoord, origin?.name, destination?.name),
-    [originCoord?.[0], originCoord?.[1], destinationCoord?.[0], destinationCoord?.[1], origin?.name, destination?.name],
+    [
+      originCoord?.[0],
+      originCoord?.[1],
+      destinationCoord?.[0],
+      destinationCoord?.[1],
+      origin?.name,
+      destination?.name,
+    ],
   );
 
   const handleStationPress = useCallback(
@@ -115,6 +124,7 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
     <View style={styles.container} testID={testId}>
       {/* If MapLibre or MapLibreMapComp not available, render MapLibreMapComp will handle fallback */}
       <MapLibreMapComp
+        ref={cameraRef}
         centerCoordinate={centerCoordinate}
         zoomLevel={12}
         onMapReady={onMapReady}
@@ -148,18 +158,23 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
                 circleOpacity: 0.95,
                 circleStrokeWidth: 2,
                 circleStrokeColor: '#FFFFFF',
-                circleColor: ['case', ['==', ['get', 'type'], 'origin'], Colors.primary, Colors.secondary],
+                circleColor: [
+                  'case',
+                  ['==', ['get', 'type'], 'origin'],
+                  Colors.primary,
+                  Colors.secondary,
+                ],
               }}
             />
           </MapLibreModule.ShapeSource>
         )}
 
         {/* Transit stations rendering (data kept in config) */}
-        {showTransitStations && MapLibreModule && (
+        {showTransitStations &&
+          MapLibreModule &&
           (() => {
             // lazy build station features to avoid importing data at top-level
             try {
-              // eslint-disable-next-line @typescript-eslint/no-var-requires
               const { nycStations } = require('@/config/transit/nyc-stations');
               const stationFeatures = {
                 type: 'FeatureCollection',
@@ -167,13 +182,20 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
                   type: 'Feature',
                   id: s.id,
                   properties: { id: s.id, name: s.name, safetyRating: s.kidFriendly?.safetyRating },
-                  geometry: { type: 'Point', coordinates: [s.coordinates.longitude, s.coordinates.latitude] },
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [s.coordinates.longitude, s.coordinates.latitude],
+                  },
                 })),
               };
 
               // @ts-ignore
               return (
-                <MapLibreModule.ShapeSource id="stations" shape={stationFeatures} onPress={handleStationPress}>
+                <MapLibreModule.ShapeSource
+                  id="stations"
+                  shape={stationFeatures}
+                  onPress={handleStationPress}
+                >
                   {/* @ts-ignore */}
                   <MapLibreModule.CircleLayer
                     id="stations-layer"
@@ -190,8 +212,7 @@ const MapViewWrapper: React.FC<MapViewWrapperProps> = ({
             } catch (e) {
               return null;
             }
-          })()
-        )}
+          })()}
       </MapLibreMapComp>
 
       <View style={styles.mapTypeIndicator} pointerEvents="none">

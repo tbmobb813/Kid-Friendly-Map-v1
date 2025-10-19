@@ -42,7 +42,6 @@ function getMapLibreModule() {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const imported = require('@maplibre/maplibre-react-native');
     mapLibreModule = imported?.default ?? imported;
   } catch (e) {

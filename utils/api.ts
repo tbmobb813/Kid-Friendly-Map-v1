@@ -174,6 +174,9 @@ export const smartRoutesApi = {
 
 // Offline support
 export const offlineStorage = {
+  // In-memory fallback cache used when AsyncStorage operations fail (useful in tests)
+  _memoryCache: new Map<string, { data: any; timestamp: number }>(),
+
   async cacheResponse<T>(key: string, data: T): Promise<void> {
     try {
       await AsyncStorage.setItem(
@@ -183,8 +186,21 @@ export const offlineStorage = {
           timestamp: Date.now(),
         }),
       );
+      // Also update memory cache for immediate consistency
+      try {
+        offlineStorage._memoryCache.set(key, { data, timestamp: Date.now() });
+      } catch (e) {
+        // ignore memory cache failures
+      }
     } catch (error) {
-      console.warn('Failed to cache response:', error);
+      // AsyncStorage failed (e.g., storage full). Use in-memory cache as a fallback so
+      // tests and offline behaviour remain functional.
+      try {
+        offlineStorage._memoryCache.set(key, { data, timestamp: Date.now() });
+      } catch (e) {
+        // ignore
+      }
+      console.warn('Failed to cache response (AsyncStorage), falling back to memory cache:', error);
     }
   },
 
@@ -201,8 +217,19 @@ export const offlineStorage = {
 
       return data;
     } catch (error) {
-      console.warn('Failed to get cached response:', error);
-      return null;
+      // If AsyncStorage fails or parsing fails, fall back to in-memory cache if available
+      try {
+        const mem = offlineStorage._memoryCache.get(key);
+        if (!mem) return null;
+        if (Date.now() - mem.timestamp > maxAge) {
+          offlineStorage._memoryCache.delete(key);
+          return null;
+        }
+        return mem.data as T;
+      } catch (e) {
+        console.warn('Failed to get cached response (AsyncStorage+memory):', error, e);
+        return null;
+      }
     }
   },
 
@@ -211,6 +238,12 @@ export const offlineStorage = {
       const keys = await AsyncStorage.getAllKeys();
       const cacheKeys = keys.filter((key) => key.startsWith('cache_'));
       await AsyncStorage.multiRemove(cacheKeys);
+      // Clear in-memory fallback as well
+      try {
+        offlineStorage._memoryCache.clear();
+      } catch (e) {
+        // ignore
+      }
     } catch (error) {
       console.warn('Failed to clear cache:', error);
     }
@@ -367,18 +400,34 @@ export const createNetworkAwareApi = <T extends any[], R>(
   maxAge?: number,
 ) => {
   return async (...args: T): Promise<ApiResponse<R>> => {
+    // If a fresh cached response exists, return it immediately (cache-first).
     try {
-      // Check backend health if needed
+      const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
+      if (cached) {
+        return {
+          ...cached,
+          message: 'Showing cached data (from cache)',
+        };
+      }
+    } catch (cacheErr) {
+      // If cache read fails, continue to network request path.
+      console.warn('Error reading cache before network request:', cacheErr);
+    }
+
+    try {
+      // Check backend health if needed (non-blocking)
       if (backendHealthMonitor.shouldCheckHealth()) {
-        backendHealthMonitor.checkHealth();
+        // don't await to avoid delaying the request path
+        backendHealthMonitor.checkHealth().catch(() => {});
       }
 
-      // Try network request first
+      // Make the network request
       const response = await apiFunction(...args);
 
       // Cache successful response
-      if (response.success) {
-        await offlineStorage.cacheResponse(cacheKey, response);
+      if (response && (response as any).success) {
+        // Fire-and-forget cache write; don't block the response
+        offlineStorage.cacheResponse(cacheKey, response).catch(() => {});
       }
 
       return response;
@@ -387,14 +436,12 @@ export const createNetworkAwareApi = <T extends any[], R>(
       console.warn('Network request failed, trying cache:', errorInfo.message);
 
       // Try cache fallback for network errors
-      if (errorInfo.isNetworkError) {
-        const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
-        if (cached) {
-          return {
-            ...cached,
-            message: 'Showing cached data (offline)',
-          };
-        }
+      const cached = await offlineStorage.getCachedResponse<ApiResponse<R>>(cacheKey, maxAge);
+      if (cached) {
+        return {
+          ...cached,
+          message: 'Showing cached data (offline)',
+        };
       }
 
       // Return user-friendly error

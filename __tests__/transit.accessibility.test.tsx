@@ -4,7 +4,11 @@ import { render, fireEvent } from '@testing-library/react-native';
 jest.mock('@/components/LiveArrivalsCard', () => {
   const React = require('react');
   function MockLiveArrivalsCard(props: any) {
-    return React.createElement('View', { testID: 'mock-live-arrivals' }, `Mocked LiveArrivals for ${props.stationId}`);
+    return React.createElement(
+      'View',
+      { testID: 'mock-live-arrivals' },
+      `Mocked LiveArrivals for ${props.stationId}`,
+    );
   }
   return { __esModule: true, default: MockLiveArrivalsCard };
 });
@@ -21,13 +25,13 @@ const createWrapper = () => {
 
 describe('TransitScreen Accessibility', () => {
   it('renders accessibility toggles', () => {
-  const { getByLabelText } = render(<TransitScreen />, { wrapper: createWrapper() });
+    const { getByLabelText } = render(<TransitScreen />, { wrapper: createWrapper() });
     expect(getByLabelText('Large Text')).toBeTruthy();
     expect(getByLabelText('High Contrast')).toBeTruthy();
   });
 
   it('toggles large text mode', () => {
-  const { getByLabelText, getByText } = render(<TransitScreen />, { wrapper: createWrapper() });
+    const { getByLabelText, getByText } = render(<TransitScreen />, { wrapper: createWrapper() });
     const largeTextSwitch = getByLabelText('Large Text');
     fireEvent(largeTextSwitch, 'valueChange', true);
     // Section title should be larger
@@ -35,7 +39,7 @@ describe('TransitScreen Accessibility', () => {
   });
 
   it('toggles high contrast mode', () => {
-  const { getByLabelText, getByText } = render(<TransitScreen />, { wrapper: createWrapper() });
+    const { getByLabelText, getByText } = render(<TransitScreen />, { wrapper: createWrapper() });
     const contrastSwitch = getByLabelText('High Contrast');
     fireEvent(contrastSwitch, 'valueChange', true);
     // Section title should have high contrast color
@@ -43,7 +47,7 @@ describe('TransitScreen Accessibility', () => {
   });
 
   it('shows friendly status messages', () => {
-  const { getAllByText } = render(<TransitScreen />, { wrapper: createWrapper() });
+    const { getAllByText } = render(<TransitScreen />, { wrapper: createWrapper() });
     const matches = getAllByText(/Trains are running smoothly!/);
     expect(matches.length).toBeGreaterThanOrEqual(1);
   });
