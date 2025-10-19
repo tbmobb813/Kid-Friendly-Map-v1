@@ -33,8 +33,10 @@ jest.mock('@maplibre/maplibre-react-native', () => ({
         children,
       );
     },
-    LineLayer: (props: any) => React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) => React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
+    LineLayer: (props: any) =>
+      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
+    CircleLayer: (props: any) =>
+      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
   },
 }));
 
@@ -109,38 +111,42 @@ const mockDestination = {
 
 describe('MapLibreRouteView', () => {
   it('should render without crashing', () => {
-    const { getByTestId } = render(<MapLibreRouteView /> as any);
+    const { getByTestId } = render((<MapLibreRouteView />) as any);
     expect(getByTestId('mock-maplibre-map')).toBeTruthy();
   });
 
   it('should render with route data', () => {
     const { getByTestId } = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-        routeGeoJSON={mockRouteGeoJSON}
-      /> as any,
+      (
+        <MapLibreRouteView
+          origin={mockOrigin}
+          destination={mockDestination}
+          routeGeoJSON={mockRouteGeoJSON}
+        />
+      ) as any,
     );
 
     expect(getByTestId('mock-shapesource-route')).toBeTruthy();
   });
 
   it('should render origin and destination markers', () => {
-    const { getByTestId } = render(<MapLibreRouteView origin={mockOrigin} destination={mockDestination} /> as any);
+    const { getByTestId } = render(
+      (<MapLibreRouteView origin={mockOrigin} destination={mockDestination} />) as any,
+    );
 
     expect(getByTestId('mock-shapesource-endpoints')).toBeTruthy();
     expect(getByTestId('mock-circlelayer-endpoint-layer')).toBeTruthy();
   });
 
   it('should render transit stations when enabled', () => {
-    const { getByTestId } = render(<MapLibreRouteView showTransitStations={true} /> as any);
+    const { getByTestId } = render((<MapLibreRouteView showTransitStations={true} />) as any);
 
     expect(getByTestId('mock-shapesource-stations')).toBeTruthy();
     expect(getByTestId('mock-circlelayer-stations-layer')).toBeTruthy();
   });
 
   it('should not render transit stations when disabled', () => {
-    const { queryByTestId } = render(<MapLibreRouteView showTransitStations={false} /> as any);
+    const { queryByTestId } = render((<MapLibreRouteView showTransitStations={false} />) as any);
 
     expect(queryByTestId('mock-shapesource-stations')).toBeNull();
     expect(queryByTestId('mock-circlelayer-stations-layer')).toBeNull();
@@ -148,7 +154,9 @@ describe('MapLibreRouteView', () => {
 
   it('should create fallback route when no route data provided', () => {
     const { getByTestId } = render(
-      <MapLibreRouteView origin={mockOrigin} destination={mockDestination} routeGeoJSON={null} /> as any,
+      (
+        <MapLibreRouteView origin={mockOrigin} destination={mockDestination} routeGeoJSON={null} />
+      ) as any,
     );
 
     // Should still render route elements (fallback route)
@@ -157,7 +165,7 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should not render route when no origin or destination', () => {
-    const { queryByTestId } = render(<MapLibreRouteView routeGeoJSON={null} /> as any);
+    const { queryByTestId } = render((<MapLibreRouteView routeGeoJSON={null} />) as any);
 
     expect(queryByTestId('mock-shapesource-route')).toBeNull();
     expect(queryByTestId('mock-linelayer-route-line')).toBeNull();
@@ -167,7 +175,7 @@ describe('MapLibreRouteView', () => {
     const mockOnStationPress = jest.fn();
 
     const { getByTestId } = render(
-      <MapLibreRouteView onStationPress={mockOnStationPress} showTransitStations={true} /> as any,
+      (<MapLibreRouteView onStationPress={mockOnStationPress} showTransitStations={true} />) as any,
     );
 
     const stationsSource = getByTestId('mock-shapesource-stations');
@@ -192,18 +200,20 @@ describe('MapLibreRouteView', () => {
   });
 
   it('should use custom testID when provided', () => {
-    const { getByTestId } = render(<MapLibreRouteView testID="custom-map-view" /> as any);
+    const { getByTestId } = render((<MapLibreRouteView testID="custom-map-view" />) as any);
 
     expect(getByTestId('custom-map-view')).toBeTruthy();
   });
 
   it('should compute center correctly with route data', () => {
     const { getByTestId } = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-        routeGeoJSON={mockRouteGeoJSON}
-      /> as any,
+      (
+        <MapLibreRouteView
+          origin={mockOrigin}
+          destination={mockDestination}
+          routeGeoJSON={mockRouteGeoJSON}
+        />
+      ) as any,
     );
 
     const mapView = getByTestId('mock-maplibre-map');
@@ -221,11 +231,13 @@ describe('MapLibreRouteView', () => {
     };
 
     const { getByTestId } = render(
-      <MapLibreRouteView
-        origin={mockOrigin}
-        destination={mockDestination}
-        routeGeoJSON={emptyRouteGeoJSON}
-      /> as any,
+      (
+        <MapLibreRouteView
+          origin={mockOrigin}
+          destination={mockDestination}
+          routeGeoJSON={emptyRouteGeoJSON}
+        />
+      ) as any,
     );
 
     // Should still render the map

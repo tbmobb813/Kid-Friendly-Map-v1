@@ -96,7 +96,7 @@ export function useRouteORS(
     profileName: string,
   ): Promise<RouteGeoJSON | null> => {
     // Debug logging for CI/test investigation
-    // eslint-disable-next-line no-console
+
     console.debug('[useRouteORS] fetchRoute called', { startCoord, endCoord, profileName });
     if (!Config.ROUTING.ORS_API_KEY) {
       throw new Error(
@@ -114,7 +114,6 @@ export function useRouteORS(
     }, DEFAULT_TIMEOUT);
 
     try {
-      // eslint-disable-next-line no-console
       console.debug('[useRouteORS] performing fetch', { routeUrl });
       const response = await fetch(routeUrl, {
         method: 'GET',
@@ -124,7 +123,7 @@ export function useRouteORS(
         signal: controller.signal,
       });
       // If the controller was aborted while the mocked fetch resolved, ignore the result.
-      // eslint-disable-next-line no-console
+
       console.debug('[useRouteORS] fetch resolved, aborted?', (controller.signal as any).aborted);
       if (controller.signal && (controller.signal as any).aborted) {
         // Treat as aborted
@@ -144,7 +143,7 @@ export function useRouteORS(
     } finally {
       clearTimeout(timeoutId);
       abortRef.current = null;
-      // eslint-disable-next-line no-console
+
       console.debug('[useRouteORS] fetchRoute finally, cleared timeout');
     }
   };
@@ -202,7 +201,6 @@ export function useRouteORS(
     return () => {
       abortRef.current?.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start?.[0], start?.[1], end?.[0], end?.[1], profile, enabled]);
 
   const summary = useMemo(

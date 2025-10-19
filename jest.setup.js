@@ -1,3 +1,12 @@
+// Jest setup file: import shared test utils to hoist module mocks and provide helpers
+try {
+  require('./__tests__/test-utils');
+} catch (e) {
+  // If test-utils doesn't exist or errors, don't crash the test runner here.
+  // Tests that want to opt-in can still import test-utils directly.
+   
+  console.warn('jest.setup: failed to load test-utils', e?.message ?? e);
+}
 // Jest setup file: define RN globals expected by app code
 // __DEV__ is normally provided by Metro/React Native. Define it here for tests.
 // Run tests in development mode to avoid production crash-reporting side-effects
@@ -41,7 +50,7 @@ if (typeof jest !== 'undefined' && typeof jest.setTimeout === 'function') {
 // Some older JS tests call error handling helpers without importing them.
 // Make the common error handling utilities available globally to avoid fragile test order dependencies.
 try {
-  // eslint-disable-next-line global-require
+   
   const errorHandling = require('./utils/errorHandling');
 
   if (errorHandling) {
@@ -81,4 +90,15 @@ console.error = (...args) => {
   _origConsoleError.apply(console, args);
 };
 
-import '@testing-library/jest-native/extend-expect';
+// Attempt to load jest-native matchers if available. Don't fail tests if it's not installed.
+try {
+   
+  require('@testing-library/jest-native/extend-expect');
+} catch (e) {
+  // not critical; tests can still run without these matchers
+}
+
+// Default performance multiplier to avoid flaky timing tests on slower CI/machines
+if (!process.env.PERF_TIME_MULTIPLIER) {
+  process.env.PERF_TIME_MULTIPLIER = '2.0';
+}

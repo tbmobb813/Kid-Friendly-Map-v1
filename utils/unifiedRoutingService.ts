@@ -557,8 +557,7 @@ class UnifiedRoutingService {
 
       // Shorter waiting times
       const waitTime = route.waitingTime || 0;
-      if (waitTime < 300)
-        score += 10; // < 5 minutes
+      if (waitTime < 300) score += 10; // < 5 minutes
       else if (waitTime > 900) score -= 15; // > 15 minutes
     }
 
@@ -664,7 +663,7 @@ class UnifiedRoutingService {
           result += b << shift;
           shift += 5;
         } while (b >= POLYLINE_CONTINUATION_BIT);
-        lat += (result & 1) ? ~(result >> 1) : result >> 1;
+        lat += result & 1 ? ~(result >> 1) : result >> 1;
 
         result = 1;
         shift = 0;
@@ -673,7 +672,7 @@ class UnifiedRoutingService {
           result += b << shift;
           shift += 5;
         } while (b >= POLYLINE_CONTINUATION_BIT);
-        lng += (result & 1) ? ~(result >> 1) : result >> 1;
+        lng += result & 1 ? ~(result >> 1) : result >> 1;
 
         coordinates.push([lng / factor, lat / factor]);
       }
@@ -741,7 +740,7 @@ class UnifiedRoutingService {
             lat: step.maneuver?.location?.[1] || 0,
             lng: step.maneuver?.location?.[0] || 0,
           },
-        }))
+        })),
       ) || []
     );
   }

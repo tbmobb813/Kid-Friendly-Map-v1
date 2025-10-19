@@ -1,6 +1,10 @@
 # Kid-Friendly Map & Transit Navigator
 
-This repository contains an Expo React Native application focused on kid-friendly navigation, safety features, and transit info.
+This repository contains an Expo React Native application focused on kid-friendly
+navigation, safety features, and transit info.
+
+[![CI Lite](https://github.com/tbmobb813/Kid-Friendly-Map-v1/actions/workflows/ci-lite.yml/badge.svg?branch=feature/transit-screen-mta-integration)](https://github.com/tbmobb813/Kid-Friendly-Map-v1/actions/workflows/ci-lite.yml)
+[![CI Full](https://github.com/tbmobb813/Kid-Friendly-Map-v1/actions/workflows/ci.yml/badge.svg?branch=feature/transit-screen-mta-integration)](https://github.com/tbmobb813/Kid-Friendly-Map-v1/actions/workflows/ci.yml)
 
 ## Quickstart
 
@@ -44,14 +48,15 @@ This project uses Expo Application Services (EAS) for production mobile builds.
 npm install -g eas-cli
 ```
 
-Login and configure credentials:
+2. Login and configure credentials:
 
 ```bash
 eas login
 # Follow prompts to configure your account
 ```
 
-Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions secrets.
+Add secrets (Sentry DSN, API keys, signing keys) in EAS or GitHub Actions
+secrets.
 
 Build:
 
@@ -71,7 +76,8 @@ This repo includes placeholder assets; replace them with production artwork.
 
 **Map & Routing Configuration:**
 
-Set these environment variables for MapLibre and OpenRouteService integration:
+Set these environment variables for MapLibre and OpenRouteService
+integration:
 
 ```bash
 # Map configuration
@@ -104,7 +110,12 @@ A Sentry integration skeleton is available at `utils/sentry.ts`. Add `SENTRY_DSN
 
 ## CI/CD
 
-There is a GitHub Actions pipeline in `.github/workflows/ci.yml`. It expects Bun for install steps; if you prefer npm/yarn, update CI to match your chosen package manager.
+There is a GitHub Actions pipeline in `.github/workflows/ci.yml` and a lightweight PR workflow at `.github/workflows/ci-lite.yml`.
+
+Notes:
+- We removed Bun-specific test runners from the main PR pipelines and migrated tests to run under Jest/npm. Prefer `npm ci` in CI unless you intentionally want Bun for performance experiments.
+
+- See `CI_FIX_SUMMARY.md` → "Active GitHub Actions workflows" for a compact reference of which workflow runs what and how to trigger manual/heavy jobs.
 
 ## Strategic Planning & Roadmap
 
@@ -139,45 +150,59 @@ See `docs/TESTING_GUIDE.md` and `docs/PERFORMANCE_OPTIMIZATION.md` for developer
 
 ## Testing (three suites)
 
-This repository separates tests into three focused suites to keep transforms and environments clean:
+This repository separates tests into three focused suites to keep transforms and
+environments clean.
 
+Run the default suite:
 
 ```bash
 npm test
 ```
 
+Server-only tests:
 
 ```bash
 npm run test:server
 ```
 
+Logic test suite:
 
 ```bash
-npm run test:bun
+npm run test:logic
 ```
 
-Run all three locally in parallel with the helper script (it prints a consolidated summary):
+Run all three locally in parallel with the helper script (it prints a
+consolidated summary):
 
 ```bash
 npm run test:concurrent
 ```
 
-CI runs these suites in parallel jobs — see `.github/workflows/tests.yml` for the workflow definition.
+CI runs these suites in parallel jobs — see `.github/workflows/tests.yml` for
+the workflow definition.
+
 
 Notes on performance-sensitive tests
-- PERF_TIME_MULTIPLIER: You can relax strict timing assertions locally by setting the environment variable `PERF_TIME_MULTIPLIER`. For example, to double allowed times:
 
-```bash
-PERF_TIME_MULTIPLIER=2 npm run test:bun
-```
+- PERF_TIME_MULTIPLIER: You can relax strict timing assertions locally by
+  setting the environment variable `PERF_TIME_MULTIPLIER`. For example, to
+  double allowed times:
 
-- FORCE_CONCURRENT: The concurrent runner defaults to sequential execution for local stability. To force parallel runs locally (not recommended on low-powered machines):
+  ```bash
+  PERF_TIME_MULTIPLIER=2 npm run test:bun
+  ```
 
-```bash
-FORCE_CONCURRENT=1 npm run test:concurrent
-```
+- FORCE_CONCURRENT: The concurrent runner defaults to sequential execution
+  for local stability. To force parallel runs locally (not recommended on
+  low-powered machines):
 
-CI runs the strict performance checks with `PERF_TIME_MULTIPLIER=1` by default; if you see failures locally, increase `PERF_TIME_MULTIPLIER` for development runs.
+  ```bash
+  FORCE_CONCURRENT=1 npm run test:concurrent
+  ```
+
+CI runs the strict performance checks with `PERF_TIME_MULTIPLIER=1` by
+default; if you see failures locally, increase `PERF_TIME_MULTIPLIER` for
+development runs.
 
 
 ## License
@@ -186,37 +211,46 @@ Add a license file (e.g., MIT) if you intend to open-source this project.
 
 ## Enabling MapLibre in Expo / EAS builds
 
-This project uses the native MapLibre React Native module for mobile builds. MapLibre will not be available in the stock Expo Go app — you must create a development or production build that includes the native module.
+This project uses the native MapLibre React Native module for mobile builds.
+MapLibre will not be available in the stock Expo Go app — you must create a
+development or production build that includes the native module.
 
 Minimal steps (EAS / Expo):
 
 - Install the native dependency (already listed in package.json):
 
-```bash
-npm install @maplibre/maplibre-react-native
-```
+  ```bash
+  npm install @maplibre/maplibre-react-native
+  ```
 
-- Create an EAS dev build to include the native module (recommended for development):
+- Create an EAS dev build to include the native module (recommended for
+  development):
 
-```bash
-# login to EAS if you haven't
-npx eas login
+  ```bash
+  # login to EAS if you haven't
+  npx eas login
 
-# create a dev build for Android
-npx eas build --profile development --platform android
+  # create a dev build for Android
+  npx eas build --profile development --platform android
 
-# or for iOS (requires proper credentials / Apple account)
-npx eas build --profile development --platform ios
-```
+  # or for iOS (requires proper credentials / Apple account)
+  npx eas build --profile development --platform ios
+  ```
 
 - For production, run a normal EAS build:
 
-```bash
-npx eas build --profile production --platform all
-```
+  ```bash
+  npx eas build --profile production --platform all
+  ```
 
 Notes:
-- In local dev you can still run the JS-only fallback (OpenStreetMap-based InteractiveMap) in Expo Go. To use MapLibre you must run an EAS development build or a bare React Native build that includes native modules.
-- iOS: run `cd ios && pod install` inside a bare project or when using a local native workspace.
-- Android: Gradle autolinking will pick up the module; ensure your `android/` gradle configuration matches Expo/EAS expectations.
-- If you want a short checklist added to this README for CI/EAS credentials or app signing, I can add that.
+
+- In local dev you can still run the JS-only fallback (OpenStreetMap-based
+  InteractiveMap) in Expo Go. To use MapLibre you must run an EAS development
+  build or a bare React Native build that includes native modules.
+- iOS: run `cd ios && pod install` inside a bare project or when using a
+  local native workspace.
+- Android: Gradle autolinking will pick up the module; ensure your
+  `android/` gradle configuration matches Expo/EAS expectations.
+- If you want a short checklist added to this README for CI/EAS credentials
+  or app signing, I can add that.
