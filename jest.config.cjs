@@ -4,7 +4,6 @@ module.exports = {
   globals: {
     'ts-jest': {},
   },
-  testPathIgnorePatterns: ['/node_modules/', '/server/__tests__/'],
   // Ignore helper module that lives inside __tests__ but isn't a test file
   testPathIgnorePatterns: ['/node_modules/', '/server/__tests__/', '/__tests__/test-utils\.(ts|tsx|js)$'],
   transformIgnorePatterns: [
