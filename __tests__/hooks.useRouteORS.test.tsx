@@ -20,7 +20,6 @@ describe('useRouteORS', () => {
     const snapshot: any = { current: null };
 
     const Host = () => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const result = useRouteORS(start, end, { enabled });
       snapshot.current = result;
       return null;
@@ -43,7 +42,9 @@ describe('useRouteORS', () => {
   });
 
   it('sets error when response not ok', async () => {
-    (global as any).fetch = jest.fn().mockResolvedValue({ ok: false, status: 500, text: async () => 'server error' });
+    (global as any).fetch = jest
+      .fn()
+      .mockResolvedValue({ ok: false, status: 500, text: async () => 'server error' });
 
     const { Host, snapshot } = makeHookHost([0, 0], [1, 1], true);
     render(React.createElement(Host));

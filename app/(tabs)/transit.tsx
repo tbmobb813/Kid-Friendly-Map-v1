@@ -15,7 +15,10 @@ export default function TransitScreen() {
     setOrigin({
       id: station.id,
       name: station.name,
-      coordinates: station.coordinates ?? { latitude: station.latitude ?? 0, longitude: station.longitude ?? 0 },
+      coordinates: station.coordinates ?? {
+        latitude: station.latitude ?? 0,
+        longitude: station.longitude ?? 0,
+      },
     } as any);
   };
 
@@ -35,7 +38,11 @@ export default function TransitScreen() {
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <Text>Contrast</Text>
-          <Switch accessibilityLabel="High Contrast" value={highContrast} onValueChange={setHighContrast} />
+          <Switch
+            accessibilityLabel="High Contrast"
+            value={highContrast}
+            onValueChange={setHighContrast}
+          />
         </View>
       </View>
 

@@ -81,7 +81,8 @@ jest.mock('@maplibre/maplibre-react-native', () => {
   const DummyComp = (props: any) => React.createElement('View', props, props.children);
   DummyComp.MapView = DummyComp;
   DummyComp.Camera = (props: any) => React.createElement('Camera', props, null);
-  DummyComp.PointAnnotation = (props: any) => React.createElement('PointAnnotation', props, props.children);
+  DummyComp.PointAnnotation = (props: any) =>
+    React.createElement('PointAnnotation', props, props.children);
   DummyComp.ShapeSource = (props: any) => React.createElement('ShapeSource', props, props.children);
   DummyComp.LineLayer = (props: any) => React.createElement('LineLayer', props, null);
   return DummyComp;
@@ -90,7 +91,10 @@ jest.mock('@maplibre/maplibre-react-native', () => {
 // Minimal gesture handler mock
 jest.mock('react-native-gesture-handler', () => {
   const React = require('react');
-  return { GestureHandlerRootView: ({ children }: any) => React.createElement(React.Fragment, null, children) };
+  return {
+    GestureHandlerRootView: ({ children }: any) =>
+      React.createElement(React.Fragment, null, children),
+  };
 });
 
 // expo-router minimal mock
@@ -108,7 +112,9 @@ export const TestMapHost = (() => {
   const React = require('react');
   return function TestMapHost() {
     const mapLibreCameraRef = React.useRef(null);
-    const { origin, destination, findRoutes } = require('@/stores/enhancedNavigationStore').useNavigationStore?.() ?? require('@/stores/enhancedNavigationStore').default?.useNavigationStore?.();
+    const { origin, destination, findRoutes } =
+      require('@/stores/enhancedNavigationStore').useNavigationStore?.() ??
+      require('@/stores/enhancedNavigationStore').default?.useNavigationStore?.();
 
     React.useEffect(() => {
       if (origin && destination) {
@@ -116,19 +122,24 @@ export const TestMapHost = (() => {
       }
     }, [origin, destination]);
 
-    return React.createElement(React.Fragment, null,
+    return React.createElement(
+      React.Fragment,
+      null,
       React.createElement(require('@/components/MapViewWrapper'), { cameraRef: mapLibreCameraRef }),
       React.createElement(require('@/components/FloatingMenu').default, {
         onRecenter: () => {
           if (mapLibreCameraRef?.current?.setCamera) {
             try {
-              mapLibreCameraRef.current.setCamera({ centerCoordinate: [origin?.coordinates?.longitude, origin?.coordinates?.latitude], zoomLevel: 15 });
+              mapLibreCameraRef.current.setCamera({
+                centerCoordinate: [origin?.coordinates?.longitude, origin?.coordinates?.latitude],
+                zoomLevel: 15,
+              });
             } catch (e) {
               // ignore
             }
           }
         },
-      })
+      }),
     );
   };
 })();
@@ -141,7 +152,6 @@ export function getTestMapHost() {
 // Some older tests import './test-utils' (the JS file). Re-export
 // simpleRender and helpers if that module exists so imports keep working.
 try {
-  // eslint-disable-next-line global-require
   const legacy = require('./test-utils.js');
   if (legacy) {
     // Re-export named helpers to match older imports

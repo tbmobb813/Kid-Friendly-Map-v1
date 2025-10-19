@@ -6,11 +6,18 @@ import MapViewWrapper from '@/components/MapViewWrapper';
 jest.mock('@maplibre/maplibre-react-native', () => ({
   __esModule: true,
   default: {
-    MapView: ({ children }: any) => React.createElement('MapView', { testID: 'mock-mapview' }, children),
+    MapView: ({ children }: any) =>
+      React.createElement('MapView', { testID: 'mock-mapview' }, children),
     ShapeSource: ({ children, ...props }: any) =>
-      React.createElement('ShapeSource', { testID: `mock-shapesource-${props.id}`, ...props }, children),
-    LineLayer: (props: any) => React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
-    CircleLayer: (props: any) => React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
+      React.createElement(
+        'ShapeSource',
+        { testID: `mock-shapesource-${props.id}`, ...props },
+        children,
+      ),
+    LineLayer: (props: any) =>
+      React.createElement('LineLayer', { testID: `mock-linelayer-${props.id}`, ...props }),
+    CircleLayer: (props: any) =>
+      React.createElement('CircleLayer', { testID: `mock-circlelayer-${props.id}`, ...props }),
   },
 }));
 
@@ -21,7 +28,11 @@ jest.mock('@/components/MapLibreMap', () => {
     ReactLocal.useImperativeHandle(ref, () => ({
       setCamera: jest.fn(),
     }));
-    return ReactLocal.createElement('MockMapLibreMap', { testID: props.testID || 'mock-maplibre-map' }, props.children);
+    return ReactLocal.createElement(
+      'MockMapLibreMap',
+      { testID: props.testID || 'mock-maplibre-map' },
+      props.children,
+    );
   });
 });
 
@@ -37,7 +48,7 @@ describe('MapViewWrapper forwarding ref', () => {
     const cameraRef = React.createRef<any>();
 
     // Render the wrapper with the ref
-    render(<MapViewWrapper cameraRef={cameraRef} testId="map-wrapper-ref" /> as any);
+    render((<MapViewWrapper cameraRef={cameraRef} testId="map-wrapper-ref" />) as any);
 
     // After render, the forwarded ref should be populated and have setCamera
     expect(cameraRef.current).toBeDefined();

@@ -34,7 +34,7 @@ describe('TransitScreen integration', () => {
   });
 
   it('selecting a station sets origin in navigation store', () => {
-    const { getByText } = render(<TransitScreen /> as any);
+    const { getByText } = render((<TransitScreen />) as any);
 
     // Use the first station from nycStations (Main St Station)
     const stationName = nycStations[0].name;

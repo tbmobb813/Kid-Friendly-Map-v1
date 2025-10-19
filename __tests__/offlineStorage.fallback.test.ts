@@ -23,13 +23,13 @@ describe('offlineStorage in-memory fallback', () => {
     // setItem was attempted
     expect(AsyncStorage.setItem).toHaveBeenCalled();
 
-  // data should be present in in-memory fallback
-  // @ts-ignore access private for test
-  const mem = offlineStorage._memoryCache.get(key);
-  expect(mem).toBeDefined();
-  // use non-null assertion now that we've asserted it's defined
-  // @ts-ignore
-  expect(mem!.data).toEqual(value);
+    // data should be present in in-memory fallback
+    // @ts-ignore access private for test
+    const mem = offlineStorage._memoryCache.get(key);
+    expect(mem).toBeDefined();
+    // use non-null assertion now that we've asserted it's defined
+    // @ts-ignore
+    expect(mem!.data).toEqual(value);
   });
 
   it('reads from memory cache when AsyncStorage.getItem fails', async () => {

@@ -28,7 +28,7 @@ export function recordTiming(testName: string, ms: number) {
     fs.writeFileSync(outPath, JSON.stringify(data, null, 2), 'utf8');
   } catch (err) {
     // Do not fail tests if recording fails
-    // eslint-disable-next-line no-console
+
     const e: any = err;
     console.warn('perfRecorder: failed to record timing', e && e.message ? e.message : e);
   }

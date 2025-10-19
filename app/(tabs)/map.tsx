@@ -193,8 +193,7 @@ let BottomSheetModalProvider: any = ({ children }: any) => children;
     BottomSheet = mod ?? BottomSheet;
     BottomSheetView = (_bs as any)?.BottomSheetView ?? BottomSheetView;
     BottomSheetHandle = (_bs as any)?.BottomSheetHandle ?? BottomSheetHandle;
-    BottomSheetModalProvider =
-      (_bs as any)?.BottomSheetModalProvider ?? BottomSheetModalProvider;
+    BottomSheetModalProvider = (_bs as any)?.BottomSheetModalProvider ?? BottomSheetModalProvider;
   } catch (e) {
     // If module isn't present at runtime (e.g. tests), fallback to no-op components
     BottomSheet = ({ children }: any) => <>{children}</>;

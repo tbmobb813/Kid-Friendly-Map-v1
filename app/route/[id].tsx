@@ -109,7 +109,9 @@ export default function RouteDetailScreen() {
           </View>
         </View>
 
-  <Text style={[styles.sectionTitle, { ...transitStyles.sectionTitle } ]}>Step by Step Directions</Text>
+        <Text style={[styles.sectionTitle, { ...transitStyles.sectionTitle }]}>
+          Step by Step Directions
+        </Text>
 
         <View style={styles.stepsContainer}>
           {route.steps.map((step, index) => (

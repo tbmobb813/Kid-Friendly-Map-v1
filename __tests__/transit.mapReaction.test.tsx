@@ -1,7 +1,11 @@
 import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { useNavigationStore } from '@/stores/enhancedNavigationStore';
 import { nycStations } from '@/config/transit/nyc-stations';
-import { getMapViewWrapperMock, getLastFloatingMenuProps, getTestMapHost } from '../tests/test-utils';
+import {
+  getMapViewWrapperMock,
+  getLastFloatingMenuProps,
+  getTestMapHost,
+} from '../tests/test-utils';
 
 // Now require the screens after mocks are established
 // Mock MapLibre native library to avoid native modules in tests
@@ -10,10 +14,12 @@ jest.mock('@maplibre/maplibre-react-native', () => {
   const DummyComp = (props: any) => React.createElement('View', props, props.children);
   DummyComp.MapView = DummyComp;
   DummyComp.Camera = (props: any) => React.createElement('Camera', props, null);
-  DummyComp.PointAnnotation = (props: any) => React.createElement('PointAnnotation', props, props.children);
+  DummyComp.PointAnnotation = (props: any) =>
+    React.createElement('PointAnnotation', props, props.children);
   DummyComp.ShapeSource = (props: any) => React.createElement('ShapeSource', props, props.children);
   DummyComp.LineLayer = (props: any) => React.createElement('LineLayer', props, null);
-  DummyComp.PointAnnotation = (props: any) => React.createElement('PointAnnotation', props, props.children);
+  DummyComp.PointAnnotation = (props: any) =>
+    React.createElement('PointAnnotation', props, props.children);
   return DummyComp;
 });
 
@@ -25,7 +31,9 @@ jest.mock('expo-router', () => ({
 // Mock expo-location to avoid ESM parsing of node_modules and provide resolved location
 jest.mock('expo-location', () => ({
   requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-  getCurrentPositionAsync: jest.fn().mockResolvedValue({ coords: { latitude: 40.7128, longitude: -74.006, accuracy: 5 } }),
+  getCurrentPositionAsync: jest
+    .fn()
+    .mockResolvedValue({ coords: { latitude: 40.7128, longitude: -74.006, accuracy: 5 } }),
   Accuracy: { Balanced: 0 },
 }));
 
@@ -42,11 +50,11 @@ describe('Transit -> Map integration', () => {
   });
 
   it('pressing a station sets origin, recenters map and triggers findRoutes', async () => {
-  // Render a lightweight TestMapHost and TransitScreen
-  const { getByText } = render(React.createElement(TestMapHost));
+    // Render a lightweight TestMapHost and TransitScreen
+    const { getByText } = render(React.createElement(TestMapHost));
 
     // Render TransitScreen separately and press the station button
-    const transit = render(<TransitScreen /> as any);
+    const transit = render((<TransitScreen />) as any);
 
     const station = nycStations[0];
     const stationButton = transit.getByText(station.name);
@@ -63,7 +71,8 @@ describe('Transit -> Map integration', () => {
     expect(origin?.id).toBe(station.id);
 
     // MapViewWrapper's cameraRef should have been set and setCamera called via FloatingMenu recenter flow
-    const cameraRef = (require('@/components/MapViewWrapper') as any).mock?.calls?.[0]?.[0]?.cameraRef;
+    const cameraRef = (require('@/components/MapViewWrapper') as any).mock?.calls?.[0]?.[0]
+      ?.cameraRef;
 
     // Our mock attached `current.setCamera` so retrieve it from the component's cameraRef
     // Because we attached the fake in the mock implementation, we can get it from the module mock
@@ -97,7 +106,15 @@ describe('Transit -> Map integration', () => {
 
     // For this integration test we'll simulate setting a destination afterwards to trigger findRoutes
     act(() => {
-      useNavigationStore.setState({ destination: { id: 'dest', name: 'Dest', address: 'Test Dest', category: 'other', coordinates: { latitude: 40.7, longitude: -74.0 } } });
+      useNavigationStore.setState({
+        destination: {
+          id: 'dest',
+          name: 'Dest',
+          address: 'Test Dest',
+          category: 'other',
+          coordinates: { latitude: 40.7, longitude: -74.0 },
+        },
+      });
     });
 
     // Now origin & destination exist; wait for TestMapHost effect to invoke findRoutes()

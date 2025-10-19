@@ -10,7 +10,12 @@ describe('ORS service cache mirroring', () => {
     routes: [
       {
         summary: { duration: 100, distance: 200 },
-        geometry: { coordinates: [[-74.006, 40.7128], [-73.9934, 40.7505]] },
+        geometry: {
+          coordinates: [
+            [-74.006, 40.7128],
+            [-73.9934, 40.7505],
+          ],
+        },
       },
     ],
   };
@@ -44,7 +49,9 @@ describe('ORS service cache mirroring', () => {
     (AsyncStorage.getItem as jest.Mock).mockRejectedValue(new Error('read error'));
 
     // Also mock global fetch so we can detect network calls; if caching works, fetch should not be called.
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) } as Response);
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve({}) } as Response);
 
     // Construct a request object that creates the same cache key used above
     const request = {
