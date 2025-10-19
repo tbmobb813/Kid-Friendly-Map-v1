@@ -1,3 +1,7 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "jestrunner.jestCommandLine": "npm test --",
+  "jest.pathToJest": "node_modules/.bin/jest",
+  "jest.jestCommandLine": "npm test --",
+  "jest.enabled": true
 }

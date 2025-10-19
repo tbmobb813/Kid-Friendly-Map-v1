@@ -3384,6 +3384,11 @@ acorn@^8.1.0, acorn@^8.11.0, acorn@^8.15.0, acorn@^8.8.1, acorn@^8.9.0:
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.15.0.tgz"
   integrity sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==
 
+actionlint@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/actionlint/-/actionlint-2.0.6.tgz"
+  integrity sha512-tNx8f48yJNSLXTIygGntu5dSZlIZblDt8sR7pIs7EEmmb2PkEF87d+3UKZV2GUgCuN9Awj7k4ZPrwdAxFWEqgw==
+
 agent-base@^7.1.2:
   version "7.1.4"
   resolved "https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz"
