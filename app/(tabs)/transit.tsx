@@ -11,7 +11,6 @@ export default function TransitScreen() {
   const { setOrigin } = useNavigationStore.getState();
 
   const handleSelectStation = (station: any) => {
-    // set origin in the navigation store with minimal Place shape used in tests
     setOrigin({
       id: station.id,
       name: station.name,
@@ -48,7 +47,6 @@ export default function TransitScreen() {
 
       <Text style={titleStyle}>Live Arrivals</Text>
 
-      {/* Render a short list of stations expected by tests */}
       <View>
         {nycStations.slice(0, 4).map((s) => (
           <Pressable key={s.id} onPress={() => handleSelectStation(s)}>

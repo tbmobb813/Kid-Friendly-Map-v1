@@ -4,7 +4,7 @@ try {
 } catch (e) {
   // If test-utils doesn't exist or errors, don't crash the test runner here.
   // Tests that want to opt-in can still import test-utils directly.
-  // eslint-disable-next-line no-console
+   
   console.warn('jest.setup: failed to load test-utils', e?.message ?? e);
 }
 // Jest setup file: define RN globals expected by app code
@@ -92,7 +92,7 @@ console.error = (...args) => {
 
 // Attempt to load jest-native matchers if available. Don't fail tests if it's not installed.
 try {
-  // eslint-disable-next-line global-require
+   
   require('@testing-library/jest-native/extend-expect');
 } catch (e) {
   // not critical; tests can still run without these matchers
