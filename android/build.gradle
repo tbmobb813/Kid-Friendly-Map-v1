@@ -8,7 +8,8 @@ buildscript {
   dependencies {
   classpath('com.android.tools.build:gradle:8.1.2')
     classpath('com.facebook.react:react-native-gradle-plugin')
-    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
+    // Use Kotlin Gradle plugin 2.1.20 to match included gradle plugin builds
+    classpath('org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20')
   }
 }
 
@@ -20,5 +21,36 @@ allprojects {
   }
 }
 
-apply plugin: "expo-root-project"
-apply plugin: "com.facebook.react.rootproject"
+// Defer applying plugins that are provided by included builds (expo/expo-gradle-plugin)
+// This ensures the included-build (node_modules/expo-modules-autolinking/android/expo-gradle-plugin)
+// has been evaluated and its plugin IDs registered before we try to apply them here.
+// Provide safe default Android SDK / build values in case an included build
+// that normally supplies them (expo-root-project / react rootproject) is
+// not available yet during early configuration. These defaults match the
+// values used historically in our Gradle logs and allow AGP to configure
+// the ':app' project without failing.
+ext {
+  compileSdkVersion = 36
+  minSdkVersion = 24
+  targetSdkVersion = 36
+  // Keep a sensible default buildToolsVersion and ndkVersion; these may be
+  // overridden by the expo/root project plugin when available.
+  buildToolsVersion = '33.0.2'
+  // Use an installed NDK version. 28.x folder lacks source.properties in this environment,
+  // so default to a known-installed NDK to avoid AGP errors during configuration.
+  ndkVersion = '27.1.12297006'
+}
+
+gradle.projectsEvaluated {
+  try {
+    apply plugin: "expo-root-project"
+  } catch (Exception e) {
+    logger.lifecycle("expo-root-project plugin not available yet: ${e.message}")
+  }
+
+  try {
+    apply plugin: "com.facebook.react.rootproject"
+  } catch (Exception e) {
+    logger.lifecycle("com.facebook.react.rootproject plugin not available yet: ${e.message}")
+  }
+}

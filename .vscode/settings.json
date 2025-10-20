@@ -1,7 +1,9 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.configuration.updateBuildConfiguration": "automatic",
   "jestrunner.jestCommandLine": "npm test --",
   "jest.pathToJest": "node_modules/.bin/jest",
   "jest.jestCommandLine": "npm test --",
   "jest.enabled": true
+  ,
+  "jest.nodePath": "/home/jason/.nvm/versions/node/v22.20.0/bin"
 }

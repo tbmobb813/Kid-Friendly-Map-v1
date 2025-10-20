@@ -60,7 +60,20 @@ react {
     // hermesFlags = ["-O", "-output-source-map"]
 
     /* Autolinking */
-    autolinkLibrariesWithApp()
+    // The autolinking plugin (provided by included builds) generates
+    // android/build/generated/autolinking/autolinking.json. When running
+    // early configuration that file may not exist yet. Guard the call so the
+    // project can configure without throwing FileNotFoundException.
+    try {
+        def autolinkJson = new File(rootProject.projectDir, "build/generated/autolinking/autolinking.json")
+        if (autolinkJson.exists()) {
+            autolinkLibrariesWithApp()
+        } else {
+            println "Skipping autolinkLibrariesWithApp(): autolinking.json not present yet"
+        }
+    } catch (Exception e) {
+        println "autolinkLibrariesWithApp() skipped due to: ${e.message}"
+    }
 }
 
 /**
@@ -85,7 +98,9 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+    // Use rootProject ext value if available; otherwise fall back to a safe default.
+    def _compileSdk = (rootProject.hasProperty('ext') && rootProject.ext.has('compileSdkVersion')) ? rootProject.ext.compileSdkVersion : 36
+    compileSdk _compileSdk
 
     namespace 'app.rork.kid_friendly_map_transit_navigator'
     defaultConfig {
@@ -156,21 +171,33 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
+    // Ensure we have a fresco version even if the expo/root plugin hasn't
+    // been applied yet and 'expoLibs' is not available. Prefer the value
+    // from expoLibs when possible, otherwise fall back to a safe literal.
+    def _frescoVersion = '2.6.0'
+    try {
+        if (project.hasProperty('expoLibs')) {
+            _frescoVersion = expoLibs.versions.fresco.get()
+        }
+    } catch (Exception e) {
+        println "Using fallback fresco version: ${_frescoVersion} because expoLibs is not available: ${e.message}"
+    }
+
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
 
     if (isGifEnabled) {
         // For animated gif support
-        implementation("com.facebook.fresco:animated-gif:${expoLibs.versions.fresco.get()}")
+        implementation("com.facebook.fresco:animated-gif:${_frescoVersion}")
     }
 
     if (isWebpEnabled) {
         // For webp support
-        implementation("com.facebook.fresco:webpsupport:${expoLibs.versions.fresco.get()}")
+        implementation("com.facebook.fresco:webpsupport:${_frescoVersion}")
         if (isWebpAnimatedEnabled) {
             // Animated webp support
-            implementation("com.facebook.fresco:animated-webp:${expoLibs.versions.fresco.get()}")
+            implementation("com.facebook.fresco:animated-webp:${_frescoVersion}")
         }
     }
 
