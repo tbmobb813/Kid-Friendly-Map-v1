@@ -5,5 +5,8 @@
   "jest.jestCommandLine": "npm test --",
   "jest.enabled": true
   ,
-  "jest.nodePath": "/home/jason/.nvm/versions/node/v22.20.0/bin"
+  "jest.nodePath": "/home/jason/.nvm/versions/node/v22.20.0/bin/node",
+  "eslint.workingDirectories": [
+    { "directory": "/media/jason/Dev Storage/Projects/Kid-Friendly-Map-v1", "changeProcessCwd": true }
+  ]
 }

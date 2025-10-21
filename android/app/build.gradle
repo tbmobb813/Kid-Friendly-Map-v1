@@ -4,6 +4,263 @@ apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
+// Ensure autolinking.json exists for React Native autolinking tasks.
+// Some environments (CI or custom workspaces) may not run the autolinking generator
+// early enough; provide a conservative Gradle task that invokes the local
+// expo-modules-autolinking CLI to produce the expected file. This is a no-op
+// when the file already exists.
+// Use a stable Node script under /scripts to generate autolinking JSON. This
+// makes generation reproducible across developer machines and CI (EAS). We
+// declare the generated file as an output so Gradle can correctly up-to-date
+// check the task.
+task generateAutolinkingJson {
+    def outFile = new File(rootProject.projectDir, "build/generated/autolinking/autolinking.json")
+    outputs.file outFile
+    doLast {
+        try {
+            def scriptsDir = new File(rootProject.projectDir, 'scripts')
+            def script = new File(scriptsDir, 'generate-autolinking-json.cjs')
+            if (!script.exists()) {
+                throw new RuntimeException("Autolinking generator script not found: ${script}")
+            }
+            // Prefer NODE_BINARY when provided by the environment (React Native/Gradle plugin).
+            // Fall back to the 'node' command which is the normal expectation on developer machines
+            // and CI. Previously this fell back to the Java executable by mistake which cannot run
+            // JavaScript files.
+            def nodeExe = System.getenv('NODE_BINARY') ?: 'node'
+            def cmd = [nodeExe, script.absolutePath, outFile.absolutePath, 'android']
+            println "Running: ${cmd.join(' ')}"
+            def proc = cmd.execute(null, rootDir)
+            proc.in.eachLine { println it }
+            proc.err.eachLine { System.err.println it }
+            proc.waitFor()
+            // If the generator exited non-zero but still produced the expected file, allow
+            // the build to continue. This handles edge cases where the autolinking CLI
+            // emits usage or warnings but still writes valid JSON.
+            if (proc.exitValue() != 0) {
+                if (!outFile.exists() || outFile.length() == 0) {
+                    throw new RuntimeException("Autolinking generator failed (exit ${proc.exitValue()})")
+                } else {
+                    println "Warning: autolinking generator exited ${proc.exitValue()} but produced ${outFile.absolutePath}; continuing."
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate autolinking JSON: ${e.message}", e)
+        }
+    }
+}
+
+// Ensure it's generated early in configuration so downstream tasks don't fail
+preBuild.dependsOn generateAutolinkingJson
+
+// Debug helper: print autolinking file info so Gradle logs show exactly what
+// file is present (path, size, and a short preview). This helps diagnose
+// JVM/Kotlin-side JSON parsing issues where the file on disk may not match
+// expectations.
+task printAutolinkingInfo {
+    doLast {
+        def autolinkFileApp = file("${buildDir}/generated/autolinking/autolinking.json")
+        def autolinkFileRoot = new File(rootProject.projectDir, "build/generated/autolinking/autolinking.json")
+        // Prefer the root file in logs because that's what the RN Gradle plugin reads.
+        def autolinkFile = autolinkFileRoot.exists() ? autolinkFileRoot : autolinkFileApp
+        if (autolinkFile.exists()) {
+            println "=== autolinking.json DEBUG ==="
+            println "path: ${autolinkFile.absolutePath}"
+            println "size: ${autolinkFile.length()} bytes"
+            def preview = autolinkFile.getText('UTF-8')
+            if (preview.length() > 1000) preview = preview.substring(0,1000) + "... [truncated]"
+            println "preview:\n${preview}"
+            println "=== end autolinking.json DEBUG ==="
+        } else {
+            println "autolinking.json not found (app): ${autolinkFileApp.absolutePath}"
+            println "autolinking.json not found (root): ${autolinkFileRoot.absolutePath}"
+        }
+    }
+}
+
+// Ensure the info printer runs early so we see what the autolinking task will read.
+preBuild.dependsOn printAutolinkingInfo
+
+// Some workspaces contain spaces in the absolute path (for example
+// "/media/jason/Dev Storage/...") which can be escaped with backslashes
+// in the generated CMake snippet. CMake does not accept backslash-escaped
+// spaces in add_subdirectory() paths on some systems which causes
+// "add_subdirectory given source ... which is not an existing directory.".
+// This task post-processes the generated Android-autolinking.cmake and
+// replaces occurrences of "\\ " with a literal space so CMake sees the
+// correct filesystem path. It's a small, local-only mitigation for
+// developer machines whose path contains spaces; CI runners usually don't
+// have spaces in their checkout path and won't be affected.
+task fixAutolinkingCMake {
+    def cmakeFile = file("${buildDir}/generated/autolinking/src/main/jni/Android-autolinking.cmake")
+    def autolinkJsonFile = new File(rootProject.projectDir, "android/build/generated/autolinking/autolinking.json")
+    doLast {
+        try {
+            if (!cmakeFile.exists()) {
+                println "fixAutolinkingCMake: file not found: ${cmakeFile.absolutePath}"
+                return
+            }
+            if (!autolinkJsonFile.exists()) {
+                println "fixAutolinkingCMake: autolinking.json not found: ${autolinkJsonFile.absolutePath}"
+                return
+            }
+
+            println "fixAutolinkingCMake: loading ${autolinkJsonFile.absolutePath} to validate JNI paths"
+            def JsonSlurper = new groovy.json.JsonSlurper()
+            def js = JsonSlurper.parse(autolinkJsonFile)
+
+            // Build a map from the normalized CMake path -> expected library token (react_codegen_<libraryName>)
+            def expected = [:]
+            js.dependencies.each { name, info ->
+                def plat = info?.platforms?.android
+                if (plat) {
+                    def cmakePath = plat.cmakeListsPath
+                    def libName = plat.libraryName
+                    if (cmakePath) {
+                        def dir = new File(cmakePath).parent
+                        expected[dir] = libName ? "react_codegen_" + libName : null
+                    }
+                }
+            }
+
+            def text = cmakeFile.getText('UTF-8')
+            // First, unescape any '\\ ' sequences (e.g. paths with spaces). This mirrors what CMake expects.
+            text = text.replaceAll('\\\\ ', ' ')
+
+            // Remove add_subdirectory lines that reference non-existing directories.
+            def removedLibs = [] as Set
+            def newLines = []
+            text.readLines().each { line ->
+                // Match add_subdirectory("path" target) or add_subdirectory('path' target)
+                def m = line =~ /add_subdirectory\(\s*["'](.+?)["']\s+(\S+)\s*\)/
+                if (m) {
+                    def rawPath = m[0][1]
+                    // Unescape any backslash-space sequences before existence check
+                    def path = rawPath.replaceAll('\\\\ ', ' ')
+                    def f = new File(path)
+                    if (!f.exists()) {
+                        println "fixAutolinkingCMake: removing add_subdirectory for missing path: ${path}"
+                        // try to detect corresponding library token from expected map
+                        def matchKey = expected.keySet().find { k -> path.startsWith(k) || k.startsWith(path) }
+                        if (matchKey) {
+                            def libtok = expected[matchKey]
+                            if (libtok) removedLibs.add(libtok)
+                        }
+                        // skip adding this line
+                        return
+                    }
+                }
+                newLines << line
+            }
+
+            def cleaned = newLines.join('\n')
+
+            if (!removedLibs.isEmpty()) {
+                println "fixAutolinkingCMake: removing AUTOLINKED_LIBRARIES entries: ${removedLibs}"
+                // Locate the AUTOLINKED_LIBRARIES set block and prune tokens
+                def startIdx = cleaned.indexOf('set(AUTOLINKED_LIBRARIES')
+                if (startIdx >= 0) {
+                    def endIdx = cleaned.indexOf(')', startIdx)
+                    if (endIdx > startIdx) {
+                        def before = cleaned.substring(0, startIdx)
+                        def block = cleaned.substring(startIdx, endIdx + 1)
+                        def after = cleaned.substring(endIdx + 1)
+                        // remove each lib token from the block
+                        removedLibs.each { libtok ->
+                            block = block.replaceAll("(?m)^\\s*${libtok}\\s*\\n", '')
+                            block = block.replaceAll("\\s+${libtok}\\s+", ' ')
+                        }
+                        cleaned = before + block + after
+                    }
+                }
+            }
+
+            // Write back cleaned content only if changed
+            if (cleaned != cmakeFile.getText('UTF-8')) {
+                cmakeFile.write(cleaned, 'UTF-8')
+                println "fixAutolinkingCMake: updated ${cmakeFile.absolutePath}"
+            } else {
+                println "fixAutolinkingCMake: no changes needed"
+            }
+
+            // Some codegen outputs include generated test files (Tests.cpp / Tests.h)
+            // which include <gtest/gtest.h> and are not available in normal Android
+            // builds. Remove these generated test files from the per-module generated
+            // JNI folders so CMake/Ninja won't attempt to compile them.
+            def cleanupCount = 0
+            js.dependencies.each { name, info ->
+                def plat = info?.platforms?.android
+                if (plat) {
+                    def cmakePath = plat.cmakeListsPath
+                    if (cmakePath) {
+                        def genDir = new File(cmakePath).parentFile
+                        if (genDir.exists()) {
+                            // remove typical test files
+                            ['Tests.cpp', 'Tests.h'].each { fname ->
+                                def f = new File(genDir, fname)
+                                if (f.exists()) {
+                                    if (f.delete()) {
+                                        cleanupCount++
+                                        println "fixAutolinkingCMake: removed generated test file: ${f}"
+                                    }
+                                }
+                            }
+                            // remove any file whose name contains 'Tests.' recursively
+                            genDir.eachFileRecurse { ff ->
+                                if (ff.isFile() && ff.name =~ /Tests\./) {
+                                    if (ff.delete()) {
+                                        cleanupCount++
+                                        println "fixAutolinkingCMake: removed generated test file: ${ff}"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (cleanupCount > 0) println "fixAutolinkingCMake: removed ${cleanupCount} generated test files that require gtest"
+        } catch (Exception e) {
+            println "fixAutolinkingCMake: error while fixing file: ${e.message}"
+        }
+    }
+}
+
+// Ensure this runs early so CMake sees fixed paths when it configures native builds.
+preBuild.dependsOn fixAutolinkingCMake
+
+// Make sure the fix runs before the external native build config step that
+// invokes CMake. The ExternalNativeBuildJsonTask is responsible for preparing
+// the native JSON/CMake configuration; we make it depend on our fixer so the
+// generated Android-autolinking.cmake is pruned before CMake runs.
+try {
+    tasks.withType(com.android.build.gradle.tasks.ExternalNativeBuildJsonTask).configureEach {
+        dependsOn fixAutolinkingCMake
+    }
+} catch (ignored) {
+    // Older AGP or Gradle versions may not expose the task class at
+    // configuration time; ignore in that case.
+}
+
+// Ensure our generator and printer run when the RN autolinking task is executed
+// directly (for example during debugging). This makes :app:generateAutolinkingPackageList
+// depend on them so the file is regenerated and inspected before the task runs.
+tasks.matching { it.name == 'generateAutolinkingPackageList' }.configureEach {
+    dependsOn generateAutolinkingJson, printAutolinkingInfo
+}
+
+// GenerateAutolinkingNewArchitectureFiles may read the generated autolinking
+// JSON as an input during execution. Declare an explicit dependency so Gradle
+// doesn't report an implicit dependency validation error when task ordering
+// changes. This mirrors the package-list task wiring above.
+tasks.matching { it.name == 'generateAutolinkingNewArchitectureFiles' }.configureEach {
+    dependsOn generateAutolinkingJson, printAutolinkingInfo
+}
+
+// Ensure the react-native entry point generation runs after autolinking JSON is available.
+tasks.matching { it.name == 'generateReactNativeEntryPoint' }.configureEach {
+    dependsOn generateAutolinkingJson, printAutolinkingInfo
+}
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -206,4 +463,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Fix: ensure AndroidX splash screen styles/attrs are available. Some
+    // libraries (and generated values) reference Theme.SplashScreen and
+    // windowSplashScreen* attributes which are provided by
+    // androidx.core:core-splashscreen.
+    implementation 'androidx.core:core-splashscreen:1.0.0'
 }

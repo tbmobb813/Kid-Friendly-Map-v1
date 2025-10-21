@@ -22,6 +22,31 @@ pluginManagement {
     mavenCentral()
     google()
   }
+
+// Ensure autolinking JSON exists early: some React Native Gradle tasks validate the
+// presence of android/build/generated/autolinking/autolinking.json during configuration.
+// Generate it here (settings evaluation) as a best-effort step so the input file exists
+// before tasks are configured. This mirrors running:
+//  npx expo-modules-autolinking generate-package-list --platform android --project-root . --target android/build/generated/autolinking/autolinking.json
+try {
+  def autolinkingCli = providers.exec {
+    workingDir(rootDir)
+    commandLine("node", "--print", "require.resolve('expo-modules-autolinking/bin/expo-modules-autolinking.js', { paths: [require.resolve('expo/package.json')] })")
+  }.standardOutput.asText.get().trim()
+
+  def targetFile = new File(rootDir, 'android/build/generated/autolinking/autolinking.json')
+  if (!targetFile.exists()) {
+    targetFile.parentFile.mkdirs()
+    exec {
+      workingDir rootDir
+      commandLine "node", autolinkingCli, 'generate-package-list', '--platform', 'android', '--project-root', rootDir.absolutePath, '--target', targetFile.absolutePath
+    }
+    logger.lifecycle("Generated autolinking JSON at: ${targetFile}")
+  }
+} catch (Exception e) {
+  // Non-fatal: if generation fails we'll let the build proceed and surface the original error.
+  logger.lifecycle("Warning: failed to generate autolinking.json during settings evaluation: ${e.message}")
+}
 }
 
 // Include composite builds used by the project (react-native Gradle plugin and expo plugins)
