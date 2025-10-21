@@ -2,6 +2,35 @@
 // Purpose: configure plugin resolution for Kotlin artifacts (including kotlin-serialization)
 // and include the React Native / Expo plugin builds.
 
+// --- Ensure plugin builds are included as early as possible ---
+// We resolve their package.json via node so this works in developer worktrees
+// where node_modules lives next to the repo. Including these builds before
+// pluginManagement makes their plugin ids available during plugin resolution.
+try {
+  def _reactNativePathEarly = new File(
+    providers.exec {
+      workingDir(rootDir)
+      commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
+    }.standardOutput.asText.get().trim()
+  ).getParentFile().absolutePath
+  includeBuild(_reactNativePathEarly)
+  println("DEBUG(early-include): included reactNativePath=${_reactNativePathEarly} exists=${new File(_reactNativePathEarly).exists()}")
+} catch(Exception e) {
+  println("DEBUG(early-include): could not include react-native plugin build: ${e.message}")
+}
+
+try {
+  def _expoAutolinkingPkgPathEarly = providers.exec {
+    workingDir(rootDir)
+    commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
+  }.standardOutput.asText.get().trim()
+  def _expoPluginsDirEarly = new File(new File(_expoAutolinkingPkgPathEarly).getParentFile(), "android/expo-gradle-plugin").absolutePath
+  includeBuild(_expoPluginsDirEarly)
+  println("DEBUG(early-include): included expoPluginsDir=${_expoPluginsDirEarly} exists=${new File(_expoPluginsDirEarly).exists()}")
+} catch(Exception e) {
+  println("DEBUG(early-include): could not include expo plugin build: ${e.message}")
+}
+
 pluginManagement {
   resolutionStrategy {
     eachPlugin { details ->
@@ -22,23 +51,13 @@ pluginManagement {
     mavenCentral()
     google()
   }
+
+  // pluginManagement keeps resolver configuration for plugin artifacts (Kotlin, etc.)
 }
 
 // Include composite builds used by the project (react-native Gradle plugin and expo plugins)
-def reactNativePath = new File(
-  providers.exec {
-    workingDir(rootDir)
-    commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
-  }.standardOutput.asText.get().trim()
-).getParentFile().absolutePath
-includeBuild(reactNativePath)
-
-def expoAutolinkingPkgPath = providers.exec {
-  workingDir(rootDir)
-  commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
-}.standardOutput.asText.get().trim()
-def expoPluginsDir = new File(new File(expoAutolinkingPkgPath).getParentFile(), "android/expo-gradle-plugin").absolutePath
-includeBuild(expoPluginsDir)
+// Note: we've already attempted to include the react-native and expo plugin builds
+// above (early include). Keep the rest of the settings file minimal.
 
 rootProject.name = 'Kid-Friendly Map & Transit Navigator'
 
