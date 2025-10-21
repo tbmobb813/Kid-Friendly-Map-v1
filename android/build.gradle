@@ -6,6 +6,8 @@ buildscript {
     mavenCentral()
   }
   dependencies {
+  // Use a published, stable AGP version so plugin artifacts can be resolved.
+  // 9.0.0 is not available in configured repositories; revert to 8.1.2 which is known to work in this project.
   classpath('com.android.tools.build:gradle:8.1.2')
     classpath('com.facebook.react:react-native-gradle-plugin')
     // Use Kotlin Gradle plugin 2.1.20 to match included gradle plugin builds
@@ -35,7 +37,8 @@ ext {
   targetSdkVersion = 36
   // Keep a sensible default buildToolsVersion and ndkVersion; these may be
   // overridden by the expo/root project plugin when available.
-  buildToolsVersion = '33.0.2'
+  // AGP 9.x expects/uses Build Tools 35.x; prefer 35.0.0 to avoid warnings.
+  buildToolsVersion = '35.0.0'
   // Use an installed NDK version. 28.x folder lacks source.properties in this environment,
   // so default to a known-installed NDK to avoid AGP errors during configuration.
   ndkVersion = '27.1.12297006'

@@ -2,6 +2,19 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// Configure Kotlin JVM toolchain to Java 21 early so Kotlin and Java share the same JVM
+// This helps avoid Kotlin's JVM-target validation errors when JavaCompile target differs.
+// Configure Kotlin JVM toolchain explicitly so Kotlin uses Java 21 at configuration time.
+kotlin {
+    jvmToolchain {
+        // Use Java 17 toolchain for now to match AGP/Gradle compatibility.
+        // AGP 8.x often targets Java 17 for compilation; set 17 here to avoid
+        // Kotlin/Java JVM-target mismatch until AGP is upgraded to support Java 21.
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
 /**
@@ -142,10 +155,79 @@ android {
             useLegacyPackaging enableLegacyPackaging.toBoolean()
         }
     }
+    // Force the Android Gradle Plugin to use the installed CMake 4.1.2 from the SDK.
+    // This ensures the native build invokes the expected cmake binary under
+    // /home/jsnni/android/sdk/cmake/4.1.2 when externalNativeBuild is executed.
+    externalNativeBuild {
+        cmake {
+            version "4.1.2"
+        }
+    }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
+
+    // Use Java 17 toolchain and targets to match AGP 8.x expectations
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    // Prefer Gradle Java toolchain where supported (set to 17 for compatibility)
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 }
+
+// Align Java and Kotlin compilation toolchains to Java 21
+// Configure tasks eagerly so settings apply before Kotlin's JVM-target validation runs
+// Ensure JavaCompile tasks use Java 21 toolchain and set release flag
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile).configureEach { jc ->
+    // Do not use `options.release` with Android Gradle Plugin (AGP) because
+    // AGP needs to set up the bootclasspath for Android API compatibility.
+    // Use sourceCompatibility/targetCompatibility and the Gradle/java toolchain instead.
+    try {
+        jc.sourceCompatibility = JavaVersion.VERSION_17
+        jc.targetCompatibility = JavaVersion.VERSION_17
+    } catch (Exception ignored) {
+    }
+}
+
+// Debug: print JavaCompile targets at configuration time to help diagnose
+// why Kotlin sees a different JVM target.
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile).configureEach { jc ->
+    try {
+        println "DEBUG: JavaCompile task '${jc.name}' source=${jc.sourceCompatibility} target=${jc.targetCompatibility} javaCompiler=${jc.javaCompiler != null}"
+    } catch (Exception e) {
+        println "DEBUG: JavaCompile task '${jc.name}' inspect failed: ${e.message}"
+    }
+}
+
+// Ensure Kotlin compiles to JVM target 21 and configure Kotlin toolchain eagerly
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kt ->
+    try {
+        kt.kotlinOptions.jvmTarget = "17"
+    } catch (Exception ignored) {
+    }
+}
+
+// Debug: print KotlinCompile jvmTarget and toolchain info
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { kt ->
+    try {
+        println "DEBUG: KotlinCompile task '${kt.name}' jvmTarget=${kt.kotlinOptions.jvmTarget} javaToolchain=${kt.kotlinJavaToolchain != null}"
+    } catch (Exception e) {
+        println "DEBUG: KotlinCompile task '${kt.name}' inspect failed: ${e.message}"
+    }
+}
+
+// Try to configure Kotlin jvm toolchain globally if available (no-op on older plugin versions)
+// Ensured above via the `kotlin { jvmToolchain { ... } }` block.
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
 // Accepts values in comma delimited lists, example:
@@ -206,4 +288,9 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    // Android 12+ splash screen attributes and Theme.SplashScreen come from
+    // the AndroidX Core SplashScreen library. Add it so resource linking
+    // can find Theme.SplashScreen and the windowSplashScreen* attributes.
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

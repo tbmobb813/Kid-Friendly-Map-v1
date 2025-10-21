@@ -6,30 +6,10 @@
 // We resolve their package.json via node so this works in developer worktrees
 // where node_modules lives next to the repo. Including these builds before
 // pluginManagement makes their plugin ids available during plugin resolution.
-try {
-  def _reactNativePathEarly = new File(
-    providers.exec {
-      workingDir(rootDir)
-      commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
-    }.standardOutput.asText.get().trim()
-  ).getParentFile().absolutePath
-  includeBuild(_reactNativePathEarly)
-  println("DEBUG(early-include): included reactNativePath=${_reactNativePathEarly} exists=${new File(_reactNativePathEarly).exists()}")
-} catch(Exception e) {
-  println("DEBUG(early-include): could not include react-native plugin build: ${e.message}")
-}
 
-try {
-  def _expoAutolinkingPkgPathEarly = providers.exec {
-    workingDir(rootDir)
-    commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
-  }.standardOutput.asText.get().trim()
-  def _expoPluginsDirEarly = new File(new File(_expoAutolinkingPkgPathEarly).getParentFile(), "android/expo-gradle-plugin").absolutePath
-  includeBuild(_expoPluginsDirEarly)
-  println("DEBUG(early-include): included expoPluginsDir=${_expoPluginsDirEarly} exists=${new File(_expoPluginsDirEarly).exists()}")
-} catch(Exception e) {
-  println("DEBUG(early-include): could not include expo plugin build: ${e.message}")
-}
+// Minimal, clean settings.gradle
+// Purpose: configure plugin resolution for Kotlin artifacts (including kotlin-serialization)
+// and include the React Native / Expo plugin builds.
 
 pluginManagement {
   resolutionStrategy {
@@ -52,13 +32,147 @@ pluginManagement {
     google()
   }
 
-  // pluginManagement keeps resolver configuration for plugin artifacts (Kotlin, etc.)
+  // Ensure included builds that provide Gradle plugins (react-native, expo) are
+  // available during plugin resolution. We resolve their package.json via node
+  // so this works in developer worktrees where node_modules lives next to the repo.
+  try {
+    def _reactNativePath = new File(
+      providers.exec {
+        workingDir(rootDir)
+        commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
+      }.standardOutput.asText.get().trim()
+    ).getParentFile().absolutePath
+    includeBuild(_reactNativePath)
+    println("DEBUG(pluginManagement): included reactNativePath=${_reactNativePath} exists=${new File(_reactNativePath).exists()}")
+  } catch(Exception e) {
+    println("DEBUG(pluginManagement): could not include react-native plugin build: ${e.message}")
+  }
+
+  try {
+    def _expoAutolinkingPkgPath = providers.exec {
+      workingDir(rootDir)
+      commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
+    }.standardOutput.asText.get().trim()
+    def _expoPluginsDir = new File(new File(_expoAutolinkingPkgPath).getParentFile(), "android/expo-gradle-plugin").absolutePath
+    includeBuild(_expoPluginsDir)
+    println("DEBUG(pluginManagement): included expoPluginsDir=${_expoPluginsDir} exists=${new File(_expoPluginsDir).exists()}")
+  } catch(Exception e) {
+    println("DEBUG(pluginManagement): could not include expo plugin build: ${e.message}")
+  }
 }
 
 // Include composite builds used by the project (react-native Gradle plugin and expo plugins)
-// Note: we've already attempted to include the react-native and expo plugin builds
-// above (early include). Keep the rest of the settings file minimal.
+// Resolve node-based plugin builds and register them for composite builds.
+try {
+  def reactNativePath = new File(
+    providers.exec {
+      workingDir(rootDir)
+      commandLine("node", "--print", "require.resolve('@react-native/gradle-plugin/package.json', { paths: [require.resolve('react-native/package.json')] })")
+    }.standardOutput.asText.get().trim()
+  ).getParentFile().absolutePath
+  includeBuild(reactNativePath)
+  println("DEBUG: reactNativePath=${reactNativePath} exists=${new File(reactNativePath).exists()}")
+} catch(Exception e) {
+  println("DEBUG: could not include react-native plugin build: ${e.message}")
+}
+
+try {
+  def expoAutolinkingPkgPath = providers.exec {
+    workingDir(rootDir)
+    commandLine("node", "--print", "require.resolve('expo-modules-autolinking/package.json', { paths: [require.resolve('expo/package.json')] })")
+  }.standardOutput.asText.get().trim()
+  def expoPluginsDir = new File(new File(expoAutolinkingPkgPath).getParentFile(), "android/expo-gradle-plugin").absolutePath
+  includeBuild(expoPluginsDir)
+  println("DEBUG: expoPluginsDir=${expoPluginsDir} exists=${new File(expoPluginsDir).exists()}")
+} catch(Exception e) {
+  println("DEBUG: could not include expo plugin build: ${e.message}")
+}
 
 rootProject.name = 'Kid-Friendly Map & Transit Navigator'
+
+// Apply the React Native settings plugin so we can autolink native libraries and
+// include them as Gradle projects. This plugin is provided by the included
+// build ':gradle-plugin' above and must be applied in the settings script.
+try {
+  // Apply the settings plugin provided by the included gradle-plugin build.
+  // Use pluginManager.apply in the settings script (Groovy) to register the
+  // 'reactSettings' extension which is required below.
+  pluginManager.apply('com.facebook.react.settings')
+  println("DEBUG: applied com.facebook.react.settings plugin")
+} catch(Exception e) {
+  println("DEBUG: could not apply com.facebook.react.settings plugin: ${e.message}")
+}
+
+// Prefer a cached autolinking manifest when available. If not present, fall back to
+// running the autolinking command which will generate the manifest.
+def autolinkConfigFile = file("${rootDir}/build/generated/autolinking/autolinking.json")
+if (autolinkConfigFile.exists()) {
+  try {
+    if (this.hasProperty('reactSettings')) {
+      reactSettings.autolinkLibrariesFromConfigFile(autolinkConfigFile)
+      println("DEBUG: autolinking from cached config: ${autolinkConfigFile}")
+    } else {
+      // Fallback: parse the autolinking.json and include projects manually.
+      println("DEBUG: reactSettings not available, parsing autolinking.json directly")
+      def jsonText = autolinkConfigFile.text
+      def json = new groovy.json.JsonSlurper().parseText(jsonText)
+      if (json.dependencies) {
+        json.dependencies.each { key, dep ->
+          try {
+            def name = dep.name ?: key
+            // Mirror React Native `nameCleansed` convention used by the plugin: remove leading @ and replace '/' with '_'
+            def cleansed = name.replaceFirst(/^@/, '').replace('/', '_')
+            def projectPath = ":${cleansed}"
+            def projectDir = file(dep.platforms?.android?.sourceDir as String)
+            if (projectDir.exists()) {
+              // Avoid including modules that have Android build files which require
+              // additional plugin classes (for example expo's android/build.gradle
+              // which imports expo.modules.plugin.*). Those files will fail during
+              // settings evaluation if their plugin classes aren't on the classpath.
+              def androidBuildFile = new File(projectDir, "build.gradle")
+              def androidBuildFileKts = new File(projectDir, "build.gradle.kts")
+              def skipModule = false
+              def checkFile = androidBuildFile.exists() ? androidBuildFile : (androidBuildFileKts.exists() ? androidBuildFileKts : null)
+              if (checkFile != null) {
+                try {
+                  def contents = checkFile.text
+                  if (contents.contains('expo.modules.plugin') || contents.contains('import expo.modules.plugin')) {
+                    skipModule = true
+                    println("DEBUG: skipping include of ${projectPath} because its android build.gradle references expo modules plugin")
+                  }
+                } catch(Exception e) {
+                  println("DEBUG: failed to read ${checkFile}: ${e.message}")
+                }
+              }
+
+              if (!skipModule) {
+                include(projectPath)
+                project(projectPath).projectDir = projectDir
+                println("DEBUG: included autolink project ${projectPath} -> ${projectDir}")
+              }
+            } else {
+              println("DEBUG: autolink project dir does not exist for ${projectPath}: ${projectDir}")
+            }
+          } catch(Exception e) {
+            println("DEBUG: failed to include autolink entry ${key}: ${e.message}")
+          }
+        }
+      }
+    }
+  } catch(Exception e) {
+    println("DEBUG: autolink from config failed: ${e.message}")
+  }
+} else {
+  try {
+    if (this.hasProperty('reactSettings')) {
+      reactSettings.autolinkLibrariesFromCommand()
+      println("DEBUG: autolinking from command executed")
+    } else {
+      println("DEBUG: no autolinking manifest present and reactSettings plugin is not available")
+    }
+  } catch(Exception e) {
+    println("DEBUG: autolink from command failed: ${e.message}")
+  }
+}
 
 include ':app'
