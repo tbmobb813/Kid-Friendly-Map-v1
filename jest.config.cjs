@@ -1,9 +1,5 @@
 module.exports = {
-  preset: 'ts-jest',
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
-  globals: {
-    'ts-jest': {},
-  },
   // Ignore helper module that lives inside __tests__ but isn't a test file
   testPathIgnorePatterns: ['/node_modules/', '/server/__tests__/', '/__tests__/test-utils\.(ts|tsx|js)$'],
   transformIgnorePatterns: [
@@ -38,8 +34,9 @@ module.exports = {
     '^utils/(.*)$': '<rootDir>/utils/$1.ts',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  // Explicit transforms instead of relying on the ts-jest preset
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: false }],
     '^.+\\.(js|jsx)$': 'babel-jest',
   },
   setupFiles: ['<rootDir>/jest.setup.cjs'],
