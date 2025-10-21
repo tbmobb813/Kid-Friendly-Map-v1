@@ -104,6 +104,11 @@ try {
   println("DEBUG: could not include expo-modules-core plugin build: ${e.message}")
 }
 
+// (removed automatic inclusion of expo-modules-core android project because
+// its buildscript depends on the expo gradle plugin being available; the
+// app uses reflection for optional expo calls so compile-time inclusion is
+// not required in most developer setups.)
+
 rootProject.name = 'Kid-Friendly Map & Transit Navigator'
 
 // Apply the React Native settings plugin so we can autolink native libraries and

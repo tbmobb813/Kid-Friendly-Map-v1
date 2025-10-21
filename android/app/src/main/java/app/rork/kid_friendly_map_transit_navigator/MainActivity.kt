@@ -1,5 +1,4 @@
 package app.rork.kid_friendly_map_transit_navigator
-import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
 import android.os.Bundle
@@ -9,7 +8,6 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
-import expo.modules.ReactActivityDelegateWrapper
 
 class MainActivity : ReactActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +16,16 @@ class MainActivity : ReactActivity() {
     // This is required for expo-splash-screen.
     // setTheme(R.style.AppTheme);
     // @generated begin expo-splashscreen - expo prebuild (DO NOT MODIFY) sync-f3ff59a738c56c9a6119210cb55f0b613eb8b6af
-    SplashScreenManager.registerOnActivity(this)
+    // Call expo splash screen registration reflectively so builds that do not have
+    // the expo modules available at compile time do not fail. If the class is
+    // present at runtime, invoke its registerOnActivity(Activity) method.
+    try {
+      val clazz = Class.forName("expo.modules.splashscreen.SplashScreenManager")
+      val method = clazz.getMethod("registerOnActivity", android.app.Activity::class.java)
+      method.invoke(null, this)
+    } catch (e: ClassNotFoundException) {
+      // Expo splashscreen module not available; continue without registering.
+    }
     // @generated end expo-splashscreen
     super.onCreate(null)
   }
