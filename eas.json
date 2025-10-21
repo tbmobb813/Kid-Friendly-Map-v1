@@ -11,6 +11,7 @@
         "gradleCommand": ":app:assembleDebug",
         "prepare": {
           "beforeBuild": [
+            "bash ./scripts/eas-fetch-toolchain.sh",
             "bash ./scripts/eas-ensure-android-toolchain.sh",
             "node ./scripts/generate-autolinking-json.cjs"
           ]
