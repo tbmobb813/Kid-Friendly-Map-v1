@@ -8,7 +8,13 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleDebug"
+        "gradleCommand": ":app:assembleDebug",
+        "prepare": {
+          "beforeBuild": [
+            "bash ./scripts/eas-ensure-android-toolchain.sh",
+            "node ./scripts/generate-autolinking-json.cjs"
+          ]
+        }
       },
       "ios": {
         "simulator": true,
@@ -20,7 +26,13 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleDebug"
+        "gradleCommand": ":app:assembleDebug",
+        "prepare": {
+          "beforeBuild": [
+            "bash ./scripts/eas-ensure-android-toolchain.sh",
+            "node ./scripts/generate-autolinking-json.cjs"
+          ]
+        }
       },
       "ios": {
         "simulator": false,
@@ -31,12 +43,24 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
+        "gradleCommand": ":app:assembleRelease",
+        "prepare": {
+          "beforeBuild": [
+            "bash ./scripts/eas-ensure-android-toolchain.sh",
+            "node ./scripts/generate-autolinking-json.cjs"
+          ]
+        }
       }
     },
     "production": {
       "android": {
-        "buildType": "app-bundle"
+        "buildType": "app-bundle",
+        "prepare": {
+          "beforeBuild": [
+            "bash ./scripts/eas-ensure-android-toolchain.sh",
+            "node ./scripts/generate-autolinking-json.cjs"
+          ]
+        }
       }
     }
   },
