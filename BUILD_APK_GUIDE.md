@@ -223,12 +223,12 @@ If your USB port or cable is truly broken:
 
 ## Summary of Build Methods
 
-| Method       | Time   | Requirements            | Success Rate              |
-| ------------ | ------ | ----------------------- | ------------------------- |
+| Method       | Time   | Requirements            | Success Rate         |
+|--------------|--------|-------------------------|----------------------|
 | USB Device   | 5 min  | Working USB + Debugging | ⭐⭐⭐⭐⭐                |
-| Wireless ADB | 10 min | Same WiFi + Android 11+ | ⭐⭐⭐⭐                  |
-| Emulator     | 15 min | 8GB+ free disk space    | ⭐⭐⭐                    |
-| EAS Cloud    | 15 min | Valid Expo account      | ⭐⭐⭐⭐                  |
+| Wireless ADB | 10 min | Same WiFi + Android 11+ | ⭐⭐⭐⭐                 |
+| Emulator     | 15 min | 8GB+ free disk space    | ⭐⭐⭐                  |
+| EAS Cloud    | 15 min | Valid Expo account      | ⭐⭐⭐⭐                 |
 | Expo Go      | 2 min  | WiFi only               | ⭐⭐⭐⭐⭐ (testing only) |
 
 ---

@@ -87,9 +87,9 @@ Voice Guidance + Navigation
 ### 1. Smart Route Types
 
 | Route Type | Priority   | Best For              | AI Weight               |
-| ---------- | ---------- | --------------------- | ----------------------- |
-| 🛡️ Safest  | Safety 50% | Evening, young kids   | Safe zones, lighting    |
-| ⚡ Fastest | Speed 45%  | Time-sensitive trips  | Direct paths, express   |
+|------------|------------|-----------------------|-------------------------|
+| 🛡️ Safest | Safety 50% | Evening, young kids   | Safe zones, lighting    |
+| ⚡ Fastest  | Speed 45%  | Time-sensitive trips  | Direct paths, express   |
 | 😊 Easiest | Ease 45%   | Strollers, tired kids | Less walking, elevators |
 | 🌳 Scenic  | Balanced   | Pleasant weather, fun | Parks, landmarks        |
 
@@ -502,8 +502,8 @@ const schedule = await fetchTransitSchedule(station);
 
 ## 🎉 Implementation Status
 
-| Feature                 | Status      | Notes                             |
-| ----------------------- | ----------- | --------------------------------- |
+| Feature                 | Status     | Notes                             |
+|-------------------------|------------|-----------------------------------|
 | AI Route Engine         | ✅ Complete | 600+ lines, full functionality    |
 | Route Scoring Algorithm | ✅ Complete | 0-100 scoring with weights        |
 | Learning Model          | ✅ Complete | Tracks patterns, adapts over time |

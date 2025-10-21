@@ -385,15 +385,15 @@ User can request:
 
 ## 📊 Feature Comparison
 
-| Feature             | Before     | After                  |
-| ------------------- | ---------- | ---------------------- |
-| Route Awareness     | ❌ No      | ✅ Full route context  |
-| Route Insights      | ❌ No      | ✅ Dedicated button    |
+| Feature             | Before     | After                 |
+|---------------------|------------|-----------------------|
+| Route Awareness     | ❌ No       | ✅ Full route context  |
+| Route Insights      | ❌ No       | ✅ Dedicated button    |
 | Voice Integration   | ⚠️ Manual  | ✅ Automatic           |
-| Route Stats Display | ❌ No      | ✅ Live stats card     |
+| Route Stats Display | ❌ No       | ✅ Live stats card     |
 | Context-Aware AI    | ⚠️ Basic   | ✅ Route + destination |
 | Fallback Quality    | ⚠️ Generic | ✅ Route-specific      |
-| Action Buttons      | 2          | 3 (adds Route Info)    |
+| Action Buttons      | 2          | 3 (adds Route Info)   |
 
 ---
 
