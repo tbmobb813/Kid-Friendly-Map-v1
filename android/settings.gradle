@@ -7,6 +7,18 @@
 // where node_modules lives next to the repo. Including these builds before
 // pluginManagement makes their plugin ids available during plugin resolution.
 
+// Provide fallback Android SDK values early so that included modules
+// (for example node_modules/expo/android) that are evaluated during
+// settings/project inclusion can access `rootProject.ext.compileSdk` or
+// `rootProject.ext.compileSdkVersion` without requiring the root build
+// script to be evaluated first.
+// These match the defaults used historically in this project.
+rootProject.ext.compileSdkVersion = 36
+rootProject.ext.compileSdk = 36
+rootProject.ext.minSdkVersion = 24
+rootProject.ext.targetSdkVersion = 36
+println "DEBUG: settings.gradle set fallback compileSdk=${rootProject.ext.compileSdkVersion}"
+
 // Minimal, clean settings.gradle
 // Purpose: configure plugin resolution for Kotlin artifacts (including kotlin-serialization)
 // and include the React Native / Expo plugin builds.
@@ -58,6 +70,23 @@ pluginManagement {
     println("DEBUG(pluginManagement): included expoPluginsDir=${_expoPluginsDir} exists=${new File(_expoPluginsDir).exists()}")
   } catch(Exception e) {
     println("DEBUG(pluginManagement): could not include expo plugin build: ${e.message}")
+  }
+  // Also include the expo-module-gradle-plugin (from expo-modules-core) here so
+  // types like expo.modules.plugin.* are available while compiling other
+  // build files (for example node_modules/expo/android/build.gradle imports
+  // these classes directly). Including this in pluginManagement ensures the
+  // plugin classes are present during plugin resolution and script compilation.
+  try {
+    def _expoModulesCorePkgPath = providers.exec {
+      workingDir(rootDir)
+      commandLine("node", "--print", "require.resolve('expo-modules-core/package.json', { paths: [require.resolve('expo/package.json')] })")
+    }.standardOutput.asText.get().trim()
+    def _expoModulesCoreDir = new File(_expoModulesCorePkgPath).getParentFile().absolutePath
+    def _expoModuleGradlePluginDir = new File(_expoModulesCoreDir, "expo-module-gradle-plugin").absolutePath
+    includeBuild(_expoModuleGradlePluginDir)
+    println("DEBUG(pluginManagement): included expo-module-gradle-plugin=${_expoModuleGradlePluginDir} exists=${new File(_expoModuleGradlePluginDir).exists()}")
+  } catch(Exception e) {
+    println("DEBUG(pluginManagement): could not include expo-module-gradle-plugin in pluginManagement: ${e.message}")
   }
 }
 

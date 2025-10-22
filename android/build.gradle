@@ -57,3 +57,50 @@ gradle.projectsEvaluated {
     logger.lifecycle("com.facebook.react.rootproject plugin not available yet: ${e.message}")
   }
 }
+
+
+// Ensure library and app modules that don't explicitly set `compileSdk` / `compileSdkVersion`
+// receive a sane default from rootProject.ext. Newer Android Gradle Plugin versions
+// require `compileSdk` to be present on each Android project; some upstream
+// modules (for example `:expo`) rely on the root project to provide the value
+// indirectly. Provide a small, defensive fallback here so we don't have to edit
+// files under node_modules.
+subprojects { sub ->
+  sub.afterEvaluate {
+    try {
+      def hasAndroidPlugin = sub.plugins.hasPlugin('com.android.library') || sub.plugins.hasPlugin('com.android.application')
+      if (!hasAndroidPlugin) return
+
+      def androidExt = sub.extensions.findByName('android')
+      if (androidExt == null) return
+
+      // Prefer rootProject.ext.compileSdkVersion, then rootProject.ext.compileSdk, then a sensible default.
+      def compileSdkValue = null
+      if (rootProject.hasProperty('ext')) {
+        if (rootProject.ext.has('compileSdkVersion')) {
+          compileSdkValue = rootProject.ext.compileSdkVersion
+        } else if (rootProject.ext.has('compileSdk')) {
+          compileSdkValue = rootProject.ext.compileSdk
+        }
+      }
+      if (compileSdkValue == null) compileSdkValue = 36
+
+      // If neither compileSdk nor compileSdkVersion is present on the android extension,
+      // set compileSdk (newer AGP) or fall back to compileSdkVersion when necessary.
+      def hasCompileSdk = (androidExt.hasProperty('compileSdk') || androidExt.hasProperty('compileSdkVersion'))
+      if (!hasCompileSdk) {
+        try {
+          androidExt.compileSdk = compileSdkValue
+        } catch (Exception e) {
+          // Some AGP versions expect compileSdkVersion - try that as a fallback.
+          try {
+            androidExt.compileSdkVersion = compileSdkValue
+          } catch (Exception ignored) {
+          }
+        }
+        println "Set compileSdk for project ${sub.name} -> ${compileSdkValue}"
+      }
+    } catch (ignored) {
+    }
+  }
+}
